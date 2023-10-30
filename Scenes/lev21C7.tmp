@@ -1,0 +1,126 @@
+[gd_scene load_steps=13 format=3 uid="uid://c5g160romy6eq"]
+
+[ext_resource type="Script" path="res://Scripts/Levels_manager.gd" id="1_vvl7g"]
+[ext_resource type="Shader" path="res://Shaders/Water_shader.gdshader" id="2_m6wel"]
+[ext_resource type="Theme" uid="uid://xf2gjogea0a6" path="res://Fonts/theme_default_body_text.tres" id="3_ehewx"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_exya7"]
+noise_type = 4
+seed = 5
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_us610"]
+seamless = true
+noise = SubResource("FastNoiseLite_exya7")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_olpt0"]
+noise_type = 4
+seed = 5
+frequency = 0.05
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_oeir0"]
+seamless = true
+noise = SubResource("FastNoiseLite_olpt0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_24jkk"]
+shader = ExtResource("2_m6wel")
+shader_parameter/scroll_horizontal = Vector2(0.1, 0.1)
+shader_parameter/scroll_vertical = Vector2(-0.1, -0.1)
+shader_parameter/tone_color = Color(0.32549, 1, 0.121569, 1)
+shader_parameter/top_color = Color(1, 1, 1, 1)
+shader_parameter/light_start = 0.132
+shader_parameter/light_end = 0.334
+shader_parameter/distorsion_strength = 0.2
+shader_parameter/first_noise = SubResource("NoiseTexture2D_us610")
+shader_parameter/second_noise = SubResource("NoiseTexture2D_oeir0")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xq8sa"]
+bg_color = Color(0.956863, 0.407843, 0.0745098, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlaxc"]
+bg_color = Color(0.996078, 0.647059, 0.490196, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ppfe6"]
+bg_color = Color(0.596078, 0.235294, 0.0117647, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01uet"]
+bg_color = Color(1, 0.792157, 0.701961, 1)
+corner_detail = 12
+
+[node name="LevelsManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vvl7g")
+levels_array = null
+button_template = null
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_24jkk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="Grid" type="GridContainer" parent="BG/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 7
+
+[node name="Button2" type="Button" parent="BG/MarginContainer/Grid"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_ehewx")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_xq8sa")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rlaxc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_ppfe6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_01uet")
+text = "Level 1"
+language = "en"
+
+[node name="Button3" type="Button" parent="BG/MarginContainer/Grid"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_ehewx")
+theme_override_font_sizes/font_size = 32
+text = "Level 2"
+
+[node name="Button4" type="Button" parent="BG/MarginContainer/Grid"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_ehewx")
+theme_override_font_sizes/font_size = 32
+text = "Level 3"

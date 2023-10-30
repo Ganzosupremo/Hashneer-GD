@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://cl40q47owpn34"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/Quadrant.gd" id="1_jk3ed"]
+
+[node name="Quadrant" type="Node2D"]
+script = ExtResource("1_jk3ed")
+
+[node name="StaticBody" type="StaticBody2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 24
+collision_mask = 120

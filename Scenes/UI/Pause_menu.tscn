@@ -1,0 +1,77 @@
+[gd_scene load_steps=3 format=3 uid="uid://dno64qhlmtfv8"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_154aw"]
+[ext_resource type="Script" path="res://Scripts/UI/pause_menu.gd" id="1_uwbt1"]
+
+[node name="PauseMenu" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -239.0
+offset_right = 240.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+mouse_filter = 1
+script = ExtResource("1_uwbt1")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -263.0
+offset_right = 254.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+
+[node name="MarginContainer" type="MarginContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+theme = ExtResource("1_154aw")
+
+[node name="Panel" type="Panel" parent="AspectRatioContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_154aw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AspectRatioContainer/MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -99.5
+offset_top = -9.0
+offset_right = 100.5
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="ResumeButton" type="Button" parent="AspectRatioContainer/MarginContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme = ExtResource("1_154aw")
+text = "Resume"
+
+[node name="MainMenuButton" type="Button" parent="AspectRatioContainer/MarginContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme = ExtResource("1_154aw")
+text = "Main Menu"
+
+[node name="QuitGameButton" type="Button" parent="AspectRatioContainer/MarginContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 2
+theme = ExtResource("1_154aw")
+text = "Quit Game
+"
+
+[connection signal="pressed" from="AspectRatioContainer/MarginContainer/Panel/VBoxContainer/ResumeButton" to="." method="_on_resume_button_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/MarginContainer/Panel/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/MarginContainer/Panel/VBoxContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]

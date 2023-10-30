@@ -1,0 +1,98 @@
+[gd_scene load_steps=4 format=3 uid="uid://cghc7u0gqeip8"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_g7llf"]
+[ext_resource type="Script" path="res://Scripts/Player/Skill_info_window.gd" id="2_log2w"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lmrnn"]
+bg_color = Color(0.0901961, 0.145098, 0.254902, 0.870588)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.286275, 0.235294, 0.54902, 1)
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="SkillInfoWindow" type="PanelContainer"]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -361.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = ExtResource("1_g7llf")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lmrnn")
+script = ExtResource("2_log2w")
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "X"
+
+[node name="Margins" type="MarginContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_g7llf")
+
+[node name="MainContainer" type="VBoxContainer" parent="Margins"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_g7llf")
+theme_override_constants/separation = 150
+alignment = 1
+
+[node name="SkillTitle" type="Label" parent="Margins/MainContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+text = "Skill Title
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillMaxLevel" type="Label" parent="Margins/MainContainer/SkillTitle"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_g7llf")
+theme_override_font_sizes/font_size = 30
+text = "0/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SkillDesc" type="Label" parent="Margins/MainContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+text = "the description of the skill"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="Margins/MainContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+alignment = 1
+
+[node name="BuyButton" type="Button" parent="Margins/MainContainer/ButtonsContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+text = "Buy"
+
+[node name="BuyMaxButton" type="Button" parent="Margins/MainContainer/ButtonsContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+text = "Buy Max"
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="Margins/MainContainer/ButtonsContainer/BuyButton" to="." method="_on_buy_button_pressed"]
+[connection signal="pressed" from="Margins/MainContainer/ButtonsContainer/BuyMaxButton" to="." method="_on_buy_max_button_pressed"]

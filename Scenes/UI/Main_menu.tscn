@@ -1,0 +1,182 @@
+[gd_scene load_steps=17 format=3 uid="uid://d4bsaxj0j3hoc"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Main_menu.gd" id="1_n1dpb"]
+[ext_resource type="Script" path="res://Scripts/UI/MainMenuParallexackground.gd" id="2_y71ea"]
+[ext_resource type="Texture2D" uid="uid://b5rivhjq0n3tx" path="res://Textures/parallax-space-backgound.png" id="3_rktvw"]
+[ext_resource type="Shader" path="res://Shaders/Black_hole.gdshader" id="4_fwbrq"]
+[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="5_nl5t8"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="6_2tau6"]
+[ext_resource type="Texture2D" uid="uid://dghmigof504jv" path="res://Textures/UI/play_icon.png" id="7_4m12u"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_fmrpa"]
+noise_type = 2
+seed = 4
+frequency = 0.5211
+cellular_distance_function = 1
+cellular_jitter = 0.54
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_n330n"]
+width = 256
+height = 256
+seamless_blend_skirt = 0.11
+noise = SubResource("FastNoiseLite_fmrpa")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_me1o6"]
+noise_type = 2
+seed = 4
+frequency = 0.5211
+cellular_distance_function = 1
+cellular_jitter = 0.54
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_48fop"]
+width = 256
+height = 256
+seamless_blend_skirt = 0.11
+noise = SubResource("FastNoiseLite_me1o6")
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_pu4p4"]
+width = 256
+height = 256
+seamless = true
+seamless_blend_skirt = 0.11
+noise = SubResource("FastNoiseLite_fmrpa")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_f3bwi"]
+shader = ExtResource("4_fwbrq")
+shader_parameter/screen_resolution = 1.0
+shader_parameter/ringColor = Color(0.894118, 0.419608, 0, 1)
+shader_parameter/ringOuterColor = Color(0.596078, 0.678431, 0, 1)
+shader_parameter/iChannel0 = SubResource("NoiseTexture2D_n330n")
+shader_parameter/iChannel1 = SubResource("NoiseTexture2D_48fop")
+shader_parameter/iChannel2 = SubResource("NoiseTexture2D_pu4p4")
+
+[sub_resource type="Animation" id="Animation_nh6yw"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_bhcat"]
+resource_name = "bitcoin_main_menu_anim"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 5, 10),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, -3.14159, -6.28319]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tl5kj"]
+_data = {
+"RESET": SubResource("Animation_nh6yw"),
+"bitcoin_main_menu_anim": SubResource("Animation_bhcat")
+}
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n1dpb")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+
+[node name="MainMenuParallexackground" type="ParallaxBackground" parent="AspectRatioContainer"]
+scroll_base_scale = Vector2(2, 2)
+script = ExtResource("2_y71ea")
+scrolling_speed = Vector2(40, 40)
+
+[node name="Black Hole" type="TextureRect" parent="AspectRatioContainer/MainMenuParallexackground"]
+material = SubResource("ShaderMaterial_f3bwi")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_rktvw")
+metadata/_edit_lock_ = true
+
+[node name="Bitcoin logo" type="TextureRect" parent="AspectRatioContainer/MainMenuParallexackground/Black Hole"]
+process_mode = 3
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -2.00003
+offset_right = 1.0
+offset_bottom = -2.00003
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(5.5, 5.5)
+pivot_offset = Vector2(0.5, 0.5)
+texture = ExtResource("5_nl5t8")
+expand_mode = 2
+stretch_mode = 3
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AspectRatioContainer/MainMenuParallexackground/Black Hole/Bitcoin logo"]
+autoplay = "bitcoin_main_menu_anim"
+libraries = {
+"": SubResource("AnimationLibrary_tl5kj")
+}
+
+[node name="FlowContainer" type="FlowContainer" parent="AspectRatioContainer"]
+layout_mode = 2
+alignment = 1
+vertical = true
+
+[node name="StartGame" type="Button" parent="AspectRatioContainer/FlowContainer"]
+layout_mode = 2
+theme = ExtResource("6_2tau6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Start Game"
+icon = ExtResource("7_4m12u")
+
+[node name="QuitGameButton" type="Button" parent="AspectRatioContainer/FlowContainer"]
+layout_mode = 2
+theme = ExtResource("6_2tau6")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+text = "Quit Game"
+
+[connection signal="pressed" from="AspectRatioContainer/FlowContainer/StartGame" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/FlowContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]

@@ -1,0 +1,74 @@
+[gd_scene load_steps=5 format=3 uid="uid://wuvamy0815mb"]
+
+[ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="1_gi1jc"]
+[ext_resource type="Script" path="res://Scripts/UI/Skill_tree.gd" id="1_hryt8"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_oxr04"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v80gg"]
+shader = ExtResource("1_gi1jc")
+shader_parameter/bg_color = Color(0, 0, 0, 1)
+shader_parameter/size = 100.0
+shader_parameter/prob = 0.9
+
+[node name="SkillTree" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hryt8")
+metadata/_edit_horizontal_guides_ = [nan, nan, nan, nan]
+metadata/_edit_vertical_guides_ = [nan]
+
+[node name="BG" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_v80gg")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0.952941, 0.717647, 0.254902, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = nan
+anchor_top = nan
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = nan
+offset_top = nan
+offset_bottom = 63.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DamageButton" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme = ExtResource("2_oxr04")
+text = "Upgrade Damage"
+
+[node name="DamageCostLabel" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_oxr04")
+text = "asssssss"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="VBoxContainer/DamageButton" to="." method="_on_damage_button_pressed"]

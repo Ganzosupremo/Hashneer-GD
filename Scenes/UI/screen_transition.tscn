@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://br73hw8tq5pfg"]
+
+[ext_resource type="Shader" path="res://Shaders/Screen_transition.gdshader" id="1_cxfcj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7nq0v"]
+shader = ExtResource("1_cxfcj")
+shader_parameter/progress = 0.0
+shader_parameter/multiplier = 3.0
+shader_parameter/angle = 45.0
+shader_parameter/anchor = Vector2(0.5, 0.5)
+shader_parameter/anchorOffset = 1.0
+shader_parameter/diamondPixelSize = 20.0
+
+[node name="ScreenTransition" type="ColorRect"]
+material = SubResource("ShaderMaterial_7nq0v")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.517647, 0.67451, 0.984314, 1)

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://cu4ijlao350ib"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/quadrant_builder.gd" id="1_difkd"]
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="2_gnpip"]
+
+[node name="Level 7" type="Node2D" groups=["QuadrantTerrain"]]
+script = ExtResource("1_difkd")
+quadrant_size = 150
+quadrant_grid_size = Vector2(10, 10)
+carve_radius = 50
+
+[node name="Quadrants" type="Node2D" parent="." groups=["QuadrantTerrain"]]
+unique_name_in_owner = true
+
+[node name="CarveArea" type="Polygon2D" parent="." groups=["QuadrantTerrain"]]
+unique_name_in_owner = true
+color = Color(0.576471, 0.337255, 0.243137, 1)
+
+[node name="Player" parent="." instance=ExtResource("2_gnpip")]
+unique_name_in_owner = true
+position = Vector2(171, -150)

@@ -1,0 +1,200 @@
+[gd_scene load_steps=10 format=3 uid="uid://ba2y030tmkvga"]
+
+[ext_resource type="Script" path="res://Scripts/UI/MainGameUI.gd" id="1_0f3y0"]
+[ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="1_88amo"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_ibwsi"]
+[ext_resource type="PackedScene" uid="uid://c5g160romy6eq" path="res://Scenes/UI/Levels_picker.tscn" id="2_a772f"]
+[ext_resource type="PackedScene" uid="uid://wuvamy0815mb" path="res://Scenes/UI/Skill_tree.tscn" id="2_rvjiy"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_eprr1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a8ncp"]
+shader = ExtResource("1_88amo")
+shader_parameter/gridSmoothWidth = 0.037
+shader_parameter/axisWidth = 0.05
+shader_parameter/gridColor = Color(0.5, 0.5, 0.5, 0.5)
+shader_parameter/majorLineWidth = 0.025
+shader_parameter/minorLineWidth = 0.0125
+shader_parameter/majorLineFrequency = 5.0
+shader_parameter/minorLineFrequency = 1.0
+shader_parameter/scale = 5.0
+shader_parameter/lineColor = Color(0.341176, 0.137255, 0, 1)
+shader_parameter/minLineWidth = 0.029
+shader_parameter/maxLineWidth = 0.54
+shader_parameter/lineAmplitude = 1.0
+shader_parameter/lineFrequency = 0.2
+shader_parameter/linesPerGroup = 21
+shader_parameter/warpFrequency = 0.1
+shader_parameter/warpAmplitude = 1.0
+shader_parameter/offsetFrequency = 0.5
+shader_parameter/minOffsetSpread = 0.6
+shader_parameter/maxOffsetSpread = 2.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_0arg6"]
+font = ExtResource("6_eprr1")
+font_size = 80
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7ij26"]
+bg_color = Color(0.113725, 0.113725, 0.113725, 0.705882)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0588235, 0.0588235, 0.0588235, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[node name="MainGameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_0f3y0")
+
+[node name="BG" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_a8ncp")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ibwsi")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 646.0
+grow_horizontal = 2
+theme = ExtResource("1_ibwsi")
+
+[node name="TabContainer" type="TabContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+drag_to_rearrange_enabled = true
+use_hidden_tabs_for_min_size = true
+
+[node name="Block Selector" parent="MarginContainer/TabContainer" instance=ExtResource("2_a772f")]
+layout_mode = 2
+
+[node name="Upgrades Shop" parent="MarginContainer/TabContainer" instance=ExtResource("2_rvjiy")]
+visible = false
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 0
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+text = "Main Menu"
+label_settings = SubResource("LabelSettings_0arg6")
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Startbutton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ibwsi")
+text = "Start Game"
+
+[node name="ShopButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+text = "Shop"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+alignment = 1
+
+[node name="SettingButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 150)
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+text = "Settings
+"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+alignment = 1
+
+[node name="Panel" type="Panel" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 130)
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ij26")
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ibwsi")
+text = "Useless Button"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Panel2" type="Panel" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 130)
+layout_mode = 2
+theme = ExtResource("1_ibwsi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7ij26")
+
+[node name="Label2" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/Panel2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ibwsi")
+text = "Useless Button"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_focus_entered"]
+[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_focus_exited"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_mouse_entered"]
+[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_mouse_exited"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_pressed"]
+[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_focus_entered"]
+[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_focus_exited"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_mouse_entered"]
+[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_mouse_exited"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_focus_entered"]
+[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_focus_exited"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_mouse_entered"]
+[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_mouse_exited"]

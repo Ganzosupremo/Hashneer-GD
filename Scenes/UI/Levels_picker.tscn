@@ -1,0 +1,278 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5g160romy6eq"]
+
+[ext_resource type="Script" path="res://Scripts/Managers/levels_picker.gd" id="1_b2jb1"]
+[ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="2_x4vgw"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_mml05"]
+[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="4_vg2ou"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_24jkk"]
+shader = ExtResource("2_x4vgw")
+shader_parameter/gridSmoothWidth = 0.015
+shader_parameter/axisWidth = 0.05
+shader_parameter/gridColor = Color(0.5, 0.5, 0.5, 0.5)
+shader_parameter/majorLineWidth = 0.025
+shader_parameter/minorLineWidth = 0.0125
+shader_parameter/majorLineFrequency = 5.0
+shader_parameter/minorLineFrequency = 1.0
+shader_parameter/scale = 5.0
+shader_parameter/lineColor = Color(0.847059, 0.411765, 0.137255, 1)
+shader_parameter/minLineWidth = 0.02
+shader_parameter/maxLineWidth = 0.5
+shader_parameter/lineAmplitude = 1.0
+shader_parameter/lineFrequency = 0.2
+shader_parameter/linesPerGroup = 16
+shader_parameter/warpFrequency = 0.5
+shader_parameter/warpAmplitude = 1.0
+shader_parameter/offsetFrequency = 0.5
+shader_parameter/minOffsetSpread = 0.6
+shader_parameter/maxOffsetSpread = 2.0
+
+[node name="LevelsPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_b2jb1")
+
+[node name="BG" type="Panel" parent="."]
+material = SubResource("ShaderMaterial_24jkk")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="BG"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Grid" type="GridContainer" parent="BG/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_mml05")
+columns = 7
+
+[node name="ButtonLevel1" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Genesis"
+icon = ExtResource("4_vg2ou")
+icon_alignment = 1
+language = "en"
+
+[node name="ButtonLevel2" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 1"
+language = "en"
+
+[node name="ButtonLevel3" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 2"
+language = "en"
+
+[node name="ButtonLevel4" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 3"
+language = "en"
+
+[node name="ButtonLevel5" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = " Block 4"
+language = "en"
+
+[node name="ButtonLevel6" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 5"
+language = "en"
+
+[node name="ButtonLevel7" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 6"
+language = "en"
+
+[node name="ButtonLevel8" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 7"
+language = "en"
+
+[node name="ButtonLevel9" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 8"
+language = "en"
+
+[node name="ButtonLevel10" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 9"
+language = "en"
+
+[node name="ButtonLevel11" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 10"
+language = "en"
+
+[node name="ButtonLevel12" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 11"
+language = "en"
+
+[node name="ButtonLevel13" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 12"
+language = "en"
+
+[node name="ButtonLevel14" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 13"
+language = "en"
+
+[node name="ButtonLevel15" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 14"
+language = "en"
+
+[node name="ButtonLevel16" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 15"
+language = "en"
+
+[node name="ButtonLevel17" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 16"
+language = "en"
+
+[node name="ButtonLevel18" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 17"
+language = "en"
+
+[node name="ButtonLevel19" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 18"
+language = "en"
+
+[node name="ButtonLevel20" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 19"
+language = "en"
+
+[node name="ButtonLevel21" type="Button" parent="BG/MarginContainer/Grid"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+text = "Block 20"
+language = "en"
+
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel1" to="." method="_on_button_level_1_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel2" to="." method="_on_button_level_2_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel3" to="." method="_on_button_level_3_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel4" to="." method="_on_button_level_4_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel5" to="." method="_on_button_level_5_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel6" to="." method="_on_button_level_6_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel7" to="." method="_on_button_level_7_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel8" to="." method="_on_button_level_8_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel9" to="." method="_on_button_level_9_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel10" to="." method="_on_button_level_10_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel11" to="." method="_on_button_level_11_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel12" to="." method="_on_button_level_12_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel13" to="." method="_on_button_level_13_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel14" to="." method="_on_button_level_14_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel15" to="." method="_on_button_level_15_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel16" to="." method="_on_button_level_16_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel17" to="." method="_on_button_level_17_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel18" to="." method="_on_button_level_18_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel19" to="." method="_on_button_level_19_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel20" to="." method="_on_button_level_20_pressed"]
+[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel21" to="." method="_on_button_level_21_pressed"]

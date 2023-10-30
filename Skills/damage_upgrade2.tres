@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="UpgradeBase" load_steps=4 format=3 uid="uid://bcwc3pdeqd3hm"]
+
+[ext_resource type="Script" path="res://Scripts/Player/upgrade_base.gd" id="1_ft4tv"]
+[ext_resource type="Texture2D" uid="uid://cji2hjb30pjt0" path="res://example/skill_icons1.png" id="2_4smra"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8ovq"]
+atlas = ExtResource("2_4smra")
+region = Rect2(72, 0, 24, 24)
+
+[resource]
+script = ExtResource("1_ft4tv")
+upgrade_name = "Increase Damage 2"
+upgrade_description = "Increases the bullet damage by a considerable amount"
+upgrade_sprite = SubResource("AtlasTexture_i8ovq")
+upgrade_tier = 0
+upgrade_base_power = 10.0
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 50.0
+upgrade_cost_multiplier = 1.25
+upgrade_purchase_limit = 100

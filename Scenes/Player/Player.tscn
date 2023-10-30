@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://domdfxprvi6aw"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_txrnj"]
+[ext_resource type="PackedScene" uid="uid://bup2i7flnhf50" path="res://Scenes/Player/ammo.tscn" id="2_vh52a"]
+[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_wes6a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2upi1"]
+radius = 14.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+light_mask = 16
+visibility_layer = 16
+collision_layer = 128
+collision_mask = 440
+motion_mode = 1
+slide_on_ceiling = false
+script = ExtResource("1_txrnj")
+speed = 400.0
+bullet = ExtResource("2_vh52a")
+
+[node name="Camera2D" type="Camera2D" parent="." groups=["Player"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="." groups=["Player"]]
+light_mask = 16
+visibility_layer = 16
+texture = ExtResource("2_wes6a")
+
+[node name="BulletFirePosition" type="Marker2D" parent="." groups=["Player"]]
+unique_name_in_owner = true
+position = Vector2(27, -1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+shape = SubResource("CircleShape2D_2upi1")

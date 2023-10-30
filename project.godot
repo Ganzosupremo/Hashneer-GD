@@ -1,0 +1,100 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="Hashneer"
+run/main_scene="res://Scenes/UI/Main_menu.tscn"
+config/features=PackedStringArray("4.1", "Forward Plus")
+boot_splash/bg_color=Color(0.380392, 0.254902, 0.85098, 1)
+config/icon="res://Textures/Bitcoin pixel art nuevo2.png"
+
+[autoload]
+
+EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
+ResourceManager="*res://Scripts/Managers/ResourceManager.gd"
+SceneManager="*res://Scenes/Scene_manager.tscn"
+BitcoinNetwork="*res://Scenes/Bitcoin_network.tscn"
+UpgradesManager="*res://Scenes/Player Upgrade System/upgrades_manager.tscn"
+
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[dotnet]
+
+project/assembly_name="Hashneer"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/worldmap_builder/plugin.cfg")
+
+[input]
+
+Move_left={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":65,"key_label":0,"unicode":97,"echo":false,"script":null)
+]
+}
+Move_right={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":68,"key_label":0,"unicode":100,"echo":false,"script":null)
+]
+}
+Move_up={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":87,"key_label":0,"unicode":119,"echo":false,"script":null)
+]
+}
+Move_down={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":115,"echo":false,"script":null)
+]
+}
+Fire={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(190, 26),"global_position":Vector2(194, 69),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+left_click={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(70, 11),"global_position":Vector2(74, 54),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Return={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"echo":false,"script":null)
+]
+}
+
+[layer_names]
+
+2d_render/layer_1="Default"
+2d_render/layer_2="Ground&Walls"
+2d_render/layer_3="Decorations"
+2d_render/layer_4="Entities"
+2d_render/layer_5="Player"
+2d_render/layer_6="Ammo"
+2d_render/layer_7="UI"
+2d_render/layer_8="BlockCore"
+2d_physics/layer_1="Default"
+2d_physics/layer_2="VFX"
+2d_physics/layer_3="Ignore Collisions"
+2d_physics/layer_4="Ground&Walls"
+2d_physics/layer_5="Environment"
+2d_physics/layer_6="Entities"
+2d_physics/layer_7="Player Ammo"
+2d_physics/layer_8="Player"
+2d_physics/layer_9="BlockCenter"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=3

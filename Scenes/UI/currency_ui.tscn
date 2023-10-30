@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://byt208cpm71np"]
+
+[ext_resource type="Theme" uid="uid://xf2gjogea0a6" path="res://Fonts/theme_default_body_text.tres" id="1_1krxr"]
+[ext_resource type="Script" path="res://Scripts/UI/currency_ui.gd" id="1_aub7b"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e0w0j"]
+font_size = 32
+
+[node name="CurrencyUI" type="CanvasLayer"]
+layer = 100
+
+[node name="CurrencyUI" type="Control" parent="."]
+layout_mode = 3
+offset_left = 80.0
+offset_top = 25.0
+script = ExtResource("1_aub7b")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="CurrencyUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+metadata/_edit_use_anchors_ = true
+
+[node name="MarginContainer" type="MarginContainer" parent="CurrencyUI/AspectRatioContainer"]
+layout_mode = 2
+
+[node name="CurrencyLabel" type="Label" parent="CurrencyUI/AspectRatioContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme = ExtResource("1_1krxr")
+text = "Currency: 0"
+label_settings = SubResource("LabelSettings_e0w0j")

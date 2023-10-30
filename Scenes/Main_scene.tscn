@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cnsywh8fkg338"]
+
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_af2yx"]
+[ext_resource type="PackedScene" uid="uid://dea6jrgcwxpyx" path="res://Scenes/Destroyable_terrain.tscn" id="2_a7tky"]
+
+[node name="Main Scene" type="Node2D"]
+
+[node name="DestroyableTerrain" parent="." instance=ExtResource("2_a7tky")]
+
+[node name="Player" parent="." instance=ExtResource("1_af2yx")]
+position = Vector2(31.7231, 2.98177)

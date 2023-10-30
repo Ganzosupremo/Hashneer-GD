@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://b51mqtqxkxqtk"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Loading_screen.gd" id="1_7wylc"]
+[ext_resource type="Theme" uid="uid://xf2gjogea0a6" path="res://Fonts/theme_default_body_text.tres" id="1_tvl3j"]
+
+[sub_resource type="Gradient" id="Gradient_u8jbn"]
+colors = PackedColorArray(1, 0.647059, 0, 1, 0, 0, 0, 0.666667)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ukt73"]
+gradient = SubResource("Gradient_u8jbn")
+
+[sub_resource type="LabelSettings" id="LabelSettings_nh1uj"]
+font_size = 200
+shadow_size = 5
+shadow_color = Color(0.0196078, 0.0196078, 0.0196078, 1)
+shadow_offset = Vector2(4, 8)
+
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7wylc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ukt73")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_tvl3j")
+theme_override_font_sizes/font_size = 200
+text = "Loading..."
+label_settings = SubResource("LabelSettings_nh1uj")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3

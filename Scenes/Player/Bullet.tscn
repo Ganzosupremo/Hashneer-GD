@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnb1ynx0kjav6"]
+
+[ext_resource type="Script" path="res://Scripts/Player/bullet.gd" id="1_ql2ha"]
+[ext_resource type="Texture2D" uid="uid://c0qnb0tjoupr3" path="res://Textures/Bullet6x6.png" id="2_3s4pr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t2s72"]
+radius = 4.0
+
+[node name="Bullet" type="Area2D"]
+position = Vector2(2, 0)
+collision_layer = 64
+collision_mask = 376
+script = ExtResource("1_ql2ha")
+custom_carve_radius = true
+carve_radius = 50
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 376
+
+[node name="ExplosionPolygon" type="CollisionPolygon2D" parent="CollisionArea"]
+unique_name_in_owner = true
+polygon = PackedVector2Array(-8, 15, 2, 16, 10, 13, 15, 7, 14, -2, 12, -8, 6, -12, -2, -12, -8, -9, -12, -4, -13, 4)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_t2s72")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3s4pr")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="CollisionArea" to="." method="_on_collision_area_body_entered"]
