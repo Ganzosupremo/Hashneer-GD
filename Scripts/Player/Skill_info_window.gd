@@ -4,6 +4,7 @@ class_name SkillInfoWindow
 @onready var title = $Margins/MainContainer/SkillTitle
 @onready var desc_text = $Margins/MainContainer/SkillDesc
 @onready var max_level_text = $Margins/MainContainer/SkillTitle/SkillMaxLevel
+@onready var skill_cost_text = $Margins/MainContainer/Cost
 
 var selected_skill: SkillNode
 var skill_level: int
@@ -25,7 +26,7 @@ func set_info_window(skill: SkillNode):
 
 func tween_window():
 	var tween: Tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ONE, 1.0).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.75).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween.tween_callback(func(): reset_anchor_preset())
 	
 	await tween.finished
@@ -36,7 +37,7 @@ func reset_anchor_preset():
 
 func hide_info_window():
 	var tween: Tween = create_tween()
-	tween.tween_property(self, "scale", Vector2.ZERO, 1.0).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
+	tween.tween_property(self, "scale", Vector2.ZERO, 0.75).from_current().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 	
 	await  tween.finished
 	
@@ -47,9 +48,11 @@ func update_window_ui(update_all: bool):
 	if update_all:
 		title.text = selected_skill.upgrade_data.upgrade_name
 		desc_text.text = selected_skill.upgrade_data.upgrade_description
+		skill_cost_text.text = str(selected_skill.upgrade_data.upgrade_cost())
 		max_level_text.text = str(selected_skill.upgrade_data.upgrade_level) + "/" + str(selected_skill.upgrade_data.upgrade_max_level)
 	else:
 		max_level_text.text = str(selected_skill.upgrade_data.upgrade_level) + "/" + str(selected_skill.upgrade_data.upgrade_max_level)
+		skill_cost_text.text = str(selected_skill.upgrade_data.upgrade_cost())
 
 func reset_ui():
 	title.text = ""
@@ -61,18 +64,14 @@ func _on_buy_button_pressed() -> void:
 		
 		if UpgradesManager.currency >= selected_skill.upgrade_data.upgrade_cost():
 			UpgradesManager.currency -= selected_skill.upgrade_data.upgrade_cost()
-			print("Currency Left: %s" % UpgradesManager.currency)
-			print("Price: %s" % selected_skill.upgrade_data.upgrade_cost())
-			UpgradesManager.update_skill_stats(selected_skill.upgrade_data)
-			
-			skill_level = selected_skill.upgrade_data.upgrade_level
-			selected_skill.upgrade_data.upgrade_level = min(skill_level+1, skill_max_level)
+			selected_skill.upgrade_data.buy_upgrade()
 			update_window_ui(false)
-			
-			if skill_level % 3 == 1: selected_skill.unlock_next_tier()
 
 func _on_buy_max_button_pressed() -> void:
-	print(selected_skill)
+	if selected_skill.upgrade_data.upgrade_level >= selected_skill.upgrade_data.upgrade_max_level: return
+	
+	selected_skill.upgrade_data.buy_max()
+	update_window_ui(false)
 
 
 func _on_close_button_pressed() -> void:

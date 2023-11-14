@@ -1,22 +1,16 @@
-[gd_resource type="Resource" script_class="UpgradeBase" load_steps=4 format=3 uid="uid://52vdo08klv6d"]
+[gd_resource type="Resource" script_class="UpgradeBase" load_steps=2 format=3 uid="uid://52vdo08klv6d"]
 
 [ext_resource type="Script" path="res://Scripts/Player/upgrade_base.gd" id="1_qg1ow"]
-[ext_resource type="Texture2D" uid="uid://cji2hjb30pjt0" path="res://example/skill_icons1.png" id="2_qlaxk"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_62rx8"]
-atlas = ExtResource("2_qlaxk")
-region = Rect2(24, 0, 24, 24)
 
 [resource]
 script = ExtResource("1_qg1ow")
-id = "Damage_upgrade"
-upgrade_name = "Increase Damage"
-upgrade_description = "More Bullet Damage"
-upgrade_sprite = SubResource("AtlasTexture_62rx8")
-upgrade_tier = 0
-is_upgrade = false
-upgrade_base_power = 10.0
-upgrade_power_multiplier = 1.15
-upgrade_cost_base = 25.0
-upgrade_cost_multiplier = 1.1
-upgrade_max_level = 18
+id = "G_bullets_upgrade"
+upgrade_name = "Golden Bullets"
+upgrade_description = "Even more bullet damage"
+upgrade_tier = 2
+is_upgrade = true
+upgrade_base_power = 12.0
+upgrade_power_multiplier = 1.35
+upgrade_cost_base = 100.0
+upgrade_cost_multiplier = 1.35
+upgrade_max_level = null

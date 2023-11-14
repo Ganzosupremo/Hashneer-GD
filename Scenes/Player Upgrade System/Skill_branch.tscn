@@ -5,17 +5,17 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_om537"]
 shader = ExtResource("1_dlssw")
-shader_parameter/beams = 5
-shader_parameter/energy = 3.0
-shader_parameter/roughness = 5
-shader_parameter/frequency = 17
-shader_parameter/speed = 1.0
-shader_parameter/thickness = 0.046
-shader_parameter/outline_thickness = 0.046
-shader_parameter/beam_difference = 0.437
+shader_parameter/beams = 6
+shader_parameter/energy = 3.5
+shader_parameter/roughness = 6
+shader_parameter/frequency = 10
+shader_parameter/speed = 1.365
+shader_parameter/thickness = 0.1
+shader_parameter/outline_thickness = 0.05
+shader_parameter/beam_difference = 0.151
 shader_parameter/glow = 0.0
 shader_parameter/outline_glow = 0.0
-shader_parameter/color = Color(0.827451, 0.470588, 0.101961, 1)
+shader_parameter/color = Color(0.0235294, 0.435294, 0.670588, 1)
 shader_parameter/outline_color = Color(0.5, 1, 0.96, 1)
 shader_parameter/progress = 1.0
 shader_parameter/y_offset = 0.0
@@ -23,8 +23,7 @@ shader_parameter/fixed_edge_size = 0.05
 shader_parameter/noise_scale = Vector2(1, 1)
 
 [sub_resource type="Gradient" id="Gradient_lk3lr"]
-offsets = PackedFloat32Array(0, 0.166667, 0.833333, 1)
-colors = PackedColorArray(1, 1, 1, 0.0313726, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0.0313726)
+colors = PackedColorArray(0, 0, 0, 0.780392, 1, 1, 1, 0.788235)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pehn1"]
 atlas = ExtResource("1_cj8l8")

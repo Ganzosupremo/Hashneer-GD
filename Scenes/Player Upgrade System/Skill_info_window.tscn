@@ -15,6 +15,7 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+expand_margin_left = 20.0
 
 [node name="SkillInfoWindow" type="PanelContainer"]
 anchors_preset = 11
@@ -43,7 +44,7 @@ theme = ExtResource("1_g7llf")
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("1_g7llf")
-theme_override_constants/separation = 150
+theme_override_constants/separation = 50
 alignment = 1
 
 [node name="SkillTitle" type="Label" parent="Margins/MainContainer"]
@@ -76,7 +77,16 @@ theme = ExtResource("1_g7llf")
 text = "the description of the skill"
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 2
+autowrap_mode = 3
+
+[node name="Cost" type="Label" parent="Margins/MainContainer"]
+layout_mode = 2
+theme = ExtResource("1_g7llf")
+theme_override_font_sizes/font_size = 24
+text = "Skill Cost:"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ButtonsContainer" type="HBoxContainer" parent="Margins/MainContainer"]
 layout_mode = 2

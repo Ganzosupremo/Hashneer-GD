@@ -28,9 +28,12 @@ func _ready():
 ## Add the additional damage gained from upgrades to the bullet
 func add_damage_to_bullet() -> float:
 	var total: float = 0
-	if UpgradesManager.is_skill_unlocked("Damage_upgrade"):
-		total += UpgradesManager["upgrades"]["Damage_upgrade"]["power"]
-	
+	if UpgradesManager.is_skill_unlocked("Copper_bullets_upgrade"):
+		total += UpgradesManager["upgrades"]["Copper_bullets_upgrade"]["power"]
+	if UpgradesManager.is_skill_unlocked("Silver_bullets_upgrade"):
+		total += UpgradesManager["upgrades"]["Silver_bullets_upgrade"]["power"]
+	if UpgradesManager.is_skill_unlocked("Gold_bullets_upgrade"):
+		total += UpgradesManager["upgrades"]["Gold_bullets_upgrade"]["power"]
 	return total
 
 func _physics_process(delta):

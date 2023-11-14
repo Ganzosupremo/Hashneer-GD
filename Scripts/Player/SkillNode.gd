@@ -18,37 +18,47 @@ signal skill_node_pressed(skill_node: SkillNode)
 @export var upgrade_data : UpgradeBase
 
 @onready var skill_line: Line2D
-
 @onready var parent_skill_tree: SkillsTree = get_tree().get_first_node_in_group("SkillsTree")
+
 var node_children: Array
 
 func _ready() -> void:
 	skill_line = get_node("SkillBranch") as Line2D
 	node_children = get_children()
-		
-	deactivate_children()
+	upgrade_data.connect("next_tier_unlocked", Callable(self, "unlock_next_tier"))
+	
 	set_aesthetics()
+	deactivate_children()
 	set_line_points()
 
 func deactivate_children():
 	for child in node_children:
 		if child is SkillNode:
 			child.disabled = true
+			child.self_modulate = disabled_color
 
 func set_line_points():
-#	if get_parent() is SkillNode:
+	if not get_parent() is SkillNode:
+		return
+
 	skill_line.clear_points()
-	skill_line.add_point(self.global_position + self.size/2)
-	skill_line.add_point(get_parent().global_position + get_parent().size/2)
-	print("line added [Node: %s]" % name)
+	# Calculate the center of the current node
+	var current_node_center = self.global_position + self.get_rect().size / 2
+	# Calculate the center of the parent node
+	var parent_node_center = get_parent().global_position + get_parent().get_rect().size / 2
+
+	print("Node ", name + " global position: ", global_position)
+	print(name + " Center: ", current_node_center)
+	print(name + "Parent Center: ", parent_node_center)
+
+	skill_line.add_point(current_node_center)
+	skill_line.add_point(parent_node_center)
 
 func set_aesthetics():
 	texture_normal = normal_texture
 	texture_pressed = pressed_texture
 	texture_focused = focused_texture
-	self_modulate = disabled_color
-	
-	skill_line.texture = line_disable_texture
+	self_modulate = active_color
 
 func _on_pressed() -> void:
 	self_modulate = active_color
@@ -60,3 +70,15 @@ func unlock_next_tier():
 		if child is SkillNode:
 			child.self_modulate = active_color
 			child.disabled = false
+
+func save() -> Dictionary:
+	return {
+		"filename" : get_scene_file_path(),
+		"parent" : get_parent().get_path(),
+		"upgrade_data": {
+			"level": upgrade_data.upgrade_level,
+			"power": upgrade_data.upgrade_power(),
+			"cost": upgrade_data.upgrade_cost()
+		}
+	}
+

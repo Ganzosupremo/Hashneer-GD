@@ -18,7 +18,7 @@ region = Rect2(0, 8, 128, 8)
 atlas = ExtResource("4_tfc2i")
 region = Rect2(0, 0, 128, 8)
 
-[node name="SkillNode" type="TextureButton"]
+[node name="SkillNode" type="TextureButton" groups=["PersistentNodes"]]
 light_mask = 64
 visibility_layer = 64
 custom_minimum_size = Vector2(16, 16)
@@ -38,6 +38,8 @@ upgrade_data = ExtResource("2_qyqpv")
 
 [node name="SkillBranch" parent="." instance=ExtResource("5_ed0gt")]
 unique_name_in_owner = true
-width = 20.0
+top_level = true
+width = 35.0
+texture = null
 
 [connection signal="pressed" from="." to="." method="_on_pressed"]
