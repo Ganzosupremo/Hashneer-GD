@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b8nhogdn0qra3"]
 
-[ext_resource type="Script" path="res://Scripts/Managers/Levels_manager.gd" id="1_lmb8g"]
+[ext_resource type="Script" path="res://Scripts/Managers/SceneManager.gd" id="1_lmb8g"]
 [ext_resource type="Shader" path="res://Shaders/Screen_transition.gdshader" id="2_eiiig"]
 [ext_resource type="PackedScene" uid="uid://dno64qhlmtfv8" path="res://Scenes/UI/Pause_menu.tscn" id="3_vegva"]
 
@@ -21,7 +21,7 @@ visibility_layer = 64
 script = ExtResource("1_lmb8g")
 
 [node name="UI" type="CanvasLayer" parent="."]
-layer = -1
+layer = 5
 
 [node name="BG" type="ColorRect" parent="UI"]
 unique_name_in_owner = true
@@ -30,6 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.0156863, 0.0862745, 0.262745, 1)
 
 [node name="ScreenTransitionBackground" type="ColorRect" parent="UI"]
@@ -40,6 +41,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.517647, 0.67451, 0.984314, 1)
 
 [node name="PauseMenu" parent="UI" instance=ExtResource("3_vegva")]

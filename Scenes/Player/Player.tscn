@@ -1,33 +1,47 @@
-[gd_scene load_steps=5 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=10 format=3 uid="uid://domdfxprvi6aw"]
 
-[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_txrnj"]
-[ext_resource type="PackedScene" uid="uid://bup2i7flnhf50" path="res://Scenes/Player/ammo.tscn" id="2_vh52a"]
-[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_wes6a"]
+[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
+[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_y4psy"]
+[ext_resource type="Script" path="res://Scripts/Player/FireWeapon.gd" id="3_t6uvx"]
+[ext_resource type="PackedScene" uid="uid://cnb1ynx0kjav6" path="res://Scenes/Player/Bullet.tscn" id="4_6ooh6"]
+[ext_resource type="Script" path="res://Scripts/Player/PlayerCamera.gd" id="4_dj2nu"]
+[ext_resource type="Script" path="res://Scripts/Player/ActiveWeapon.gd" id="5_4upeb"]
+[ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
+[ext_resource type="Script" path="res://Scripts/Player/Health.gd" id="8_hdwmj"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_2upi1"]
-radius = 14.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
+radius = 13.68
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
-light_mask = 16
-visibility_layer = 16
 collision_layer = 128
-collision_mask = 440
-motion_mode = 1
-slide_on_ceiling = false
-script = ExtResource("1_txrnj")
-speed = 400.0
-bullet = ExtResource("2_vh52a")
+collision_mask = 313
+script = ExtResource("1_ha4ea")
+initial_weapon = ExtResource("6_vaewd")
 
-[node name="Camera2D" type="Camera2D" parent="." groups=["Player"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
+shape = SubResource("CircleShape2D_1sxoh")
 
 [node name="Sprite2D" type="Sprite2D" parent="." groups=["Player"]]
-light_mask = 16
-visibility_layer = 16
-texture = ExtResource("2_wes6a")
+texture = ExtResource("2_y4psy")
+
+[node name="AdvancedCamera" type="Camera2D" parent="." groups=["Player"]]
+unique_name_in_owner = true
+script = ExtResource("4_dj2nu")
 
 [node name="BulletFirePosition" type="Marker2D" parent="." groups=["Player"]]
 unique_name_in_owner = true
-position = Vector2(27, -1)
+position = Vector2(20, -1)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
-shape = SubResource("CircleShape2D_2upi1")
+[node name="FireWeapon" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_t6uvx")
+bullet_scene = ExtResource("4_6ooh6")
+
+[node name="ActiveWeapon" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_4upeb")
+
+[node name="Health" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("8_hdwmj")
+initial_power = 5000.0

@@ -1,24 +1,37 @@
 extends Node2D
 class_name  QuadrantBuilder
 
+@export_category("Quadrant Variables")
 @export var quadrant_size : int = 100
 @export var quadrant_grid_size :Vector2 = Vector2(10,5)
 @export var colpol_texture: Texture2D
+@export var quadrants_initial_health: float 
 @export var resource_droprate_multiplier: float = 1.5
 
 var quadrants_grid: Array = []
 var quadrant : PackedScene = preload("res://Scenes/QuadrantTerrain/Quadrant.tscn")
 var block_core: PackedScene = preload("res://Scenes/QuadrantTerrain/block_center.tscn")
-var core_ins: CenterBlock = null
-static var instance: QuadrantBuilder: get = get_instance
-var currency: float = 0.0
+var builder_args: QuadrantBuilderArgs
+var colpol_texture_after: Texture2D
 
-@onready var carve_area : Polygon2D = %CarveArea
+static var instance: QuadrantBuilder: get = get_instance
+
 @onready var quadrants : Node2D = %Quadrants
 @onready var player := %Player
 
 func _ready():
 	instance = self
+	init_builder(GameManager.builder_args)
+
+func init_builder(data: QuadrantBuilderArgs) -> void:
+	builder_args = data
+	quadrant_size = data.quadrant_size
+	quadrant_grid_size = data.grid_size
+	colpol_texture = data.texture
+	colpol_texture_after = data.texture_after_collision
+	quadrants_initial_health = data.initial_health
+	resource_droprate_multiplier = data.drop_rate_multiplier
+	
 	spawn_quadrants()
 
 func spawn_quadrants():
@@ -26,6 +39,8 @@ func spawn_quadrants():
 		quadrants_grid.push_back([])
 		for j in range(quadrant_grid_size.y):
 			var quadrant_ins: Quadrant = quadrant.instantiate()
+			
+			quadrant_ins.init_health(quadrants_initial_health)
 			quadrant_ins.default_quadrant_polygon = [
 				Vector2(quadrant_size*i,quadrant_size*j),
 				Vector2(quadrant_size*(i+1),quadrant_size*j),
@@ -34,25 +49,25 @@ func spawn_quadrants():
 			quadrant_ins.add_to_group("QuadrantTerrain")
 			quadrants_grid[-1].push_back(quadrant)
 			quadrants.add_child(quadrant_ins)
+			quadrant_ins.set_colpol_texture(colpol_texture)
 	spawn_block_core()
 
 func spawn_block_core():
 	var center_x = quadrant_size * quadrant_grid_size.x * 0.5
 	var center_y = quadrant_size * quadrant_grid_size.y * 0.5
-	core_ins = block_core.instantiate()
+	var core_ins: BlockCore = block_core.instantiate()
 	add_child(core_ins)
-#	var random_x = randf_range(quadrant_size, quadrant_grid_size.x * 0.5)
-#	var random_y = randf_range(quadrant_size, quadrant_grid_size.y * 0.5)
+	
+	core_ins.pass_level_index(builder_args.level_index)
 	var spawn_pos: Vector2 = Vector2(center_x, center_y)
-	core_ins.block_center_mined.connect(Callable(self, "_on_block_center_block_center_mined"))
 	core_ins.global_position = spawn_pos
 
 func carve(quadrant_position : Vector2, other_polygon : CollisionPolygon2D, damage: float = 0.0) -> void:
 	var new_polygon: PackedVector2Array = Transform2D(0, quadrant_position) * other_polygon.polygon
 	var four_quadrants = get_affected_quadrants(quadrant_position, other_polygon)
 	for quadrant_new in four_quadrants:
-		if quadrant_new.take_damage(damage) == 0.0:
-			quadrant_new.carve(new_polygon, colpol_texture)
+		quadrant_new.carve(new_polygon, damage, colpol_texture_after)
+#		quadrant_new.update_colpol_texture(four_quadrants, colpol_texture_after)
 
 func get_affected_quadrants(pos: Vector2, other_polygon: CollisionPolygon2D) -> Array:
 	"""
@@ -79,12 +94,6 @@ func is_polygon_intersects_aabb(polygon_pos: Vector2, polygon_points: PackedVect
 	var buffer: float = 3.0
 	aabb_min -= Vector2(buffer, buffer)
 	aabb_max += Vector2(buffer, buffer)
-
-#	for point in polygon_points:
-#		if point + polygon_pos > aabb_min and point + polygon_pos < aabb_max:
-#			print("inside AABB")
-#			return true
-		
 	# Check if any point of the AABB is inside the polygon
 	var aabb_points = [aabb_min, Vector2(aabb_max.x, aabb_min.y), aabb_max, Vector2(aabb_min.x, aabb_max.y)]
 	for point in aabb_points:
@@ -101,16 +110,6 @@ func is_polygon_intersects_aabb(polygon_pos: Vector2, polygon_points: PackedVect
 			if Geometry2D.segment_intersects_segment(p1, p2, q1, q2):
 				return true
 	return false
-
-func _on_center_body_entered(body: Node2D) -> void:
-	print(body)
-
-func _on_center_area_entered(area: Area2D) -> void:
-	if area is BulletC:
-		core_ins.take_damage(area.bullet_damage)
-
-func _on_block_center_block_center_mined() -> void:
-	print(BitcoinNetwork.issue_coins(SceneManager.current_level_index))
 
 static func get_instance() -> QuadrantBuilder:
 	return instance

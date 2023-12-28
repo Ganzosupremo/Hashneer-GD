@@ -1,0 +1,99 @@
+[gd_scene load_steps=4 format=3 uid="uid://dmek3vskirk8m"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_njoqq"]
+bg_color = Color(0.203922, 0.4, 0.356863, 0.321569)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_size = 10
+shadow_offset = Vector2(3, 3)
+
+[node name="LevelFinisedUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dcscb")
+
+[node name="Panel" type="Panel" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 300)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -674.0
+offset_right = 130.0
+offset_bottom = -374.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_njoqq")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_right = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+theme_override_font_sizes/font_size = 45
+text = "Core Mined Successfully!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+alignment = 1
+
+[node name="MenuButton" type="Button" parent="Panel/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+process_mode = 3
+custom_minimum_size = Vector2(80, 50)
+layout_mode = 2
+text = "Menu"
+
+[node name="ShopButton" type="Button" parent="Panel/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+process_mode = 3
+custom_minimum_size = Vector2(80, 50)
+layout_mode = 2
+text = "Shop"
+
+[node name="RetryButton" type="Button" parent="Panel/VBoxContainer/VBoxContainer"]
+unique_name_in_owner = true
+process_mode = 3
+visible = false
+custom_minimum_size = Vector2(80, 50)
+layout_mode = 2
+text = "Retry"
+
+[connection signal="pressed" from="Panel/VBoxContainer/VBoxContainer/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/VBoxContainer/ShopButton" to="." method="_on_shop_button_pressed"]
+[connection signal="pressed" from="Panel/VBoxContainer/VBoxContainer/RetryButton" to="." method="_on_retry_button_pressed"]

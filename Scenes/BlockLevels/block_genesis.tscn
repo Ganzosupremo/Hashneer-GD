@@ -1,0 +1,89 @@
+[gd_scene load_steps=16 format=3 uid="uid://bocdjbhql8qcn"]
+
+[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/quadrant_builder.gd" id="1_o08pr"]
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_htlny"]
+[ext_resource type="Shader" path="res://Shaders/Block_background.gdshader" id="3_1ioqg"]
+[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="3_f7alj"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_fnuy8"]
+[ext_resource type="Texture2D" uid="uid://db241hbwkh2f3" path="res://Textures/Download.png" id="4_2fn4v"]
+[ext_resource type="PackedScene" uid="uid://byt208cpm71np" path="res://Scenes/UI/currency_ui.tscn" id="7_y3lbx"]
+[ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/level_finised_ui.tscn" id="8_nyo2j"]
+[ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
+[ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
+
+[sub_resource type="Environment" id="Environment_5odol"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 2.0
+glow_strength = 1.2
+glow_blend_mode = 0
+glow_hdr_threshold = 0.9
+glow_hdr_scale = 1.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_shwem"]
+noise_type = 3
+seed = 440
+frequency = 0.2119
+fractal_octaves = 8
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_snq06"]
+noise = SubResource("FastNoiseLite_shwem")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpeib"]
+shader = ExtResource("3_1ioqg")
+shader_parameter/color = Color(0.721569, 0.47451, 0.203922, 1)
+shader_parameter/iChannel1 = ExtResource("4_2fn4v")
+shader_parameter/iChannel0 = SubResource("NoiseTexture2D_snq06")
+
+[node name="Block" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5odol")
+
+[node name="Player" parent="." instance=ExtResource("2_htlny")]
+unique_name_in_owner = true
+speed = 400.0
+
+[node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
+script = ExtResource("1_o08pr")
+colpol_texture = ExtResource("3_f7alj")
+quadrants_initial_health = 100.0
+
+[node name="Quadrants" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="MinerAI" type="Node2D" parent="."]
+script = ExtResource("1_7o24j")
+
+[node name="AITimer" type="Timer" parent="MinerAI"]
+unique_name_in_owner = true
+wait_time = 20.0
+one_shot = true
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="Panel" type="Panel" parent="BGLayer"]
+material = SubResource("ShaderMaterial_xpeib")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_fnuy8")
+theme_type_variation = &"Game Background"
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="CurrencyUI" parent="GameUI" instance=ExtResource("7_y3lbx")]
+offset_right = 80.0
+offset_bottom = 25.0
+
+[node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("8_nyo2j")]
+mouse_filter = 2
+
+[node name="TimeLeftUI" parent="GameUI" instance=ExtResource("9_rhv7f")]
+unique_name_in_owner = true
+
+[node name="HealthBar" parent="GameUI" instance=ExtResource("10_k11cv")]

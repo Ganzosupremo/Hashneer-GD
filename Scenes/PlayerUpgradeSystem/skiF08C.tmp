@@ -1,0 +1,228 @@
+[gd_scene load_steps=21 format=3 uid="uid://ckholw4dvrb5w"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Skill_tree.gd" id="1_osprv"]
+[ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="2_xegnq"]
+[ext_resource type="Texture2D" uid="uid://xwrcumasjoyf" path="res://Textures/Skill Tree/SkillNodeTexture.png" id="3_5cdos"]
+[ext_resource type="Script" path="res://Scripts/Player/upgrade_base.gd" id="6_fg7to"]
+[ext_resource type="PackedScene" uid="uid://cghc7u0gqeip8" path="res://Scenes/Player Upgrade System/Skill_info_window.tscn" id="7_ui6jr"]
+[ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/Player Upgrade System/SkillNode.tscn" id="7_x1lm6"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="8_bm0b1"]
+[ext_resource type="Script" path="res://Scripts/Skills-Upgrades_Tree/SkillTreeCamera.gd" id="9_dkaj5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o7uk3"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km7vp"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg414"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_bn380"]
+script = ExtResource("6_fg7to")
+id = "C_bullets_upgrade"
+upgrade_name = "Copper Bullets"
+upgrade_description = "Increase bullet damage"
+upgrade_tier = 0
+is_upgrade = true
+upgrade_base_power = 10.0
+upgrade_power_multiplier = 1.15
+upgrade_cost_base = 25.0
+upgrade_cost_multiplier = 1.15
+upgrade_max_level = 100
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8t8vi"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1gva"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f408d"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_7uphp"]
+script = ExtResource("6_fg7to")
+id = "S_bullets_upgrade"
+upgrade_name = "Silver Bullets"
+upgrade_description = "More Bullet Damage"
+upgrade_tier = 1
+is_upgrade = true
+upgrade_base_power = 15.0
+upgrade_power_multiplier = 1.25
+upgrade_cost_base = 50.0
+upgrade_cost_multiplier = 1.25
+upgrade_max_level = 100
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jry8k"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h02c5"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kbb4e"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
+shader = ExtResource("2_xegnq")
+shader_parameter/bg_color = null
+shader_parameter/size = 100.0
+shader_parameter/prob = 0.9
+
+[node name="SkillTreeNew" type="Control" groups=["SkillsTree"]]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_osprv")
+metadata/_edit_lock_ = true
+
+[node name="ParentSkillNode" parent="." instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+offset_left = 552.0
+offset_top = 300.0
+offset_right = 584.0
+offset_bottom = 332.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+disabled_color = Color(0.329412, 0.329412, 0.329412, 1)
+normal_texture = SubResource("AtlasTexture_o7uk3")
+max_level_texture = SubResource("AtlasTexture_km7vp")
+disabled_texture = SubResource("AtlasTexture_yg414")
+upgrade_data = SubResource("Resource_bn380")
+
+[node name="DamageNode" parent="ParentSkillNode" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = -131.0
+offset_right = -25.0
+offset_bottom = -99.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+normal_texture = SubResource("AtlasTexture_8t8vi")
+max_level_texture = SubResource("AtlasTexture_j1gva")
+disabled_texture = SubResource("AtlasTexture_f408d")
+upgrade_data = SubResource("Resource_7uphp")
+
+[node name="SkillNode2" parent="ParentSkillNode/DamageNode" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -133.0
+offset_top = -130.0
+offset_right = -101.0
+offset_bottom = -98.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+normal_texture = SubResource("AtlasTexture_jry8k")
+max_level_texture = SubResource("AtlasTexture_h02c5")
+disabled_texture = SubResource("AtlasTexture_kbb4e")
+
+[node name="SkillTreeCamera" type="Camera2D" parent="."]
+light_mask = 64
+visibility_layer = 64
+position = Vector2(580, 327)
+position_smoothing_enabled = true
+script = ExtResource("9_dkaj5")
+BASE_MOVE_SPEED = 2.5
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="WorldBG" type="ColorRect" parent="BGLayer"]
+material = SubResource("ShaderMaterial_3r1bx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FrontLayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenuButton" type="Button" parent="FrontLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -16.0
+grow_vertical = 0
+size_flags_vertical = 4
+theme = ExtResource("8_bm0b1")
+text = "Main Menu"
+
+[node name="SaveButton" type="Button" parent="FrontLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 158.0
+offset_top = -45.0
+offset_right = 296.0
+offset_bottom = -13.0
+grow_vertical = 0
+size_flags_vertical = 4
+theme = ExtResource("8_bm0b1")
+text = "Save Game"
+
+[node name="MarginContainer" type="Control" parent="FrontLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("8_bm0b1")
+metadata/_edit_lock_ = true
+
+[node name="SkillInfoWindow" parent="FrontLayer/MarginContainer" instance=ExtResource("7_ui6jr")]
+unique_name_in_owner = true
+light_mask = 65
+visibility_layer = 65
+z_index = 1
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 874.0
+offset_right = 1137.0
+offset_bottom = 648.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(130, 322)
+size_flags_horizontal = 8
+mouse_filter = 2
+
+[connection signal="focus_entered" from="ParentSkillNode" to="ParentSkillNode" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ParentSkillNode" to="ParentSkillNode" method="_on_focus_exited"]
+[connection signal="focus_entered" from="ParentSkillNode/DamageNode" to="ParentSkillNode/DamageNode" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ParentSkillNode/DamageNode" to="ParentSkillNode/DamageNode" method="_on_focus_exited"]
+[connection signal="focus_entered" from="ParentSkillNode/DamageNode/SkillNode2" to="ParentSkillNode/DamageNode/SkillNode2" method="_on_focus_entered"]
+[connection signal="focus_exited" from="ParentSkillNode/DamageNode/SkillNode2" to="ParentSkillNode/DamageNode/SkillNode2" method="_on_focus_exited"]
+[connection signal="pressed" from="FrontLayer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="FrontLayer/SaveButton" to="." method="_on_save_button_pressed"]

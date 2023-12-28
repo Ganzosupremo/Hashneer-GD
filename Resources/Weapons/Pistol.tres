@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=3 format=3 uid="uid://bivptbtajsp46"]
+
+[ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/WeaponDetails.gd" id="1_shj3m"]
+
+[resource]
+script = ExtResource("1_shj3m")
+weapon_name = "Pistol"
+ammo_details = ExtResource("1_4witc")
+fire_rate = 0.25
+precharge_time = 0.0
+spread_min = 0.0
+spread_max = 0.001
+shake_strength = 3.0
+shake_decay = 15.0
+bullet_damage = 25.0
+bullet_speed = 1000.0
+bullets_per_shoot_min = 1
+bullets_per_shoot_max = 1
+bullet_spawn_interval_min = 0.0
+bullet_spawn_interval_max = 0.0

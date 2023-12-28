@@ -21,8 +21,12 @@ config/icon="res://Textures/Bitcoin pixel art nuevo2.png"
 EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
 ResourceManager="*res://Scripts/Managers/ResourceManager.gd"
 SceneManager="*res://Scenes/Scene_manager.tscn"
-BitcoinNetwork="*res://Scenes/Bitcoin_network.tscn"
-UpgradesManager="*res://Scenes/Player Upgrade System/upgrades_manager.tscn"
+BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
+UpgradesManager="*res://Scenes/PlayerUpgradeSystem/upgrades_manager.tscn"
+BitcoinWallet="*res://Scenes/BitcoinNetwork/bitcoin_wallet.tscn"
+GameManager="*res://Scripts/Managers/GameManager.gd"
+PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
+Interface="*res://Scripts/Interface.gd"
 
 [display]
 
@@ -36,6 +40,10 @@ project/assembly_name="Hashneer"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/worldmap_builder/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 
@@ -109,8 +117,9 @@ skill_tree_drag={
 2d_physics/layer_6="Entities"
 2d_physics/layer_7="Player Ammo"
 2d_physics/layer_8="Player"
-2d_physics/layer_9="BlockCenter"
+2d_physics/layer_9="BlockCore"
 
 [rendering]
 
 textures/canvas_textures/default_texture_filter=3
+environment/screen_space_reflection/roughness_quality=2

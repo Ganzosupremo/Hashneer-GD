@@ -1,33 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dpyrjhn3lpkr4"]
+[gd_scene load_steps=3 format=3 uid="uid://dpyrjhn3lpkr4"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/ColPol.gd" id="1_jloni"]
-[ext_resource type="Shader" path="res://Shaders/Quadrant.gdshader" id="2_st8bf"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ecirk"]
-shader = ExtResource("2_st8bf")
-shader_parameter/background_color = Color(0, 0, 0, 1)
-shader_parameter/foreground_color = Color(1, 1, 1, 1)
-shader_parameter/grid_size = 50.0
-shader_parameter/dot_size = 0.1
-
-[sub_resource type="Gradient" id="Gradient_asavq"]
-offsets = PackedFloat32Array(0, 0.542857, 0.994286)
-colors = PackedColorArray(0.289846, 0.641718, 0, 1, 0.261757, 0.81217, 0.514109, 1, 0, 1, 0, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_p1e7p"]
-noise_type = 2
-seed = 5
-frequency = 0.0193
-cellular_distance_function = 1
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4dno8"]
-color_ramp = SubResource("Gradient_asavq")
-noise = SubResource("FastNoiseLite_p1e7p")
+[ext_resource type="Texture2D" uid="uid://3duidvbbbgyk" path="res://Textures/BG/medievalTile_14.png" id="2_v55cd"]
 
 [node name="ColPol" type="CollisionPolygon2D"]
 script = ExtResource("1_jloni")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_ecirk")
-texture = SubResource("NoiseTexture2D_4dno8")
+texture_filter = 3
+texture_repeat = 2
+antialiased = true
+texture = ExtResource("2_v55cd")

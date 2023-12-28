@@ -1,0 +1,150 @@
+[gd_scene load_steps=19 format=3 uid="uid://dyoejfjm6wxw2"]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/BulletParticles.gd" id="1_8o0vt"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8u631"]
+particles_animation = true
+particles_anim_h_frames = 6
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Curve" id="Curve_mjyyu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oinri"]
+curve = SubResource("Curve_mjyyu")
+
+[sub_resource type="Gradient" id="Gradient_7we12"]
+offsets = PackedFloat32Array(0.0934066, 0.197802, 0.401099, 0.582418, 0.785714, 0.989011)
+colors = PackedColorArray(0.893481, 0.396336, 3.85046e-07, 1, 1, 1, 0, 1, 0.773831, 0.57548, 5.77569e-07, 1, 0.906038, 0.255276, 0.185241, 1, 0, 0, 0, 0.721569, 0.180392, 0.607843, 0.517647, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_84kin"]
+gradient = SubResource("Gradient_7we12")
+
+[sub_resource type="Curve" id="Curve_s0c1e"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_o7y8i"]
+curve = SubResource("Curve_s0c1e")
+
+[sub_resource type="Curve" id="Curve_b8q32"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ojdaj"]
+curve = SubResource("Curve_b8q32")
+
+[sub_resource type="Curve" id="Curve_8co5o"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_t3yqe"]
+curve = SubResource("Curve_8co5o")
+
+[sub_resource type="Curve" id="Curve_nbpib"]
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_0gvub"]
+curve = SubResource("Curve_nbpib")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ov6d7"]
+lifetime_randomness = 0.25
+particle_flag_disable_z = true
+gravity = Vector3(0, 1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 50.0
+angular_velocity_max = 30.0
+angular_velocity_curve = SubResource("CurveTexture_oinri")
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_max = 30.0
+linear_accel_curve = SubResource("CurveTexture_ojdaj")
+radial_accel_max = 10.0
+damping_min = 20.0
+damping_max = 69.0
+damping_curve = SubResource("CurveTexture_o7y8i")
+angle_max = 180.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_t3yqe")
+color_ramp = SubResource("GradientTexture1D_84kin")
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.69
+turbulence_influence_min = 0.3
+turbulence_influence_max = 0.69
+turbulence_influence_over_life = SubResource("CurveTexture_0gvub")
+
+[sub_resource type="Animation" id="Animation_qhxj8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_lus1y"]
+resource_name = "auto_bullets"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dxyo0"]
+_data = {
+"RESET": SubResource("Animation_qhxj8"),
+"auto_bullets": SubResource("Animation_lus1y")
+}
+
+[node name="BulletParticles" type="GPUParticles2D"]
+modulate = Color(0.9, 0.9, 0.9, 1)
+light_mask = 32
+visibility_layer = 32
+z_index = 2
+material = SubResource("CanvasItemMaterial_8u631")
+emitting = false
+amount = 69
+process_material = SubResource("ParticleProcessMaterial_ov6d7")
+speed_scale = 2.5
+randomness = 0.5
+visibility_rect = Rect2(100, 100, 400, 400)
+script = ExtResource("1_8o0vt")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "auto_bullets"
+libraries = {
+"": SubResource("AnimationLibrary_dxyo0")
+}

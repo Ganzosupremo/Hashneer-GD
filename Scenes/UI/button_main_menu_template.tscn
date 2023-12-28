@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b15a5r48pfo8u"]
+
+[ext_resource type="Script" path="res://Scripts/UI/ButtonTemplate.gd" id="1_a5ahu"]
+
+[node name="ButtonMainMenuTemplate" type="Button"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_a5ahu")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

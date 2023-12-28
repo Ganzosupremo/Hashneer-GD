@@ -1,0 +1,503 @@
+[gd_scene load_steps=46 format=3 uid="uid://ckholw4dvrb5w"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/Skill_tree.gd" id="1_osprv"]
+[ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="2_xegnq"]
+[ext_resource type="Texture2D" uid="uid://xwrcumasjoyf" path="res://Textures/Skill Tree/SkillNodeTexture.png" id="3_5cdos"]
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="6_fg7to"]
+[ext_resource type="PackedScene" uid="uid://cghc7u0gqeip8" path="res://Scenes/PlayerUpgradeSystem/Skill_info_window.tscn" id="7_ui6jr"]
+[ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/PlayerUpgradeSystem/SkillNode.tscn" id="7_x1lm6"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="8_bm0b1"]
+[ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="9_dkaj5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l4svx"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_km7vp"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yg414"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_bn380"]
+script = ExtResource("6_fg7to")
+id = "C_bullets_upgrade"
+upgrade_name = "Copper Bullets"
+upgrade_description = "Increase bullet damage"
+upgrade_tier = 0
+is_upgrade = true
+upgrade_base_power = 10.0
+upgrade_power_multiplier = 1.15
+upgrade_cost_base = 25.0
+upgrade_cost_multiplier = 1.15
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nue6i"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j1gva"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f408d"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_7uphp"]
+script = ExtResource("6_fg7to")
+id = "S_bullets_upgrade"
+upgrade_name = "Silver Bullets"
+upgrade_description = "More Bullet Damage"
+upgrade_tier = 1
+is_upgrade = true
+upgrade_base_power = 15.0
+upgrade_power_multiplier = 1.25
+upgrade_cost_base = 50.0
+upgrade_cost_multiplier = 1.25
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h8dx6"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s25mb"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dmoyj"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(192, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_dpik1"]
+script = ExtResource("6_fg7to")
+id = "G_bullets_upgrade"
+upgrade_name = "Golden Bullets"
+upgrade_description = "Even more bullet damage"
+upgrade_tier = 2
+is_upgrade = true
+upgrade_base_power = 20.0
+upgrade_power_multiplier = 1.35
+upgrade_cost_base = 100.0
+upgrade_cost_multiplier = 1.35
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vybyj"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h02c5"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kbb4e"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_6s2db"]
+script = ExtResource("6_fg7to")
+id = "Player_Health_UpgradeI"
+upgrade_name = "Copper Shell"
+upgrade_description = "Increase max health"
+upgrade_tier = 1
+is_upgrade = true
+upgrade_base_power = 50.0
+upgrade_power_multiplier = 1.15
+upgrade_cost_base = 50.0
+upgrade_cost_multiplier = 1.25
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v6nju"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_raj37"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vg6dl"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_pla6b"]
+script = ExtResource("6_fg7to")
+id = "Player_Health_UpgradeII"
+upgrade_name = "Silver Shell"
+upgrade_description = "Even more HP increase"
+upgrade_tier = 2
+is_upgrade = true
+upgrade_base_power = 75.0
+upgrade_power_multiplier = 1.25
+upgrade_cost_base = 100.0
+upgrade_cost_multiplier = 1.35
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h4snx"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ja03m"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fh6go"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_snbcv"]
+script = ExtResource("6_fg7to")
+id = "Player_Health_UpgradeIII"
+upgrade_name = "Golden Shell"
+upgrade_description = "Guess what? ... More HP increase"
+upgrade_tier = 3
+is_upgrade = true
+upgrade_base_power = 150.0
+upgrade_power_multiplier = 1.5
+upgrade_cost_base = 250.0
+upgrade_cost_multiplier = 1.75
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3a4ay"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fy863"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qll8"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_rlpjy"]
+script = ExtResource("6_fg7to")
+id = "MovementSpeed_UpgradeI"
+upgrade_name = "Increase Movement Speed I"
+upgrade_description = "Increase Movement Speed"
+upgrade_tier = 1
+is_upgrade = true
+upgrade_base_power = 0.1
+upgrade_power_multiplier = 1.05
+upgrade_cost_base = 35.0
+upgrade_cost_multiplier = 1.2
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxcl7"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5nbdc"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cugbl"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_31diy"]
+script = ExtResource("6_fg7to")
+id = "MovementSpeed_UpgradeII"
+upgrade_name = "Increase Movement Speed II"
+upgrade_description = "Even more movement speed"
+upgrade_tier = 2
+is_upgrade = true
+upgrade_base_power = 0.25
+upgrade_power_multiplier = 1.15
+upgrade_cost_base = 69.0
+upgrade_cost_multiplier = 1.34
+upgrade_max_level = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s2op1"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ssld"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h530i"]
+atlas = ExtResource("3_5cdos")
+region = Rect2(256, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_bssu5"]
+script = ExtResource("6_fg7to")
+id = "MovementSpeed_UpgradeIII"
+upgrade_name = "Increase Movement Speed III"
+upgrade_description = "I Gotta Go FAST!!!!"
+upgrade_tier = 3
+is_upgrade = true
+upgrade_base_power = 0.5
+upgrade_power_multiplier = 1.25
+upgrade_cost_base = 100.0
+upgrade_cost_multiplier = 1.5
+upgrade_max_level = 10
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
+shader = ExtResource("2_xegnq")
+shader_parameter/bg_color = null
+shader_parameter/size = 100.0
+shader_parameter/prob = 0.9
+
+[node name="SkillTreeNew" type="Control" groups=["SkillsTree"]]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_osprv")
+metadata/_edit_lock_ = true
+
+[node name="UpgradesHolder" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DamageUpgrade_I" parent="UpgradesHolder" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+offset_left = 552.0
+offset_top = 300.0
+offset_right = 584.0
+offset_bottom = 332.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+disabled_color = Color(0.329412, 0.329412, 0.329412, 1)
+active_texture = SubResource("AtlasTexture_l4svx")
+max_level_texture = SubResource("AtlasTexture_km7vp")
+disabled_texture = SubResource("AtlasTexture_yg414")
+upgrade_data = SubResource("Resource_bn380")
+
+[node name="DamageUpgrade_II" parent="UpgradesHolder/DamageUpgrade_I" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -54.0
+offset_top = -91.0
+offset_right = -22.0
+offset_bottom = -59.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_nue6i")
+max_level_texture = SubResource("AtlasTexture_j1gva")
+disabled_texture = SubResource("AtlasTexture_f408d")
+upgrade_data = SubResource("Resource_7uphp")
+
+[node name="DamageUpgrade_III" parent="UpgradesHolder/DamageUpgrade_I/DamageUpgrade_II" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -74.0
+offset_right = -20.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_h8dx6")
+max_level_texture = SubResource("AtlasTexture_s25mb")
+disabled_texture = SubResource("AtlasTexture_dmoyj")
+upgrade_data = SubResource("Resource_dpik1")
+
+[node name="HealthUpgrade_I" parent="UpgradesHolder/DamageUpgrade_I" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 48.0
+offset_top = -74.0
+offset_right = 80.0
+offset_bottom = -42.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_vybyj")
+max_level_texture = SubResource("AtlasTexture_h02c5")
+disabled_texture = SubResource("AtlasTexture_kbb4e")
+upgrade_data = SubResource("Resource_6s2db")
+
+[node name="HealthUpgrade_II" parent="UpgradesHolder/DamageUpgrade_I/HealthUpgrade_I" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 45.0
+offset_top = -59.0
+offset_right = 77.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_v6nju")
+max_level_texture = SubResource("AtlasTexture_raj37")
+disabled_texture = SubResource("AtlasTexture_vg6dl")
+upgrade_data = SubResource("Resource_pla6b")
+
+[node name="HealthUpgrade_III" parent="UpgradesHolder/DamageUpgrade_I/HealthUpgrade_I/HealthUpgrade_II" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 44.0
+offset_top = -62.0
+offset_right = 76.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_h4snx")
+max_level_texture = SubResource("AtlasTexture_ja03m")
+disabled_texture = SubResource("AtlasTexture_fh6go")
+upgrade_data = SubResource("Resource_snbcv")
+
+[node name="SpeedUpgrade_I" parent="UpgradesHolder/DamageUpgrade_I" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 40.0
+offset_top = 24.0
+offset_right = 72.0
+offset_bottom = 56.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_3a4ay")
+max_level_texture = SubResource("AtlasTexture_fy863")
+disabled_texture = SubResource("AtlasTexture_2qll8")
+upgrade_data = SubResource("Resource_rlpjy")
+
+[node name="SpeedUpgrade_II" parent="UpgradesHolder/DamageUpgrade_I/SpeedUpgrade_I" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 44.0
+offset_top = 35.0
+offset_right = 76.0
+offset_bottom = 67.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_mxcl7")
+max_level_texture = SubResource("AtlasTexture_5nbdc")
+disabled_texture = SubResource("AtlasTexture_cugbl")
+upgrade_data = SubResource("Resource_31diy")
+
+[node name="SpeedUpgrade_III" parent="UpgradesHolder/DamageUpgrade_I/SpeedUpgrade_I/SpeedUpgrade_II" instance=ExtResource("7_x1lm6")]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 14.0
+offset_top = 71.0
+offset_right = 46.0
+offset_bottom = 103.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 2
+active_texture = SubResource("AtlasTexture_s2op1")
+max_level_texture = SubResource("AtlasTexture_1ssld")
+disabled_texture = SubResource("AtlasTexture_h530i")
+upgrade_data = SubResource("Resource_bssu5")
+
+[node name="SkillTreeCamera" type="Camera2D" parent="."]
+light_mask = 64
+visibility_layer = 64
+position = Vector2(580, 327)
+position_smoothing_enabled = true
+script = ExtResource("9_dkaj5")
+BASE_MOVE_SPEED = 2.5
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="WorldBG" type="ColorRect" parent="BGLayer"]
+material = SubResource("ShaderMaterial_3r1bx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="FrontLayer" type="CanvasLayer" parent="."]
+
+[node name="MainMenuButton" type="Button" parent="FrontLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -16.0
+grow_vertical = 0
+size_flags_vertical = 4
+theme = ExtResource("8_bm0b1")
+text = "Main Menu"
+
+[node name="MarginContainer" type="Control" parent="FrontLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("8_bm0b1")
+metadata/_edit_lock_ = true
+
+[node name="SkillInfoWindow" parent="FrontLayer/MarginContainer" instance=ExtResource("7_ui6jr")]
+unique_name_in_owner = true
+light_mask = 65
+visibility_layer = 65
+z_index = 1
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 874.0
+offset_right = 1137.0
+offset_bottom = 648.0
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(130, 322)
+size_flags_horizontal = 8
+mouse_filter = 2
+
+[connection signal="pressed" from="FrontLayer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

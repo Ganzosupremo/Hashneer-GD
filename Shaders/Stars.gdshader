@@ -16,7 +16,7 @@ void fragment() {
 	if (starValue > prob)
 	{
 		vec2 center = size * pos + vec2(size, size) * 0.8;
-		float t = 0.9 + 0.2 * sin(TIME * 8.0 + (starValue - prob) / (1.0 - prob) * 45.0);
+		float t = 0.9 + 0.2 * sin(TIME * 4.0 + (starValue - prob) / (1.0 - prob) * 45.0);
 		color = 1.0 - distance(FRAGCOORD.xy, center) / (0.5 * size);
 		color = color * t / (abs(FRAGCOORD.y - center.y)) * t / (abs(FRAGCOORD.x - center.x));
 	}
@@ -25,5 +25,8 @@ void fragment() {
 		float r = rand(SCREEN_UV.xy);
 		color = r * (0.85 * sin(TIME * (r * 5.0) + 720.0 * r) + 0.95);
 	}
+	
+//	vec4 speed = texture(bg_color, 2.0 * TIME);
+//
 	COLOR = vec4(vec3(color),1.0) + bg_color;
 }

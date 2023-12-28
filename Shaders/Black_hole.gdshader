@@ -69,7 +69,7 @@ void fragment()
     vec2 uvp = uv + min(texture(iChannel2, _s * vec2(uv.x + TIME * .1, uv.y + TIME * -.3)).r,
                         texture(iChannel2, _s * vec2(uv.x + TIME * -.3, uv.y + TIME * .2)).r) * _a * pow(1. - _dist, 5.);
 
-	 float dist = distance(uvp, center);
+	float dist = distance(uvp, center);
     float idist = 1.0 - dist;
     vec2 dir = normalize(uv - center);
     
@@ -113,7 +113,7 @@ void fragment()
 	
  	vec3 finalSamp = sp;
     vec3 col = ringColor * pow(1.0 - dist, 7.);
-    float ring = pow(smoothstep(.32, .08, dist * 1.5) * 3.5, 2.8) + 1.;
+    float ring = pow(smoothstep(.32, .08, dist * 1.5) * 3.5, 2.8) + 1.0;
 	
-	COLOR = vec4(finalSamp * mask + 1.2 * ring * mask * finalSamp * col, 1.);
+	COLOR = vec4(finalSamp * mask + 1.2 * ring * mask * finalSamp * col, 1.0);
 }

@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://c5hp70ml1r2a4"]
+
+[ext_resource type="Script" path="res://Scripts/UI/HealthBar.gd" id="1_hkah6"]
+[ext_resource type="Texture2D" uid="uid://ba5kow1u7lg3n" path="res://Textures/UI/HealthBarTexture.png" id="2_bvk6a"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_byxxf"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r0aya"]
+atlas = ExtResource("2_bvk6a")
+region = Rect2(0, 0, 58, 18)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fm2w2"]
+atlas = ExtResource("2_bvk6a")
+region = Rect2(58, 0, 58, 18)
+
+[node name="HealthBar" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_hkah6")
+
+[node name="THealthBar" type="TextureProgressBar" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 10)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.904
+anchor_bottom = 0.935
+offset_top = 0.207947
+offset_right = 320.0
+offset_bottom = 0.119934
+grow_vertical = 2
+max_value = 200.0
+value = 50.0
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_top = 4
+stretch_margin_right = 4
+stretch_margin_bottom = 4
+texture_under = SubResource("AtlasTexture_r0aya")
+texture_progress = SubResource("AtlasTexture_fm2w2")
+
+[node name="Text" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.836
+anchor_bottom = 0.901
+offset_top = 0.271973
+offset_right = 316.0
+offset_bottom = 0.151978
+grow_vertical = 0
+theme = ExtResource("2_byxxf")
+theme_override_font_sizes/font_size = 42
+text = "Power 100 / 100"
+vertical_alignment = 1

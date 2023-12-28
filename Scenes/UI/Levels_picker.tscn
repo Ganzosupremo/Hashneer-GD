@@ -1,9 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5g160romy6eq"]
+[gd_scene load_steps=9 format=3 uid="uid://c5g160romy6eq"]
 
 [ext_resource type="Script" path="res://Scripts/Managers/levels_picker.gd" id="1_b2jb1"]
 [ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="2_x4vgw"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_mml05"]
-[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="4_vg2ou"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelSelector/LevelSelectorButton.gd" id="4_7ftg5"]
+[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/block_genesis.tscn" id="5_j8gby"]
+[ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="6_sjlrs"]
+[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="7_4625o"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_24jkk"]
 shader = ExtResource("2_x4vgw")
@@ -15,17 +18,17 @@ shader_parameter/minorLineWidth = 0.0125
 shader_parameter/majorLineFrequency = 5.0
 shader_parameter/minorLineFrequency = 1.0
 shader_parameter/scale = 5.0
-shader_parameter/lineColor = Color(0.847059, 0.411765, 0.137255, 1)
+shader_parameter/lineColor = Color(0.541176, 0.509804, 0.752941, 1)
 shader_parameter/minLineWidth = 0.02
-shader_parameter/maxLineWidth = 0.5
+shader_parameter/maxLineWidth = 0.695
 shader_parameter/lineAmplitude = 1.0
 shader_parameter/lineFrequency = 0.2
-shader_parameter/linesPerGroup = 16
+shader_parameter/linesPerGroup = 21
 shader_parameter/warpFrequency = 0.5
 shader_parameter/warpAmplitude = 1.0
 shader_parameter/offsetFrequency = 0.5
-shader_parameter/minOffsetSpread = 0.6
-shader_parameter/maxOffsetSpread = 2.0
+shader_parameter/minOffsetSpread = 1.0
+shader_parameter/maxOffsetSpread = 4.0
 
 [node name="LevelsPicker" type="Control"]
 layout_mode = 3
@@ -37,6 +40,7 @@ grow_vertical = 2
 script = ExtResource("1_b2jb1")
 
 [node name="BG" type="Panel" parent="."]
+show_behind_parent = true
 material = SubResource("ShaderMaterial_24jkk")
 layout_mode = 1
 anchors_preset = 15
@@ -44,235 +48,734 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
-[node name="MarginContainer" type="MarginContainer" parent="BG"]
+[node name="Label" type="Label" parent="."]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
+offset_bottom = 83.0
+grow_horizontal = 2
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 80
+text = "Choose A Block"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(1100, 300)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -191.0
+offset_bottom = 189.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+size_flags_stretch_ratio = 2.0
+follow_focus = true
+scroll_deadzone = 1
 
-[node name="Grid" type="GridContainer" parent="BG/MarginContainer"]
+[node name="Grid" type="GridContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 500)
+layout_direction = 2
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 6
+mouse_filter = 2
 theme = ExtResource("3_mml05")
-columns = 7
+columns = 5
 
-[node name="ButtonLevel1" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(140, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Genesis"
-icon = ExtResource("4_vg2ou")
+theme_override_font_sizes/font_size = 36
+button_mask = 5
+text = "Element Zero"
 icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(5, 5)
+colpol_texture = ExtResource("6_sjlrs")
+colpol_texture_after = ExtResource("7_4625o")
+quadrants_initial_health = 50.0
+drop_rate_multiplier = 1.0
 
-[node name="ButtonLevel2" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton2" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "1"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+level_index = 1
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(8, 8)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 75.0
+drop_rate_multiplier = 1.2
+
+[node name="LevelSelectorButton3" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 1"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "2"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+level_index = 2
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel3" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton4" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 2"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "3"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 110.0
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel4" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton5" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 3"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "4"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 110.0
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel5" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton6" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = " Block 4"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "5"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 110.0
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel6" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton7" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 5"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 110.0
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel7" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton8" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 6"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "7"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 110.0
+drop_rate_multiplier = 1.3
 
-[node name="ButtonLevel8" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton9" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 7"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "8"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(10, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 150.0
+drop_rate_multiplier = 1.8
 
-[node name="ButtonLevel9" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton10" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 8"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "9"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(10, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 150.0
+drop_rate_multiplier = 1.8
 
-[node name="ButtonLevel10" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton11" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 9"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "10"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(10, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 150.0
+drop_rate_multiplier = 1.8
 
-[node name="ButtonLevel11" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton12" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 10"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "11"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(10, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 150.0
+drop_rate_multiplier = 1.8
 
-[node name="ButtonLevel12" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton13" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 11"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "12"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(10, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 150.0
+drop_rate_multiplier = 1.8
 
-[node name="ButtonLevel13" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton14" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 12"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "13"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 1750.0
+drop_rate_multiplier = 1.9
 
-[node name="ButtonLevel14" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton15" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 13"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "14"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 1750.0
+drop_rate_multiplier = 1.9
 
-[node name="ButtonLevel15" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton16" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 14"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "15"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 1750.0
+drop_rate_multiplier = 1.9
 
-[node name="ButtonLevel16" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton17" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 15"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "16"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 10)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 1750.0
+drop_rate_multiplier = 1.9
 
-[node name="ButtonLevel17" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton18" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 16"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "17"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 12)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 200.0
+drop_rate_multiplier = 2.0
 
-[node name="ButtonLevel18" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton19" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 17"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "18"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 12)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 200.0
+drop_rate_multiplier = 2.0
 
-[node name="ButtonLevel19" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton20" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 18"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "19"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 12)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 200.0
+drop_rate_multiplier = 2.0
 
-[node name="ButtonLevel20" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton21" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 19"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "20"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(15, 12)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 200.0
+drop_rate_multiplier = 2.0
 
-[node name="ButtonLevel21" type="Button" parent="BG/MarginContainer/Grid"]
-custom_minimum_size = Vector2(80, 60)
+[node name="LevelSelectorButton22" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-text = "Block 20"
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "21"
+icon_alignment = 1
 language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(18, 15)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 250.0
+drop_rate_multiplier = 2.3
 
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel1" to="." method="_on_button_level_1_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel2" to="." method="_on_button_level_2_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel3" to="." method="_on_button_level_3_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel4" to="." method="_on_button_level_4_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel5" to="." method="_on_button_level_5_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel6" to="." method="_on_button_level_6_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel7" to="." method="_on_button_level_7_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel8" to="." method="_on_button_level_8_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel9" to="." method="_on_button_level_9_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel10" to="." method="_on_button_level_10_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel11" to="." method="_on_button_level_11_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel12" to="." method="_on_button_level_12_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel13" to="." method="_on_button_level_13_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel14" to="." method="_on_button_level_14_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel15" to="." method="_on_button_level_15_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel16" to="." method="_on_button_level_16_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel17" to="." method="_on_button_level_17_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel18" to="." method="_on_button_level_18_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel19" to="." method="_on_button_level_19_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel20" to="." method="_on_button_level_20_pressed"]
-[connection signal="pressed" from="BG/MarginContainer/Grid/ButtonLevel21" to="." method="_on_button_level_21_pressed"]
+[node name="LevelSelectorButton23" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "22"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(18, 15)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 250.0
+drop_rate_multiplier = 2.3
+
+[node name="LevelSelectorButton24" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "23"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(18, 15)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 250.0
+drop_rate_multiplier = 2.3
+
+[node name="LevelSelectorButton25" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "24"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(18, 15)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 250.0
+drop_rate_multiplier = 2.3
+
+[node name="LevelSelectorButton26" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "25"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(20, 18)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 275.0
+drop_rate_multiplier = 2.5
+
+[node name="LevelSelectorButton27" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "26"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(20, 18)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 275.0
+drop_rate_multiplier = 2.5
+
+[node name="LevelSelectorButton28" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "27"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(20, 18)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 275.0
+drop_rate_multiplier = 2.5
+
+[node name="LevelSelectorButton29" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "28"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(20, 18)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 275.0
+drop_rate_multiplier = 2.5
+
+[node name="LevelSelectorButton30" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "29"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(22, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 300.0
+drop_rate_multiplier = 2.8
+
+[node name="LevelSelectorButton31" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "30"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(22, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 300.0
+drop_rate_multiplier = 2.8
+
+[node name="LevelSelectorButton32" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "31"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(22, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 300.0
+drop_rate_multiplier = 2.8
+
+[node name="LevelSelectorButton33" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "32"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(22, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 300.0
+drop_rate_multiplier = 2.8
+
+[node name="LevelSelectorButton34" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "33"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(25, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 400.0
+drop_rate_multiplier = 3.0
+
+[node name="LevelSelectorButton35" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "34"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(25, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 400.0
+drop_rate_multiplier = 3.0
+
+[node name="LevelSelectorButton36" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "35"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(25, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 400.0
+drop_rate_multiplier = 3.0
+
+[node name="LevelSelectorButton37" type="Button" parent="ScrollContainer/Grid"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 69
+button_mask = 5
+text = "36"
+icon_alignment = 1
+language = "en"
+script = ExtResource("4_7ftg5")
+levelto_load = ExtResource("5_j8gby")
+grid_size = Vector2(25, 20)
+colpol_texture = ExtResource("6_sjlrs")
+quadrants_initial_health = 400.0
+drop_rate_multiplier = 3.0
+
+[node name="HFlowContainer" type="HFlowContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.847
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -21.0
+offset_bottom = -0.143982
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(576, 60)
+alignment = 1
+
+[node name="MenuButton" type="Button" parent="HFlowContainer"]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+theme = ExtResource("3_mml05")
+theme_type_variation = &"D"
+theme_override_font_sizes/font_size = 45
+text = "Main Menu"
+
+[node name="ShopButton" type="Button" parent="HFlowContainer"]
+custom_minimum_size = Vector2(200, 70)
+layout_mode = 2
+theme = ExtResource("3_mml05")
+theme_override_font_sizes/font_size = 45
+text = "Shop"
+
+[connection signal="pressed" from="HFlowContainer/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="HFlowContainer/ShopButton" to="." method="_on_shop_button_pressed"]

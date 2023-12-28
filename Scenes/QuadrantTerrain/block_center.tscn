@@ -6,7 +6,7 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ycx0q"]
 size = Vector2(160, 160)
 
-[node name="Block Center" type="Area2D"]
+[node name="Block Core" type="Area2D"]
 show_behind_parent = true
 light_mask = 128
 visibility_layer = 128

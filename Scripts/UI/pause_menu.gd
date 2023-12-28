@@ -24,7 +24,6 @@ func _on_resume_button_pressed() -> void:
 func _on_main_menu_button_pressed() -> void:
 	pause()
 	SceneManager.switch_scene("res://Scenes/UI/Main_game_ui.tscn")
-	SceneManager.toggle_main_ui()
 
 
 func _on_quit_game_button_pressed() -> void:

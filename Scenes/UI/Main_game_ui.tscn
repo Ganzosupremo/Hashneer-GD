@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://ba2y030tmkvga"]
+[gd_scene load_steps=9 format=3 uid="uid://ba2y030tmkvga"]
 
 [ext_resource type="Script" path="res://Scripts/UI/MainGameUI.gd" id="1_0f3y0"]
 [ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="1_88amo"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_ibwsi"]
+[ext_resource type="PackedScene" uid="uid://b15a5r48pfo8u" path="res://Scenes/UI/button_main_menu_template.tscn" id="5_x6foa"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_eprr1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a8ncp"]
@@ -43,7 +44,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 
-[node name="MainGameUI" type="Control"]
+[node name="MainGameUI" type="Control" groups=["UI"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,20 +90,19 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Startbutton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="StartButton" parent="CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x6foa")]
 custom_minimum_size = Vector2(200, 300)
+layout_direction = 2
 layout_mode = 2
-size_flags_horizontal = 3
 theme = ExtResource("1_ibwsi")
 text = "Start Game"
 
-[node name="ShopButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
+[node name="SkillButton" parent="CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x6foa")]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 theme = ExtResource("1_ibwsi")
-text = "Shop"
+text = "Shop
+"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -160,17 +160,5 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
-[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_focus_entered"]
-[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_focus_exited"]
-[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_mouse_entered"]
-[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_mouse_exited"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/Startbutton" to="." method="_on_startbutton_pressed"]
-[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_focus_entered"]
-[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_focus_exited"]
-[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_mouse_entered"]
-[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_mouse_exited"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_shop_button_pressed"]
-[connection signal="focus_entered" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_focus_entered"]
-[connection signal="focus_exited" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_focus_exited"]
-[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_mouse_entered"]
-[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" to="." method="_on_setting_button_mouse_exited"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/SkillButton" to="." method="_on_skill_button_pressed"]

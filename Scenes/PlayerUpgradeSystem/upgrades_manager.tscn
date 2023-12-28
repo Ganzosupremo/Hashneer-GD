@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0skarkfi0ohf"]
+
+[ext_resource type="Script" path="res://Scripts/Managers/UpgradesManager.gd" id="1_1mjnb"]
+
+[node name="UpgradesManager" type="Node2D" groups=["PersistentNodes"]]
+script = ExtResource("1_1mjnb")
+currency = 8e+08
