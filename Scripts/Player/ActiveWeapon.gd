@@ -3,15 +3,12 @@ class_name ActiveWeapon
 
 @onready var player = $".."
 
-var active_weapon: WeaponDetails
 var current_weapon: WeaponDetails
-
-func _ready() -> void:
-	player = $".."
+var weapons_array: Array = [WeaponDetails]
 
 func set_weapon(weapon: WeaponDetails) -> void:
 	current_weapon = weapon
-	active_weapon = current_weapon
+	weapons_array.append(weapon)
 
 func get_current_ammo() -> AmmoDetails:
 	return current_weapon.ammo_details

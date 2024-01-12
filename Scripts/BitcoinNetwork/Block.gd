@@ -1,19 +1,16 @@
-extends Resource
-class_name BitcoinBlock
+class_name BitcoinBlock extends Resource
 
-var miner: String = ""
-var height: int = 0
-var timestamp: String = ""
-var data: String = ""
-var previous_hash: String = "GENESIS BLOCK"
-var block_hash: String = ""
-var nonce: int = 0
-var reward: float = 0.0
-var mined: bool = false
+@export var miner: String = ""
+@export var height: int = 0
+@export var timestamp: String = ""
+@export var data: String = ""
+@export var previous_hash: String = "GENESIS BLOCK"
+@export var block_hash: String = ""
+@export var reward: float = 0.0
+@export var mined: bool = false
 
-func _init(_height: int, _timestamp: String, _data: String):
+func _init(_height: int = -1, _timestamp: String = "", _data: String = ""):
 	height = _height
-	print_debug("block height is: ", height)
 	timestamp = _timestamp
 	data = _data
 	block_hash = calculate_block_hash()
@@ -29,5 +26,5 @@ func calculate_block_hash() -> String:
 	return res.hex_encode()
 	
 func _to_string() -> String:
-	return "Height: %s" % height + "\tTimestamp: %s" % timestamp + "\tHash: %s" % block_hash + "\tPrevious Hash: %s" % previous_hash + "\tData: %s" % data + "\tBlock Subsidy: %s" % str(reward)
+	return "Height: %s" % height + "\n\nTimestamp: %s" % timestamp + "\n\nHash: %s" % block_hash + "\n\nPrevious Hash: %s" % previous_hash + "\n\nData: %s" % data + "\n\nBlock Subsidy: %.2f" % reward
 

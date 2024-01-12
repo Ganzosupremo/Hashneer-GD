@@ -16,7 +16,7 @@ func init_ui() -> void:
 
 func update_ui(_damage_taken: float) -> void:
 	health_bar.value = GameManager.player.health.current_power
-	text.text = "Power " + str(GameManager.player.health.current_power) + " / " + str(GameManager.player.health.initial_power)
+	text.text = "Power " + "%.1f"%GameManager.player.health.get_current_power()+ " / " + "%.1f"%GameManager.player.health.get_initial_power()
 
 
 

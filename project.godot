@@ -13,20 +13,20 @@ config_version=5
 config/name="Hashneer"
 run/main_scene="res://Scenes/UI/Main_menu.tscn"
 config/features=PackedStringArray("4.1", "Forward Plus")
-boot_splash/bg_color=Color(0.380392, 0.254902, 0.85098, 1)
+boot_splash/bg_color=Color(0.831373, 0.317647, 0.0392157, 1)
 config/icon="res://Textures/Bitcoin pixel art nuevo2.png"
 
 [autoload]
 
-EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
-ResourceManager="*res://Scripts/Managers/ResourceManager.gd"
+SaveSystem="*res://addons/save_system/save_system.gd"
 SceneManager="*res://Scenes/Scene_manager.tscn"
-BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
-UpgradesManager="*res://Scenes/PlayerUpgradeSystem/upgrades_manager.tscn"
-BitcoinWallet="*res://Scenes/BitcoinNetwork/bitcoin_wallet.tscn"
 GameManager="*res://Scripts/Managers/GameManager.gd"
-PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 Interface="*res://Scripts/Interface.gd"
+PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
+BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
+BitcoinWallet="*res://Scenes/BitcoinNetwork/bitcoin_wallet.tscn"
+UpgradesManager="*res://Scenes/SkillTreeSystem/upgrades_manager.tscn"
+EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
 
 [display]
 
@@ -39,7 +39,7 @@ project/assembly_name="Hashneer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/worldmap_builder/plugin.cfg")
+enabled=PackedStringArray("res://addons/save_system/plugin.cfg", "res://addons/worldmap_builder/plugin.cfg")
 
 [filesystem]
 
@@ -121,5 +121,5 @@ skill_tree_drag={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=3
+textures/canvas_textures/default_texture_filter=0
 environment/screen_space_reflection/roughness_quality=2

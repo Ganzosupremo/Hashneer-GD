@@ -1,0 +1,100 @@
+[gd_scene load_steps=6 format=3 uid="uid://2c25v66rynf1"]
+
+[ext_resource type="Script" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_jc6ea"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_ui4ay"]
+[ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="3_a8ff3"]
+[ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/UI/shop_tabs.tscn" id="4_gio3k"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hload"]
+shader = ExtResource("3_a8ff3")
+shader_parameter/bg_color = null
+shader_parameter/size = 100.0
+shader_parameter/prob = 1.006
+
+[node name="NetworkVisualizer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_jc6ea")
+
+[node name="HSplitContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="VFlowContainer" type="HBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+theme = ExtResource("2_ui4ay")
+theme_override_constants/separation = 50
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/VFlowContainer"]
+layout_mode = 2
+
+[node name="CoinsLost" type="Label" parent="HSplitContainer/VFlowContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_ui4ay")
+theme_override_font_sizes/font_size = 28
+text = "Coins Lost: 50000"
+
+[node name="CoinsOnPlayer" type="Label" parent="HSplitContainer/VFlowContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_ui4ay")
+theme_override_font_sizes/font_size = 28
+text = "Coins in wallet: 200000"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HSplitContainer/VFlowContainer"]
+layout_mode = 2
+
+[node name="CoinsLeft" type="Label" parent="HSplitContainer/VFlowContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_ui4ay")
+theme_override_font_sizes/font_size = 28
+text = "Coins left to Mine: 2000"
+
+[node name="Blocks Left" type="Label" parent="HSplitContainer/VFlowContainer/VBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_ui4ay")
+theme_override_font_sizes/font_size = 28
+text = "Blocks Left: 90"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+follow_focus = true
+vertical_scroll_mode = 0
+
+[node name="BlockContainer" type="HBoxContainer" parent="HSplitContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_ui4ay")
+
+[node name="BG" type="CanvasLayer" parent="."]
+layer = -10
+
+[node name="Panel" type="Panel" parent="BG"]
+material = SubResource("ShaderMaterial_hload")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FrontLayer" type="CanvasLayer" parent="."]
+
+[node name="ShopTabs" parent="FrontLayer" instance=ExtResource("4_gio3k")]

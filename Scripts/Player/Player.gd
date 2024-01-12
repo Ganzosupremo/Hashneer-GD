@@ -8,6 +8,7 @@ class_name PlayerController
 
 var auto_fire_timer : Timer
 var auto_fire_delay : float = 1.5
+var weapons_array: Array
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeapon = %FireWeapon
@@ -20,13 +21,24 @@ var quadrant_terrain: QuadrantBuilder
 var fired_previous_frame: bool = false
 var can_move: bool = true
 
+const implements = [
+	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
+]
+
+
 func _ready():
 	GameManager.player = self
-	active_weapon.set_weapon(initial_weapon)
+	PersistenceDataManager.load_gam()
 	speed += add_speed_upgrades()
 	health.zero_power.connect(on_zero_power)
+	set_weapon()
 	
 	if enable_auto_fire: set_auto_fire_timer()
+
+func set_weapon():
+	active_weapon.set_weapon(initial_weapon)
+	weapons_array = [WeaponDetails]
+	weapons_array.append(initial_weapon)
 
 func set_auto_fire_timer() -> void:
 	auto_fire_timer = Timer.new()
@@ -73,13 +85,13 @@ func on_zero_power() -> void:
 
 func add_speed_upgrades() -> float:
 	var total : float = 0.0
-	
-	if (UpgradesManager.is_skill_unlocked("MovementSpeed_UpgradeI")):
-		total += UpgradesManager.upgrades["MovementSpeed_UpgradeI"]["power"]
-	if (UpgradesManager.is_skill_unlocked("MovementSpeed_UpgradeII")):
-		total += UpgradesManager.upgrades["MovementSpeed_UpgradeII"]["power"]
-	if (UpgradesManager.is_skill_unlocked("MovementSpeed_UpgradeIII")):
-		total += UpgradesManager.upgrades["MovementSpeed_UpgradeIII"]["power"]
+	var speed1: String = "Increase Movement Speed I"
+	var speed2: String = "Increase Movement Speed II"
+	var speed3: String = "Increase Movement Speed III"
+	total += UpgradesManager.get_skill_power(speed1)
+	total += UpgradesManager.get_skill_power(speed2)
+	total += UpgradesManager.get_skill_power(speed3)
+		
 	return total
 
 func fire():
@@ -96,3 +108,15 @@ func fire():
 func auto_fire() -> void:
 	if !enable_auto_fire: return
 	fire()
+
+func save_data():
+	var data: PlayerData = PlayerData.new(speed, health.initial_power, active_weapon.get_current_weapon(), active_weapon.weapons_array)
+	SaveSystem.set_var("player_data", data)
+#	data.player_data.current_weapon = active_weapon.get_current_weapon()
+#	data.player_data.weapons_array = weapons_array
+
+func load_data():
+	var data = SaveSystem.get_var("player_data")
+	active_weapon.set_weapon(data["current_weapon"])
+	weapons_array = data["weapons_array"]
+

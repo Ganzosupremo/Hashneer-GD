@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BitcoinBlock" load_steps=2 format=3 uid="uid://c210q5643thf4"]
+
+[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/Block.gd" id="1_4ehis"]
+
+[resource]
+script = ExtResource("1_4ehis")
+miner = ""
+height = -1
+timestamp = ""
+data = ""
+previous_hash = "GENESIS BLOCK"
+block_hash = ""
+nonce = 0
+reward = 0.0
+mined = false

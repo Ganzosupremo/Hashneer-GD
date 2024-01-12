@@ -1,0 +1,62 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqk45wqb4qmb8"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1f6qi"]
+[ext_resource type="Script" path="res://Scripts/UI/ShopTabs.gd" id="1_s3jnk"]
+[ext_resource type="Script" path="res://Scripts/UI/ButtonTemplate.gd" id="3_6gawp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tur2x"]
+bg_color = Color(0.188235, 0.188235, 0.188235, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.772549, 0.403922, 0.129412, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="ShopTabs" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s3jnk")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 81.0
+grow_horizontal = 2
+theme = ExtResource("1_1f6qi")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tur2x")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+theme = ExtResource("1_1f6qi")
+alignment = 1
+
+[node name="Skill Tree" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+theme = ExtResource("1_1f6qi")
+text = "Skill Tree"
+script = ExtResource("3_6gawp")
+
+[node name="Network" type="Button" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+theme = ExtResource("1_1f6qi")
+text = "Network"
+script = ExtResource("3_6gawp")
+
+[connection signal="mouse_entered" from="PanelContainer/HBoxContainer/Skill Tree" to="PanelContainer/HBoxContainer/Skill Tree" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/HBoxContainer/Skill Tree" to="PanelContainer/HBoxContainer/Skill Tree" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/Skill Tree" to="." method="_on_skill_tree_pressed"]
+[connection signal="mouse_entered" from="PanelContainer/HBoxContainer/Network" to="PanelContainer/HBoxContainer/Network" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="PanelContainer/HBoxContainer/Network" to="PanelContainer/HBoxContainer/Network" method="_on_mouse_exited"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/Network" to="." method="_on_network_pressed"]

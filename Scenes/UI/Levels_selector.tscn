@@ -4,7 +4,7 @@
 [ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="2_x4vgw"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_mml05"]
 [ext_resource type="Script" path="res://Scripts/UI/LevelSelector/LevelSelectorButton.gd" id="4_7ftg5"]
-[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/block_genesis.tscn" id="5_j8gby"]
+[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="5_j8gby"]
 [ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="6_sjlrs"]
 [ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="7_4625o"]
 
@@ -57,7 +57,7 @@ anchor_right = 1.0
 offset_bottom = 83.0
 grow_horizontal = 2
 theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 80
+theme_override_font_sizes/font_size = 70
 text = "Choose A Block"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -95,7 +95,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 36
+theme_override_font_sizes/font_size = 26
 button_mask = 5
 text = "Element Zero"
 icon_alignment = 1
@@ -202,6 +202,7 @@ size_flags_vertical = 7
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
+text = "6"
 icon_alignment = 1
 language = "en"
 script = ExtResource("4_7ftg5")
@@ -404,7 +405,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(15, 12)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 200.0
+quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.0
 
 [node name="LevelSelectorButton19" type="Button" parent="ScrollContainer/Grid"]
@@ -422,7 +423,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(15, 12)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 200.0
+quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.0
 
 [node name="LevelSelectorButton20" type="Button" parent="ScrollContainer/Grid"]
@@ -440,7 +441,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(15, 12)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 200.0
+quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.0
 
 [node name="LevelSelectorButton21" type="Button" parent="ScrollContainer/Grid"]
@@ -458,7 +459,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(15, 12)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 200.0
+quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.0
 
 [node name="LevelSelectorButton22" type="Button" parent="ScrollContainer/Grid"]
@@ -476,7 +477,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(18, 15)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 250.0
+quadrants_initial_health = 2500.0
 drop_rate_multiplier = 2.3
 
 [node name="LevelSelectorButton23" type="Button" parent="ScrollContainer/Grid"]
@@ -494,7 +495,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(18, 15)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 250.0
+quadrants_initial_health = 2500.0
 drop_rate_multiplier = 2.3
 
 [node name="LevelSelectorButton24" type="Button" parent="ScrollContainer/Grid"]
@@ -512,7 +513,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(18, 15)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 250.0
+quadrants_initial_health = 2500.0
 drop_rate_multiplier = 2.3
 
 [node name="LevelSelectorButton25" type="Button" parent="ScrollContainer/Grid"]
@@ -530,7 +531,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(18, 15)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 250.0
+quadrants_initial_health = 2500.0
 drop_rate_multiplier = 2.3
 
 [node name="LevelSelectorButton26" type="Button" parent="ScrollContainer/Grid"]
@@ -548,7 +549,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(20, 18)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 275.0
+quadrants_initial_health = 2750.0
 drop_rate_multiplier = 2.5
 
 [node name="LevelSelectorButton27" type="Button" parent="ScrollContainer/Grid"]
@@ -566,7 +567,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(20, 18)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 275.0
+quadrants_initial_health = 2750.0
 drop_rate_multiplier = 2.5
 
 [node name="LevelSelectorButton28" type="Button" parent="ScrollContainer/Grid"]
@@ -584,7 +585,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(20, 18)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 275.0
+quadrants_initial_health = 2750.0
 drop_rate_multiplier = 2.5
 
 [node name="LevelSelectorButton29" type="Button" parent="ScrollContainer/Grid"]
@@ -602,7 +603,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(20, 18)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 275.0
+quadrants_initial_health = 2750.0
 drop_rate_multiplier = 2.5
 
 [node name="LevelSelectorButton30" type="Button" parent="ScrollContainer/Grid"]
@@ -620,7 +621,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(22, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 300.0
+quadrants_initial_health = 3000.0
 drop_rate_multiplier = 2.8
 
 [node name="LevelSelectorButton31" type="Button" parent="ScrollContainer/Grid"]
@@ -638,7 +639,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(22, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 300.0
+quadrants_initial_health = 3000.0
 drop_rate_multiplier = 2.8
 
 [node name="LevelSelectorButton32" type="Button" parent="ScrollContainer/Grid"]
@@ -656,7 +657,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(22, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 300.0
+quadrants_initial_health = 3000.0
 drop_rate_multiplier = 2.8
 
 [node name="LevelSelectorButton33" type="Button" parent="ScrollContainer/Grid"]
@@ -674,7 +675,7 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(22, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 300.0
+quadrants_initial_health = 3000.0
 drop_rate_multiplier = 2.8
 
 [node name="LevelSelectorButton34" type="Button" parent="ScrollContainer/Grid"]
@@ -692,8 +693,8 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(25, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 400.0
-drop_rate_multiplier = 3.0
+quadrants_initial_health = 4000.0
+drop_rate_multiplier = 3.5
 
 [node name="LevelSelectorButton35" type="Button" parent="ScrollContainer/Grid"]
 custom_minimum_size = Vector2(80, 80)
@@ -710,8 +711,8 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(25, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 400.0
-drop_rate_multiplier = 3.0
+quadrants_initial_health = 4000.0
+drop_rate_multiplier = 3.5
 
 [node name="LevelSelectorButton36" type="Button" parent="ScrollContainer/Grid"]
 custom_minimum_size = Vector2(80, 80)
@@ -728,8 +729,8 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(25, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 400.0
-drop_rate_multiplier = 3.0
+quadrants_initial_health = 4000.0
+drop_rate_multiplier = 3.5
 
 [node name="LevelSelectorButton37" type="Button" parent="ScrollContainer/Grid"]
 custom_minimum_size = Vector2(80, 80)
@@ -746,8 +747,8 @@ script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
 grid_size = Vector2(25, 20)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 400.0
-drop_rate_multiplier = 3.0
+quadrants_initial_health = 4000.0
+drop_rate_multiplier = 3.5
 
 [node name="HFlowContainer" type="HFlowContainer" parent="."]
 layout_mode = 1
@@ -766,15 +767,14 @@ alignment = 1
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 theme = ExtResource("3_mml05")
-theme_type_variation = &"D"
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 32
 text = "Main Menu"
 
 [node name="ShopButton" type="Button" parent="HFlowContainer"]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
 theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 45
+theme_override_font_sizes/font_size = 32
 text = "Shop"
 
 [connection signal="pressed" from="HFlowContainer/MenuButton" to="." method="_on_menu_button_pressed"]

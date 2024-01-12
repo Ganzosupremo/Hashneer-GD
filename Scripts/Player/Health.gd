@@ -15,12 +15,12 @@ func _ready() -> void:
 
 func add_health_upgrades() -> float:
 	var total: float = 0.0
-	if (UpgradesManager.is_skill_unlocked("Player_Health_UpgradeI")):
-		total += UpgradesManager.upgrades["Player_Health_UpgradeI"]["power"]
-	if (UpgradesManager.is_skill_unlocked("Player_Health_UpgradeII")):
-		total += UpgradesManager.upgrades["Player_Health_UpgradeII"]["power"]
-	if (UpgradesManager.is_skill_unlocked("Player_Health_UpgradeIII")):
-		total += UpgradesManager.upgrades["Player_Health_UpgradeIII"]["power"]
+	var golden = "Golden Shell"
+	var silver = "Silver Shell"
+	var copper = "Copper Shell"
+	total += UpgradesManager.get_skill_power(copper)
+	total += UpgradesManager.get_skill_power(silver)
+	total += UpgradesManager.get_skill_power(golden)
 	
 	return total
 
@@ -33,3 +33,9 @@ func substract_power(deal_damage: float) -> void:
 	
 	if current_power <= 0.0:
 		emit_signal("zero_power")
+
+func get_current_power() -> float:
+	return current_power
+
+func get_initial_power() -> float:
+	return initial_power

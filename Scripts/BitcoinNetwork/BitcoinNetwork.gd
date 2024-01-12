@@ -5,20 +5,24 @@ signal reward_issued(btc_reward: float)
 signal block_core_destroyed(miner: String, block: BitcoinBlock)
 
 const COIN: int = 100
-const TOTAL_COINS: float = 2_100_000.0
+#change to 2.1 mill later
+const TOTAL_COINS: float = 21_000_000.0
 const TOTAL_BLOCKS: int = 105
 
+var coins_in_circulation: float = 0.0
 var halving_interval: int = 21
 var height: int = -1
 var current_reward: float = 0.0
 var coins_lost: float = 0.0
 var chain: Array = []
+var loaded: bool = false
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
 func _ready():
+	chain.clear()
 	current_reward = get_block_subsidy()
 	create_genesis_block()
 	connect("block_core_destroyed", on_block_core_destroyed)
@@ -34,7 +38,7 @@ func create_genesis_block() -> void:
 ## mines and adds the new block to the chain
 func mine_block(miner: String, block: BitcoinBlock, genesis: bool = false) -> bool:
 	# Check if mining should be stopped right away
-	if check_mining_stopped(block, genesis):
+	if _check_mining_stopped(block, genesis):
 		return false
 	
 	height += 1
@@ -54,7 +58,7 @@ func mine_block(miner: String, block: BitcoinBlock, genesis: bool = false) -> bo
 Checks if the new block is valid and hasn't been mined before, returns true if block has
 already been mined before, false otherwise
 """
-func check_mining_stopped(new_block: BitcoinBlock, genesis: bool = false) -> bool:
+func _check_mining_stopped(new_block: BitcoinBlock, genesis: bool = false) -> bool:
 	# we don't check since it's the genesis block
 	if genesis: return false
 	
@@ -90,9 +94,9 @@ func _issue_block_reward(miner: String) -> float:
 
 	return btc_reward
 
-func get_latest_block() -> BitcoinBlock:
+func get_latest_block():
 	if chain.size() > 0:
-		return chain[chain.size() - 1]
+		return chain.back()
 	else: return null
 
 func get_block_subsidy() -> float:
@@ -100,35 +104,43 @@ func get_block_subsidy() -> float:
 	if (halvings >= 8):
 		return 0
 	
-	var subsidy = 5000 * COIN
+	var subsidy = 500 * COIN
 	
 	subsidy >>= halvings
 	return subsidy
 
-func save() -> Dictionary:
-	return {
-		"filename" : get_scene_file_path(),
-		"parent" : get_parent().get_path(),
-		"pos_x" : position.x,
-		"pos_y" : position.y,
-		"Current Height: ": height,
-		"Current Block Subsidy: ": current_reward,
-		"Coins Lost: ": coins_lost,
-		"Chain: ": chain,
-	}
+func save_data():
+	var network_data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
+	SaveSystem.set_var("network_data", network_data)
 
-func save_data(data: GameData):
-	var network_data = GameData.BitcoinNetworkData.new()
-	network_data.chain = self.chain
-	network_data.height = self.height
-	network_data.coins_lost = self.coins_lost
-	network_data.block_subsidy = self.current_reward
-	data.data["bitcoin_network_data"] = network_data
-
-func load_data(data: GameData):
-	var network_data = data.data["bitcoin_network_data"]
+func load_data():
+	if loaded == true: return
 	
-	self.chain = network_data.chain
-	self.height = network_data.height
-	self.coins_lost = network_data.coins_lost
-	self.current_reward = network_data.block_subsidy
+	var network_data = SaveSystem.get_var("network_data")
+	
+	var res: BitcoinNetworkData = build_res(network_data)
+
+	for i in res.chain.size():
+		res.chain[i] = build_res(res.chain[i], 1)
+	
+	
+	self.chain = res.chain
+	self.height = res.height
+	self.coins_lost = res.coins_lost
+	self.current_reward = res.block_subsidy
+	self.coins_in_circulation = res.coins_in_circulation
+	loaded = true
+
+func build_res(data: Dictionary, index: int = -1):
+	var res
+	if index == -1:
+		res = BitcoinNetworkData.new()
+	else:
+		res = BitcoinBlock.new()
+	
+	for i in range(data.size()):
+		var key = data.keys()[i]
+		var value = data.values()[i]
+		res.set(key, value)
+	print("resource builded")
+	return res

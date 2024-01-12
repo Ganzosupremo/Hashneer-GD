@@ -6,7 +6,7 @@ extends Control
 @onready var shop_button = %ShopButton
 
 @onready var menu_scene: PackedScene = preload("res://Scenes/UI/Main_game_ui.tscn")
-@onready var skill_tree_scene: PackedScene = preload("res://Scenes/PlayerUpgradeSystem/skill_tree_new.tscn")
+@onready var skill_tree_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/Skill_tree.tscn")
 
 func _ready() -> void:
 	self.visible = false
@@ -47,13 +47,19 @@ func tween_menu() -> void:
 	%RetryButton.disabled = false
 
 func _on_menu_button_pressed() -> void:
+	save()
 	Engine.time_scale = 1.0
 	SceneManager.switch_scene_with_packed(menu_scene)
 
 func _on_shop_button_pressed() -> void:
+	save()
 	Engine.time_scale = 1.0
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
 func _on_retry_button_pressed() -> void:
+	save()
 	Engine.time_scale = 1.0
-	SceneManager.switch_scene("res://Scenes/BlockLevels/block_genesis.tscn")
+	SceneManager.switch_scene("res://Scenes/BlockLevels/World.tscn")
+
+func save():
+	PersistenceDataManager.save_game()

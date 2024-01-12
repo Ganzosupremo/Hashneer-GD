@@ -1,0 +1,50 @@
+[gd_scene load_steps=3 format=3 uid="uid://cuc6kdwjoycnp"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_c01e8"]
+[ext_resource type="Script" path="res://Scripts/UI/SaveSlotsSelector.gd" id="1_tniih"]
+
+[node name="SaveSlotsSelector" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_tniih")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_c01e8")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SlotButton" type="Button" parent="MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_c01e8")
+text = "Enter Game"
+
+[node name="SlotButton3" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_c01e8")
+text = "Enter Game"
+
+[node name="SlotButton2" type="Button" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_c01e8")
+text = "Enter Game"
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton" to="." method="_on_slot_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton3" to="." method="_on_slot_button_3_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton2" to="." method="_on_slot_button_2_pressed"]

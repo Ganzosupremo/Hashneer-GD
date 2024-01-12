@@ -45,7 +45,7 @@ func reset_quadrants():
 	init_quadrant()
 
 func increase_health(health: float) -> float:
-	return health * pow(2.0, GameManager.current_level_index)
+	return health * pow(5.0, GameManager.current_level_index)
 
 """
 Inflicts damage to the polygon, if the polygon's health is zero, then the polygon can
@@ -68,12 +68,8 @@ func issue_fiat_money() -> void:
 	BitcoinWallet.add_fiat(get_fiat_subsidy())
 
 func get_fiat_subsidy() -> float:
-	return 5000.0 * pow(10, builder_args.drop_rate_multiplier)
-
-#func update_colpol_texture(four_quadrants: Array, new_texture: Texture2D) -> void:
-#	for quadrant in four_quadrants:
-#		for new_colpol in quadrant.static_body.get_children():
-#			new_colpol.update_texture_polygon(new_texture)
+	var rand = randf_range(1000.0, 5000.0)
+	return rand * pow(10, builder_args.drop_rate_multiplier)
 
 func set_colpol_texture(new_texture: Texture2D):
 	await get_tree().process_frame

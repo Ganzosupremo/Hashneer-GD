@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="3_f7alj"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_fnuy8"]
 [ext_resource type="Texture2D" uid="uid://db241hbwkh2f3" path="res://Textures/Download.png" id="4_2fn4v"]
-[ext_resource type="PackedScene" uid="uid://byt208cpm71np" path="res://Scenes/UI/currency_ui.tscn" id="7_y3lbx"]
+[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/currency_ui.tscn" id="7_y3lbx"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/level_finised_ui.tscn" id="8_nyo2j"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
@@ -36,7 +36,7 @@ shader_parameter/color = Color(0.721569, 0.47451, 0.203922, 1)
 shader_parameter/iChannel1 = ExtResource("4_2fn4v")
 shader_parameter/iChannel0 = SubResource("NoiseTexture2D_snq06")
 
-[node name="Block" type="Node2D"]
+[node name="World" type="Node2D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_5odol")
@@ -77,8 +77,6 @@ theme_type_variation = &"Game Background"
 [node name="GameUI" type="CanvasLayer" parent="."]
 
 [node name="CurrencyUI" parent="GameUI" instance=ExtResource("7_y3lbx")]
-offset_right = 80.0
-offset_bottom = 25.0
 
 [node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("8_nyo2j")]
 mouse_filter = 2

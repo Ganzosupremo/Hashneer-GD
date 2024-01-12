@@ -52,12 +52,8 @@ func build_block() -> BitcoinBlock:
 ## Add the additional damage gained from upgrades to the bullet
 func add_damage_to_bullet() -> float:
 	var total: float = 0.0
-	if UpgradesManager.is_skill_unlocked("C_bullets_upgrade"):
-		total += UpgradesManager["upgrades"]["C_bullets_upgrade"]["power"]
-	if UpgradesManager.is_skill_unlocked("S_bullets_upgrade"):
-		total += UpgradesManager["upgrades"]["S_bullets_upgrade"]["power"]
-	if UpgradesManager.is_skill_unlocked("G_bullets_upgrade"):
-		total += UpgradesManager["upgrades"]["G_bullets_upgrade"]["power"]
+	var copper = "Copper Bullets"
+	total += UpgradesManager.get_skill_power(copper)
 	return total
 
 func _on_body_entered(body: Node2D) -> void:

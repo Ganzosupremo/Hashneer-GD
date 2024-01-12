@@ -25,7 +25,7 @@ func switch_scene_with_packed(sceneto_load: PackedScene, level_index: int = -1) 
 	if level_index != -1:
 		GameManager.current_level_index = level_index
 	call_deferred("deferred_switch_scene_with_packed", sceneto_load)
-	PersistenceDataManager.save_game()
+#	PersistenceDataManager.save_game()
 
 func deferred_switch_scene_with_packed(sceneto_load: PackedScene) -> void:
 	current_scene.free()
@@ -48,7 +48,7 @@ func switch_scene(res_path: String, level_index: int = -1):
 		GameManager.current_level_index = level_index
 		PersistenceDataManager.save_game()
 	call_deferred("deferred_switch_scene", res_path)
-	PersistenceDataManager.save_game()
+#	PersistenceDataManager.save_game()
 
 func deferred_switch_scene(res_path: String):
 	current_scene.free()

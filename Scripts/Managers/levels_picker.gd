@@ -2,13 +2,9 @@ extends Control
 
 @onready var container: GridContainer = %Grid
 @onready var main_menu_scene: PackedScene = preload("res://Scenes/UI/Main_game_ui.tscn")
-@onready var shop_scene: PackedScene = preload("res://Scenes/PlayerUpgradeSystem/skill_tree_new.tscn")
+@onready var shop_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/Skill_tree.tscn")
 
 var children: Array
-const implements = [
-	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
-]
-
 
 func _ready() -> void:
 	children = container.get_children()
@@ -32,9 +28,3 @@ func _on_menu_button_pressed() -> void:
 
 func _on_shop_button_pressed() -> void:
 	SceneManager.switch_scene_with_packed(shop_scene)
-
-func save_data(data: GameData):
-	pass
-
-func load_data(data: GameData):
-	pass

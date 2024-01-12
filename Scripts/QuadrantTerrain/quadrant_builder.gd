@@ -67,7 +67,6 @@ func carve(quadrant_position : Vector2, other_polygon : CollisionPolygon2D, dama
 	var four_quadrants = get_affected_quadrants(quadrant_position, other_polygon)
 	for quadrant_new in four_quadrants:
 		quadrant_new.carve(new_polygon, damage, colpol_texture_after)
-#		quadrant_new.update_colpol_texture(four_quadrants, colpol_texture_after)
 
 func get_affected_quadrants(pos: Vector2, other_polygon: CollisionPolygon2D) -> Array:
 	"""

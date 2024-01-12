@@ -54,6 +54,6 @@ offset_right = 316.0
 offset_bottom = 0.151978
 grow_vertical = 0
 theme = ExtResource("2_byxxf")
-theme_override_font_sizes/font_size = 42
+theme_override_font_sizes/font_size = 22
 text = "Power 100 / 100"
 vertical_alignment = 1

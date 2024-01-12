@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://xwrcumasjoyf" path="res://Textures/Skill Tree/SkillNodeTexture.png" id="1_oqfxm"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
 [ext_resource type="Resource" uid="uid://52vdo08klv6d" path="res://Skills/damage_upgrade.tres" id="2_qyqpv"]
-[ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/PlayerUpgradeSystem/Skill_branch.tscn" id="5_ed0gt"]
+[ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_eg3r7"]
 atlas = ExtResource("1_oqfxm")
@@ -13,8 +13,17 @@ region = Rect2(0, 0, 32, 32)
 light_mask = 64
 visibility_layer = 64
 custom_minimum_size = Vector2(16, 16)
-offset_right = 32.0
-offset_bottom = 32.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(8, 8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -22,13 +31,10 @@ texture_normal = SubResource("AtlasTexture_eg3r7")
 ignore_texture_size = true
 stretch_mode = 0
 script = ExtResource("2_jhy1s")
-disabled_color = Color(0.415686, 0.415686, 0.415686, 1)
-active_color = Color(1, 1, 1, 1)
 upgrade_data = ExtResource("2_qyqpv")
 
 [node name="SkillBranch" parent="." instance=ExtResource("5_ed0gt")]
 unique_name_in_owner = true
-top_level = true
 width = 35.0
 texture = null
 
