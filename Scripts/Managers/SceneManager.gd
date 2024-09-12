@@ -75,4 +75,3 @@ func tween_bg():
 		1.0, 1).from(0.0)
 	
 	await tween.finished
-

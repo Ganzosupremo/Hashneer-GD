@@ -11,6 +11,8 @@ extends Control
 func _ready() -> void:
 	self.visible = false
 	BlockCore.get_instance().core_mined.connect(on_core_mined)
+	
+	await QuadrantBuilder.get_instance().map_builded
 	GameManager.player.health.zero_power.connect(on_zero_power)
 
 func on_zero_power() -> void:

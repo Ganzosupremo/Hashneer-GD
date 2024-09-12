@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=53 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/Skill_tree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
@@ -9,7 +9,9 @@
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
 [ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/UI/shop_tabs.tscn" id="7_gmtxq"]
 [ext_resource type="PackedScene" uid="uid://cghc7u0gqeip8" path="res://Scenes/SkillTreeSystem/Skill_info_window.tscn" id="8_xcpog"]
-[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/currency_ui.tscn" id="9_cs2ex"]
+[ext_resource type="Script" path="res://Scripts/UI/currency_ui.gd" id="10_edav8"]
+[ext_resource type="Texture2D" uid="uid://c3q4hbc4arufs" path="res://Textures/Currencies/Bitcoin logo new.png" id="11_wtkhu"]
+[ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="12_revff"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l4svx"]
 atlas = ExtResource("3_rywpj")
@@ -287,6 +289,49 @@ shader_parameter/bg_color = null
 shader_parameter/size = 100.0
 shader_parameter/prob = 1.006
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_36fx1"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.427451, 0.870588, 0.992157, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jv3dh"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.537255, 0.847059, 0.996078, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 3
+shadow_offset = Vector2(2, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_671tw"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.603922, 0.831373, 0.996078, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_size = 3
+shadow_offset = Vector2(-2, 0)
+
 [node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
 layout_mode = 3
@@ -307,7 +352,7 @@ anchor_bottom = 1.0
 offset_bottom = -3.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 1
 
 [node name="DamageUpgrade_I" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
 custom_minimum_size = Vector2(32, 32)
@@ -447,6 +492,7 @@ metadata/_edit_lock_ = true
 [node name="FrontLayer" type="CanvasLayer" parent="."]
 
 [node name="ShopTabs" parent="FrontLayer" instance=ExtResource("7_gmtxq")]
+mouse_filter = 1
 
 [node name="MainMenuButton" type="Button" parent="FrontLayer"]
 anchors_preset = 2
@@ -461,19 +507,6 @@ size_flags_vertical = 4
 theme = ExtResource("7_c7c56")
 text = "Main Menu"
 
-[node name="NetworkButton" type="Button" parent="FrontLayer"]
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 176.0
-offset_top = -49.0
-offset_right = 314.0
-offset_bottom = -17.0
-grow_vertical = 0
-size_flags_vertical = 4
-theme = ExtResource("7_c7c56")
-text = "Network"
-
 [node name="SkillInfoWindow" parent="FrontLayer" instance=ExtResource("8_xcpog")]
 unique_name_in_owner = true
 light_mask = 65
@@ -483,8 +516,82 @@ scale = Vector2(1e-05, 1e-05)
 pivot_offset = Vector2(130, 322)
 mouse_filter = 1
 
-[node name="CurrencyUI" parent="FrontLayer" instance=ExtResource("9_cs2ex")]
+[node name="CurrencyUI" type="Control" parent="FrontLayer"]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
 size_flags_horizontal = 4
+mouse_filter = 1
+script = ExtResource("10_edav8")
+
+[node name="PanelContainer" type="PanelContainer" parent="FrontLayer/CurrencyUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -390.0
+offset_top = 60.0
+offset_right = -14.0
+offset_bottom = 110.0
+grow_horizontal = 0
+theme = ExtResource("7_c7c56")
+theme_override_styles/panel = SubResource("StyleBoxFlat_36fx1")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FrontLayer/CurrencyUI/PanelContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="BitcoinContainer" type="PanelContainer" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_styles/panel = SubResource("StyleBoxFlat_jv3dh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/BitcoinContainer"]
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_constants/separation = 1
+
+[node name="TextureRect" type="TextureRect" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/BitcoinContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("11_wtkhu")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="BitcoinLabel" type="Label" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/BitcoinContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "500000"
+vertical_alignment = 1
+
+[node name="FiatContainer" type="PanelContainer" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_styles/panel = SubResource("StyleBoxFlat_671tw")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/FiatContainer"]
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_constants/separation = 1
+
+[node name="TextureRect" type="TextureRect" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/FiatContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("12_revff")
+
+[node name="FiatLabel" type="Label" parent="FrontLayer/CurrencyUI/PanelContainer/HBoxContainer/FiatContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("7_c7c56")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "545125451235"
+vertical_alignment = 1
 
 [connection signal="pressed" from="FrontLayer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="FrontLayer/NetworkButton" to="." method="_on_network_button_pressed"]

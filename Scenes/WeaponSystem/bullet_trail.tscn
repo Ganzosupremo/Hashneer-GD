@@ -12,3 +12,4 @@ width = 20.0
 width_curve = SubResource("Curve_2m5uk")
 antialiased = true
 script = ExtResource("1_jm8u7")
+max_length = 12

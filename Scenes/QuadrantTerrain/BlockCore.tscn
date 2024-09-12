@@ -1,0 +1,50 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqo2lrxl5di8o"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
+[ext_resource type="Texture2D" uid="uid://bkqkbj26vyaw7" path="res://Textures/Black Image.png" id="2_ikvkl"]
+[ext_resource type="Script" path="res://Scripts/Player/Health.gd" id="3_j3i4g"]
+
+[node name="BlockCore" type="StaticBody2D"]
+show_behind_parent = true
+light_mask = 128
+visibility_layer = 128
+z_index = -1
+position = Vector2(838, 501)
+collision_layer = 256
+collision_mask = 192
+script = ExtResource("1_dt8bo")
+placed_in_level = true
+poly_texture = ExtResource("2_ikvkl")
+polygon_shape = 4
+cir_radius = 150.0
+cir_smoothing = 2
+s_p_number = 20
+s_a = 23.62
+s_b = 51.81
+s_start_angle_deg = 45.0
+m = 13.625
+n1 = 38.905
+n2 = 47.04
+n3 = 58.99
+
+[node name="Health" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_j3i4g")
+initial_health = 100.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+
+[node name="Center" type="Polygon2D" parent="."]
+
+[node name="SlowDownTimer" type="Timer" parent="."]
+
+[node name="ShatterVisualizer" type="Polygon2D" parent="."]
+modulate = Color(0.69, 0.496, 0, 1)
+
+[node name="ShatterLine2D" type="Line2D" parent="ShatterVisualizer"]
+
+[connection signal="timeout" from="SlowDownTimer" to="." method="_on_slow_down_timer_timeout"]

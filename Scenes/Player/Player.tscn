@@ -1,9 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=9 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_y4psy"]
 [ext_resource type="Script" path="res://Scripts/Player/FireWeapon.gd" id="3_t6uvx"]
-[ext_resource type="PackedScene" uid="uid://cnb1ynx0kjav6" path="res://Scenes/Player/Bullet.tscn" id="4_6ooh6"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCamera.gd" id="4_dj2nu"]
 [ext_resource type="Script" path="res://Scripts/Player/ActiveWeapon.gd" id="5_4upeb"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
@@ -16,6 +15,7 @@ radius = 13.68
 collision_layer = 128
 collision_mask = 313
 script = ExtResource("1_ha4ea")
+speed = 300.0
 initial_weapon = ExtResource("6_vaewd")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
@@ -26,16 +26,23 @@ texture = ExtResource("2_y4psy")
 
 [node name="AdvancedCamera" type="Camera2D" parent="." groups=["Player"]]
 unique_name_in_owner = true
+zoom = Vector2(2.33, 2.33)
 script = ExtResource("4_dj2nu")
 
 [node name="BulletFirePosition" type="Marker2D" parent="." groups=["Player"]]
 unique_name_in_owner = true
-position = Vector2(20, -1)
+position = Vector2(20, 0)
+
+[node name="ShootEffectPosition" type="Marker2D" parent="BulletFirePosition"]
+unique_name_in_owner = true
+position = Vector2(-1, 0)
 
 [node name="FireWeapon" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_t6uvx")
-bullet_scene = ExtResource("4_6ooh6")
+
+[node name="FireCooldownTimer" type="Timer" parent="FireWeapon"]
+unique_name_in_owner = true
 
 [node name="ActiveWeapon" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -44,4 +51,4 @@ script = ExtResource("5_4upeb")
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("8_hdwmj")
-initial_power = 5000.0
+initial_health = 69.69

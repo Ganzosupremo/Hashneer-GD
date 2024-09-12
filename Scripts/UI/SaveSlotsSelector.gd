@@ -11,7 +11,7 @@ func _on_slot_button_pressed() -> void:
 	SaveSystem._load()
 	if SaveSystem.has_save_file(save_text1):
 		PersistenceDataManager.load_gam()
-	else: PersistenceDataManager.save_gam()
+	else: PersistenceDataManager.save_game()
 	goto_menu()
 
 func _on_slot_button_2_pressed() -> void:

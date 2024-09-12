@@ -1,7 +1,10 @@
 extends GPUParticles2D
-class_name BulletParticles
+class_name EffectParticles
 
-signal finished()
+@onready var _timer: Timer = %Timer
+
+func _ready() -> void:
+	emitting = false
 
 func init_particles(data: ParticleEffectDetails):
 	self.lifetime = data.lifetime
@@ -14,12 +17,8 @@ func init_particles(data: ParticleEffectDetails):
 	self.process_material = data.process_material
 
 func start_particles():
-	
-	var timer = get_tree().create_timer(lifetime)
+	_timer.start(lifetime)
 	emitting = true
-	
-	if timer.timeout:
-		emit_signal("finished")
 
 """
 This method is used to set the trail particles that the bullet leaves behind,
@@ -28,9 +27,7 @@ to init the particles on collision or for other purposes use the init_particles(
 func set_trail_particles(enabled: bool, _lifetime_randomness, _new_randomness):
 	if enabled: start_particles()
 	else: stop_particles()
-	
-#	self.randomness = new_randomness
-#	self.particle_process_material.lifetime_randomness = lifetime_randomness
+
 
 func stop_particles():
 	emitting = false
@@ -40,3 +37,6 @@ func set_particles_direction(to: Vector3):
 
 func set_particle_lifetime(new_lifetime: float):
 	self.lifetime = new_lifetime
+
+func _on_timer_timeout() -> void:
+	stop_particles()

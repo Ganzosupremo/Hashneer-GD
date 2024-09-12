@@ -102,11 +102,13 @@ icon_alignment = 1
 language = "en"
 script = ExtResource("4_7ftg5")
 levelto_load = ExtResource("5_j8gby")
-grid_size = Vector2(5, 5)
+quadrant_size = 200
+grid_size = Vector2(6, 6)
 colpol_texture = ExtResource("6_sjlrs")
 colpol_texture_after = ExtResource("7_4625o")
-quadrants_initial_health = 50.0
+quadrants_initial_health = 150.0
 drop_rate_multiplier = 1.0
+cuts = 200
 
 [node name="LevelSelectorButton2" type="Button" parent="ScrollContainer/Grid"]
 custom_minimum_size = Vector2(80, 80)

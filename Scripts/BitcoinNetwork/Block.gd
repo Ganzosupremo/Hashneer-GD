@@ -3,13 +3,13 @@ class_name BitcoinBlock extends Resource
 @export var miner: String = ""
 @export var height: int = 0
 @export var timestamp: String = ""
-@export var data: String = ""
-@export var previous_hash: String = "GENESIS BLOCK"
+@export var data: String = "BLOCK TEMPLATE"
+@export var previous_hash: String = ""
 @export var block_hash: String = ""
 @export var reward: float = 0.0
 @export var mined: bool = false
 
-func _init(_height: int = -1, _timestamp: String = "", _data: String = ""):
+func _init(_height: int = 0, _timestamp: String = "", _data: String = ""):
 	height = _height
 	timestamp = _timestamp
 	data = _data
@@ -27,4 +27,3 @@ func calculate_block_hash() -> String:
 	
 func _to_string() -> String:
 	return "Height: %s" % height + "\n\nTimestamp: %s" % timestamp + "\n\nHash: %s" % block_hash + "\n\nPrevious Hash: %s" % previous_hash + "\n\nData: %s" % data + "\n\nBlock Subsidy: %.2f" % reward
-

@@ -28,7 +28,6 @@ func update_skill_stats(data: SkillUpgradeData):
 		upgrade_data_list[data._id] = data
 
 func is_skill_unlocked(id: int) -> bool:
-
 	return upgrade_data_list[id].is_unlocked
 
 func unlock_skill(id: int):
@@ -40,6 +39,3 @@ static func get_instance() -> SkillsTree:
 func _on_main_menu_button_pressed() -> void:
 	PersistenceDataManager.save_game(true)
 	SceneManager.switch_scene("res://Scenes/UI/Main_game_ui.tscn")
-
-func _on_network_button_pressed() -> void:
-	SceneManager.switch_scene("res://Scenes/Miscelaneous/network_visualizer.tscn")

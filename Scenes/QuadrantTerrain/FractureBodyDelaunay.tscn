@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://crj8n15ft70nj"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FractureBodyDelaunay.gd" id="1_50onj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_04rpe"]
+friction = 0.2
+bounce = 0.4
+
+[node name="FractureBodyDelaunay" type="RigidBody2D"]
+collision_layer = 4
+collision_mask = 0
+mass = 0.001
+physics_material_override = SubResource("PhysicsMaterial_04rpe")
+gravity_scale = 0.0
+script = ExtResource("1_50onj")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="Center" type="Polygon2D" parent="."]
+
+[node name="Line2D" type="Line2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

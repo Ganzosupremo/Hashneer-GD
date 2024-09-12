@@ -4,6 +4,7 @@ class_name SkillUpgradeData
 signal next_tier_unlocked()
 signal upgrade_maxed()
 
+## Deprecated
 enum SkillType {
 	DAMAGE_UPGRADE1,
 	DAMAGE_UPGRADE2,
@@ -17,7 +18,7 @@ enum SkillType {
 }
 
 @export_category("Upgrade Base")
-## Used internally to keep track of unlocked skills
+## Deprecated. Used internally to keep track of unlocked skills
 @export var skill_type: SkillType
 ## Used in the Game UI
 @export var upgrade_name: String = ""

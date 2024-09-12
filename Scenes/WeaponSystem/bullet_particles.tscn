@@ -1,6 +1,7 @@
 [gd_scene load_steps=19 format=3 uid="uid://dyoejfjm6wxw2"]
 
 [ext_resource type="Script" path="res://Scripts/WeaponSystem/BulletParticles.gd" id="1_8o0vt"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_hmtuq"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8u631"]
 particles_animation = true
@@ -8,75 +9,81 @@ particles_anim_h_frames = 6
 particles_anim_v_frames = 1
 particles_anim_loop = false
 
-[sub_resource type="Curve" id="Curve_mjyyu"]
+[sub_resource type="Curve" id="Curve_7rtf8"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_kfp7m"]
+curve = SubResource("Curve_7rtf8")
+
+[sub_resource type="Gradient" id="Gradient_kg27v"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_aon5r"]
+gradient = SubResource("Gradient_kg27v")
+
+[sub_resource type="Curve" id="Curve_5sjrm"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_rw1dr"]
+curve = SubResource("Curve_5sjrm")
+
+[sub_resource type="Curve" id="Curve_haijc"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jhn0u"]
+curve = SubResource("Curve_haijc")
+
+[sub_resource type="Curve" id="Curve_gtffr"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_oinri"]
-curve = SubResource("Curve_mjyyu")
+[sub_resource type="CurveTexture" id="CurveTexture_ynkcf"]
+curve = SubResource("Curve_gtffr")
 
-[sub_resource type="Gradient" id="Gradient_7we12"]
-offsets = PackedFloat32Array(0.0934066, 0.197802, 0.401099, 0.582418, 0.785714, 0.989011)
-colors = PackedColorArray(0.893481, 0.396336, 3.85046e-07, 1, 1, 1, 0, 1, 0.773831, 0.57548, 5.77569e-07, 1, 0.906038, 0.255276, 0.185241, 1, 0, 0, 0, 0.721569, 0.180392, 0.607843, 0.517647, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_84kin"]
-gradient = SubResource("Gradient_7we12")
-
-[sub_resource type="Curve" id="Curve_s0c1e"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_o7y8i"]
-curve = SubResource("Curve_s0c1e")
-
-[sub_resource type="Curve" id="Curve_b8q32"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_ojdaj"]
-curve = SubResource("Curve_b8q32")
-
-[sub_resource type="Curve" id="Curve_8co5o"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_t3yqe"]
-curve = SubResource("Curve_8co5o")
-
-[sub_resource type="Curve" id="Curve_nbpib"]
-_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_0gvub"]
-curve = SubResource("Curve_nbpib")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ov6d7"]
-lifetime_randomness = 0.25
-particle_flag_disable_z = true
-gravity = Vector3(0, 1, 0)
-initial_velocity_min = 1.0
-initial_velocity_max = 50.0
-angular_velocity_max = 30.0
-angular_velocity_curve = SubResource("CurveTexture_oinri")
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-linear_accel_max = 30.0
-linear_accel_curve = SubResource("CurveTexture_ojdaj")
-radial_accel_max = 10.0
-damping_min = 20.0
-damping_max = 69.0
-damping_curve = SubResource("CurveTexture_o7y8i")
-angle_max = 180.0
-scale_max = 10.0
-scale_curve = SubResource("CurveTexture_t3yqe")
-color_ramp = SubResource("GradientTexture1D_84kin")
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u4870"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_min = 40.0
+initial_velocity_max = 100.0
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+angular_velocity_curve = SubResource("CurveTexture_kfp7m")
+gravity = Vector3(0, -15, 0)
+linear_accel_min = 40.0
+linear_accel_max = 100.0
+radial_accel_min = 50.0
+radial_accel_max = 100.0
+damping_min = 2.0
+damping_max = 5.0
+damping_curve = SubResource("CurveTexture_rw1dr")
+scale_min = 0.4
+scale_curve = SubResource("CurveTexture_jhn0u")
+color_ramp = SubResource("GradientTexture1D_aon5r")
 turbulence_enabled = true
-turbulence_noise_strength = 5.0
+turbulence_noise_strength = 2.0
 turbulence_noise_speed = Vector3(10, 10, 0)
-turbulence_noise_speed_random = 0.69
-turbulence_influence_min = 0.3
-turbulence_influence_max = 0.69
-turbulence_influence_over_life = SubResource("CurveTexture_0gvub")
+turbulence_noise_speed_random = 0.54
+turbulence_influence_min = 0.2
+turbulence_influence_max = 0.34
+turbulence_initial_displacement_max = 9.0
+turbulence_influence_over_life = SubResource("CurveTexture_ynkcf")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_di4fx"]
+atlas = ExtResource("1_hmtuq")
+region = Rect2(137, 7, 108, 100)
+filter_clip = true
 
 [sub_resource type="Animation" id="Animation_qhxj8"]
 length = 0.001
@@ -136,15 +143,20 @@ visibility_layer = 32
 z_index = 2
 material = SubResource("CanvasItemMaterial_8u631")
 emitting = false
-amount = 69
-process_material = SubResource("ParticleProcessMaterial_ov6d7")
-speed_scale = 2.5
-randomness = 0.5
+amount = 125
+process_material = SubResource("ParticleProcessMaterial_u4870")
+texture = SubResource("AtlasTexture_di4fx")
+explosiveness = 1.0
 visibility_rect = Rect2(100, 100, 400, 400)
 script = ExtResource("1_8o0vt")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "auto_bullets"
 libraries = {
 "": SubResource("AnimationLibrary_dxyo0")
 }
+autoplay = "auto_bullets"
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

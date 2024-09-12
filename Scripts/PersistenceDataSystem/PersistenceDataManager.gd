@@ -7,7 +7,6 @@ func _ready() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		print("game saved!")
 		save_game(true)
 
 func find_all_persistence_objects() -> Array:
@@ -25,7 +24,13 @@ func save_game(save_to_disk: bool = false) -> void:
 	if save_to_disk:
 		SaveSystem.save()
 
-func _save_resource(game_data: GameData, full_path: String):
+func load_game() -> void:	
+	persistence_data_objects = find_all_persistence_objects()
+	
+	for node in persistence_data_objects:
+		node.load_data()
+
+func _save_resource(game_data: GameData, _full_path: String):
 	SaveSystem.set_var("game_data", game_data)
 
 ## Incomplete function
@@ -39,11 +44,7 @@ func _save_resource(game_data: GameData, full_path: String):
 #	game_saved.store_line(json_string)
 #	game_saved.close()
 
-func load_gam() -> void:	
-	persistence_data_objects = find_all_persistence_objects()
-	
-	for node in persistence_data_objects:
-		node.load_data()
+
 
 ## Incomplete function
 #func _load_data() -> Dictionary:

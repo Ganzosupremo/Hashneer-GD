@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://ductry01t7u50"]
 
-[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/SmokeEffect.png" id="1_8o1vk"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_8o1vk"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pvwpc"]
 blend_mode = 1

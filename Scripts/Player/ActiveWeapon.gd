@@ -1,17 +1,16 @@
-extends Node2D
-class_name ActiveWeapon
+class_name ActiveWeapon extends Node2D
 
-@onready var player = $".."
+signal weapon_setted(weapon:WeaponDetails)
 
-var current_weapon: WeaponDetails
-var weapons_array: Array = [WeaponDetails]
+var _current_weapon: WeaponDetails
 
 func set_weapon(weapon: WeaponDetails) -> void:
-	current_weapon = weapon
-	weapons_array.append(weapon)
+	_current_weapon = weapon
+	emit_signal("weapon_setted", weapon)
+	print_rich("Weapon_setted signal emitted")
 
 func get_current_ammo() -> AmmoDetails:
-	return current_weapon.ammo_details
+	return _current_weapon.ammo_details
 
 func get_current_weapon() -> WeaponDetails:
-	return current_weapon
+	return _current_weapon

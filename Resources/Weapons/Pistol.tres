@@ -1,20 +1,116 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=3 format=3 uid="uid://bivptbtajsp46"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://bivptbtajsp46"]
 
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
 [ext_resource type="Script" path="res://Scripts/WeaponSystem/WeaponDetails.gd" id="1_shj3m"]
+[ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_4wys5"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="3_o651b"]
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/ParticleEffectDetails.gd" id="4_886ne"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_avrey"]
+atlas = ExtResource("3_o651b")
+region = Rect2(0, 0, 123, 127)
+
+[sub_resource type="Curve" id="Curve_f1m5t"]
+min_value = -360.0
+max_value = 360.0
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_td3m7"]
+curve = SubResource("Curve_f1m5t")
+
+[sub_resource type="Gradient" id="Gradient_ntw6v"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_m0v6q"]
+gradient = SubResource("Gradient_ntw6v")
+
+[sub_resource type="Curve" id="Curve_oqk8h"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_vpkkv"]
+curve = SubResource("Curve_oqk8h")
+
+[sub_resource type="Curve" id="Curve_yepqe"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.501538, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_7oww4"]
+curve = SubResource("Curve_yepqe")
+
+[sub_resource type="Curve" id="Curve_f4m08"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_etvnl"]
+curve = SubResource("Curve_f4m08")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k6clo"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_min = 40.0
+initial_velocity_max = 100.0
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+angular_velocity_curve = SubResource("CurveTexture_td3m7")
+gravity = Vector3(0, -15, 0)
+linear_accel_min = 40.0
+linear_accel_max = 100.0
+radial_accel_min = 50.0
+radial_accel_max = 100.0
+damping_min = 2.0
+damping_max = 5.0
+damping_curve = SubResource("CurveTexture_vpkkv")
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_7oww4")
+color_ramp = SubResource("GradientTexture1D_m0v6q")
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.54
+turbulence_influence_min = 0.2
+turbulence_influence_max = 0.34
+turbulence_initial_displacement_max = 9.0
+turbulence_influence_over_life = SubResource("CurveTexture_etvnl")
+
+[sub_resource type="Resource" id="Resource_ovwwj"]
+script = ExtResource("4_886ne")
+amount = 125
+lifetime = 1.5
+one_shot = true
+speed_scale = 1.0
+explosiveness = 1.0
+randomness = 0.3
+particle_texture = SubResource("AtlasTexture_avrey")
+process_material = SubResource("ParticleProcessMaterial_k6clo")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_soxot"]
+atlas = ExtResource("3_4wys5")
+region = Rect2(4, 0, 24, 14)
 
 [resource]
 script = ExtResource("1_shj3m")
 weapon_name = "Pistol"
+weapon_texture = SubResource("AtlasTexture_soxot")
 ammo_details = ExtResource("1_4witc")
+weapon_shoot_effect = SubResource("Resource_ovwwj")
 fire_rate = 0.25
 precharge_time = 0.0
 spread_min = 0.0
-spread_max = 0.001
-shake_strength = 3.0
-shake_decay = 15.0
+spread_max = 0.014
+shake_strength = 1.5
+shake_decay = 10.0
 bullet_damage = 25.0
-bullet_speed = 1000.0
+bullet_speed = 600.0
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.0

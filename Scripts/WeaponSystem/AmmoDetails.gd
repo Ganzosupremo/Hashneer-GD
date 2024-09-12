@@ -17,7 +17,7 @@ class_name AmmoDetails
 @export var bullets_per_shoot_max: int = 1
 ## A delay between bullet spawn, a random value will be selected between the min and max
 @export_range(0.0, 0.25) var bullet_spawn_interval_min: float = 0.0
-## A delay between bullet spawn, a random value will be selected between the min and max
+"""A delay between bullet spawn, a random value will be selected between the min and max"""
 @export_range(0.0, 0.25) var bullet_spawn_interval_max: float = 0.0
 
 @export_category("On Collision Particle Effect")
@@ -34,4 +34,3 @@ class_name AmmoDetails
 @export_range(0.0, 1.0) var randomness: float = 0.5
 ## Particle lifetime randomness ratio, escales the lifetime of it's original value
 @export_range(0.0, 1.0) var lifetime_randomness = 0.25
-

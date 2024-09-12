@@ -39,7 +39,7 @@ const float lineSpeed = 1.0 * overallSpeed;
 vec4[2] drawBG(vec4 _lineColor) {
 	vec4 c1 = vec4(_lineColor * 0.5);
 	vec4 c2 = vec4(_lineColor - vec4(0.2,0.2,0.7,1.0));
-	
+
 	vec4[] toReturn = {c1, c2};
 	return toReturn;
 }
@@ -80,7 +80,7 @@ float getPlasmaY(float x, float horizontalFade, float offset)
 
 void fragment() {
 	vec4[] bgColors = drawBG(lineColor);
-	
+
 	vec2 uv = FRAGCOORD.xy.xy / (1.0/SCREEN_PIXEL_SIZE).xy;
     vec2 space = (FRAGCOORD.xy - (1.0/SCREEN_PIXEL_SIZE).xy / 2.0) / (1.0/SCREEN_PIXEL_SIZE).x * 2.0 * scale;
 
@@ -92,7 +92,7 @@ void fragment() {
     space.x += random(space.y * warpFrequency + TIME * warpSpeed + 2.0) * warpAmplitude * horizontalFade;
 
     vec4 lines = vec4(0);
-	
+
 	for (int l = 0; l < linesPerGroup; l++)
     {
         float normalizedLineIndex = float(l) / float(linesPerGroup);
@@ -111,7 +111,7 @@ void fragment() {
         line = line + circle;
         lines += line * lineColor * rand;
     }
-	
+
 	COLOR = mix(bgColors[0], bgColors[1], uv.x);
     COLOR *= verticalFade;
     COLOR.a = 1.0;

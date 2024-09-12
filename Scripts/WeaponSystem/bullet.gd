@@ -3,7 +3,7 @@ class_name BulletC
 
 @onready var destruction_polygon: CollisionPolygon2D = %ExplosionPolygon
 @onready var gfx = %GFX
-@onready var trail_particles: BulletParticles = %BulletTrailParticles
+@onready var trail_particles: EffectParticles = %BulletTrailParticles
 @onready var trail: BulletTrail = %BulletTrail
 @onready var colli_par_scene: PackedScene = preload("res://Scenes/WeaponSystem/bullet_particles.tscn")
 
@@ -39,11 +39,11 @@ func move_ammo(delta: float):
 	var distance_vector = bullet_speed * delta * direction
 	self.position += distance_vector
 
-func _on_area_entered(area: Area2D) -> void:
-	if area is BlockCore:
-		if area.take_damage(bullet_damage, false) == true:
-			var block = build_block()
-			area.mine_core("player", block)
+#func _on_area_entered(area: Area2D) -> void:
+	#if area is BlockCore:
+		#if area.take_damage(bullet_damage, false) == true:
+			#var block = build_block()
+			#area.mine_core("player", block)
 
 func build_block() -> BitcoinBlock:
 	var ins = BitcoinBlock.new(GameManager.builder_args.level_index, Time.get_datetime_string_from_system(false, true), "Block mined by the Player")
@@ -64,12 +64,9 @@ func _on_body_entered(body: Node2D) -> void:
 	gfx.visible = false
 	explode(body)
 
-func explode(body: Node2D):
+func explode(_body: Node2D):
 	spawn_hit_effect()
 	
-#	if body != null && body.is_in_group("QuadrantTerrain"):
-#		quadrant_builder.carve(destruction_polygon.global_position, destruction_polygon, bullet_damage)
-
 	if quadrant_builder != null:
 		quadrant_builder.carve(destruction_polygon.global_position, destruction_polygon, bullet_damage)
 		queue_redraw()
@@ -97,20 +94,18 @@ func set_bullet_lifetime(min_lifetime: float = 1.0, max_lifetime: float = 2.0) -
 	timer.one_shot = true
 	timer.timeout.connect(func(): queue_free())
 	timer.start()
-	
-	# start the particles
-	trail_particles.set_particle_lifetime(lifetime)
-	trail_particles.start_particles()
 
 func set_bullet_trail(enabled: bool, length: int, gradient: Gradient):
 	trail.set_trail(enabled, length, gradient)
 
-func set_bullet_particles(enabled: bool, lifetime_randomness = 0.5, randomness = 0.5) -> void:
-	trail_particles.set_trail_particles(enabled, lifetime_randomness, randomness)
+func set_bullet_particles(enabled: bool = true, lifetime_randomness = 0.5, randomness = 0.5) -> void:
+	trail_particles.randomness = randomness
+	trail_particles.process_material.lifetime_randomness = lifetime_randomness
+	trail_particles.emitting = enabled
 
 func set_bullet_direction(to_direction: Vector2) -> void:
 	direction = to_direction
-	trail_particles.set_particles_direction(Vector3(to_direction.x, to_direction.y, 0.0))
+	trail_particles.process_material.direction = (Vector3(-to_direction.x, -to_direction.y, 0.0))
 
 func set_destruction_polygon_size(radius: float = 50.0) -> void:
 	var number_points : int = 16

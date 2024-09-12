@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://ckhd13abglk4l"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/CutShapeVisualizer.gd" id="1_pmyhj"]
+
+[node name="Polygon2D" type="Polygon2D"]
+script = ExtResource("1_pmyhj")
+start_color = Color(0.890827, 0.467498, 0.271692, 1)
+end_color = Color(0.886275, 0.419608, 0.180392, 0.164706)

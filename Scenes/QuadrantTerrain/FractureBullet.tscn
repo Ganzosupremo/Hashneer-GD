@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsj51dud0foww"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FractureBullet.gd" id="1_fp570"]
+
+[node name="FractureBullet" type="RigidBody2D"]
+collision_layer = 64
+collision_mask = 312
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 1
+script = ExtResource("1_fp570")
+radius = 10.0
+speed = 500.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="CollisionDetection" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 313
+
+[node name="CollisionDetectionPolygon" type="CollisionPolygon2D" parent="CollisionDetection"]
+unique_name_in_owner = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

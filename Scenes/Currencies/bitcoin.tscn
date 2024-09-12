@@ -77,11 +77,12 @@ _data = {
 }
 
 [node name="Bitcoin" type="Sprite2D"]
+visible = false
 texture = SubResource("AtlasTexture_nwlr6")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "normal_anim"
-speed_scale = 8.0
 libraries = {
 "": SubResource("AnimationLibrary_kivxg")
 }
+autoplay = "normal_anim"
+speed_scale = 8.0

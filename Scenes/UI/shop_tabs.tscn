@@ -19,18 +19,16 @@ corner_radius_bottom_left = 5
 
 [node name="ShopTabs" type="Control"]
 layout_mode = 3
-anchors_preset = 15
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("1_s3jnk")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 81.0
+offset_bottom = 50.0
 grow_horizontal = 2
 theme = ExtResource("1_1f6qi")
 theme_override_styles/panel = SubResource("StyleBoxFlat_tur2x")
@@ -41,14 +39,15 @@ theme = ExtResource("1_1f6qi")
 alignment = 1
 
 [node name="Skill Tree" type="Button" parent="PanelContainer/HBoxContainer"]
-custom_minimum_size = Vector2(150, 60)
+custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 theme = ExtResource("1_1f6qi")
 text = "Skill Tree"
 script = ExtResource("3_6gawp")
 
 [node name="Network" type="Button" parent="PanelContainer/HBoxContainer"]
-custom_minimum_size = Vector2(150, 60)
+visible = false
+custom_minimum_size = Vector2(150, 40)
 layout_mode = 2
 theme = ExtResource("1_1f6qi")
 text = "Network"

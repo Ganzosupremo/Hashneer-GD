@@ -38,7 +38,7 @@ func _ready() -> void:
 func d() -> void:
 	var t = Timer.new()
 	add_child(t)
-	t.wait_time = 1.0
+	t.wait_time = 0.15
 	t.one_shot = true
 	t.start()
 
@@ -48,7 +48,6 @@ func d() -> void:
 	await get_tree().process_frame
 	if upgrade_data.check_upgrade_maxed_out():
 		on_upgrade_maxed()
-	print("time's up!")
 
 func _enter_tree() -> void:
 # for the time being, this function can be called here

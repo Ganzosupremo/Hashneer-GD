@@ -8,10 +8,14 @@ extends Node2D
 var block: BitcoinBlock = null
 
 func _ready() -> void:
+#	await QuadrantBuilder.get_instance().map_builded
+#	await get_tree().get_first_node_in_group("QuadrantBuilder").map_builded
+	
+	
 	ai_timer.timeout.connect(on_timeout)
+	#ai_timer.start()
 	BitcoinNetwork.block_core_destroyed.connect(on_block_core_destroyed)
-	GameManager.player.health.zero_power.connect(on_zero_power)
-	ai_timer.start()
+	GameManager.player.get_health_node().zero_health.connect(on_zero_power)
 
 func on_zero_power() -> void:
 	stop_mining()
@@ -37,3 +41,7 @@ func build_block() -> BitcoinBlock:
 	return ins
 
 
+func _on_quadrant_builder_map_builded() -> void:
+	#GameManager.player.health.zero_power.connect(on_zero_power)
+	#ai_timer.start()
+	pass

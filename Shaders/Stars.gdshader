@@ -25,7 +25,7 @@ void fragment() {
 		float r = rand(SCREEN_UV.xy);
 		color = r * (0.85 * sin(TIME * (r * 5.0) + 720.0 * r) + 0.95);
 	}
-	
+
 //	vec4 speed = texture(bg_color, 2.0 * TIME);
 //
 	COLOR = vec4(vec3(color),1.0) + bg_color;

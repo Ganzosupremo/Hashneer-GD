@@ -23,7 +23,7 @@ mat2 rot_dist(float s, float d)
 #define stepsize 0.010
 #define zoom   0.800
 #define tile   0.850
-#define speed_kali  0.01 
+#define speed_kali  0.01
 #define brightness 0.003
 #define darkmatter 0.800
 #define distfading 0.800
@@ -37,7 +37,7 @@ vec3 kali_stars(vec3 from, vec3 dir){
 		vec3 p=from+s*dir*.5;
 		p = abs(vec3(tile)-mod(p,vec3(tile*2.))); // tiling fold
 		float pa,a=pa=0.;
-		for (int i=0; i<iterations; i++) { 
+		for (int i=0; i<iterations; i++) {
 			p=abs(p)/dot(p,p)-formuparam; // the magic formula
 			a+=abs(length(p)-pa); // absolute sum of average change
 			pa=length(p);
@@ -72,7 +72,7 @@ void fragment()
 	float dist = distance(uvp, center);
     float idist = 1.0 - dist;
     vec2 dir = normalize(uv - center);
-    
+
     // Mask
     float m = step(.06, dist);
     m *= smoothstep(.065, .08, dist);
@@ -83,11 +83,11 @@ void fragment()
     float speed = -0.06;
     float phase1 = fract(TIME * speed + .5);
     float phase2 = fract(TIME * speed);
-    
+
     float pidist = pow(idist, 2.3);
     vec2 uv1 = (dir * pidist * .2) + phase1 * dir;
     vec2 uv2 = (dir * pidist * .2) + phase2 * dir;
-    
+
     // Samplings
     float lerp = abs((.5 - phase1) / .5);
     float sampling1 = texture(iChannel0, uv1 * rot_dist(2.4, idist)).r;
@@ -95,25 +95,25 @@ void fragment()
 
  	float sampling3 = texture(iChannel0, uv1 * 2. * rot_dist(2.6, idist)).g;
     float sampling4 = texture(iChannel0, uv2 * 2. * rot_dist(2.6, idist)).g;
-    
+
     float sampling5 = texture(iChannel1, uv1 * rot_dist(4.6, idist) * .4).r;
     float sampling6 = texture(iChannel1, uv2 * rot_dist(4.6, idist) * .6).r;
-	
+
 //	float stars = (1. - smoothstep(0.22, 0.34, mix(sampling3, sampling4, lerp))) * 0.4;
-	
+
 	vec3 kali_dir=vec3(SCREEN_UV * zoom *0.2, 0.1);
 	vec3 from=vec3(1.0,0.5,0.5);
 	from+=vec3(TIME * 0.001,TIME * 0.001, -2.0);
 	vec3 kali_star = kali_stars(from, kali_dir);
-	
+
 	  vec3 sp = mix(sampling1, sampling2, lerp) * vec3(1.);
     sp *= 0.2;
    	sp += kali_star * vec3(0.13, 0.31, 0.46);
     sp += smoothstep(0.26, 0.14, mix(sampling5, sampling6, lerp)) * vec3(0.7) * pow(idist, 8.) * ringOuterColor;
-	
+
  	vec3 finalSamp = sp;
     vec3 col = ringColor * pow(1.0 - dist, 7.);
     float ring = pow(smoothstep(.32, .08, dist * 1.5) * 3.5, 2.8) + 1.0;
-	
+
 	COLOR = vec4(finalSamp * mask + 1.2 * ring * mask * finalSamp * col, 1.0);
 }

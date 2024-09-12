@@ -1,10 +1,4 @@
-extends Node2D
-class_name UpdradesM
-
-
-#const implements = [
-#	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
-#]
+class_name UpdradesM extends Node2D
 
 ## Checks if the skill is already unlocked
 func is_skill_unlocked(data) -> bool:

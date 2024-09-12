@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg51o3dcb5mrm"]
+
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
+[ext_resource type="Script" path="res://Scripts/Player/Health.gd" id="2_56ed8"]
+
+[node name="StaticBody2D" type="StaticBody2D"]
+collision_layer = 8
+collision_mask = 248
+script = ExtResource("1_obgke")
+
+[node name="Health" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("2_56ed8")
+initial_health = 200.0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+
+[node name="Center" type="Polygon2D" parent="."]

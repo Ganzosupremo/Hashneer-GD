@@ -2,9 +2,7 @@ extends CharacterBody2D
 class_name PlayerController
 
 @export var speed : float = 200.0
-@export var bullet_scene : PackedScene = preload("res://Scenes/Player/Bullet.tscn")
 @export var initial_weapon: WeaponDetails
-@export var enable_auto_fire : bool = false
 
 var auto_fire_timer : Timer
 var auto_fire_delay : float = 1.5
@@ -13,40 +11,34 @@ var weapons_array: Array
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeapon = %FireWeapon
 @onready var active_weapon: ActiveWeapon = %ActiveWeapon
-@onready var health: Health = %Health
+@onready var _health: Health = %Health
 @onready var camera = %AdvancedCamera
+@onready var _bullets_pool: PoolFracture = $"../Pool_FractureBullets"
+@onready var _fracurable_test: Node2D = $".."
 
-var other_collider : Node2D
-var quadrant_terrain: QuadrantBuilder
 var fired_previous_frame: bool = false
 var can_move: bool = true
+var quadrant_builder: QuadrantBuilder
+
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
-
-func _ready():
+func _ready() -> void:
 	GameManager.player = self
-	PersistenceDataManager.load_gam()
+	PersistenceDataManager.load_game()
 	speed += add_speed_upgrades()
-	health.zero_power.connect(on_zero_power)
+	_health.zero_health.connect(on_zero_power)
+	quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
 	set_weapon()
 	
-	if enable_auto_fire: set_auto_fire_timer()
-
-func set_weapon():
+func set_weapon() -> void:
 	active_weapon.set_weapon(initial_weapon)
-	weapons_array = [WeaponDetails]
+	weapons_array = []
 	weapons_array.append(initial_weapon)
-
-func set_auto_fire_timer() -> void:
-	auto_fire_timer = Timer.new()
-	add_child(auto_fire_timer)
-	auto_fire_timer.wait_time = auto_fire_delay
-	auto_fire_timer.one_shot = false
-	auto_fire_timer.timeout.connect(Callable(self, "auto_fire"))
-	auto_fire_timer.start()
+	for i in weapons_array.size():
+		weapons_array[i].weapon_list_index = i
 
 func _process(_delta: float) -> void:
 	if !can_move: return
@@ -54,8 +46,11 @@ func _process(_delta: float) -> void:
 	fire()
 	look_at(get_global_mouse_position())
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void:
 	move()
+
+
+## ------------ INPUT FUNCTIONS ------------------------------------
 
 func move() -> void:
 	var direction_horizontal : float = Input.get_axis("Move_left", "Move_right")
@@ -94,23 +89,38 @@ func add_speed_upgrades() -> float:
 		
 	return total
 
-func fire():
-	if enable_auto_fire == true:
-		fire_weapon.emit_signal("fire_weapon", true, fired_previous_frame)
-		return
-	
+func fire() -> void:
 	if Input.is_action_pressed("Fire"):
 		fire_weapon.emit_signal("fire_weapon", true, fired_previous_frame)
 		fired_previous_frame = true
 	else:
 		fired_previous_frame = false
 
-func auto_fire() -> void:
-	if !enable_auto_fire: return
-	fire()
+## ------------------------------------------
+## SETTERS AND GETTERS
+
+func get_initial_health() -> float:
+	return _health.get_initial_health()
+
+func get_current_health() -> float:
+	return _health.get_current_health()
+
+func get_health_node() -> Health:
+	return _health
+
+func get_player_camera() -> PlayerCamera:
+	return camera
+
+func get_active_weapon_node() -> ActiveWeapon:
+	return active_weapon
+
+func get_current_weapon() -> WeaponDetails:
+	return get_active_weapon_node().get_current_weapon()
+
+## ----------- PERSISTENCE DATA FUNCTIONS --------------------------------------
 
 func save_data():
-	var data: PlayerData = PlayerData.new(speed, health.initial_power, active_weapon.get_current_weapon(), active_weapon.weapons_array)
+	var data: PlayerData = PlayerData.new(speed, _health.get_initial_health(), active_weapon.get_current_weapon(), active_weapon.weapons_array)
 	SaveSystem.set_var("player_data", data)
 #	data.player_data.current_weapon = active_weapon.get_current_weapon()
 #	data.player_data.weapons_array = weapons_array
@@ -119,4 +129,3 @@ func load_data():
 	var data = SaveSystem.get_var("player_data")
 	active_weapon.set_weapon(data["current_weapon"])
 	weapons_array = data["weapons_array"]
-

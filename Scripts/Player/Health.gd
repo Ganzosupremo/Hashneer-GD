@@ -1,41 +1,43 @@
 extends Node2D
 class_name Health
 
-signal zero_power()
+signal zero_health()
 signal damage_taken(damage_dealt: float)
 
-@export var initial_power: float = 50.0
+@export var initial_health: float = 50.0
 
-var current_power: float = 0.0
+var current_health: float = 0.0
 
 func _ready() -> void:
-	initial_power += add_health_upgrades()
-	current_power = initial_power
+	current_health = initial_health
 	GameManager.quadrant_hitted.connect(on_quadrant_hitted)
 
-func add_health_upgrades() -> float:
-	var total: float = 0.0
-	var golden = "Golden Shell"
-	var silver = "Silver Shell"
-	var copper = "Copper Shell"
-	total += UpgradesManager.get_skill_power(copper)
-	total += UpgradesManager.get_skill_power(silver)
-	total += UpgradesManager.get_skill_power(golden)
-	
-	return total
+func set_initial_health(new_health: float):
+	initial_health = new_health
+	current_health = initial_health
+
+func increase_max_health(new_max: float) -> void:
+	initial_health = new_max
+	current_health = initial_health
 
 func on_quadrant_hitted(deal_damage: float) -> void:
-	substract_power(deal_damage)
+	substract_health(deal_damage)
 
-func substract_power(deal_damage: float) -> void:
-	current_power -= deal_damage
-	emit_signal("damage_taken", deal_damage)
+func heal(amount_to_heal: float) -> void:
+	current_health += amount_to_heal
 	
-	if current_power <= 0.0:
-		emit_signal("zero_power")
+	if current_health >= initial_health:
+		current_health = initial_health
 
-func get_current_power() -> float:
-	return current_power
+func substract_health(damage: float) -> void:
+	current_health -= damage
+	emit_signal("damage_taken", damage)
+	
+	if current_health <= 0.0:
+		emit_signal("zero_health")
 
-func get_initial_power() -> float:
-	return initial_power
+func get_current_health() -> float:
+	return current_health
+
+func get_initial_health() -> float:
+	return initial_health

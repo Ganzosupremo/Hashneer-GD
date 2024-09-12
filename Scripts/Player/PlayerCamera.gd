@@ -1,5 +1,4 @@
-extends Camera2D
-class_name PlayerCamera
+class_name PlayerCamera extends Camera2D
 
 var random_strength = 30.0
 var shake_decay = 5.0

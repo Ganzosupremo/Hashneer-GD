@@ -8,13 +8,13 @@ var info_window
 func _ready() -> void:
 	info_window = get_node_or_null("../SkillInfoWindow")
 	_set_textes()
-#	BitcoinNetwork.reward_issued.connect(on_reward_issued)
-#	BitcoinWallet.money_printer_goes.connect(on_money_printed)
+	BitcoinNetwork.reward_issued.connect(on_reward_issued)
+	#BitcoinWallet.money_printer_goes.connect(on_money_printed)
 	BitcoinWallet.money_changed.connect(on_money_changed)
 	
-#	if info_window != null:
-#		info_window.opened.connect(hide_ui)
-#		info_window.closed.connect(show_ui)
+	if info_window != null:
+		info_window.opened.connect(hide_ui)
+		info_window.closed.connect(show_ui)
 
 func _set_textes() -> void:
 	btc_label.text = "%.2f" % BitcoinWallet.get_bitcoin_balance()
@@ -36,5 +36,5 @@ func on_money_changed(amount_changed, is_bitcoin: bool) -> void:
 	else:
 		btc_label.text = "%.2f" % amount_changed
 
-func on_money_printed(stock_amount: float):
-	fiat_label.text = "%.2f" % stock_amount
+#func on_money_printed(stock_amount: float):
+	#fiat_label.text = "%.2f" % stock_amount

@@ -23,19 +23,15 @@ const implements = [
 
 func _ready():
 	chain.clear()
-	current_reward = get_block_subsidy()
-	create_genesis_block()
-	connect("block_core_destroyed", on_block_core_destroyed)
+	_create_genesis_block()
+	block_core_destroyed.connect(on_block_core_destroyed)
 
-func on_block_core_destroyed(_chain_tip: int, miner: String, block: BitcoinBlock):
+func on_block_core_destroyed(miner: String, block: BitcoinBlock):
 	mine_block(miner, block)
 
-func create_genesis_block() -> void:
-	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Genesis Block")
-	chain.append(genesis_block)
-	mine_block("Genesis", genesis_block, true)
+## ---------------------- PUBLIC FUNCTIONS ---------------------------
 
-## mines and adds the new block to the chain
+"""Mines and adds the new block to the chain"""
 func mine_block(miner: String, block: BitcoinBlock, genesis: bool = false) -> bool:
 	# Check if mining should be stopped right away
 	if _check_mining_stopped(block, genesis):
@@ -51,8 +47,21 @@ func mine_block(miner: String, block: BitcoinBlock, genesis: bool = false) -> bo
 	if !genesis: 
 		_add_block_to_chain(block)
 	
-	block.reward = _issue_block_reward(miner)
+	block.reward = _get_block_subsidy()
+	_issue_block_reward(miner)
 	return true
+
+func get_latest_block() -> BitcoinBlock:
+	if chain.size() > 0:
+		return chain.back()
+	else: return BitcoinBlock.new()
+
+## ---------------- INTERNAL FUNCTIONS ---------------------------------
+
+func _create_genesis_block() -> void:
+	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Genesis Block")
+	chain.append(genesis_block)
+	mine_block("Genesis", genesis_block, true)
 
 """
 Checks if the new block is valid and hasn't been mined before, returns true if block has
@@ -77,37 +86,47 @@ func _check_mining_stopped(new_block: BitcoinBlock, genesis: bool = false) -> bo
 	
 	return false
 
-## adds the block to the chain, this method should not be called outside the mine_block() function
+"""Adds the block to the chain."""
 func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 	chain.append(new_block)
 
-## issues the block reward to the miner that mined the block, i.e the player or the ai.
-## should not be called outside the mine_block function
+"""Issues the block reward to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String) -> float:
-	var btc_reward = get_block_subsidy()
+	var btc_reward: float = _get_block_subsidy()
 	
 	if miner == "player":
 		emit_signal("reward_issued", btc_reward)
 	elif miner == "AI":
 		coins_lost += btc_reward
 		print("Reward issued to the AI")
-
+	
 	return btc_reward
 
-func get_latest_block():
-	if chain.size() > 0:
-		return chain.back()
-	else: return null
-
-func get_block_subsidy() -> float:
+func _get_block_subsidy() -> float:
 	var halvings: int = height / halving_interval
 	if (halvings >= 8):
-		return 0
+		return 0.0
+	
+	if _exceeds_coin_limit_cap():
+		return 0.0
 	
 	var subsidy = 500 * COIN
 	
 	subsidy >>= halvings
+	coins_in_circulation += subsidy
 	return subsidy
+
+"""Returns true if the coins in circulation are more than the TOTAL_COINS"""
+func _exceeds_coin_limit_cap() -> bool:
+	if coins_in_circulation > TOTAL_COINS:
+		return true
+	elif coins_in_circulation >= TOTAL_COINS:
+		return true
+	elif coins_in_circulation == TOTAL_COINS:
+		return true
+	return false
+
+## ----------------- PERSISTENCE DATA FUNCTIONS -------------------------
 
 func save_data():
 	var network_data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
@@ -122,7 +141,6 @@ func load_data():
 
 	for i in res.chain.size():
 		res.chain[i] = build_res(res.chain[i], 1)
-	
 	
 	self.chain = res.chain
 	self.height = res.height
@@ -142,5 +160,4 @@ func build_res(data: Dictionary, index: int = -1):
 		var key = data.keys()[i]
 		var value = data.values()[i]
 		res.set(key, value)
-	print("resource builded")
 	return res

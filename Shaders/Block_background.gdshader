@@ -17,11 +17,11 @@ float text(vec2 fragCoord, vec2 texture_pixel_size)
 
 vec3 rain(vec2 fragCoord, vec2 screen_pixel_size) {
 	fragCoord.x -= mod(fragCoord.x, 16);
-	
+
 	float offset = sin(fragCoord.x * 16.0);
 	float speed = cos(fragCoord.x * 3.0) * 0.3;
 	float y = fract(fragCoord.y / (1.0 / screen_pixel_size.y) + TIME * speed * offset);
-	
+
 	return vec3(0.1, 1.0,0.35) / (y * 20.0);
 }
 

@@ -1,25 +1,29 @@
-[gd_scene load_steps=16 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=21 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/quadrant_builder.gd" id="1_o08pr"]
-[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_htlny"]
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
+[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="2_cavjt"]
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_d3k6k"]
+[ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="2_okdg1"]
 [ext_resource type="Shader" path="res://Shaders/Block_background.gdshader" id="3_1ioqg"]
-[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/chunck_blue.png" id="3_f7alj"]
+[ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="3_7k7v6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_fnuy8"]
 [ext_resource type="Texture2D" uid="uid://db241hbwkh2f3" path="res://Textures/Download.png" id="4_2fn4v"]
+[ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="4_nhxjq"]
+[ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="5_w0fsn"]
+[ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="6_iea0g"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/currency_ui.tscn" id="7_y3lbx"]
-[ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/level_finised_ui.tscn" id="8_nyo2j"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
+[ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="12_e0bhm"]
 
 [sub_resource type="Environment" id="Environment_5odol"]
 background_mode = 3
 glow_enabled = true
-glow_intensity = 2.0
+glow_intensity = 1.0
 glow_strength = 1.2
 glow_blend_mode = 0
-glow_hdr_threshold = 0.9
-glow_hdr_scale = 1.0
+glow_hdr_threshold = 0.69
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_shwem"]
 noise_type = 3
@@ -41,17 +45,57 @@ shader_parameter/iChannel0 = SubResource("NoiseTexture2D_snq06")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_5odol")
 
-[node name="Player" parent="." instance=ExtResource("2_htlny")]
+[node name="Player" parent="." instance=ExtResource("2_d3k6k")]
 unique_name_in_owner = true
+position = Vector2(145, -12)
 speed = 400.0
+initial_weapon = ExtResource("2_cavjt")
+
+[node name="RigidBodiesParent" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
 script = ExtResource("1_o08pr")
-colpol_texture = ExtResource("3_f7alj")
 quadrants_initial_health = 100.0
+grid_size = Vector2i(8, 8)
+fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
+
+[node name="SpawnPosition 1" type="Marker2D" parent="QuadrantBuilder"]
+position = Vector2(1003, -123)
+
+[node name="SpawnPosition 2" type="Marker2D" parent="QuadrantBuilder"]
+position = Vector2(62, -174)
+
+[node name="SpawnPosition 3" type="Marker2D" parent="QuadrantBuilder"]
+position = Vector2(191, -444)
+
+[node name="SpawnPosition 4" type="Marker2D" parent="QuadrantBuilder"]
+position = Vector2(1237, -236)
+
+[node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
+unique_name_in_owner = true
+position = Vector2(649, -456)
+
+[node name="Pool_FractureBullets" parent="." instance=ExtResource("2_okdg1")]
+
+[node name="Pool_FractureCutVisualizer" parent="." instance=ExtResource("2_okdg1")]
+instance_template = ExtResource("4_nhxjq")
+instantiate_new_on_empty = true
+keep_instances_in_tree = true
+
+[node name="Pool_FractureShards" parent="." instance=ExtResource("2_okdg1")]
+instance_template = ExtResource("5_w0fsn")
+instantiate_new_on_empty = true
+keep_instances_in_tree = true
+
+[node name="Pool_FractureBodies" parent="." instance=ExtResource("2_okdg1")]
+instance_template = ExtResource("6_iea0g")
+max_amount = 300
+instantiate_new_on_empty = true
 
 [node name="Quadrants" type="Node2D" parent="."]
 unique_name_in_owner = true
+position = Vector2(421, 0)
 
 [node name="MinerAI" type="Node2D" parent="."]
 script = ExtResource("1_7o24j")
@@ -78,10 +122,11 @@ theme_type_variation = &"Game Background"
 
 [node name="CurrencyUI" parent="GameUI" instance=ExtResource("7_y3lbx")]
 
-[node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("8_nyo2j")]
-mouse_filter = 2
-
 [node name="TimeLeftUI" parent="GameUI" instance=ExtResource("9_rhv7f")]
 unique_name_in_owner = true
 
 [node name="HealthBar" parent="GameUI" instance=ExtResource("10_k11cv")]
+
+[node name="WeaponUI" parent="GameUI" instance=ExtResource("12_e0bhm")]
+
+[connection signal="map_builded" from="QuadrantBuilder" to="MinerAI" method="_on_quadrant_builder_map_builded"]

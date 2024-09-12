@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c0qnb0tjoupr3"
-path="res://.godot/imported/Bullet6x6.png-8c66a119c17f192e1a329cebba4cf2b9.ctex"
+uid="uid://b2peog5i65ihp"
+path="res://.godot/imported/SmokeEffect.png-64cef4c21ecab723665dd865e79b13d1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Bullet6x6.png"
-dest_files=["res://.godot/imported/Bullet6x6.png-8c66a119c17f192e1a329cebba4cf2b9.ctex"]
+source_file="res://Textures/WeaponSystem/Ammo/SmokeEffect.png"
+dest_files=["res://.godot/imported/SmokeEffect.png-64cef4c21ecab723665dd865e79b13d1.ctex"]
 
 [params]
 
