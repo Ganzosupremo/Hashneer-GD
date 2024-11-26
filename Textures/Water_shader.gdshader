@@ -16,11 +16,11 @@ uniform float light_end : hint_range(0.0, 1.0) = 0.4;
 uniform float distorsion_strength : hint_range(-1.0, 1.0) = 0.2;
 
 void fragment() {
-	float depth = texture(first_noise, UV + scroll_horizontal * TIME).r 
+	float depth = texture(first_noise, UV + scroll_horizontal * TIME).r
 		* texture(second_noise, UV + scroll_vertical * TIME).r;
 
 	vec4 screen_color = texture(SCREEN_TEXTURE, SCREEN_UV + distorsion_strength * vec2(depth));
 	vec4 top_light = smoothstep(light_start, light_end, depth) * top_color;
-	
+
 	COLOR = screen_color * tone_color * top_light;
 }

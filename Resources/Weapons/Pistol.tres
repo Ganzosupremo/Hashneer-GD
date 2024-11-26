@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://bivptbtajsp46"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=21 format=3 uid="uid://bivptbtajsp46"]
 
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/WeaponDetails.gd" id="1_shj3m"]
+[ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_j36t6"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_4wys5"]
+[ext_resource type="Script" path="res://Scripts/Resources/WeaponDetails.gd" id="3_c4yb8"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="3_o651b"]
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/ParticleEffectDetails.gd" id="4_886ne"]
+[ext_resource type="Script" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="5_4vek8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_avrey"]
 atlas = ExtResource("3_o651b")
@@ -83,7 +84,7 @@ turbulence_initial_displacement_max = 9.0
 turbulence_influence_over_life = SubResource("CurveTexture_etvnl")
 
 [sub_resource type="Resource" id="Resource_ovwwj"]
-script = ExtResource("4_886ne")
+script = ExtResource("5_4vek8")
 amount = 125
 lifetime = 1.5
 one_shot = true
@@ -98,20 +99,16 @@ atlas = ExtResource("3_4wys5")
 region = Rect2(4, 0, 24, 14)
 
 [resource]
-script = ExtResource("1_shj3m")
+script = ExtResource("3_c4yb8")
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
+fire_sound = ExtResource("2_j36t6")
+weapon_damage_multiplier = 0.0
 ammo_details = ExtResource("1_4witc")
 weapon_shoot_effect = SubResource("Resource_ovwwj")
-fire_rate = 0.25
+fire_rate = 0.4
 precharge_time = 0.0
 spread_min = 0.0
 spread_max = 0.014
 shake_strength = 1.5
 shake_decay = 10.0
-bullet_damage = 25.0
-bullet_speed = 600.0
-bullets_per_shoot_min = 1
-bullets_per_shoot_max = 1
-bullet_spawn_interval_min = 0.0
-bullet_spawn_interval_max = 0.0

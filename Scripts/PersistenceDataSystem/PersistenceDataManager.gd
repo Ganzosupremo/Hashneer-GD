@@ -24,44 +24,8 @@ func save_game(save_to_disk: bool = false) -> void:
 	if save_to_disk:
 		SaveSystem.save()
 
-func load_game() -> void:	
+func load_game() -> void:
 	persistence_data_objects = find_all_persistence_objects()
 	
 	for node in persistence_data_objects:
 		node.load_data()
-
-func _save_resource(game_data: GameData, _full_path: String):
-	SaveSystem.set_var("game_data", game_data)
-
-## Incomplete function
-#func _save(data: Dictionary) -> void:	
-#	var game_saved = FileAccess.open(full_path, FileAccess.WRITE)
-#	if game_saved == null: 
-#		print(FileAccess.get_open_error())
-#		return
-#
-#	var json_string = JSON.stringify(data, "\t")
-#	game_saved.store_line(json_string)
-#	game_saved.close()
-
-
-
-## Incomplete function
-#func _load_data() -> Dictionary:
-#	if !FileAccess.file_exists(FILE_PATH + FILE_NAME): return {}
-#
-#	var full_path: String = FILE_PATH + FILE_NAME
-#	var game_saved = FileAccess.open(full_path, FileAccess.READ)
-#	var data = null
-#	while game_saved.get_position() < game_saved.get_length():
-#		var json_string = game_saved.get_line()
-#		var json = JSON.new()
-#
-#		var parse_result = json.parse(json_string)
-#
-#		if parse_result != OK:
-#			print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
-#			return {}
-#
-#		data = json.get_data()
-#	return data

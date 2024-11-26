@@ -10,6 +10,8 @@ class_name AmmoDetails
 @export var bullet_damage: float = 25.0
 ## The speed of the bullet
 @export var bullet_speed: float = 1000.0
+# The radius of this bullet
+@export var size: int = 10
 
 ### The amount of bullets to spawn per single shoot, a random value will be selected from the min and max
 @export var bullets_per_shoot_min: int = 1
@@ -24,9 +26,9 @@ class_name AmmoDetails
 @export var collision_effect_details: ParticleEffectDetails
 
 @export_category("Bullet Trail")
-@export var has_trail: bool = true
 @export var trail_gradient: Gradient
 @export var trail_length: int = 20
+@export_range(1.0, 30.0, 0.5) var trail_width: float = 20.0
 
 @export_category("Bullet Particles Trail")
 @export var emits_particles: bool = true

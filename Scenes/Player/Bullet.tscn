@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c0qnb0tjoupr3" path="res://Textures/WeaponSystem/Ammo/Bullet6x6.png" id="2_3s4pr"]
 [ext_resource type="PackedScene" uid="uid://dyoejfjm6wxw2" path="res://Scenes/WeaponSystem/bullet_particles.tscn" id="3_i1tia"]
 [ext_resource type="Texture2D" uid="uid://bpdh8kf0ucuog" path="res://Textures/WeaponSystem/Ammo/1x1 Square.png" id="4_csw8e"]
-[ext_resource type="PackedScene" uid="uid://d2n78e7hlfmp4" path="res://Scenes/WeaponSystem/bullet_trail.tscn" id="4_k7rnm"]
+[ext_resource type="PackedScene" uid="uid://d2n78e7hlfmp4" path="res://Scenes/Components/BulletTrailComponent.tscn" id="4_k7rnm"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="5_68g7e"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_t2s72"]
@@ -157,6 +157,7 @@ position = Vector2(212, 46)
 collision_layer = 64
 collision_mask = 312
 script = ExtResource("1_5m1kt")
+bullet_speed = 200.0
 custom_carve_radius = true
 carve_radius = 75
 
@@ -203,7 +204,6 @@ randomness = 1.0
 [node name="BulletTrail" parent="." instance=ExtResource("4_k7rnm")]
 unique_name_in_owner = true
 modulate = Color(0.9, 0.9, 0.9, 1)
-top_level = true
 light_mask = 32
 visibility_layer = 32
 

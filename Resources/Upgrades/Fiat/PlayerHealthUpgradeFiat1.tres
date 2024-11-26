@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://3lpfb6tkf1so"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_b60q5"]
+
+[resource]
+script = ExtResource("1_b60q5")
+upgrade_name = "INCREASE HEALTH I"
+upgrade_description = ""
+upgrade_tier = 1
+is_upgrade = true
+is_unlocked = false
+is_percentage = false
+upgrade_base_power = 15.0
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 4000.0
+upgrade_cost_multiplier = 1.25
+upgrade_max_level = 10
+current_power = 0.0

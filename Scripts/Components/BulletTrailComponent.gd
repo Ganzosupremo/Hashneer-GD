@@ -1,14 +1,15 @@
 extends Line2D
-class_name BulletTrail
+class_name BulletTrailComponent
 
 ## The number of points that get stored, if the trail points exceed this number, the trail end will be deleted
-@export var max_length: int = 10
+var max_length: int = 10
 var queue: Array = []
 
+
 func _process(_delta: float) -> void:
-	var pos: Vector2 = _get_position()
+	var pos: Vector2 = _get_global_position()
 	queue.push_front(pos)
-	
+
 	if queue.size() > max_length:
 		queue.pop_back()
 	
@@ -18,18 +19,25 @@ func _process(_delta: float) -> void:
 		add_point(point)
 
 func enable_trail():
+	clear()
 	show()
 
 func disable_trail():
+	clear()
 	hide()
 
-func set_trail(enabled: bool, length: int, new_gradient: Gradient):
-	if enabled: 
-		enable_trail()
-		self.max_length = length
-		self.gradient = new_gradient
-	else: disable_trail()
+func clear() -> void:
+	clear_points()
+
+func spawn(length: int, new_gradient: Gradient, new_width: float = 20.0) -> void:
+	width = new_width
+	max_length = length
+	gradient = new_gradient
+	enable_trail()
 
 
-func _get_position() -> Vector2:
+func despawn() -> void:
+	queue_free()
+
+func _get_global_position() -> Vector2:
 	return get_parent().position

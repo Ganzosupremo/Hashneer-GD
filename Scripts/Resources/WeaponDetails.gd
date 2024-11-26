@@ -4,8 +4,9 @@ class_name WeaponDetails extends Resource
 @export var weapon_name: String = ""
 @export var weapon_texture: Texture2D
 
-# vars for sound effects go here 
-
+@export var fire_sound: SoundEffectDetails
+## This will be added to the bullet's final damage
+@export_range(1.0, 5.0, 0.5) var weapon_damage_multiplier: float
 
 @export_category("Ammo Details")
 @export var ammo_details: AmmoDetails
@@ -21,7 +22,9 @@ class_name WeaponDetails extends Resource
 @export_range(0.0, 1.0) var spread_max: float = 0.001
 
 @export_category("Weapon Shake")
+## The strength of the shake
 @export var shake_strength: float = 1.0
+## How fast the camera will stop shaking, with higher values the shake will be shorter.
 @export var shake_decay: float = 5.0
 
 var weapon_list_index: int = 0

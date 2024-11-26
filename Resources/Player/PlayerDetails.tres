@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="PlayerDetails" load_steps=5 format=3 uid="uid://cy7f2rybcjt4v"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
+[ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="1_gkrcx"]
+[ext_resource type="Script" path="res://Scripts/StatsSystem/StatsResource.gd" id="2_0whf0"]
+[ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="2_n5hxn"]
+
+[resource]
+script = ExtResource("1_6qe4h")
+speed = 300.0
+max_health = 200.0
+initial_weapon = ExtResource("2_n5hxn")
+dead_sound_effect = ExtResource("1_gkrcx")
+weapons_array = []
+stats_list = Array[ExtResource("2_0whf0")]([])

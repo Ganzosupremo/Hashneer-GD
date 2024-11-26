@@ -21,9 +21,7 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Return"):
 		pause_menu.pause()
 
-func switch_scene_with_packed(sceneto_load: PackedScene, level_index: int = -1) -> void:
-	if level_index != -1:
-		GameManager.current_level_index = level_index
+func switch_scene_with_packed(sceneto_load: PackedScene) -> void:
 	call_deferred("deferred_switch_scene_with_packed", sceneto_load)
 #	PersistenceDataManager.save_game()
 
@@ -48,7 +46,6 @@ func switch_scene(res_path: String, level_index: int = -1):
 		GameManager.current_level_index = level_index
 		PersistenceDataManager.save_game()
 	call_deferred("deferred_switch_scene", res_path)
-#	PersistenceDataManager.save_game()
 
 func deferred_switch_scene(res_path: String):
 	current_scene.free()

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://bhkgu53rk0sek"
+path="res://.godot/imported/MP7Fire 1.wav-846a1bef6f455d6374c21aa8ddceb47d.sample"
+
+[deps]
+
+source_file="res://Audio/MP7Fire 1.wav"
+dest_files=["res://.godot/imported/MP7Fire 1.wav-846a1bef6f455d6374c21aa8ddceb47d.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=1
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

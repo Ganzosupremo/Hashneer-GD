@@ -19,7 +19,7 @@ void fragment() {
 	uv.y * SCREEN_PIXEL_SIZE.y/SCREEN_PIXEL_SIZE.x;
 	vec3 dir=vec3(SCREEN_UV * zoom, 1.0);
 	float time = TIME * speed;
-	
+
 	//mouse rotation
 //	float a1=.5+ /SCREEN_PIXEL_SIZE.x*2.;
 //	float a2=.8+iMouse.y/iResolution.y*2.;
@@ -31,7 +31,7 @@ void fragment() {
 	from+=vec3(time*2.0,time,-2.0);
 //	from.xz*=rot1;
 //	from.xy*=rot2;
-	
+
 	//volumetric rendering
 	float s = 0.1,fade = 1.0;
 	vec3 v = vec3(0.0);

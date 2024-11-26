@@ -1,0 +1,112 @@
+[gd_scene load_steps=12 format=3 uid="uid://bnswnormi4xt3"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_5swmi"]
+[ext_resource type="Script" path="res://Scripts/SkillsTree/ParentUpgradeNodeUI.gd" id="1_8vexl"]
+[ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="1_mbb1m"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="3_wqjmk"]
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="4_pjn7v"]
+[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_2rv48"]
+[ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="5_rphwt"]
+
+[sub_resource type="Resource" id="Resource_fxqm6"]
+script = ExtResource("4_pjn7v")
+upgrade_name = ""
+upgrade_description = ""
+upgrade_tier = 0
+is_upgrade = false
+is_unlocked = false
+is_percentage = false
+upgrade_base_power = 5.0
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 10.0
+upgrade_cost_multiplier = 1.2
+upgrade_max_level = 10
+current_power = 0.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_hy1op"]
+font = ExtResource("3_wqjmk")
+font_size = 30
+
+[sub_resource type="Resource" id="Resource_i6kpk"]
+script = ExtResource("4_pjn7v")
+upgrade_name = ""
+upgrade_description = ""
+upgrade_tier = 1
+is_upgrade = true
+is_unlocked = false
+is_percentage = false
+upgrade_base_power = 15.0
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 1000.0
+upgrade_cost_multiplier = 1.25
+upgrade_max_level = 10
+current_power = 0.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_nq5n8"]
+font = ExtResource("3_wqjmk")
+font_size = 23
+
+[node name="Container" type="VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -85.0
+offset_right = 120.0
+offset_bottom = 85.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_5swmi")
+theme_override_constants/separation = 4
+alignment = 1
+script = ExtResource("1_8vexl")
+bitcoin_upgrade_data = SubResource("Resource_fxqm6")
+
+[node name="Title" type="PanelContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5swmi")
+
+[node name="Label" type="Label" parent="Title"]
+layout_mode = 2
+theme = ExtResource("1_5swmi")
+text = "Upgrade Health"
+label_settings = SubResource("LabelSettings_hy1op")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5swmi")
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="FiatNode" parent="HBoxContainer" instance=ExtResource("1_mbb1m")]
+custom_minimum_size = Vector2(100, 32)
+layout_mode = 2
+icon = ExtResource("5_2rv48")
+icon_alignment = 1
+upgrade_data = SubResource("Resource_i6kpk")
+
+[node name="BitcoinNode" parent="HBoxContainer" instance=ExtResource("1_mbb1m")]
+custom_minimum_size = Vector2(100, 32)
+layout_mode = 2
+icon_alignment = 1
+use_bitcoin = true
+upgrade_data = ExtResource("5_rphwt")
+
+[node name="Level" type="PanelContainer" parent="."]
+layout_mode = 2
+theme = ExtResource("1_5swmi")
+
+[node name="Label" type="Label" parent="Level"]
+layout_mode = 2
+theme = ExtResource("1_5swmi")
+text = "0/100"
+label_settings = SubResource("LabelSettings_nq5n8")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true

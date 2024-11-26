@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=9 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=10 format=3 uid="uid://cda54difj00ou"]
 
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/ParticleEffectDetails.gd" id="1_7om0g"]
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/AmmoDetails.gd" id="2_pe5a4"]
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/WeaponDetails.gd" id="3_qte61"]
+[ext_resource type="Script" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="1_1feeq"]
+[ext_resource type="Script" path="res://Scripts/Resources/AmmoDetails.gd" id="2_ki0sl"]
+[ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="3_kfa2b"]
+[ext_resource type="Script" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
 
 [sub_resource type="Resource" id="Resource_w44fm"]
-script = ExtResource("1_7om0g")
+script = ExtResource("1_1feeq")
 amount = 50
 lifetime = 1.0
 one_shot = false
@@ -15,27 +16,30 @@ explosiveness = 0.0
 randomness = 0.5
 
 [sub_resource type="Gradient" id="Gradient_ubo30"]
+offsets = PackedFloat32Array(0, 0.571721, 1)
+colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238, 1, 0.993, 0.649, 0, 0.666)
 
 [sub_resource type="Resource" id="Resource_1gnsf"]
-script = ExtResource("2_pe5a4")
+script = ExtResource("2_ki0sl")
 min_lifetime = 1.0
-max_lifetime = 3.0
-bullet_damage = 50.0
-bullet_speed = 700.0
+max_lifetime = 2.0
+bullet_damage = 10.0
+bullet_speed = 600.0
+size = 4
 bullets_per_shoot_min = 3
 bullets_per_shoot_max = 7
-bullet_spawn_interval_min = 0.034
-bullet_spawn_interval_max = 0.05
+bullet_spawn_interval_min = 0.015
+bullet_spawn_interval_max = 0.025
 collision_effect_details = SubResource("Resource_w44fm")
-has_trail = false
 trail_gradient = SubResource("Gradient_ubo30")
-trail_length = 20
+trail_length = 5
+trail_width = 9.0
 emits_particles = false
 randomness = 0.5
 lifetime_randomness = 0.25
 
 [sub_resource type="Resource" id="Resource_eukx2"]
-script = ExtResource("1_7om0g")
+script = ExtResource("1_1feeq")
 amount = 50
 lifetime = 1.0
 one_shot = false
@@ -44,14 +48,16 @@ explosiveness = 0.0
 randomness = 0.5
 
 [resource]
-script = ExtResource("3_qte61")
+script = ExtResource("4_6sosy")
 weapon_name = "Shotgun"
 weapon_texture = ExtResource("4_faobk")
+fire_sound = ExtResource("3_kfa2b")
+weapon_damage_multiplier = 0.0
 ammo_details = SubResource("Resource_1gnsf")
 weapon_shoot_effect = SubResource("Resource_eukx2")
 fire_rate = 0.7
 precharge_time = 0.0
-spread_min = 0.487
-spread_max = 0.714
-shake_strength = 2.5
-shake_decay = 6.0
+spread_min = 0.7
+spread_max = 0.85
+shake_strength = 8.0
+shake_decay = 7.0

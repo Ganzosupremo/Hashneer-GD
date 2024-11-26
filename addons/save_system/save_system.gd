@@ -29,7 +29,7 @@ extends Node
 # The file path of your save data. You can freely modify this.
 const file_path : String = "user://saves/"
 const use_encryption : bool = false
-const default_file_name: String = "NOTASAVEFILENIGGA.sav"
+const default_file_name: String = "NOT_A_SAVE_FILE_NIGGA.sav"
 
 var var_file_name: String = ""
 var current_state_dictionary := {}
@@ -47,8 +47,8 @@ func _ready():
 	for property in res.get_property_list():
 		base_resource_property_names.append(property.name)
 	
-#	_load() # Load save data.
-
+	DirAccess.make_dir_absolute(file_path)
+	
 
 func _exit_tree():
 	save() # Save on exit.
@@ -125,14 +125,39 @@ func set_var(key_path : String, value):
 func save():
 	var file : FileAccess
 	var full_path: String = _build_full_path()
+
+	if !_check_if_dir_exists("saves"):
+		return
+	
+	_check_if_file_exists(file, full_path)
+	
+	# Open the file to write the current state
 	if use_encryption:
 		file = FileAccess.open_encrypted_with_pass(full_path, FileAccess.WRITE, OS.get_unique_id())
 	else:
 		file = FileAccess.open(full_path, FileAccess.WRITE)
-	file.store_string(JSON.stringify(current_state_dictionary, "\t"))
-	emit_signal("saved")
+	
+	if file:
+		file.store_string(JSON.stringify(current_state_dictionary, "\t"))
+		file.close()
+		print("Game saved to: ", full_path)
+		emit_signal("saved")
+	else:
+		push_error("Failed to open save file for writing at: ", full_path)
 
 
+# Loads the root dictionary stored in the save file.
+func load():
+	var file : FileAccess
+	var full_path: String = _build_full_path()
+	if use_encryption:
+		file = FileAccess.open_encrypted_with_pass(full_path, FileAccess.READ, OS.get_unique_id())
+	else:
+		file = FileAccess.open(full_path, FileAccess.READ)
+	
+	if file:
+		current_state_dictionary = JSON.parse_string(file.get_as_text())
+	emit_signal("loaded")
 
 # Returns a variable.
 func get_var(key_path : String, default = null):
@@ -170,20 +195,28 @@ func _parse_array(array : Array) -> Array:
 func _is_hierarchical(key : String) -> bool:
 	return key.find(":") != -1
 
-
-# Loads the root dictionary stored in the save file.
-func _load():
-	var file : FileAccess
-	var full_path: String = _build_full_path()
-	if use_encryption:
-		file = FileAccess.open_encrypted_with_pass(full_path, FileAccess.READ, OS.get_unique_id())
-	else:
-		file = FileAccess.open(full_path, FileAccess.READ)
+# Checks if the 'dir' exists. If not it creates it, returning true if succesfull
+func _check_if_dir_exists(dir: String) -> bool:
+	var directory: DirAccess = DirAccess.open("user://")
 	
-	if file:
-		current_state_dictionary = JSON.parse_string(file.get_as_text())
-	emit_signal("loaded")
+	if not directory.dir_exists(dir):
+		print("Directory does not exist. Creating directory: ", file_path)
+		var created_dir = directory.make_dir_recursive(file_path)
+		if created_dir != OK:
+			print("Failed to create directory: ", file_path)
+			return false
+		return true
+	return true
 
+# Check and create the file if necessary
+func _check_if_file_exists(file: FileAccess, full_path: String):
+	if not FileAccess.file_exists(full_path):
+		print("File does not exist. Creating a new save file at: ", full_path)
+		file = FileAccess.open(full_path, FileAccess.WRITE)
+		if file:
+			# Initialize the save file with an empty dictionary or default data
+			file.store_string(JSON.stringify({}, "\t"))
+			file.close()
 
 # Sanitizes the input key path. It must be performed on every input that goes into 
 # internal functions.

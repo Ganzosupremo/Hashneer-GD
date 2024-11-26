@@ -1,41 +1,127 @@
-[gd_scene load_steps=6 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=13 format=3 uid="uid://dekniu7v110w4"]
 
-[ext_resource type="Texture2D" uid="uid://xwrcumasjoyf" path="res://Textures/Skill Tree/SkillNodeTexture.png" id="1_oqfxm"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
+[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="2_e6wyl"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
 [ext_resource type="Resource" uid="uid://52vdo08klv6d" path="res://Skills/damage_upgrade.tres" id="2_qyqpv"]
+[ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="4_iwt4m"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_16pb4"]
+[ext_resource type="PackedScene" uid="uid://j8t0bm46hh8i" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.tscn" id="8_l6k4y"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_eg3r7"]
-atlas = ExtResource("1_oqfxm")
-region = Rect2(0, 0, 32, 32)
+[sub_resource type="LabelSettings" id="LabelSettings_xbut0"]
+font = ExtResource("6_16pb4")
+font_size = 19
+outline_size = 1
+outline_color = Color(0, 1, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.27)
+shadow_offset = Vector2(-1, 2)
 
-[node name="SkillNode" type="TextureButton" groups=["PersistentNodes"]]
+[sub_resource type="LabelSettings" id="LabelSettings_wgeri"]
+font = ExtResource("6_16pb4")
+font_size = 19
+outline_size = 2
+outline_color = Color(1, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.316)
+shadow_offset = Vector2(-1, 2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ykbn"]
+bg_color = Color(0.6, 0.6, 0.6, 0.292)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.0728426, 0.0728427, 0.0728426, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="LabelSettings" id="LabelSettings_r86ox"]
+font = ExtResource("6_16pb4")
+font_size = 19
+outline_size = 2
+outline_color = Color(1, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.316)
+shadow_offset = Vector2(-1, 2)
+
+[node name="SkillNode" type="Button" groups=["PersistentNodes"]]
 light_mask = 64
 visibility_layer = 64
-custom_minimum_size = Vector2(16, 16)
+custom_minimum_size = Vector2(32, 32)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
+offset_left = -19.0
+offset_top = -26.0
+offset_right = 70.0
+offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(8, 8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture_normal = SubResource("AtlasTexture_eg3r7")
-ignore_texture_size = true
-stretch_mode = 0
+theme = ExtResource("1_0662n")
+icon = ExtResource("2_e6wyl")
+autowrap_mode = 3
+icon_alignment = 1
 script = ExtResource("2_jhy1s")
+enabled_label_settings = SubResource("LabelSettings_xbut0")
+disabled_label_settings = SubResource("LabelSettings_wgeri")
 upgrade_data = ExtResource("2_qyqpv")
+resource_to_upgrade = ExtResource("4_iwt4m")
+
+[node name="CurrencyIcon" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -22.0
+offset_top = 1.0
+offset_right = 42.0
+offset_bottom = 65.0
+grow_horizontal = 0
+scale = Vector2(0.33, 0.33)
+texture = ExtResource("2_e6wyl")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -44.0
+offset_top = -23.0
+offset_right = -1.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("1_0662n")
+theme_override_styles/panel = SubResource("StyleBoxFlat_5ykbn")
+
+[node name="SkillLabel" type="Label" parent="PanelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "LOCKED"
+label_settings = SubResource("LabelSettings_r86ox")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
 
 [node name="SkillBranch" parent="." instance=ExtResource("5_ed0gt")]
 unique_name_in_owner = true
 width = 35.0
 texture = null
 
+[node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
+layout_mode = 1
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
 [connection signal="pressed" from="." to="." method="_on_pressed"]

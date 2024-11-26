@@ -1,16 +1,17 @@
-[gd_resource type="Resource" script_class="UpgradeBase" load_steps=2 format=3 uid="uid://52vdo08klv6d"]
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://52vdo08klv6d"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_qg1ow"]
 
 [resource]
 script = ExtResource("1_qg1ow")
-id = "G_bullets_upgrade"
-upgrade_name = "Golden Bullets"
+upgrade_name = ""
 upgrade_description = "Even more bullet damage"
-upgrade_tier = 2
+upgrade_tier = 1
 is_upgrade = true
-upgrade_base_power = 20.0
+i_unlocked = false
+is_percentage = false
+upgrade_base_power = 25.0
 upgrade_power_multiplier = 1.35
-upgrade_cost_base = 100.0
-upgrade_cost_multiplier = 1.35
-upgrade_max_level = null
+upgrade_cost_base = 1.0
+upgrade_cost_multiplier = 1.05
+upgrade_max_level = 10

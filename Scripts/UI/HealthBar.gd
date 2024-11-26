@@ -5,18 +5,16 @@ class_name HealthBar
 @onready var text : Label = %Text
 
 func _ready() -> void:
-	GameManager.player.get_health_node().damage_taken.connect(update_ui)
+	GameManager.player.get_health_node().update_health.connect(update_ui)
 	init_ui()
 
 func init_ui() -> void:
-	var initial_health: float = GameManager.player.get_initial_health()
+	var max_health: float = GameManager.player.get_max_health()
 	var current_health: float = GameManager.player.get_current_health()
-	health_bar.max_value = initial_health
-	health_bar.value = current_health
-	text.text = "HP Remaining: " + str(current_health) + " / " + str(initial_health)
+	health_bar.max_value = max_health
+	update_ui(current_health, max_health)
 
-func update_ui(_damage_taken: float) -> void:
-	var initial_health: float = GameManager.player.get_initial_health()
-	var current_health: float = GameManager.player.get_current_health()
+
+func update_ui(current_health: float, max_health: float) -> void:
 	health_bar.value = current_health
-	text.text = "HP Remaining: " + "%.1f" %current_health + " / " + "%.1f" %initial_health
+	text.text = "HP Remaining: " + "%.1f"%current_health +  "/"  + "%.1f"%max_health

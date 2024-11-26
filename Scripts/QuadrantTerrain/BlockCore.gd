@@ -9,6 +9,7 @@ signal core_mined(ui_title: String, bg_color: Color)
 var _poly_fracture: PolygonFracture
 var _cur_fracture_color: Color
 var level_index: int = 0
+var core_destroyed: bool = false
 static var instance: BlockCore = self
 
 
@@ -31,16 +32,12 @@ func _ready() -> void:
 			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
-
-func pass_level_index(index: int):
-	self.level_index = index
-
 """
 This method checks if the block core's health 
 has been reduced to zero before fracturing the core.
 """
 func fracture_all(other_body, cuts: float, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW) -> void:
-	if take_damage(bullet_damage, false):
+	if take_damage(bullet_damage):
 		_fracture_all(other_body, cuts, min_area, fracture_color)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
@@ -58,8 +55,8 @@ func _make_cut_in_polygon(source: Node2D, fracture_color: Color) -> void:
 		var source_transform: Transform2D = source.get_global_transform()
 		cut_info_storage = _poly_fracture.fractureSimple(source_polygon, source_transform, 2, 5000.0)
 	
-		if cut_info_storage.size() > 0:
-			_update_polygon_visual(source, cut_info_storage.pop_back(), fracture_color)
+	if cut_info_storage.size() > 0:
+		_update_polygon_visual(source, cut_info_storage.pop_back(), fracture_color)
 
 func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color: Color):
 	# Update the Polygon2D's polygon with the new shape's vertices
@@ -84,10 +81,13 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 
 func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Color = Color.HONEYDEW) -> void:
 	_cur_fracture_color = fracture_color
-	mine_core("Player", build_block())
 	_slowdown_timer.start(0.21)
 	Engine.time_scale = 0.21
-	_destroy_block_core(other_body, cuts, min_area)
+	if !core_destroyed:
+		core_destroyed = true
+		_destroy_block_core(other_body, cuts, min_area)
+		GameManager.level_completed()
+		_mine_core()
 
 
 func _destroy_block_core(source, cuts: float, min_area: float) -> void:
@@ -124,22 +124,9 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 	body_instance.setTexture(PolygonLib.setTextureOffset(texture_info, fracture_info.centroid))
 
 
-func mine_core(miner: String, block: BitcoinBlock) -> void:
-	print_rich("Level index in builder args is: ", GameManager.builder_args.level_index)
-	BitcoinNetwork.emit_signal("block_core_destroyed", miner, block)
-	
-	if miner == "player":
-		emit_signal("core_mined", "Block Core Mined Successfully!", Color.BISQUE)
-	else:
-		emit_signal("core_mined", "Block Core Mining Failed!", Color.CRIMSON)
-	
-	GameManager.emit_signal("level_completed", GameManager.builder_args.level_index+2)
-
-
-func build_block() -> BitcoinBlock:
-	var instance_block: BitcoinBlock = BitcoinBlock.new(level_index, Time.get_datetime_string_from_system(false, true), "Block Height: %s" % level_index)
-	return instance_block
-
+func _mine_core() -> void:
+	BitcoinNetwork.mine_block("Player")
+	GameManager.emit_signal("level_completed", BitcoinNetwork.get_blockheight() + 2)
 
 func _on_slow_down_timer_timeout() -> void:
 	Engine.time_scale = 1.0

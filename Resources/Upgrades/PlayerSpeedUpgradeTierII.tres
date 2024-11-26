@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=3 format=3 uid="uid://c4vrbnytg4unt"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_f8yn8"]
+[ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStats.tres" id="2_btsg0"]
+
+[resource]
+script = ExtResource("1_f8yn8")
+stat_type = 0
+stats_resource = ExtResource("2_btsg0")
+upgrade_name = "Silver Bullets"
+upgrade_description = "More Bullet Damage"
+upgrade_tier = 1
+is_upgrade = true
+is_unlocked = false
+upgrade_base_power = 7.0
+upgrade_power_multiplier = 1.15
+upgrade_cost_base = 200.0
+upgrade_cost_multiplier = 1.3
+upgrade_max_level = 100

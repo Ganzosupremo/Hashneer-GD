@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://bpxy328wu5cei"]
+
+[ext_resource type="AudioStream" uid="uid://cmek8vf55vh73" path="res://Audio/Shrink-Sound-Effect.wav" id="1_uvyfd"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_vsi2r"]
+
+[resource]
+script = ExtResource("2_vsi2r")
+sound_volume = 3.0
+audio_stream = ExtResource("1_uvyfd")
+sound_pitch = 1.0

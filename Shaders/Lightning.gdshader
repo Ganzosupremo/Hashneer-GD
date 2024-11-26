@@ -1,7 +1,7 @@
 shader_type canvas_item;
 /// A color vector used to colorize the effect.
 uniform vec3 effect_color: source_color = vec3(0.2, 0.3, 0.8);
-/*Determines the number of octaves in the fbm function, 
+/*Determines the number of octaves in the fbm function,
 affecting the complexity of the noise.*/
 uniform int octave_count: hint_range(1, 20) = 10;
 /*The initial amplitude for the fbm calculation.*/

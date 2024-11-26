@@ -1,17 +1,21 @@
-[gd_scene load_steps=3 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=4 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
-[ext_resource type="Script" path="res://Scripts/Player/Health.gd" id="2_56ed8"]
+[ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
+[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="3_yxxnb"]
 
 [node name="StaticBody2D" type="StaticBody2D"]
 collision_layer = 8
 collision_mask = 248
 script = ExtResource("1_obgke")
 
+[node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
+unique_name_in_owner = true
+position = Vector2(742.221, 307.41)
+
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("2_56ed8")
-initial_health = 200.0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 

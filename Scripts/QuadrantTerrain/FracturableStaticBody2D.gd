@@ -4,7 +4,9 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var _line2d := $Polygon2D/Line2D
 @onready var _col_polygon2d := $CollisionPolygon2D
 @onready var _rng := RandomNumberGenerator.new()
-@onready var health: Health = %Health
+@onready var health: HealthComponent = %Health
+@onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
+
 
 @export var placed_in_level: bool = false
 @export var randomize_texture_properties: bool = true
@@ -47,13 +49,15 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export var n3 : float = 0
 
 
+var _hit_sound: SoundEffectDetails
+
 func _ready() -> void:
 	_rng.randomize()
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		
 		setPolygon(poly)
-		_polygon2d.texture = poly_texture
+		#_polygon2d.texture = poly_texture
 		
 		
 		if randomize_texture_properties and is_instance_valid(poly_texture):
@@ -78,24 +82,27 @@ func create_polygon_shape() -> PackedVector2Array:
 		return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, m, n1, n2, n3, s_start_angle_deg, s_max_angle_deg)
 	else: return PackedVector2Array([])
 
-func add_children_if_needed() -> void:
-	if not _polygon2d:
-		_polygon2d = Polygon2D.new()
-		var center : Polygon2D = Polygon2D.new()
-		center.name = "Center"
-		add_child(_polygon2d)
-		add_child(center)
-	if not _line2d:
-		_line2d = Line2D.new()
-		_polygon2d.add_child(_line2d)
-	if not _col_polygon2d:
-		_col_polygon2d = CollisionPolygon2D.new()
-		add_child(_col_polygon2d)
 
 # Geters and Setters
 func set_initial_health(initial_health: float) -> void:
-	await get_tree().process_frame
-	health.set_initial_health(initial_health)
+	health.set_max_health(initial_health)
+
+func set_fracture_body(initial_healt: float, fracture_texture: Texture2D, sound_details: SoundEffectDetails) -> void:
+	await get_tree().physics_frame
+	
+	set_initial_health(initial_healt)
+	set_texture_with_texture(fracture_texture)
+	set_hit_sound_effect(sound_details)
+
+
+func set_texture_with_texture(new_texture: Texture2D) -> void:
+	_polygon2d.texture = new_texture
+
+
+func set_hit_sound_effect(sound: SoundEffectDetails) -> void:
+	_hit_sound = sound
+	_hit_sound_component.set_sound(_hit_sound)
+
 
 func set_polygon(poly : PackedVector2Array) -> void:
 	setPolygon(poly)
@@ -133,18 +140,22 @@ func get_global_rotation_polygon() -> float:
 func get_polygon() -> PackedVector2Array:
 	return getPolygon()
 
+func get_sound_component() -> SoundEffectComponent:
+	return _hit_sound_component
+
 """
-Deals damage to the block core, returns true if the core's health is zero,
+Deals damage to this quadrant, returns true if it's health is zero,
 false otherwise
 """
 func take_damage(damage: float, instakill: bool = false) -> bool:
 	if instakill:
-		health.current_health -= 1.79769e308
+		health.take_damage(1.79769e308)
 		return true
-	else:
-		health.substract_health(damage)
+	health.take_damage(damage)
+	#_hit_sound_component.play_sound()
 	
 	if health.get_current_health() <= 0.0:
 		return true
 	
+	GameManager.player.get_health_node().take_damage(1.0)
 	return false

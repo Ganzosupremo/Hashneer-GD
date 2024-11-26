@@ -8,7 +8,8 @@ class_name SkillInfoWindow
 @onready var btc_cost: Label = %BTCCost
 
 
-var selected_skill_data: SkillUpgradeData
+var selected_skill_data: UpgradeData
+var bitcoin_upgrade_data: UpgradeData
 
 signal opened
 signal closed
@@ -16,27 +17,28 @@ signal closed
 func _ready() -> void:
 	scale = Vector2.ZERO
 
-func set_info_window(data: SkillUpgradeData):
-	selected_skill_data = data
+func set_info_window(fiat_upgrade: UpgradeData, bitcoin_upgrade: UpgradeData, title, description):
+	selected_skill_data = fiat_upgrade
+	bitcoin_upgrade_data = bitcoin_upgrade
 	
 	reset_ui()
-	update_window_ui(true)
+	_update_window_ui(true)
 	show()
 	emit_signal("opened")
 	
-	await tween_window()
+	await _tween_window()
 
-func tween_window():
+func _tween_window():
 	var tween: Tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_ELASTIC)
 	tween.tween_property(self, "scale", Vector2.ONE, 0.75).from_current()
-	tween.tween_callback(func(): reset_anchor_preset())
+	tween.tween_callback(func(): _reset_anchor_preset())
 	
 	await tween.finished
 
-func reset_anchor_preset():
+func _reset_anchor_preset():
 	set_anchors_preset(Control.PRESET_RIGHT_WIDE)
 
-func hide_info_window():
+func _hide_info_window():
 	var tween: Tween = create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING)
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.75).from_current()
 	
@@ -46,17 +48,17 @@ func hide_info_window():
 	hide()
 	emit_signal("closed")
 
-func update_window_ui(update_all: bool):
+func _update_window_ui(update_all: bool, _title:String = "", description: String = ""):
 	if update_all:
-		title.text = selected_skill_data.upgrade_name
-		desc_text.text = selected_skill_data.upgrade_description
-		skill_cost_text.text = "%.2f" % selected_skill_data.upgrade_cost(false)
-		btc_cost.text = "%.2f" % selected_skill_data.upgrade_cost(true)
+		title.text = _title
+		desc_text.text = description
+		skill_cost_text.text = "%.2f" % selected_skill_data.upgrade_cost()
+		btc_cost.text = "%.2f" % bitcoin_upgrade_data.upgrade_cost()
 		max_level_text.text = str(selected_skill_data.upgrade_level) + "/" + str(selected_skill_data.upgrade_max_level)
 	else:
 		max_level_text.text = str(selected_skill_data.upgrade_level) + "/" + str(selected_skill_data.upgrade_max_level)
-		btc_cost.text = "%.2f" % selected_skill_data.upgrade_cost(true)
-		skill_cost_text.text = "%.2f" % selected_skill_data.upgrade_cost(false)
+		btc_cost.text = "%.2f" % selected_skill_data.upgrade_cost()
+		skill_cost_text.text = "%.2f" % selected_skill_data.upgrade_cost()
 
 func reset_ui():
 	title.text = ""
@@ -64,31 +66,27 @@ func reset_ui():
 	max_level_text.text = "0/0"
 
 func _on_buy_button_pressed() -> void:
-	if selected_skill_data.upgrade_level < selected_skill_data.upgrade_max_level:
-		selected_skill_data.buy_upgrade(false)
-		SkillsTree.get_instance().update_skill_stats(selected_skill_data)
-		update_window_ui(false)
+	selected_skill_data.buy_upgrade(false)
+	#SkillsTree.get_instance().update_skill_stats(selected_skill_data)
+	_update_window_ui(false)
 
 func _on_buy_max_button_pressed() -> void:
-	if selected_skill_data.upgrade_level < selected_skill_data.upgrade_max_level:
-		selected_skill_data.buy_max(false)
-		SkillsTree.get_instance().update_skill_stats(selected_skill_data)
-		update_window_ui(false)
+	selected_skill_data.buy_max(false)
+	#SkillsTree.get_instance().update_skill_stats(selected_skill_data)
+	_update_window_ui(false)
 
 func _on_btc_buy_button_pressed() -> void:
-	if selected_skill_data.upgrade_level < selected_skill_data.upgrade_max_level:
-		selected_skill_data.buy_upgrade(true)
-		SkillsTree.get_instance().update_skill_stats(selected_skill_data)
-		update_window_ui(false)
+	bitcoin_upgrade_data.buy_upgrade(true)
+	#SkillsTree.get_instance().update_skill_stats(selected_skill_data)
+	_update_window_ui(false)
 
 func _on_btc_buy_max_button_pressed() -> void:
-	if selected_skill_data.upgrade_level < selected_skill_data.upgrade_max_level:
-		selected_skill_data.buy_max(true)
-		SkillsTree.get_instance().update_skill_stats(selected_skill_data)
-		update_window_ui(false)
+	bitcoin_upgrade_data.buy_max(true)
+		#SkillsTree.get_instance().update_skill_stats(selected_skill_data)
+	_update_window_ui(false)
 
 func save_game():
 	PersistenceDataManager.save_game()
 
 func _on_close_button_pressed() -> void:
-	hide_info_window()
+	_hide_info_window()

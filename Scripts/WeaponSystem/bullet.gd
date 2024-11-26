@@ -4,7 +4,7 @@ class_name BulletC
 @onready var destruction_polygon: CollisionPolygon2D = %ExplosionPolygon
 @onready var gfx = %GFX
 @onready var trail_particles: EffectParticles = %BulletTrailParticles
-@onready var trail: BulletTrail = %BulletTrail
+@onready var trail: BulletTrailComponent = %BulletTrail
 @onready var colli_par_scene: PackedScene = preload("res://Scenes/WeaponSystem/bullet_particles.tscn")
 
 @export_range(200.0, 4000.0) var bullet_speed : float = 10.0
@@ -96,7 +96,7 @@ func set_bullet_lifetime(min_lifetime: float = 1.0, max_lifetime: float = 2.0) -
 	timer.start()
 
 func set_bullet_trail(enabled: bool, length: int, gradient: Gradient):
-	trail.set_trail(enabled, length, gradient)
+	trail.spawn(length, gradient)
 
 func set_bullet_particles(enabled: bool = true, lifetime_randomness = 0.5, randomness = 0.5) -> void:
 	trail_particles.randomness = randomness

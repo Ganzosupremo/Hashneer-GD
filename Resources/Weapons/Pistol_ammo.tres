@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="AmmoDetails" load_steps=19 format=3 uid="uid://cmk3cg4rlabd6"]
 
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/ParticleEffectDetails.gd" id="1_0ariq"]
+[ext_resource type="Script" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="1_0ariq"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_33q11"]
-[ext_resource type="Script" path="res://Scripts/WeaponSystem/AmmoDetails.gd" id="1_kb2pf"]
+[ext_resource type="Script" path="res://Scripts/Resources/AmmoDetails.gd" id="1_kb2pf"]
 
 [sub_resource type="Gradient" id="Gradient_8wc6u"]
 offsets = PackedFloat32Array(0, 0.258621, 0.5, 0.752874, 1)
@@ -100,16 +100,17 @@ colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.60
 script = ExtResource("1_kb2pf")
 min_lifetime = 2.0
 max_lifetime = 4.0
-bullet_damage = 25.0
+bullet_damage = 30.0
 bullet_speed = 1000.0
+size = 8
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.0
 bullet_spawn_interval_max = 0.0
 collision_effect_details = SubResource("Resource_8atnm")
-has_trail = true
 trail_gradient = SubResource("Gradient_x0ieh")
-trail_length = 20
+trail_length = 9
+trail_width = 15.0
 emits_particles = true
 randomness = 0.5
 lifetime_randomness = 0.25

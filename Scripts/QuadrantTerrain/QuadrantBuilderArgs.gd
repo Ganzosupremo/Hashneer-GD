@@ -3,7 +3,8 @@ class_name QuadrantBuilderArgs
 
 var quadrant_size: int
 var grid_size: Vector2
-var texture: Texture2D
+var quadrant_texture: Texture2D
+var hit_sound: SoundEffectDetails
 
 var initial_health: float
 var drop_rate_multiplier: float
@@ -15,7 +16,7 @@ var block_core_cut_min_area: float
 func _init() -> void:
 	quadrant_size = 0
 	grid_size = Vector2.ZERO
-	texture = null
+	quadrant_texture = null
 	initial_health = 0.0
 	drop_rate_multiplier = 0.0
 	level_index = -1

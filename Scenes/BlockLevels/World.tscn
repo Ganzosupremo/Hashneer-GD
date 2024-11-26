@@ -1,8 +1,7 @@
-[gd_scene load_steps=21 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=20 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
-[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="2_cavjt"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_d3k6k"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="2_okdg1"]
 [ext_resource type="Shader" path="res://Shaders/Block_background.gdshader" id="3_1ioqg"]
@@ -49,7 +48,6 @@ environment = SubResource("Environment_5odol")
 unique_name_in_owner = true
 position = Vector2(145, -12)
 speed = 400.0
-initial_weapon = ExtResource("2_cavjt")
 
 [node name="RigidBodiesParent" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -77,6 +75,8 @@ unique_name_in_owner = true
 position = Vector2(649, -456)
 
 [node name="Pool_FractureBullets" parent="." instance=ExtResource("2_okdg1")]
+max_amount = 10
+instantiate_new_on_empty = true
 
 [node name="Pool_FractureCutVisualizer" parent="." instance=ExtResource("2_okdg1")]
 instance_template = ExtResource("4_nhxjq")
@@ -90,12 +90,12 @@ keep_instances_in_tree = true
 
 [node name="Pool_FractureBodies" parent="." instance=ExtResource("2_okdg1")]
 instance_template = ExtResource("6_iea0g")
-max_amount = 300
+max_amount = 200
 instantiate_new_on_empty = true
 
 [node name="Quadrants" type="Node2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(421, 0)
+position = Vector2(425, 0)
 
 [node name="MinerAI" type="Node2D" parent="."]
 script = ExtResource("1_7o24j")

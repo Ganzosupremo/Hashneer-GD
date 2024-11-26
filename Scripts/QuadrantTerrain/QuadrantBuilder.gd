@@ -16,7 +16,7 @@ signal map_builded()
 @onready var player: PlayerController = %Player
 @onready var quadrants: Node2D = %Quadrants
 @onready var quadrant_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/Quadrant.tscn")
-@onready var staticbody_template = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
+@onready var staticbody_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
 
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 @onready var _rigid_bodies_parent: Node2D = %RigidBodiesParent
@@ -33,11 +33,11 @@ var builder_args: QuadrantBuilderArgs
 static var instance: QuadrantBuilder = self
 
 func _ready() -> void:
+	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	instance = self
 	_init_builder()
 
 func _init_builder() -> void:
-	print("Builder Initialized")
 	var data: QuadrantBuilderArgs = GameManager.builder_args
 	builder_args = data
 	
@@ -64,26 +64,30 @@ func _init_builder() -> void:
 	
 	_generate_quadrants(quadrants_initial_health)
 
-"""Fractures the quadrant at the specified position"""
+"""Fractures the polygon (quadrant) at the specified position"""
 func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStaticBody2D, bullet_launch_velocity:float = 410.0, bullet_damage: float = 25.0, bullet_speed: float = 500.0) -> void:
 	var p = bullet_launch_velocity / bullet_speed
 	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
+	other_body.get_sound_component().play_sound()
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
-	if !other_body.take_damage(bullet_damage, false):
+	if !other_body.take_damage(bullet_damage):
 		return
 	
 	if _fracture_disabled: return
 	
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
+	
 	BitcoinWallet.add_fiat(5000.0 * builder_args.drop_rate_multiplier)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
 
-func fracture_all(other_body: Node2D, bullet_damage: float) -> void:
+"""Fractures the quadrant core"""
+func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float) -> void:
 	if _fracture_disabled: return
-
+	
+	other_body.get_sound_component().play_sound()
 	block_core.fracture_all(other_body, cuts,  min_area, bullet_damage, _cur_fracture_color)
 	
 	_fracture_disabled = true
@@ -97,8 +101,8 @@ func _generate_quadrants(quadrants_initial_health: float) -> void:
 			quadrant.rectangle_size = Vector2(250,250)
 			quadrant.placed_in_level = true
 			quadrant.position = Vector2(i * quadrant_size.x * 1.25, j * quadrant_size.y * 1.25)
-			quadrant.set_initial_health(quadrants_initial_health)
-	
+			quadrant.set_fracture_body(quadrants_initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
+			#quadrant.set_texture_with_texture(builder_args.quadrant_texture)
 	_set_block_core_position()
 
 func _set_player_position() -> void:
@@ -107,13 +111,12 @@ func _set_player_position() -> void:
 
 func _set_block_core_position():
 	var center: Vector2 = quadrant_size * grid_size * 0.5
-	
-	block_core.pass_level_index(builder_args.level_index)
 	block_core.global_position = center
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
 	_spawn_cut_visualizers(cut_pos, cut_shape, fade_speed)
-	
+	source.get_sound_component().play_sound()
+	var hit_sound: SoundEffectDetails = source.get_sound_component().get_current_sound()
 	var source_polygon: PackedVector2Array = source.get_polygon()
 	var total_area: float = PolygonLib.getPolygonArea(source_polygon)
 	
@@ -135,7 +138,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 			_spawn_fracture_body(fracture_shard, source.getTextureInfo(), s_mass * area_p, rand_lifetime)
 	
 	for shape in cut_fracture_info.shapes:
-		call_deferred("_spawn_staticbody", shape, source.modulate, source.getTextureInfo())
+		call_deferred("_spawn_staticbody", shape, source.modulate, source.getTextureInfo(), hit_sound)
 	
 	source.queue_free()
 
@@ -155,14 +158,15 @@ func _spawn_cut_visualizers(pos : Vector2, poly : PackedVector2Array, fade_speed
 	instance.spawn(pos, fade_speed)
 	instance.setPolygon(poly)
 
-func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary) -> void:
+func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary, sound_details: SoundEffectDetails) -> void:
 	var instance = staticbody_template.instantiate()
 	_rigid_bodies_parent.add_child(instance)
 	instance.global_position = shape_info.spawn_pos
 	instance.global_rotation = shape_info.spawn_rot
 	instance.set_polygon(shape_info.centered_shape)
-	instance.modulate = color
+	#instance.modulate = color
 	instance.set_initial_health(quadrants_initial_health)
+	instance.set_hit_sound_effect(sound_details)
 	instance.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
 
 static func get_instance() -> QuadrantBuilder:

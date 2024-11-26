@@ -1,31 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://bsj51dud0foww"]
+[gd_scene load_steps=4 format=3 uid="uid://bsj51dud0foww"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FractureBullet.gd" id="1_fp570"]
+[ext_resource type="PackedScene" uid="uid://vvdbfpgwq6m6" path="res://Scenes/Components/HitBoxComponent.tscn" id="2_70ux4"]
+[ext_resource type="PackedScene" uid="uid://d2n78e7hlfmp4" path="res://Scenes/Components/BulletTrailComponent.tscn" id="3_dhedh"]
 
 [node name="FractureBullet" type="RigidBody2D"]
 collision_layer = 64
-collision_mask = 312
+collision_mask = 304
 gravity_scale = 0.0
 can_sleep = false
-lock_rotation = true
 contact_monitor = true
 max_contacts_reported = 1
+angular_velocity = 0.785398
 script = ExtResource("1_fp570")
 radius = 10.0
 speed = 500.0
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 
-[node name="Timer" type="Timer" parent="."]
-unique_name_in_owner = true
-
-[node name="CollisionDetection" type="Area2D" parent="."]
+[node name="CollisionBoxComponent" parent="." instance=ExtResource("2_70ux4")]
 collision_layer = 64
-collision_mask = 313
+collision_mask = 9
 
-[node name="CollisionDetectionPolygon" type="CollisionPolygon2D" parent="CollisionDetection"]
+[node name="CollisionBoxComponentPolygon" type="CollisionPolygon2D" parent="CollisionBoxComponent"]
 unique_name_in_owner = true
+
+[node name="BulletTrail" parent="." instance=ExtResource("3_dhedh")]
+unique_name_in_owner = true
+default_color = Color(1, 1, 1, 0)
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="body_entered" from="CollisionBoxComponent" to="." method="_on_collision_detection_body_entered"]

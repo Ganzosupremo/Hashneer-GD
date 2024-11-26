@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="StatsResource" load_steps=2 format=3 uid="uid://c28y48eijcapn"]
+
+[ext_resource type="Script" path="res://Scripts/StatsSystem/StatsResource.gd" id="1_y7tta"]
+
+[resource]
+script = ExtResource("1_y7tta")
+name = "PlayerSpeedStat"
+stat_type = 0
+stat_power = 0.0

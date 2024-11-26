@@ -190,6 +190,7 @@ theme_override_constants/separation = 50
 alignment = 1
 
 [node name="SkillTitle" type="Label" parent="Margins/MainContainer"]
+custom_minimum_size = Vector2(400, 64)
 layout_mode = 2
 theme = ExtResource("1_nv8st")
 theme_override_font_sizes/font_size = 35
@@ -218,6 +219,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SkillDesc" type="Label" parent="Margins/MainContainer"]
+custom_minimum_size = Vector2(400, 64)
 layout_mode = 2
 theme = ExtResource("1_nv8st")
 theme_override_font_sizes/font_size = 21
@@ -240,11 +242,11 @@ layout_mode = 2
 texture = SubResource("AtlasTexture_kdigu")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Margins/MainContainer/PriceContainer/FiatCostContainer/FiatTexture"]
-autoplay = "normal"
-speed_scale = 8.0
 libraries = {
 "": SubResource("AnimationLibrary_6j3nd")
 }
+autoplay = "normal"
+speed_scale = 8.0
 
 [node name="FiatCost" type="Label" parent="Margins/MainContainer/PriceContainer/FiatCostContainer"]
 unique_name_in_owner = true
@@ -286,11 +288,11 @@ texture = SubResource("AtlasTexture_ihyud")
 stretch_mode = 5
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Margins/MainContainer/PriceContainer/BTCCostContainer/BTCTexture"]
-autoplay = "normal"
-speed_scale = 8.0
 libraries = {
 "": SubResource("AnimationLibrary_ljfjb")
 }
+autoplay = "normal"
+speed_scale = 8.0
 
 [node name="BTCCost" type="Label" parent="Margins/MainContainer/PriceContainer/BTCCostContainer"]
 unique_name_in_owner = true

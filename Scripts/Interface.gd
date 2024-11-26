@@ -256,7 +256,7 @@ func _validate(implementation, interface : GDScript, assert_on_fail = false) -> 
 	return _interfaces[lookup]
 
 
-func find_all_children(node) -> Array:
+func find_all_children(node: Node2D) -> Array:
 	var all_children = [node]
 	var children: Array = node.get_children()
 	

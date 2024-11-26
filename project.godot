@@ -10,18 +10,19 @@ config_version=5
 
 [application]
 
-config/name="Hashneer"
+config/name="Hasheneer"
 config/tags=PackedStringArray("bitcoin")
 run/main_scene="res://Scenes/UI/Main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 boot_splash/bg_color=Color(0.831373, 0.317647, 0.0392157, 1)
+boot_splash/image="res://Textures/Bitcoin_pixel_art.png"
 config/icon="res://Textures/Bitcoin pixel art nuevo2.png"
 
 [autoload]
 
 SaveSystem="*res://addons/save_system/save_system.gd"
+GameManager="*res://Scenes/GameManager.tscn"
 SceneManager="*res://Scenes/Scene_manager.tscn"
-GameManager="*res://Scripts/Managers/GameManager.gd"
 Interface="*res://Scripts/Interface.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
@@ -31,8 +32,6 @@ EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
@@ -43,6 +42,15 @@ project/assembly_name="Hashneer"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/save_system/plugin.cfg", "res://addons/worldmap_builder/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Audio/": "red",
+"res://Resources/": "green",
+"res://Scenes/": "purple",
+"res://Scripts/": "teal"
+}
 
 [filesystem]
 
@@ -75,11 +83,6 @@ Fire={
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(190, 26),"global_position":Vector2(194, 69),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
 ]
 }
-left_click={
-"deadzone": 0.5,
-"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(70, 11),"global_position":Vector2(74, 54),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
-]
-}
 Return={
 "deadzone": 0.5,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
@@ -99,6 +102,16 @@ skill_tree_drag={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":1,"canceled":false,"pressed":false,"double_click":false,"script":null)
 , Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":3,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+Mouse_Wheel_Down={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":5,"canceled":false,"pressed":false,"double_click":false,"script":null)
+]
+}
+Mouse_Wheel_Up={
+"deadzone": 0.5,
+"events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":0,"position":Vector2(0, 0),"global_position":Vector2(0, 0),"factor":1.0,"button_index":4,"canceled":false,"pressed":false,"double_click":false,"script":null)
 ]
 }
 

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://bjfvowjccw2j3"]
+
+[ext_resource type="AudioStream" uid="uid://cng3ua106vm3o" path="res://Audio/Shotgun Shoot.wav" id="1_6ja2k"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_ujvr4"]
+
+[resource]
+script = ExtResource("1_ujvr4")
+sound_volume = -10.0
+audio_stream = ExtResource("1_6ja2k")
+sound_pitch = 1.128

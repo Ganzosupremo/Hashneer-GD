@@ -45,17 +45,6 @@ theme = ExtResource("1_1f6qi")
 text = "Skill Tree"
 script = ExtResource("3_6gawp")
 
-[node name="Network" type="Button" parent="PanelContainer/HBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(150, 40)
-layout_mode = 2
-theme = ExtResource("1_1f6qi")
-text = "Network"
-script = ExtResource("3_6gawp")
-
 [connection signal="mouse_entered" from="PanelContainer/HBoxContainer/Skill Tree" to="PanelContainer/HBoxContainer/Skill Tree" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="PanelContainer/HBoxContainer/Skill Tree" to="PanelContainer/HBoxContainer/Skill Tree" method="_on_mouse_exited"]
 [connection signal="pressed" from="PanelContainer/HBoxContainer/Skill Tree" to="." method="_on_skill_tree_pressed"]
-[connection signal="mouse_entered" from="PanelContainer/HBoxContainer/Network" to="PanelContainer/HBoxContainer/Network" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="PanelContainer/HBoxContainer/Network" to="PanelContainer/HBoxContainer/Network" method="_on_mouse_exited"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/Network" to="." method="_on_network_pressed"]

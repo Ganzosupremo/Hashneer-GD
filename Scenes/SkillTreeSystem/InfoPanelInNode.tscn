@@ -1,0 +1,79 @@
+[gd_scene load_steps=7 format=3 uid="uid://j8t0bm46hh8i"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1jdpd"]
+[ext_resource type="Script" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.gd" id="1_l5tw6"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="2_8hfgg"]
+[ext_resource type="Texture2D" uid="uid://c3q4hbc4arufs" path="res://Textures/Currencies/Bitcoin logo new.png" id="4_dgyth"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_sv8do"]
+font = ExtResource("2_8hfgg")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_mpxf4"]
+font = ExtResource("2_8hfgg")
+font_size = 15
+
+[node name="SkillInfoPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -0.5
+offset_top = -79.0
+offset_right = -0.5
+offset_bottom = -79.0
+grow_horizontal = 2
+theme = ExtResource("1_1jdpd")
+script = ExtResource("1_l5tw6")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(150, 120)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+theme = ExtResource("1_1jdpd")
+theme_override_constants/separation = 10
+
+[node name="SkillTitle" type="Label" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(150, 25)
+layout_mode = 2
+theme = ExtResource("1_1jdpd")
+text = "Skill Title"
+label_settings = SubResource("LabelSettings_sv8do")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+justification_flags = 171
+uppercase = true
+
+[node name="SkillDescription" type="RichTextLabel" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme = ExtResource("1_1jdpd")
+text = "Skill Description.."
+fit_content = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("4_dgyth")
+
+[node name="SkillCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme = ExtResource("1_1jdpd")
+text = "Cost: 1 BTC"
+label_settings = SubResource("LabelSettings_mpxf4")
+horizontal_alignment = 1
+vertical_alignment = 1

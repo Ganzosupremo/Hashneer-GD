@@ -1,53 +1,46 @@
 extends Resource
-class_name SkillUpgradeData
+class_name UpgradeData
 
 signal next_tier_unlocked()
 signal upgrade_maxed()
 
-## Deprecated
-enum SkillType {
-	DAMAGE_UPGRADE1,
-	DAMAGE_UPGRADE2,
-	DAMAGE_UPGRADE3,
-	SPEED_UPGRADE1,
-	SPEED_UPGRADE2,
-	SPEED_UPGRADE3,
-	HEALTH_UPGRADE1,
-	HEALTH_UPGRADE2,
-	HEALTH_UPGRADE3
-}
-
-@export_category("Upgrade Base")
+@export_category("Upgrade Basic Parameters")
 ## Deprecated. Used internally to keep track of unlocked skills
-@export var skill_type: SkillType
-## Used in the Game UI
+#@export var skill_type: SkillType
 @export var upgrade_name: String = ""
 @export_multiline var upgrade_description: String = ""
+@export var skill_image: Texture = Texture.new()
 @export var upgrade_tier: int = 0
 ## Defines the type of skill this is. True will just upgrade an ability/skill. False to unlock an entire new skill/ability
 @export var is_upgrade: bool = false
-@export var is_unlocked: bool = false
+@export var i_unlocked: bool = false
+## Defines if the upgrade should be in percentage increase or flat increase.
+@export var is_percentage: bool = false
 
 @export_category("Upgrade Power")
+## The starting increase of this upgrade.
 @export var upgrade_base_power: float = 5.0
+## The upgrade_base_power will increase by this multiplier with each purchase.
 @export var upgrade_power_multiplier: float = 1.2
 
-@export_category("Upgrade Power in Bitcoin")
-@export var bitcoin_base_power: float = 15.0
-@export var bitcoin_power_multiplier: float = 1.5
+#@export_category("Upgrade Power in Bitcoin")
+#@export var bitcoin_base_power: float = 15.0
+#@export var bitcoin_power_multiplier: float = 1.5
 
 @export_category("Upgrade Cost")
+## The initial cost for this upgrade.
 @export var upgrade_cost_base: float = 10.0
+## The cost for this upgrade will increase by this multiplier with each purchase.
 @export var upgrade_cost_multiplier: float = 1.2
 
-@export_category("Upgrade Cost in Bitcoin")
-@export var bitcoin_cost_base: float = 1.0
-@export var bitcoin_cost_multiplier: float = 1.05
+#@export_category("Upgrade Cost in Bitcoin")
+#@export var bitcoin_cost_base: float = 1.0
+#@export var bitcoin_cost_multiplier: float = 1.05
 
 
 @export var upgrade_max_level : int = 10
 
-var next_tier_threshold: int = int(upgrade_max_level * 0.3) # 30% of max level
+var next_tier_threshold: int = int(upgrade_max_level * 0.9) # 30% of max level
 var upgrade_level: int = 0:
 	set(value):
 		upgrade_level = value
@@ -58,90 +51,108 @@ var current_power: float = 0.0
 
 # ------------------ MAIN FUNCTIONS ----------------------------
 
-func buy_upgrade(is_bitcoin: bool = false):
-	if is_bitcoin:
-		_buy_with_bitcoin()
-	else:
-		_buy_with_fiat()
 
-func _buy_with_bitcoin() -> void:
-	if BitcoinWallet.spend_bitcoin(upgrade_cost(true)):
+func apply_upgrade() -> float:
+	return get_upgrade_power()
+
+
+func buy_upgrade(in_bitcoin: bool = false) -> bool:
+	if upgrade_level >= upgrade_max_level: return false
+	
+	if in_bitcoin:
+		return _buy_with_bitcoin()
+	else:
+		return _buy_with_fiat()
+
+
+func _buy_with_bitcoin() -> bool:
+	if BitcoinWallet.spend_bitcoin(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		check_upgrade_maxed_out()
 		check_next_tier_unlock()
-		upgrade_power(true)
-		
+		_upgrade_power()
+		return true
+		#apply_upgrade()
+	else:
+		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
+		return false
 
-func _buy_with_fiat() -> void:
-	if BitcoinWallet.spend_fiat(upgrade_cost(false)):
+
+func _buy_with_fiat() -> bool:
+	if BitcoinWallet.spend_fiat(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		check_upgrade_maxed_out()
 		check_next_tier_unlock()
-		upgrade_power(false)
-
-
-func buy_max(is_bitcoin: bool = false):
-	if is_bitcoin:
-		if BitcoinWallet.spend_bitcoin(_buy_max_bitcoin()):
-			check_upgrade_maxed_out()
-			check_next_tier_unlock()
-			upgrade_power(true)
+		_upgrade_power()
+		return true
+		#apply_upgrade()
 	else:
-		if BitcoinWallet.spend_fiat(_buy_max_fiat()):
-			check_upgrade_maxed_out()
-			check_next_tier_unlock()
-			upgrade_power(false)
-			
+		print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+		return false
 
-func _buy_max_bitcoin() -> float:
-	var n: int = floor(_log((BitcoinWallet.get_bitcoin_balance() * (bitcoin_cost_multiplier - 1.0)) / upgrade_cost(true) + 1.0, bitcoin_cost_multiplier))
+func buy_max(in_bitcoin: bool = false) -> void:
+	if upgrade_level >= upgrade_max_level: return
+	
+	if !in_bitcoin:
+		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
+			_upgrade_power()
+			#apply_upgrade()
+		else:
+			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+	
+	if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
+		_upgrade_power()
+		#apply_upgrade()
+	else:
+		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
+
+func _buy_max(in_bitcoin: bool = false) -> float:
+	var balance: float = 0.0
+	if in_bitcoin:
+		balance = BitcoinWallet.get_bitcoin_balance()
+	else:
+		balance = BitcoinWallet.get_fiat_balance()
+	
+	var n: int = floor(_log((balance * (upgrade_cost_multiplier - 1.0)) / upgrade_cost() + 1.0, upgrade_cost_multiplier))
 	if n >= upgrade_max_level: n = upgrade_max_level
 	upgrade_level += n
-	if upgrade_level >= upgrade_max_level: upgrade_level = upgrade_max_level
 	
-	return upgrade_cost(true) * ((pow(bitcoin_cost_multiplier, n) - 1.0) / (bitcoin_cost_multiplier - 1.0))
-
-func _buy_max_fiat() -> float:
-	var n: int = floor(_log((BitcoinWallet.get_fiat_balance() * (upgrade_cost_multiplier - 1.0)) / upgrade_cost(false) + 1.0, upgrade_cost_multiplier))
-	if n >= upgrade_max_level: n = upgrade_max_level
-	upgrade_level += n
-	if upgrade_level >= upgrade_max_level: upgrade_level = upgrade_max_level
+	if check_upgrade_maxed_out():
+		upgrade_level = upgrade_max_level
 	
-	return upgrade_cost(false) * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
+	check_next_tier_unlock()
+	return upgrade_cost() * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
 
 
 #----------------------- COST FUNCTIONS ---------------------
 
 
-func upgrade_cost(is_bitcoin: bool = false) -> float:
-	if is_bitcoin:
-		return _bitcoin_cost()
-	else:
-		return _fiat_cost()
-
-func _fiat_cost() -> float:
+func upgrade_cost() -> float:
 	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level)
 
-func _bitcoin_cost() -> float:
-	return bitcoin_cost_base * pow(bitcoin_cost_multiplier, upgrade_level)
+func upgrade_cost_string() -> String:
+	return str(upgrade_cost())
+
+#func _cost() -> float:
+	#return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level)
+
+#func _bitcoin_cost() -> float:
+	#return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level)
 
 # ----------------------- POWER FUNCTIONS -------------------------
 
 func get_upgrade_power() -> float:
 	return current_power
 
-func upgrade_power(is_bitcoin: bool) -> void:
-	if is_bitcoin:
-		current_power += _bitcoin_power()
-	else:
-		current_power += _fiat_power()
+func _upgrade_power() -> void:
+	current_power += _power()
+#
+#func _bitcoin_power() -> float:
+	#var total: float = 0.0
+	#total += bitcoin_base_power * pow(bitcoin_power_multiplier, upgrade_level)
+	#return total
 
-func _bitcoin_power() -> float:
-	var total: float = 0.0
-	total += bitcoin_base_power * pow(bitcoin_power_multiplier, upgrade_level)
-	return total
-
-func _fiat_power() -> float:
+func _power() -> float:
 	var total: float = 0.0
 	total += upgrade_base_power * pow(upgrade_power_multiplier, upgrade_level)
 	return total
@@ -155,7 +166,7 @@ func can_update_status() -> bool:
 	return check_next_tier_unlock() || check_upgrade_maxed_out()
 
 func check_upgrade_maxed_out() -> bool:
-	if upgrade_level == upgrade_max_level:
+	if upgrade_level >= upgrade_max_level:
 		emit_signal("upgrade_maxed")
 		return true
 	else: return false
@@ -167,4 +178,4 @@ func check_next_tier_unlock() -> bool:
 	else: return false
 
 func _to_string() -> String:
-	return "ID: %s"%_id +"\nUnlocked: %s"%is_unlocked + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost() + "\nBitcoin Cost: %s"%upgrade_cost(true)
+	return "ID: %s"%_id +"\nUnlocked: %s"%i_unlocked + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost() + "\nBitcoin Cost: %s"%upgrade_cost()

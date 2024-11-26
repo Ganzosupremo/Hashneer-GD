@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=5 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Texture2D" uid="uid://bkqkbj26vyaw7" path="res://Textures/Black Image.png" id="2_ikvkl"]
-[ext_resource type="Script" path="res://Scripts/Player/Health.gd" id="3_j3i4g"]
+[ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
+[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_7m2w8"]
 
 [node name="BlockCore" type="StaticBody2D"]
 show_behind_parent = true
@@ -30,7 +31,9 @@ n3 = 58.99
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_j3i4g")
-initial_health = 100.0
+
+[node name="HitSoundComponent" parent="." instance=ExtResource("4_7m2w8")]
+unique_name_in_owner = true
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
