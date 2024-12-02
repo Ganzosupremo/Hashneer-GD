@@ -1,30 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://j8t0bm46hh8i"]
+[gd_scene load_steps=10 format=3 uid="uid://j8t0bm46hh8i"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1jdpd"]
-[ext_resource type="Script" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.gd" id="1_l5tw6"]
+[ext_resource type="Script" path="res://Scripts/UI/InfoPanelInNode.gd" id="1_l5tw6"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="2_8hfgg"]
-[ext_resource type="Texture2D" uid="uid://c3q4hbc4arufs" path="res://Textures/Currencies/Bitcoin logo new.png" id="4_dgyth"]
+[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_amp5s"]
+[ext_resource type="PackedScene" uid="uid://cdj2nrqs4irp1" path="res://Scenes/SkillTreeSystem/FiatCurrencyAnimated.tscn" id="4_8ndmn"]
+[ext_resource type="PackedScene" uid="uid://267b2pka2dbq" path="res://Scenes/SkillTreeSystem/BTCCurrencyAnimated.tscn" id="4_lx4gd"]
+[ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="7_oi02n"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_sv8do"]
 font = ExtResource("2_8hfgg")
 font_size = 32
 
 [sub_resource type="LabelSettings" id="LabelSettings_mpxf4"]
-font = ExtResource("2_8hfgg")
-font_size = 15
+font = ExtResource("7_oi02n")
 
 [node name="SkillInfoPanel" type="Control"]
 layout_mode = 3
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -0.5
-offset_top = -79.0
-offset_right = -0.5
-offset_bottom = -79.0
+anchor_bottom = 0.5
 grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1e-05, 1e-05)
 theme = ExtResource("1_1jdpd")
 script = ExtResource("1_l5tw6")
+use_btc_icon = false
+
+[node name="AnimationComponent" parent="." instance=ExtResource("3_amp5s")]
+alternative_tweening_start = true
+tween_time = 0.5
+tween_transition = 8
+tween_ease = 1
+enter_time = 0.4
+enter_transition = 11
+enter_ease = 1
+enter_scale = Vector2(0, 0)
+enter_position = Vector2(20, 10)
+enter_size = Vector2(0, 0)
+enter_rotation = -90.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(150, 120)
@@ -61,13 +77,19 @@ text = "Skill Description.."
 fit_content = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 
-[node name="Icon" type="TextureRect" parent="PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="FiatTexture" parent="PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_8ndmn")]
+visible = false
 layout_mode = 2
-texture = ExtResource("4_dgyth")
+
+[node name="BTCTexture" parent="PanelContainer/VBoxContainer/HBoxContainer" instance=ExtResource("4_lx4gd")]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 4
 
 [node name="SkillCost" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 30)

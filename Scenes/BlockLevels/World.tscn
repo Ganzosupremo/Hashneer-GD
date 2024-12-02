@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="4_nhxjq"]
 [ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="5_w0fsn"]
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="6_iea0g"]
-[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/currency_ui.tscn" id="7_y3lbx"]
+[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="7_y3lbx"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="12_e0bhm"]

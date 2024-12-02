@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/UI/MainGameUI.gd" id="1_0f3y0"]
 [ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="1_88amo"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_ibwsi"]
-[ext_resource type="PackedScene" uid="uid://b15a5r48pfo8u" path="res://Scenes/UI/button_main_menu_template.tscn" id="5_x6foa"]
+[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="5_8r3iq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_a8ncp"]
 shader = ExtResource("1_88amo")
@@ -86,7 +86,7 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="StartButton" parent="CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x6foa")]
+[node name="StartButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(200, 300)
 layout_direction = 2
 layout_mode = 2
@@ -94,13 +94,47 @@ theme = ExtResource("1_ibwsi")
 theme_override_font_sizes/font_size = 26
 text = "Start Game"
 
-[node name="SkillButton" parent="CenterContainer/VBoxContainer/HBoxContainer" instance=ExtResource("5_x6foa")]
+[node name="AnimationComponent" parent="CenterContainer/VBoxContainer/HBoxContainer/StartButton" instance=ExtResource("5_8r3iq")]
+enter_animation = true
+tween_time = 0.5
+tween_transition = 6
+tween_ease = 2
+tween_scale = Vector2(1.1, 1.1)
+tween_position = Vector2(10, 5)
+tween_rotation = -10.0
+tween_modulate = Color(1, 0.647, 0, 0.759)
+enter_time = 0.5
+enter_transition = 9
+enter_ease = 3
+enter_scale = Vector2(0, 0)
+enter_position = Vector2(0, 0)
+enter_size = Vector2(0, 0)
+enter_rotation = -10.0
+
+[node name="ShopButton" type="Button" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 theme = ExtResource("1_ibwsi")
 theme_override_font_sizes/font_size = 26
 text = "Shop
 "
+
+[node name="AnimationComponent" parent="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" node_paths=PackedStringArray("wait_for") instance=ExtResource("5_8r3iq")]
+enter_animation = true
+tween_time = 0.5
+tween_transition = 6
+tween_ease = 2
+tween_scale = Vector2(1.1, 1.1)
+tween_position = Vector2(10, 5)
+tween_rotation = 10.0
+wait_for = NodePath("../../StartButton/AnimationComponent")
+enter_time = 0.5
+enter_transition = 5
+enter_ease = 3
+enter_scale = Vector2(0, 0)
+enter_position = Vector2(0, 0)
+enter_size = Vector2(0, 0)
+enter_rotation = 10.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -115,6 +149,23 @@ theme = ExtResource("1_ibwsi")
 theme_override_font_sizes/font_size = 26
 text = "Settings
 "
+
+[node name="AnimationComponent" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer/SettingButton" node_paths=PackedStringArray("wait_for") instance=ExtResource("5_8r3iq")]
+enter_animation = true
+tween_time = 0.5
+tween_transition = 6
+tween_ease = 2
+tween_scale = Vector2(1.1, 1.1)
+tween_position = Vector2(10, 5)
+tween_rotation = -10.0
+wait_for = NodePath("../../../ShopButton/AnimationComponent")
+enter_time = 0.5
+enter_transition = 5
+enter_ease = 3
+enter_scale = Vector2(0, 0)
+enter_position = Vector2(0, 0)
+enter_size = Vector2(0, 0)
+enter_rotation = -10.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
@@ -161,5 +212,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/StartButton" to="CenterContainer/VBoxContainer/HBoxContainer/StartButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/StartButton" to="CenterContainer/VBoxContainer/HBoxContainer/StartButton" method="_on_mouse_exited"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/SkillButton" to="." method="_on_skill_button_pressed"]
+[connection signal="mouse_entered" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" method="_on_mouse_exited"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HBoxContainer/ShopButton" to="." method="_on_skill_button_pressed"]

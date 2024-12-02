@@ -1,8 +1,8 @@
 extends Control
 
 @onready var container: GridContainer = %Grid
-@onready var main_menu_scene: PackedScene = preload("res://Scenes/UI/Main_game_ui.tscn")
-@onready var shop_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/Skill_tree.tscn")
+@onready var main_menu_scene: PackedScene = preload("res://Scenes/UI/MainGameUI.tscn")
+@onready var skill_tree_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTreeBitcoin.tscn")
 
 var children: Array
 
@@ -35,4 +35,4 @@ func _on_menu_button_pressed() -> void:
 	SceneManager.switch_scene_with_packed(main_menu_scene)
 
 func _on_shop_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(shop_scene)
+	SceneManager.switch_scene_with_packed(skill_tree_scene)

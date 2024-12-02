@@ -10,3 +10,9 @@ class_name PlayerDetails extends Resource
 
 @export_category("Player Stats")
 @export var stats_list: Array[StatsResource]
+
+
+var damage: float = 10.0:
+	set(value):
+		damage += value
+		print_debug("Increased Damage")

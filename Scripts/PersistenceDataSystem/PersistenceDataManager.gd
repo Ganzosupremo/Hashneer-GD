@@ -18,7 +18,7 @@ func save_game(save_to_disk: bool = false) -> void:
 	for node in persistence_data_objects:
 		if Interface.implements(node, IPersistenceData):
 			node.save_data()
-			print("nodes saved: %s" % i)
+			print_debug("Nodes Saved: %s" % i)
 			i += 1
 	
 	if save_to_disk:

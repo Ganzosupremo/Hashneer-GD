@@ -51,7 +51,6 @@ var current_power: float = 0.0
 
 # ------------------ MAIN FUNCTIONS ----------------------------
 
-
 func apply_upgrade() -> float:
 	return get_upgrade_power()
 
@@ -97,8 +96,10 @@ func buy_max(in_bitcoin: bool = false) -> void:
 		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
 			_upgrade_power()
 			#apply_upgrade()
+			return
 		else:
 			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+			return
 	
 	if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
 		_upgrade_power()

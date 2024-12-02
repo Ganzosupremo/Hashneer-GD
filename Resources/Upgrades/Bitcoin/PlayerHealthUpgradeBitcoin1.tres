@@ -5,14 +5,13 @@
 [resource]
 script = ExtResource("1_82lh6")
 upgrade_name = "INCREASE HEALTH I"
-upgrade_description = ""
+upgrade_description = "Increases the Health of the player."
 upgrade_tier = 1
 is_upgrade = true
-is_unlocked = false
+i_unlocked = false
 is_percentage = false
 upgrade_base_power = 25.0
 upgrade_power_multiplier = 1.35
 upgrade_cost_base = 100.0
 upgrade_cost_multiplier = 1.05
 upgrade_max_level = 20
-current_power = 0.0

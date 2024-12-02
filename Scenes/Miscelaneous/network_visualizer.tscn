@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_jc6ea"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_ui4ay"]
 [ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="3_a8ff3"]
-[ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/UI/shop_tabs.tscn" id="4_gio3k"]
+[ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/SkillTreeSystem/SkillTreeTabs.tscn" id="4_gio3k"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hload"]
 shader = ExtResource("3_a8ff3")
