@@ -1,20 +1,19 @@
-[gd_scene load_steps=20 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=17 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_d3k6k"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="2_okdg1"]
-[ext_resource type="Shader" path="res://Shaders/Block_background.gdshader" id="3_1ioqg"]
 [ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="3_7k7v6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_fnuy8"]
-[ext_resource type="Texture2D" uid="uid://db241hbwkh2f3" path="res://Textures/Download.png" id="4_2fn4v"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="4_nhxjq"]
 [ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="5_w0fsn"]
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="6_iea0g"]
-[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="7_y3lbx"]
+[ext_resource type="Shader" path="res://Shaders/DiscretSunset.gdshader" id="9_5uh2n"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="12_e0bhm"]
+[ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="16_y420x"]
 
 [sub_resource type="Environment" id="Environment_5odol"]
 background_mode = 3
@@ -24,20 +23,14 @@ glow_strength = 1.2
 glow_blend_mode = 0
 glow_hdr_threshold = 0.69
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_shwem"]
-noise_type = 3
-seed = 440
-frequency = 0.2119
-fractal_octaves = 8
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_snq06"]
-noise = SubResource("FastNoiseLite_shwem")
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xpeib"]
-shader = ExtResource("3_1ioqg")
-shader_parameter/color = Color(0.721569, 0.47451, 0.203922, 1)
-shader_parameter/iChannel1 = ExtResource("4_2fn4v")
-shader_parameter/iChannel0 = SubResource("NoiseTexture2D_snq06")
+shader = ExtResource("9_5uh2n")
+shader_parameter/bottom_color = Color(0, 0, 0, 1)
+shader_parameter/top_color = Color(0.352941, 0.4, 0.313726, 1)
+shader_parameter/beam_distance = 0.069
+shader_parameter/beam_height = 0.034
+shader_parameter/beam_width = 0.104
+shader_parameter/total_phases = 5
 
 [node name="World" type="Node2D"]
 
@@ -99,6 +92,7 @@ position = Vector2(425, 0)
 
 [node name="MinerAI" type="Node2D" parent="."]
 script = ExtResource("1_7o24j")
+time = 20.0
 
 [node name="AITimer" type="Timer" parent="MinerAI"]
 unique_name_in_owner = true
@@ -120,8 +114,6 @@ theme_type_variation = &"Game Background"
 
 [node name="GameUI" type="CanvasLayer" parent="."]
 
-[node name="CurrencyUI" parent="GameUI" instance=ExtResource("7_y3lbx")]
-
 [node name="TimeLeftUI" parent="GameUI" instance=ExtResource("9_rhv7f")]
 unique_name_in_owner = true
 
@@ -129,4 +121,6 @@ unique_name_in_owner = true
 
 [node name="WeaponUI" parent="GameUI" instance=ExtResource("12_e0bhm")]
 
-[connection signal="map_builded" from="QuadrantBuilder" to="MinerAI" method="_on_quadrant_builder_map_builded"]
+[node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("16_y420x")]
+size_flags_horizontal = 6
+size_flags_vertical = 6

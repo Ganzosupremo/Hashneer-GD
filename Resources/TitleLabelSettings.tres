@@ -1,0 +1,12 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c14kyf6almnse"]
+
+[ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="1_ox40n"]
+
+[resource]
+font = ExtResource("1_ox40n")
+font_size = 69
+outline_size = 7
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 3
+shadow_color = Color(0, 0, 0, 0.569)
+shadow_offset = Vector2(3, 3.5)

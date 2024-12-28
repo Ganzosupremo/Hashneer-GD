@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://44b3lqo4rfge"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_4d2yb"]
+[ext_resource type="Script" path="res://Scripts/UIComponents/TweenableButton.gd" id="2_511jm"]
+[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_cawim"]
+
+[node name="TweenableButton" type="Button"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -125.0
+offset_top = -23.0
+offset_right = 125.0
+offset_bottom = 23.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_4d2yb")
+text = "Animated Button"
+script = ExtResource("2_511jm")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 4
+tween_ease = 1
+tween_position = Vector2(20, 1)
+tween_rotation = 0.0
+enter_time = 0.69
+enter_transition = 11
+enter_ease = 2
+enter_scale = Vector2(0, 0)
+enter_size = Vector2(0, 0)
+enter_rotation = 360.0
+
+[node name="AnimationComponent" parent="." instance=ExtResource("3_cawim")]

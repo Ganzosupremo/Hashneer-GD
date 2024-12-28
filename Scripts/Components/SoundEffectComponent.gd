@@ -2,7 +2,6 @@ class_name SoundEffectComponent extends AudioStreamPlayer
 
 var _sound_details: SoundEffectDetails
 
-
 func play_sound() -> void:
 	if stream:
 		play()

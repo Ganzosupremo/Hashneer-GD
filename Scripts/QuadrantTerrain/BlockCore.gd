@@ -1,6 +1,6 @@
 class_name BlockCore extends FracturableStaticBody2D
 
-signal core_mined(ui_title: String, bg_color: Color)
+#signal block_mined()
 
 @onready var _shatter_visualizer: Polygon2D = $ShatterVisualizer
 @onready var _shatter_line_2d: Line2D = $ShatterVisualizer/ShatterLine2D
@@ -10,11 +10,9 @@ var _poly_fracture: PolygonFracture
 var _cur_fracture_color: Color
 var level_index: int = 0
 var core_destroyed: bool = false
-static var instance: BlockCore = self
-
 
 func _ready() -> void:
-	instance = self
+	GameManager.current_block_core = self
 	_poly_fracture = PolygonFracture.new()
 	_rng.randomize()
 	if placed_in_level:
@@ -36,12 +34,11 @@ func _ready() -> void:
 This method checks if the block core's health 
 has been reduced to zero before fracturing the core.
 """
-func fracture_all(other_body, cuts: float, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW) -> void:
-	if take_damage(bullet_damage):
-		_fracture_all(other_body, cuts, min_area, fracture_color)
+func fracture_all(other_body, cuts: float, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
+	if take_damage(bullet_damage, instakill):
+		_fracture_all(other_body, cuts, min_area, fracture_color, miner)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
-
 
 # Store the cut info for progressive cuts
 var cut_info_storage: Array = []
@@ -78,17 +75,16 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_cur_fracture_color = color
 		_shatter_visualizer.self_modulate = _cur_fracture_color
 
-
-func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Color = Color.HONEYDEW) -> void:
+func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 	_slowdown_timer.start(0.21)
 	Engine.time_scale = 0.21
 	if !core_destroyed:
 		core_destroyed = true
 		_destroy_block_core(other_body, cuts, min_area)
+		_mine_block(miner)
 		GameManager.level_completed()
-		_mine_core()
-
+		#emit_signal("block_mined")
 
 func _destroy_block_core(source, cuts: float, min_area: float) -> void:
 	visible = false
@@ -102,7 +98,6 @@ func _destroy_block_core(source, cuts: float, min_area: float) -> void:
 	for info_dic in cut_fracture_info:
 		var texture_info: Dictionary = getTextureInfo()
 		_spawn_fracture_body(info_dic, texture_info)
-
 
 func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -> void:
 	var body_instance = get_parent()._pool_fracture_bodies.getInstance()
@@ -123,20 +118,14 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 
 	body_instance.setTexture(PolygonLib.setTextureOffset(texture_info, fracture_info.centroid))
 
-
-func _mine_core() -> void:
-	BitcoinNetwork.mine_block("Player")
-	GameManager.emit_signal("level_completed", BitcoinNetwork.get_blockheight() + 2)
+func _mine_block(miner: String = "Player") -> void:
+	BitcoinNetwork.mine_block(miner)
 
 func _on_slow_down_timer_timeout() -> void:
 	Engine.time_scale = 1.0
 	queue_free()
 
-
 func setPolygon(poly: PackedVector2Array):
 	super.setPolygon(poly)
 	_shatter_visualizer.polygon = poly
 	_shatter_line_2d.points = poly
-
-static func get_instance() -> BlockCore:
-	return instance

@@ -1,8 +1,10 @@
-extends Resource
-class_name UpgradeData
+class_name UpgradeData extends Resource
 
 signal next_tier_unlocked()
 signal upgrade_maxed()
+
+enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
+
 
 @export_category("Upgrade Basic Parameters")
 ## Deprecated. Used internally to keep track of unlocked skills
@@ -13,7 +15,9 @@ signal upgrade_maxed()
 @export var upgrade_tier: int = 0
 ## Defines the type of skill this is. True will just upgrade an ability/skill. False to unlock an entire new skill/ability
 @export var is_upgrade: bool = false
-@export var i_unlocked: bool = false
+#@export var i_unlocked: bool = false
+## 
+@export var status: SKILL_NODE_STATUS = SKILL_NODE_STATUS.LOCKED
 ## Defines if the upgrade should be in percentage increase or flat increase.
 @export var is_percentage: bool = false
 
@@ -37,15 +41,14 @@ signal upgrade_maxed()
 #@export var bitcoin_cost_base: float = 1.0
 #@export var bitcoin_cost_multiplier: float = 1.05
 
-
 @export var upgrade_max_level : int = 10
 
-var next_tier_threshold: int = int(upgrade_max_level * 0.9) # 30% of max level
-var upgrade_level: int = 0:
-	set(value):
-		upgrade_level = value
-		check_next_tier_unlock()
-		check_upgrade_maxed_out()
+var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
+var upgrade_level: int = 0
+	#set(value):
+		#upgrade_level = value
+		#check_next_tier_unlock()
+		#check_upgrade_maxed_out()
 var _id: int = 0
 var current_power: float = 0.0
 
@@ -53,6 +56,13 @@ var current_power: float = 0.0
 
 func apply_upgrade() -> float:
 	return get_upgrade_power()
+
+## Returns the status of the upgrade. If it's locked, unlocked or maxed out
+func get_upgrade_status() -> SKILL_NODE_STATUS:
+	return status
+
+func set_upgrade_status(new: SKILL_NODE_STATUS) -> void:
+	status = new
 
 
 func buy_upgrade(in_bitcoin: bool = false) -> bool:
@@ -163,20 +173,24 @@ func _power() -> float:
 func _log(value: float, base: float) -> float:
 	return 2.302585 / log(base) * (log(value) / log(10))
 
-func can_update_status() -> bool:
-	return check_next_tier_unlock() || check_upgrade_maxed_out()
 
 func check_upgrade_maxed_out() -> bool:
-	if upgrade_level >= upgrade_max_level:
-		emit_signal("upgrade_maxed")
+	if upgrade_level == upgrade_max_level:
+		if status != SKILL_NODE_STATUS.MAXED_OUT:
+			print("Upgrade maxed out, shoud become gold now...")
+			emit_signal("upgrade_maxed")
+		status = SKILL_NODE_STATUS.MAXED_OUT
 		return true
-	else: return false
+	return false
 
 func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
-		emit_signal("next_tier_unlocked")
+		if status != SKILL_NODE_STATUS.UNLOCKED:
+			print("Next tier node should unlock now...")
+			emit_signal("next_tier_unlocked")
+		status = SKILL_NODE_STATUS.UNLOCKED
 		return true
-	else: return false
+	return false
 
 func _to_string() -> String:
-	return "ID: %s"%_id +"\nUnlocked: %s"%i_unlocked + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost() + "\nBitcoin Cost: %s"%upgrade_cost()
+	return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost() + "\nBitcoin Cost: %s"%upgrade_cost()

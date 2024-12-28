@@ -11,7 +11,6 @@ script = ExtResource("1_obgke")
 
 [node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
 unique_name_in_owner = true
-position = Vector2(742.221, 307.41)
 
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true

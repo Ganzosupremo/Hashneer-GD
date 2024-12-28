@@ -13,11 +13,13 @@ class_name PlayerController
 @onready var camera: PlayerCamera = %AdvancedCamera
 @onready var _bullets_pool: PoolFracture = $"../Pool_FractureBullets"
 @onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
+#@onready var animation_component: AnimationComponentUI = $AnimationComponent
 
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var quadrant_builder: QuadrantBuilder
 var player_details: PlayerDetails
+var damage_multiplier: float = 1.0
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -28,25 +30,27 @@ func _ready() -> void:
 	GameManager.player = self
 	PersistenceDataManager.load_game()
 	_health.zero_health.connect(on_zero_power)
+	BitcoinNetwork.block_found.connect(_on_block_found)
 	set_player()
 
- 
 func set_player():
 	if !player_details: return
 	
-	speed = player_details.speed
+	_apply_stats()
+	
 	initial_weapon = player_details.initial_weapon
 	dead_sound_effect = player_details.dead_sound_effect
 	_sound_effect_component.set_sound(dead_sound_effect)
-	_health.set_max_health(player_details.max_health)
 	set_weapon()
-	
 
 func set_weapon() -> void:
 	active_weapon.set_weapon(initial_weapon)
 	
 	for weapon in weapons_array:
 		active_weapon.add_weapon_to_list(weapon)
+
+func _on_block_found(_block: BitcoinBlock):
+	can_move = false
 
 func _process(_delta: float) -> void:
 	if !can_move: return
@@ -57,7 +61,15 @@ func _process(_delta: float) -> void:
 	
 
 func _physics_process(_delta) -> void:
+	if !can_move: return
 	move()
+
+func _apply_stats() -> void:
+	var stats_array = player_details.apply_stats()
+	
+	speed = stats_array[0]
+	damage_multiplier = stats_array[1]
+	_health.set_max_health(stats_array[2])
 
 
 ## ------------ INPUT FUNCTIONS ------------------------------------

@@ -2,7 +2,7 @@ extends Node2D
 class_name Blockchain
 
 signal reward_issued(btc_reward: float)
-signal block_found()
+signal block_found(block: BitcoinBlock)
 
 const COIN: int = 100
 #change to 2.1 mill later
@@ -23,13 +23,11 @@ const implements = [
 
 func _ready():
 	chain.clear()
-	#_create_genesis_block()
 
 ## ---------------------- PUBLIC FUNCTIONS ---------------------------
 
 """Mines and adds the new block to the chain"""
 func mine_block(miner: String) -> void:
-	emit_signal("block_found")
 	var block: BitcoinBlock = create_block(miner)
 	
 	# Check if mining should be stopped right away
@@ -48,6 +46,8 @@ func mine_block(miner: String) -> void:
 	
 	block.reward = _get_block_subsidy()
 	_issue_block_reward(miner, block.reward)
+	emit_signal("block_found", block)
+	
 	height += 1
 
 
@@ -63,7 +63,7 @@ func get_blockheight() -> int:
 ## ---------------- INTERNAL FUNCTIONS ---------------------------------
 
 func _create_genesis_block() -> void:
-	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Genesis Block")
+	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "The Times: Chancellor on Brink of Second Bailout for Banks.")
 	chain.append(genesis_block)
 	mine_block("System")
 
@@ -95,14 +95,13 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 	chain.append(new_block)
 
 """Issues the block reward to the miner that mined the block, i.e the player or the ai."""
-func _issue_block_reward(miner: String, reward: float) -> float:
+func _issue_block_reward(miner: String, reward: float) -> void:
 	if miner == "Player" or miner == "player":
 		BitcoinWallet.add_bitcoin(reward)
+		emit_signal("reward_issued", reward)
 	elif miner == "AI":
 		coins_lost += reward
 		print("Reward issued to the AI")
-	
-	return reward
 
 func _get_block_subsidy() -> float:
 	var halvings: int = height / halving_interval

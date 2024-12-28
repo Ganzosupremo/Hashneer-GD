@@ -53,7 +53,6 @@ func build_block() -> BitcoinBlock:
 func add_damage_to_bullet() -> float:
 	var total: float = 0.0
 	var copper = "Copper Bullets"
-	total += UpgradesManager.get_skill_power(copper)
 	return total
 
 func _on_body_entered(body: Node2D) -> void:

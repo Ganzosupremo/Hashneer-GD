@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bne7sm2oh1mbv"
-path="res://.godot/imported/BitSign.png-bf4f279bd5b8bc54841dbb1ef589d48f.ctex"
+uid="uid://dalmxayd753tr"
+path="res://.godot/imported/Bicoin_Currency_Logo.png-3a558f22e2f02645f3d56f691aeecb32.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Currencies/BitSign.png"
-dest_files=["res://.godot/imported/BitSign.png-bf4f279bd5b8bc54841dbb1ef589d48f.ctex"]
+source_file="res://Textures/Currencies/Bicoin_Currency_Logo.png"
+dest_files=["res://.godot/imported/Bicoin_Currency_Logo.png-3a558f22e2f02645f3d56f691aeecb32.ctex"]
 
 [params]
 

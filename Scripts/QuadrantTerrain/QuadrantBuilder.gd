@@ -1,16 +1,19 @@
 class_name QuadrantBuilder extends Node2D
 
-signal map_builded()
+signal quadrant_hitted(fiat_gained: float)
 
-@export_category("Quadrant Variables")
+@export_category("Settings")
+@export_group("General")
 @export var quadrants_initial_health: float 
 @export var resource_droprate_multiplier: float = 1.5
 
+@export_group("Size and Color")
 @export var quadrant_size: Vector2i = Vector2i(250, 250)
 @export var grid_size: Vector2i = Vector2i(16, 16)
 @export var fracture_body_color: Color
 
-@export var cuts: int = 50
+@export_group("Block Core Variables")
+@export var block_core_cuts: int = 50
 @export var min_area: float = 100.0
 
 @onready var player: PlayerController = %Player
@@ -34,21 +37,20 @@ static var instance: QuadrantBuilder = self
 
 func _ready() -> void:
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
-	instance = self
+	GameManager.current_quadrant_builder = self
 	_init_builder()
 
 func _init_builder() -> void:
-	var data: QuadrantBuilderArgs = GameManager.builder_args
-	builder_args = data
+	builder_args = GameManager.builder_args
 	
-	quadrant_size = Vector2i(data.quadrant_size, data.quadrant_size)
-	grid_size = data.grid_size
+	quadrant_size = Vector2i(builder_args.quadrant_size, builder_args.quadrant_size)
+	grid_size = builder_args.grid_size
 	
-	cuts = data.block_core_cuts_delaunay
-	min_area = data.block_core_cut_min_area
+	block_core_cuts = builder_args.block_core_cuts_delaunay
+	min_area = builder_args.block_core_cut_min_area
 	
-	quadrants_initial_health = data.initial_health
-	resource_droprate_multiplier = data.drop_rate_multiplier
+	quadrants_initial_health = builder_args.initial_health
+	resource_droprate_multiplier = builder_args.drop_rate_multiplier
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -78,17 +80,20 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	
-	BitcoinWallet.add_fiat(5000.0 * builder_args.drop_rate_multiplier)
+	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
+	emit_signal("quadrant_hitted", fiat_gained_on_collision)
+	BitcoinWallet.add_fiat(fiat_gained_on_collision)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
 
-"""Fractures the quadrant core"""
-func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float) -> void:
+"""Fractures the quadrant block,
+which at the same time will mine a bitcoin block"""
+func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
 	if _fracture_disabled: return
 	
 	other_body.get_sound_component().play_sound()
-	block_core.fracture_all(other_body, cuts,  min_area, bullet_damage, _cur_fracture_color)
+	block_core.fracture_all(other_body, block_core_cuts,  min_area, bullet_damage, _cur_fracture_color, instakill, miner)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
@@ -115,8 +120,6 @@ func _set_block_core_position():
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
 	_spawn_cut_visualizers(cut_pos, cut_shape, fade_speed)
-	source.get_sound_component().play_sound()
-	var hit_sound: SoundEffectDetails = source.get_sound_component().get_current_sound()
 	var source_polygon: PackedVector2Array = source.get_polygon()
 	var total_area: float = PolygonLib.getPolygonArea(source_polygon)
 	
@@ -138,7 +141,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 			_spawn_fracture_body(fracture_shard, source.getTextureInfo(), s_mass * area_p, rand_lifetime)
 	
 	for shape in cut_fracture_info.shapes:
-		call_deferred("_spawn_staticbody", shape, source.modulate, source.getTextureInfo(), hit_sound)
+		call_deferred("_spawn_staticbody", shape, source.modulate, source.getTextureInfo())
 	
 	source.queue_free()
 
@@ -158,7 +161,7 @@ func _spawn_cut_visualizers(pos : Vector2, poly : PackedVector2Array, fade_speed
 	instance.spawn(pos, fade_speed)
 	instance.setPolygon(poly)
 
-func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary, sound_details: SoundEffectDetails) -> void:
+func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary) -> void:
 	var instance = staticbody_template.instantiate()
 	_rigid_bodies_parent.add_child(instance)
 	instance.global_position = shape_info.spawn_pos
@@ -166,7 +169,6 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance.set_polygon(shape_info.centered_shape)
 	#instance.modulate = color
 	instance.set_initial_health(quadrants_initial_health)
-	instance.set_hit_sound_effect(sound_details)
 	instance.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
 
 static func get_instance() -> QuadrantBuilder:

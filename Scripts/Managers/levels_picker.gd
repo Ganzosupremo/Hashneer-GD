@@ -1,8 +1,8 @@
 extends Control
 
 @onready var container: GridContainer = %Grid
-@onready var main_menu_scene: PackedScene = preload("res://Scenes/UI/MainGameUI.tscn")
-@onready var skill_tree_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTreeBitcoin.tscn")
+@onready var main_menu_scene: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
+@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTreeBitcoin.tscn")
 
 var children: Array
 
@@ -16,7 +16,6 @@ func _ready() -> void:
 	disable_levels()
 
 func disable_levels() -> void:
-	
 	for button in children:
 		# the first level is unlocked by default
 		if button.level_index == 0:

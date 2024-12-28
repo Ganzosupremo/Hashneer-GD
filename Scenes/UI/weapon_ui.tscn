@@ -2,21 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_85mv8"]
 [ext_resource type="Script" path="res://Scripts/UI/weapon_ui.gd" id="1_yet40"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o51r3"]
-bg_color = Color(0.12549, 0.12549, 0.12549, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.305882, 0.698039, 0.839216, 1)
-border_blend = true
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-shadow_size = 5
-shadow_offset = Vector2(3, 3)
+[ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="3_bwso0"]
 
 [node name="WeaponUI" type="Control"]
 layout_mode = 3
@@ -30,38 +16,46 @@ grow_vertical = 0
 mouse_filter = 1
 script = ExtResource("1_yet40")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -393.0
-offset_top = -228.0
+offset_left = -300.0
+offset_top = -201.0
 grow_horizontal = 0
 grow_vertical = 0
 theme = ExtResource("1_85mv8")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_85mv8")
 theme_override_constants/separation = 5
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
 clip_contents = true
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme = ExtResource("1_85mv8")
-theme_override_styles/panel = SubResource("StyleBoxFlat_o51r3")
 
-[node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/PanelContainer"]
+[node name="WeaponTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="WeaponName" type="Label" parent="VBoxContainer"]
+[node name="WeaponName" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_85mv8")
 theme_override_font_sizes/font_size = 38
 text = "(1) NULL"
+label_settings = ExtResource("3_bwso0")
 horizontal_alignment = 1
 vertical_alignment = 1

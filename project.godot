@@ -27,13 +27,14 @@ Interface="*res://Scripts/Interface.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/bitcoin_wallet.tscn"
-UpgradesManager="*res://Scenes/SkillTreeSystem/upgrades_manager.tscn"
 EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
 
 [display]
 
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+window/stretch/mode="viewport"
+window/vsync/vsync_mode=2
 
 [dotnet]
 
@@ -41,7 +42,7 @@ project/assembly_name="Hashneer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/save_system/plugin.cfg", "res://addons/worldmap_builder/plugin.cfg")
+enabled=PackedStringArray("res://addons/save_system/plugin.cfg")
 
 [file_customization]
 
@@ -55,6 +56,10 @@ folder_colors={
 [filesystem]
 
 import/blender/enabled=false
+
+[global_group]
+
+PersistentNodes="To this group belongs all the nodes that will save some variable to the disk"
 
 [input]
 

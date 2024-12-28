@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://1kqapcb8f2vj"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jyv82"]
+[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="2_n31ef"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ruefw"]
+atlas = ExtResource("2_n31ef")
+region = Rect2(0, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_jyv82")
+upgrade_name = "INCREASE DAMAGE"
+upgrade_description = "multiplies the damage dealt by all weapons"
+skill_image = SubResource("AtlasTexture_ruefw")
+upgrade_tier = 1
+is_upgrade = true
+status = 0
+is_percentage = false
+upgrade_base_power = 0.1
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 2000.0
+upgrade_cost_multiplier = 1.3
+upgrade_max_level = 5

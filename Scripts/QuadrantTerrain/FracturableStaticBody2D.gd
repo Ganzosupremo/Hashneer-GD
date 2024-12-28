@@ -7,10 +7,13 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var health: HealthComponent = %Health
 @onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
 
-
+@export_group("General")
 @export var placed_in_level: bool = false
 @export var randomize_texture_properties: bool = true
 @export var poly_texture: Texture2D
+@export var hit_sound_effect: SoundEffectDetails
+
+
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
@@ -48,10 +51,11 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export var n2 : float = 0
 @export var n3 : float = 0
 
-
-var _hit_sound: SoundEffectDetails
-
 func _ready() -> void:
+	if hit_sound_effect != null:
+		_hit_sound_component.set_sound(hit_sound_effect)
+	
+	
 	_rng.randomize()
 	if placed_in_level:
 		var poly = create_polygon_shape()
@@ -70,17 +74,19 @@ func _ready() -> void:
 
 
 func create_polygon_shape() -> PackedVector2Array:
-	if polygon_shape == PolygonShape.Circular:
-		return PolygonLib.createCirclePolygon(cir_radius, cir_smoothing)
-	elif polygon_shape == PolygonShape.Rectangular:
-		return PolygonLib.createRectanglePolygon(rectangle_size, rectangle_local_center)
-	elif polygon_shape == PolygonShape.Beam:
-		return PolygonLib.createBeamPolygon(beam_dir, beam_distance, beam_start_width, beam_end_width, beam_start_point_local)
-	elif polygon_shape == PolygonShape.SuperEllipse:
-		return PolygonLib.createSuperEllipsePolygon(s_p_number, s_a, s_b, e_n, s_start_angle_deg, s_max_angle_deg)
-	elif polygon_shape == PolygonShape.SuperShape:
-		return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, m, n1, n2, n3, s_start_angle_deg, s_max_angle_deg)
-	else: return PackedVector2Array([])
+	match polygon_shape:
+		PolygonShape.Circular:
+			return PolygonLib.createCirclePolygon(cir_radius, cir_smoothing)
+		PolygonShape.Rectangular:
+			return PolygonLib.createRectanglePolygon(rectangle_size, rectangle_local_center)
+		PolygonShape.Beam:
+			return PolygonLib.createBeamPolygon(beam_dir, beam_distance, beam_start_width, beam_end_width, beam_start_point_local)
+		PolygonShape.SuperEllipse:
+			return PolygonLib.createSuperEllipsePolygon(s_p_number, s_a, s_b, e_n, s_start_angle_deg, s_max_angle_deg)
+		PolygonShape.SuperShape:
+			return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, m, n1, n2, n3, s_start_angle_deg, s_max_angle_deg)
+		_:
+			return PackedVector2Array([])
 
 
 # Geters and Setters
@@ -100,8 +106,8 @@ func set_texture_with_texture(new_texture: Texture2D) -> void:
 
 
 func set_hit_sound_effect(sound: SoundEffectDetails) -> void:
-	_hit_sound = sound
-	_hit_sound_component.set_sound(_hit_sound)
+	hit_sound_effect = sound
+	_hit_sound_component.set_sound(hit_sound_effect)
 
 
 func set_polygon(poly : PackedVector2Array) -> void:
@@ -152,8 +158,6 @@ func take_damage(damage: float, instakill: bool = false) -> bool:
 		health.take_damage(1.79769e308)
 		return true
 	health.take_damage(damage)
-	#_hit_sound_component.play_sound()
-	
 	if health.get_current_health() <= 0.0:
 		return true
 	

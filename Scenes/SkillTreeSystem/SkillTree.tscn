@@ -1,0 +1,162 @@
+[gd_scene load_steps=18 format=3 uid="uid://ckholw4dvrb5w"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
+[ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
+[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="3_13utr"]
+[ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
+[ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="5_v73wo"]
+[ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="6_6waxn"]
+[ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
+[ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Fiat/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
+[ext_resource type="Resource" uid="uid://cd4d7vwiv68a7" path="res://Resources/Upgrades/Fiat/PlayerDamageUpgradeFiat1.tres" id="7_4c22w"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
+[ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="7_ihsdj"]
+[ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
+[ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="9_18lcm"]
+[ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/SkillTreeSystem/SkillTreeTabs.tscn" id="9_q6ypw"]
+[ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
+[ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
+shader = ExtResource("6_6waxn")
+shader_parameter/bg_color = null
+shader_parameter/size = 100.0
+shader_parameter/prob = 1.006
+
+[node name="SkillTree" type="Control" groups=["PersistentNodes", "SkillsTree"]]
+process_mode = 1
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6oa8x")
+
+[node name="UpgradesHolder" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="HealthUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = -11.0
+offset_top = -20.5
+offset_right = 59.0
+offset_bottom = 49.5
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_13utr")
+is_unlocked = true
+next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
+upgrade_data = ExtResource("6_26cjf")
+stat_to_upgrade = ExtResource("5_v73wo")
+save_name = "PlayerHealthUpgradeFiatT1"
+
+[node name="DamageUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = 65.0
+offset_top = -145.5
+offset_right = 135.0
+offset_bottom = -75.5
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_13utr")
+next_tier_nodes = [NodePath("../HealthUpgradeII")]
+upgrade_data = ExtResource("7_4c22w")
+stat_to_upgrade = ExtResource("9_18lcm")
+upgrade_type = 2
+save_name = "PlayerDamageUpgradeFiatT1"
+
+[node name="HealthUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = 175.0
+offset_top = -296.5
+offset_right = 245.0
+offset_bottom = -226.5
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_13utr")
+use_bitcoin = true
+upgrade_data = ExtResource("8_yacem")
+stat_to_upgrade = ExtResource("5_v73wo")
+save_name = "PlayerHealthUpgradeBitcoinT2"
+
+[node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = 152.0
+offset_top = 30.5
+offset_right = 222.0
+offset_bottom = 100.5
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_13utr")
+next_tier_nodes = [NodePath("../DamageUpgradeII")]
+upgrade_data = ExtResource("6_aog38")
+stat_to_upgrade = ExtResource("7_ihsdj")
+upgrade_type = 1
+save_name = "PlayerSpeedUpgradeFiatT1"
+
+[node name="DamageUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = 326.0
+offset_top = 155.5
+offset_right = 396.0
+offset_bottom = 225.5
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("3_13utr")
+use_bitcoin = true
+upgrade_data = ExtResource("11_6em56")
+stat_to_upgrade = ExtResource("9_18lcm")
+upgrade_type = 2
+save_name = "PlayerDamageUpgradeBitcoinT2"
+
+[node name="SkillTreeCamera" type="Camera2D" parent="."]
+light_mask = 64
+visibility_layer = 64
+position = Vector2(580, 327)
+position_smoothing_enabled = true
+script = ExtResource("5_duwky")
+BASE_MOVE_SPEED = 2.5
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="WorldBG" type="ColorRect" parent="BGLayer"]
+material = SubResource("ShaderMaterial_3r1bx")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="FrontLayer" type="CanvasLayer" parent="."]
+
+[node name="SkillTreeTabs" parent="FrontLayer" instance=ExtResource("9_q6ypw")]
+
+[node name="CurrencyUI" parent="FrontLayer" instance=ExtResource("10_b4lxo")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_top = 70.0
+offset_bottom = 70.0
+grow_horizontal = 1
+
+[node name="MainMenuButton" type="Button" parent="FrontLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = -48.0
+offset_right = 150.0
+offset_bottom = -16.0
+grow_vertical = 0
+size_flags_vertical = 4
+theme = ExtResource("7_c7c56")
+text = "Main Menu"
+
+[connection signal="pressed" from="FrontLayer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

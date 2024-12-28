@@ -1,24 +1,33 @@
 class_name SkillNode extends Button
 
 enum UPGRADE_TYPE {HEALTH, SPEED, DAMAGE}
+#enum SKILL_NODE_STATUS {LOCKED, UNLOCKED, MAXED_OUT}
 
-@export_category("General Settings")
+@export_category("Settings")
+@export_group("General")
 @export var use_bitcoin: bool = false
 
 @export var is_unlocked: bool = false
 @export var next_tier_nodes: Array[SkillNode]
 
-@export_group("UI Label Settings")
+@export_group("UI Settings")
 ## This settings will be used when the skill node is active.
 @export var enabled_label_settings: LabelSettings
 ## This settings will be used when the skill node is locked i.e disabled.
 @export var disabled_label_settings: LabelSettings
+## When the currency to use is set to bitcoin
+@export var bitcoin_icon: Texture2D
+## When the currency to use is set to the dollar
+@export var dollar_icon: Texture2D
 
-
-@export_group("Upgrade Data")
+@export_group("Upgrade Data Settings")
 @export var upgrade_data : UpgradeData
-@export var resource_to_upgrade: Resource
+@export var stat_to_upgrade: PlayerStat
 @export var upgrade_type: UPGRADE_TYPE
+
+@export_group("Save Settings")
+## A save name for the upgrade_data resource.
+@export var save_name: String = ""
 
 
 @onready var skill_line: Line2D = %SkillBranch
@@ -26,54 +35,59 @@ enum UPGRADE_TYPE {HEALTH, SPEED, DAMAGE}
 @onready var skill_label_status: Label = %SkillLabel
 @onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
 @onready var animation_component: AnimationComponentUI = $AnimationComponent
+@onready var currency_icon: TextureRect = $CurrencyIcon
 
-var node_children: Array
-var id: int = 0
+var is_maxed_out: bool = false
+var node_identifier: int = 0
+var status: UpgradeData.SKILL_NODE_STATUS = UpgradeData.SKILL_NODE_STATUS.LOCKED
+
+const implements = [
+	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
+]
 
 func _enter_tree() -> void:
 	upgrade_data.upgrade_maxed.connect(_on_upgrade_maxed)
 	upgrade_data.next_tier_unlocked.connect(unlock_next_tier)
 
-
-func _exit_tree() -> void:
-	upgrade_data.upgrade_maxed.disconnect(_on_upgrade_maxed)
-	upgrade_data.next_tier_unlocked.disconnect(unlock_next_tier)
-
 func _ready() -> void:
 	set_meta("upgrade_type", upgrade_type)
-	#_toggle_skill_node()
-	update_ui()
+	
+	if self.is_unlocked:
+		self.upgrade_data.set_upgrade_status(UpgradeData.SKILL_NODE_STATUS.UNLOCKED)
+	if upgrade_data.check_next_tier_unlock():
+		unlock_next_tier()
+	if upgrade_data.check_upgrade_maxed_out():
+		_on_upgrade_maxed()
+	
+	currency_icon.texture = bitcoin_icon if use_bitcoin else dollar_icon
 
-## deactivates all the children skill nodes
 func lock() -> void:
 	print_debug("Locked")
+	upgrade_data.set_upgrade_status(UpgradeData.SKILL_NODE_STATUS.LOCKED)
+	hide()
+	#_hide_next_node_line()
+	_set_disabled_state(true)
 	is_unlocked = false
-	disabled = true
-	update_ui()
+	_update_skill_status_label("LOCKED", disabled_label_settings)
+	_set_modulate_color(Color.GRAY)
 
 func unlock() -> void:
 	print_debug("Unlocked")
+	self.upgrade_data.set_upgrade_status(UpgradeData.SKILL_NODE_STATUS.UNLOCKED)
+	show()
+	#_hide_next_node_line()
+	_set_disabled_state(false)
 	is_unlocked = true
-	disabled = false
-	update_ui()
+	_update_skill_status_label("{0}/{1}".format([upgrade_data.upgrade_level, upgrade_data.upgrade_max_level]), enabled_label_settings)
+	_set_modulate_color(Color.WHITE)
 
-## Sets the var to save in the skill tree, used by the skill tree
-func set_var_to_save() -> void:
-	print("Data Saved")
-	SaveSystem.set_var(self.upgrade_data.resource_name, self.upgrade_data)
-
-## Gets the var to load in the skill tree, used by the skill tree
-func get_var_to_load() -> void:
-	if SaveSystem.has(self.upgrade_data.resource_name):
-		var data = SaveSystem.get_var(self.upgrade_data.resource_name)
-
-		upgrade_data = Utils.build_res_from_dictionary(data, UpgradeData.new())
-
-		if upgrade_data.can_update_status():
-			update_ui()
-			_toggle_skill_node()
-		print("Data Loaded")
-
+func unlock_next_tier() -> void:
+	print("Unlocking next tier nodes...")
+	for node in next_tier_nodes:
+		if node.is_unlocked:
+			continue  # Skip nodes that are already unlocked
+		node.unlock()
+		print("{0} unlocked".format([node]))
 
 func is_skill_unlocked() -> bool:
 	return is_unlocked
@@ -98,69 +112,67 @@ func set_line_points() -> void:
 		skill_line.add_point(current_node_center_local)
 		skill_line.add_point(parent_node_center_local)
 
-
-func _on_skill_pressed(upgrade_type: UPGRADE_TYPE, upgrade_actions: Dictionary) -> void:
+func _on_skill_pressed() -> void:
 	if not _buy_upgrade():
-		#_tween_button_on_failed_purchase()
 		return
-		
-	if upgrade_type in upgrade_actions:
-		upgrade_actions[upgrade_type].call(resource_to_upgrade)
-		update_ui()  # Update your UI to reflect changes
-		_update_info_panel(upgrade_data.upgrade_name, upgrade_data.upgrade_description, upgrade_data.upgrade_cost_string())
-		print("Upgraded:", upgrade_type)
-	else:
-		print("Invalid upgrade type:", upgrade_type)
-
-func _on_pressed() -> void:
-	print("Button Clicked")
-	if !_buy_upgrade():
-		_tween_button_on_failed_purchase()
-		return
-	if !resource_to_upgrade: return
 	
-	print("Upgrade Bought")
-	update_ui()
+	_update_skill_status_label("{0}/{1}".format([upgrade_data.upgrade_level, upgrade_data.upgrade_max_level]), enabled_label_settings)
+	_update_info_panel(upgrade_data.upgrade_cost())
+	_upgrade_stat_on_pressed()
+
+func _upgrade_stat_on_pressed() -> void:
+	stat_to_upgrade.value = upgrade_data.apply_upgrade()
+	print_debug("The {0} has now the value of {1}".format([stat_to_upgrade.resource_name, stat_to_upgrade.value]))
 
 func _buy_upgrade() -> bool:
 	return upgrade_data.buy_upgrade(use_bitcoin)
 
-func _tween_button_on_failed_purchase() -> void:
-	animation_component.shake_tween()
-
-func unlock_next_tier() -> void:
-	print("Upgrade Maxed Out")
-	for node in next_tier_nodes:
-		node.is_unlocked = true
-		node.update_ui()
-	self._toggle_skill_node()
-	self.disabled = true
-
-func _toggle_skill_node() -> void:
-	if is_unlocked:
-		show()
-		_hide_next_node_line()
-	else:
-		hide()
-		_hide_next_node_line()
+func _on_upgrade_maxed() -> void:
+	upgrade_data.set_upgrade_status(UpgradeData.SKILL_NODE_STATUS.MAXED_OUT)
+	print_debug("{0} maxed. Status: {1}".format([upgrade_data.upgrade_name, upgrade_data.status]))
+	show()
+	#_hide_next_node_line()
+	is_maxed_out = true
+	#unlock_next_tier()
+	_set_disabled_state(true)
+	_update_skill_status_label("MAXED")
+	_set_modulate_color(Color.GOLD)
 
 func update_ui() -> void:
-	if is_unlocked:
-		show()
-		_hide_next_node_line()
-		disabled = false
-		if skill_label_status != null:
-			skill_label_status.text = "{0}/{1}".format([upgrade_data.upgrade_level, upgrade_data.upgrade_max_level])
-			skill_label_status.label_settings = enabled_label_settings
-		self_modulate = Color.WHITE
-	else:
-		hide()
-		_hide_next_node_line()
-		disabled = true
-		if skill_label_status != null: 
-			skill_label_status.text = "LOCKED"
-			skill_label_status.label_settings = disabled_label_settings
-		self_modulate = Color.GRAY
+	self.status = self.upgrade_data.get_upgrade_status()
+	match self.status:
+		UpgradeData.SKILL_NODE_STATUS.LOCKED:
+			hide()
+			#_hide_next_node_line()
+			_set_disabled_state(true)
+			is_unlocked = false
+			_update_skill_status_label("LOCKED", disabled_label_settings)
+			_set_modulate_color(Color.GRAY)
+		UpgradeData.SKILL_NODE_STATUS.UNLOCKED:
+			show()
+			#_hide_next_node_line()
+			_set_disabled_state(false)
+			is_unlocked = true
+			_update_skill_status_label("{0}/{1}".format([upgrade_data.upgrade_level, upgrade_data.upgrade_max_level]), enabled_label_settings)
+			_set_modulate_color(Color.WHITE)
+		UpgradeData.SKILL_NODE_STATUS.MAXED_OUT:
+			show()
+			#_hide_next_node_line()
+			unlock_next_tier()
+			_set_disabled_state(true)
+			_update_skill_status_label("MAXED")
+			_set_modulate_color(Color.GOLD)
+
+func _set_disabled_state(state: bool) -> void:
+	disabled = state
+
+func _set_modulate_color(color: Color) -> void:
+	self_modulate = color
+
+func _update_skill_status_label(new_text, label_settings: LabelSettings = null):
+		skill_label_status.text = new_text
+		skill_label_status.label_settings = enabled_label_settings
+		skill_info_panel.update_cost_label(upgrade_data.upgrade_cost(), true)
 
 func _hide_next_node_line() -> void:
 	if next_tier_nodes.size() <= 0: return
@@ -168,23 +180,47 @@ func _hide_next_node_line() -> void:
 	await get_tree().process_frame
 	
 	for node in next_tier_nodes:
-		if _is_next_tier_node_unlocked(node.id):
+		if _is_next_tier_node_unlocked(node.idg):
 			node.skill_line.show()
 		else:
 			node.skill_line.hide()
 
-func _update_info_panel(title: String, description: String, cost: String) -> void:
-	skill_info_panel.toggle_panel(title, description, cost)
+func _update_info_panel(cost: float) -> void:
+	skill_info_panel.update_cost_label(cost, is_maxed_out)
 
-func _is_next_tier_node_unlocked(id: int) -> bool:
-	return next_tier_nodes[id].is_skill_unlocked()
-
-func _on_upgrade_maxed() -> void:
-	update_ui()
-	disabled = true
+func _is_next_tier_node_unlocked(id_d: int) -> bool:
+	for node in next_tier_nodes:
+		return node.is_skill_unlocked()
+	
+	return false
 
 func _on_mouse_entered() -> void:
-	skill_info_panel.activate_panel(upgrade_data.upgrade_name, upgrade_data.upgrade_description, upgrade_data.upgrade_cost_string(), use_bitcoin)
+	skill_info_panel.activate_panel(upgrade_data.upgrade_name, upgrade_data.upgrade_description, upgrade_data.upgrade_cost(), use_bitcoin, is_maxed_out)
 
 func _on_mouse_exited() -> void:
 	skill_info_panel.deactivate_panel()
+
+func save_data() -> void:
+	print("Data Saved")
+	SaveSystem.set_var(save_name if !save_name.is_empty() else upgrade_data.upgrade_name, self.upgrade_data)
+
+func load_data() -> void:
+	var saved_name: String = save_name if !save_name.is_empty() else upgrade_data.upgrade_name
+	if _is_var_in_saved_dictionary(saved_name) == false:
+		print("No data upgrade data found in node {0}".format([self.name]))
+		return
+	var data = SaveSystem.get_var(saved_name)
+	upgrade_data = Utils.build_res_from_dictionary(data, UpgradeData.new())
+	
+	if upgrade_data.check_next_tier_unlock():
+		unlock_next_tier()
+	if upgrade_data.check_upgrade_maxed_out():
+		_on_upgrade_maxed()
+	
+	if !is_maxed_out:
+		_update_skill_status_label("{0}/{1}".format([upgrade_data.upgrade_level, upgrade_data.upgrade_max_level]), enabled_label_settings)
+	
+	print("Data Loaded from node {0}".format([self.name]))
+
+func _is_var_in_saved_dictionary(var_name: String) -> bool:
+	return SaveSystem.has(var_name)

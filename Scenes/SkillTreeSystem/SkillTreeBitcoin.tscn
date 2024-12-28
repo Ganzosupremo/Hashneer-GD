@@ -1,29 +1,18 @@
-[gd_scene load_steps=13 format=3 uid="uid://bs7y66c8i7vby"]
+[gd_scene load_steps=15 format=3 uid="uid://bs7y66c8i7vby"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_t8kuv"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_mcuid"]
-[ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="3_6r7m8"]
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="4_khacs"]
+[ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="4_e5k13"]
+[ext_resource type="Resource" uid="uid://cpthmefmmgo5j" path="res://Resources/Upgrades/Bitcoin/PlayerSpeedUpgradeBitcoin.tres" id="4_nmc2j"]
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="5_0yejn"]
+[ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="5_uo7d0"]
+[ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="6_sbg00"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="6_to05t"]
 [ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="7_3oyup"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="8_8q1xs"]
+[ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="8_fj2xl"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="9_sd4l0"]
 [ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/SkillTreeSystem/SkillTreeTabs.tscn" id="10_wnsnc"]
-
-[sub_resource type="Resource" id="Resource_rlpjy"]
-script = ExtResource("4_khacs")
-upgrade_name = ""
-upgrade_description = "Increase Movement Speed"
-upgrade_tier = 1
-is_upgrade = true
-i_unlocked = false
-is_percentage = false
-upgrade_base_power = 30.0
-upgrade_power_multiplier = 1.15
-upgrade_cost_base = 100.0
-upgrade_cost_multiplier = 1.15
-upgrade_max_level = 10
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
 shader = ExtResource("7_3oyup")
@@ -62,7 +51,9 @@ mouse_default_cursor_shape = 2
 use_bitcoin = true
 is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgrade_I"), NodePath("../DamageUpgrade_I")]
-upgrade_data = ExtResource("3_6r7m8")
+upgrade_data = ExtResource("5_0yejn")
+stat_to_upgrade = ExtResource("4_e5k13")
+save_name = "PlayerHealthUpgradeBitcoinT1"
 
 [node name="SpeedUpgrade_I" parent="UpgradesHolder" instance=ExtResource("2_mcuid")]
 layout_mode = 1
@@ -72,8 +63,10 @@ offset_right = 222.0
 offset_bottom = 100.5
 mouse_default_cursor_shape = 2
 use_bitcoin = true
-upgrade_data = SubResource("Resource_rlpjy")
+upgrade_data = ExtResource("4_nmc2j")
+stat_to_upgrade = ExtResource("6_sbg00")
 upgrade_type = 1
+save_name = "PlayerSpeedUpgradeBitcoinT1"
 
 [node name="DamageUpgrade_I" parent="UpgradesHolder" instance=ExtResource("2_mcuid")]
 layout_mode = 1
@@ -84,8 +77,10 @@ offset_bottom = -75.5
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 use_bitcoin = true
-upgrade_data = ExtResource("5_0yejn")
+upgrade_data = ExtResource("5_uo7d0")
+stat_to_upgrade = ExtResource("8_fj2xl")
 upgrade_type = 2
+save_name = "PlayerDamageUpgradeBitcoinT1"
 
 [node name="SkillTreeCamera" type="Camera2D" parent="."]
 light_mask = 64
@@ -109,20 +104,20 @@ metadata/_edit_lock_ = true
 
 [node name="FrontLayer" type="CanvasLayer" parent="."]
 
+[node name="SkillTreeTabs" parent="FrontLayer" instance=ExtResource("10_wnsnc")]
+
 [node name="MainMenuButton" type="Button" parent="FrontLayer"]
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = -48.0
-offset_right = 150.0
-offset_bottom = -16.0
+offset_left = 18.0
+offset_top = -64.0
+offset_right = 218.0
+offset_bottom = -14.0
 grow_vertical = 0
 size_flags_vertical = 4
 theme = ExtResource("8_8q1xs")
 text = "Main Menu"
-
-[node name="SkillTreeTabs" parent="FrontLayer" instance=ExtResource("10_wnsnc")]
 
 [node name="CurrencyUI" parent="FrontLayer" instance=ExtResource("9_sd4l0")]
 

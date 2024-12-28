@@ -8,23 +8,30 @@ var UPGRADE_ACTIONS: Dictionary = {
 	SkillNode.UPGRADE_TYPE.DAMAGE: func(resource): resource.damage += 3,
 }
 
-const MAIN_GAME_UI: PackedScene = preload("res://Scenes/UI/MainGameUI.tscn")
-const implements = [
-	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
-]
+@onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 
-func _enter_tree() -> void:
-	PersistenceDataManager.load_game()
+#const implements = [
+	#preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
+#]
 
 func _exit_tree() -> void:
 	PersistenceDataManager.save_game()
 
 func _ready() -> void:
+	PersistenceDataManager.load_game()
 	skill_nodes = _get_skill_nodes()
 	
+	var id: int = 0
 	for node in skill_nodes:
-		var upgrade_type = node.get_meta("upgrade_type")  # Or use `button.get_meta("upgrade_type")`
-		node.pressed.connect(Callable(node, "_on_skill_pressed").bind(upgrade_type, UPGRADE_ACTIONS))
+		node.pressed.connect(Callable(node, "_on_skill_pressed"))
+		node.node_identifier = id
+		
+		#if node.node_identifier == 0:
+			#node.unlock()
+		#else:
+			#print_debug("Locking nodes...")
+			#node.lock()
+		id += 1
 
 func _get_skill_nodes() -> Array:
 	var nodes: Array = []
@@ -33,13 +40,13 @@ func _get_skill_nodes() -> Array:
 			nodes.append(child)
 	return nodes
 
-func save_data() -> void:
-	for node in skill_nodes:
-		node.set_var_to_save()
-
-func load_data() -> void:
-	for node in skill_nodes:
-		node.get_var_to_load()
+#func save_data() -> void:
+	#for node in skill_nodes:
+		#node.set_var_to_save()
+#
+#func load_data() -> void:
+	#for node in skill_nodes:
+		#node.get_var_to_load()
 
 func _on_main_menu_button_pressed() -> void:
 	PersistenceDataManager.save_game()

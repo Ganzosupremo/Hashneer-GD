@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsvkitr76krfk"]
+
+[ext_resource type="Script" path="res://Scripts/Components/AnimateTextComponent.gd" id="1_467dd"]
+
+[node name="AnimateTextComponent" type="Node2D"]
+script = ExtResource("1_467dd")

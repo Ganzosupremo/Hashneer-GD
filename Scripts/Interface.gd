@@ -137,6 +137,8 @@ func _column(rows : Array, key : String) -> Array:
 	return result
 
 func _get_script(implementation) -> GDScript:
+	if implementation == null: return
+	
 	if not implementation is GDScript:
 		return implementation.get_script()
 	

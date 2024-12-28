@@ -3,7 +3,6 @@ class_name AnimationComponentUI extends Node
 ## Used to signal that the enter animation has finished.
 signal entered
 
-
 @export_category("General Settings")
 ## Moves the origin point to the center of the node.
 @export var from_center: bool = true
@@ -51,6 +50,7 @@ signal entered
 
 @export_group("Enter Animation Settings")
 @export_subgroup("Tweening Settings")
+## This node will wait to animate until the wait_for node has finished animated.
 @export var wait_for: AnimationComponentUI
 ## How much time the animations takes.
 @export var enter_time: float = 1.0
@@ -95,7 +95,7 @@ func start_tween() -> void:
 func add_tween(values: Dictionary, parallel: bool, seconds: float, delay: float = 0.0, transition: Tween.TransitionType = Tween.TRANS_SINE, easing: Tween.EaseType = Tween.EASE_IN_OUT, entering_animation: bool = false) -> void:
 	if not target: return
 
-	var tween: Tween = owner.get_tree().create_tween()
+	var tween: Tween = GameManager.init_tween()
 	tween.set_parallel(parallel)
 	tween.pause()
 	
@@ -104,7 +104,7 @@ func add_tween(values: Dictionary, parallel: bool, seconds: float, delay: float 
 			print_debug("{0}, is not a string.".format([property]))
 			continue
 		tween.tween_property(target, property, values[property], seconds).set_trans(transition).set_ease(easing)
-	await owner.get_tree().create_timer(delay).timeout
+	await GameManager.init_timer(delay).timeout
 	tween.play()
 	
 	if entering_animation:
@@ -147,7 +147,7 @@ func _setup() -> void:
 	_connect_signals()
 	
 	if enter_animation:
-		_on_enter()
+		call_deferred("_on_enter")
 	else:
 		entered.emit()
 
@@ -190,10 +190,19 @@ func _connect_signals() -> void:
 		enter_transition,
 		enter_ease,
 		true,
+			)
 		)
-	)
 
 
+"""If the wait_for node is not an animation component node.
+This will check if the animation component is present as a child of the node."""
+#func _has_animation_component() -> bool:
+	#if wait_for is AnimationComponentUI:
+		#return true
+	#elif wait_for is not AnimationComponentUI and wait_for.get_child(0) is AnimationComponentUI:
+		#return true
+	#else:
+		#return false
 
 # --------------- SHAKE ANIMATION PROPERTIES AND METHODS -----------------------------
 
@@ -248,4 +257,10 @@ func _tilt(x: float, rotation: float) -> Tween:
 	return tween
 
 func _create_tween() -> Tween:
-	return get_tree().create_tween()
+	return GameManager.init_tween()
+
+# --------- SETTERS ------------
+
+func set_properties(properties: Dictionary) -> void:
+	for key in properties.keys():
+			set(key, properties[key])

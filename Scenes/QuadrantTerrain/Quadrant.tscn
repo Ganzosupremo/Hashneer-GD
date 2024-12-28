@@ -1,9 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://cl40q47owpn34"]
+[gd_scene load_steps=8 format=3 uid="uid://cl40q47owpn34"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_ltviw"]
 [ext_resource type="Texture2D" uid="uid://cmuco4odvfka8" path="res://icon.svg" id="2_ul1f3"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_12thv"]
+[ext_resource type="AudioStream" uid="uid://dd74dfmgbb8bs" path="res://Audio/FractureBodyHitSound.wav" id="3_q6e65"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="4_l7pwh"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_rnr3l"]
+
+[sub_resource type="Resource" id="Resource_ll7g4"]
+script = ExtResource("4_l7pwh")
+sound_volume = -10.0
+audio_stream = ExtResource("3_q6e65")
+sound_pitch = 1.0
 
 [node name="Quadrant" type="StaticBody2D"]
 collision_layer = 8
@@ -11,6 +19,7 @@ collision_mask = 248
 script = ExtResource("1_ltviw")
 placed_in_level = true
 poly_texture = ExtResource("2_ul1f3")
+hit_sound_effect = SubResource("Resource_ll7g4")
 polygon_shape = 1
 rectangle_size = Vector2(250, 250)
 

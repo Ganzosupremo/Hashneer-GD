@@ -1,0 +1,213 @@
+[gd_scene load_steps=11 format=3 uid="uid://dmek3vskirk8m"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
+[ext_resource type="LabelSettings" uid="uid://c14kyf6almnse" path="res://Resources/TitleLabelSettings.tres" id="3_jcu7c"]
+[ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="4_0pib0"]
+[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="4_ny3yf"]
+[ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
+[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="6_exueb"]
+[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="8_0w0kp"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jpya"]
+bg_color = Color(0, 0.026, 0.104, 0.751)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wbly3"]
+draw_center = false
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 0.813)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="LevelCompletedUI" type="Control"]
+process_mode = 3
+layout_direction = 2
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dcscb")
+
+[node name="Panel" type="Panel" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 300)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_1jpya")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -905.0
+offset_top = -331.0
+offset_right = 905.0
+offset_bottom = 331.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0si0w")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+custom_minimum_size = Vector2(875, 500)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+
+[node name="Title" parent="Panel/MarginContainer/VBoxContainer" instance=ExtResource("6_dq483")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(810, 100)
+layout_mode = 2
+text = "Code 404: Health reached zero..."
+label_settings = ExtResource("3_jcu7c")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+visible_characters = -1
+visible_ratio = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_0si0w")
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_0si0w")
+theme_override_constants/margin_left = 225
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 225
+theme_override_constants/margin_bottom = 10
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer"]
+custom_minimum_size = Vector2(300, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_0si0w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wbly3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer"]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="BTCMarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 0
+
+[node name="BTCContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="BTCIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer"]
+layout_mode = 2
+texture = ExtResource("4_ny3yf")
+stretch_mode = 5
+
+[node name="BTCGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer" instance=ExtResource("6_dq483")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "545542"
+label_settings = ExtResource("4_0pib0")
+horizontal_alignment = 1
+visible_characters = -1
+visible_ratio = 1.0
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(225, 0)
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+
+[node name="FiatMarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 0
+
+[node name="FiatContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+alignment = 1
+
+[node name="FiatIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer"]
+layout_mode = 2
+texture = ExtResource("6_exueb")
+stretch_mode = 5
+
+[node name="FiatGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer" instance=ExtResource("6_dq483")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "541554544"
+label_settings = ExtResource("4_0pib0")
+horizontal_alignment = 1
+visible_characters = -1
+visible_ratio = 1.0
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_0si0w")
+
+[node name="VButtonContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(875, 150)
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_0si0w")
+alignment = 1
+
+[node name="MenuButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" instance=ExtResource("8_0w0kp")]
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Go To Main Menu"
+enter_delay = 0.2
+
+[node name="RetryButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Retry Level"
+wait_for = NodePath("../MenuButton")
+wait_for_is_child = true
+enter_delay = 0.2
+
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/RetryButton" to="." method="_on_retry_button_pressed"]

@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="StatsResource" load_steps=2 format=3 uid="uid://biluxwaptfd3t"]
+[gd_resource type="Resource" script_class="PlayerStat" load_steps=2 format=3 uid="uid://biluxwaptfd3t"]
 
-[ext_resource type="Script" path="res://Scripts/StatsSystem/StatsResource.gd" id="1_bvxxl"]
+[ext_resource type="Script" path="res://Scripts/StatsSystem/PlayerStats.gd" id="1_bvxxl"]
 
 [resource]
+resource_name = "PlayerHealthStat"
 script = ExtResource("1_bvxxl")
-name = "PlayerHealthStat"
-stat_type = 1
-stat_power = 0.0
+value = 0.0
