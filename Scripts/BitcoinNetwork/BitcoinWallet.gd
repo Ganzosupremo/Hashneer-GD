@@ -1,7 +1,6 @@
 extends Node2D
-class_name Wallet
+class_name BitcoinWallet
 
-signal money_printer_goes(fiat_amount: float)
 signal money_changed(amount_changed: float, is_bitcoin: bool) 
 
 const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
@@ -10,7 +9,7 @@ const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
 var bitcoin_balance: float = 0.0
 var fiat_balance: float = 0.0
 var bitcoin_price: float = 0.0
-var static_bitcoin_price: float = 35000.0
+var static_bitcoin_price: float = 95_000.0
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -91,11 +90,10 @@ func get_bitcoin_balance() -> float:
 
 func save_data():
 	var wallet_data = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
-	SaveSystem.set_var("wallet_data", wallet_data)
+	GameManager.game_data_to_save.bitcoin_wallet_data = wallet_data
 
 func load_data():
-	var wallet_data = SaveSystem.get_var("wallet_data")
-	
-	self.bitcoin_balance = wallet_data["btc_holdings"]
-	self.fiat_balance = wallet_data["fiat_holdings"]
-	self.bitcoin_price = wallet_data["bitcoin_price"]
+	var wallet_data: BitcoinWalletData = GameManager.get_resource_from_game_data("wallet_data")
+	self.bitcoin_balance = wallet_data.btc_holdings
+	self.fiat_balance = wallet_data.fiat_holdings
+	self.bitcoin_price = wallet_data.bitcoin_price

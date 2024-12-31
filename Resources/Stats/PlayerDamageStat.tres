@@ -3,6 +3,6 @@
 [ext_resource type="Script" path="res://Scripts/StatsSystem/PlayerStats.gd" id="1_5ny8b"]
 
 [resource]
-resource_name = "PlayerDamageStat"
+resource_name = "PlayerDamageStatT1"
 script = ExtResource("1_5ny8b")
 value = 0.0

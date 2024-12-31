@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=22 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
@@ -9,13 +9,21 @@
 [ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
 [ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Fiat/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
 [ext_resource type="Resource" uid="uid://cd4d7vwiv68a7" path="res://Resources/Upgrades/Fiat/PlayerDamageUpgradeFiat1.tres" id="7_4c22w"]
+[ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="7_076p6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
 [ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="7_ihsdj"]
+[ext_resource type="Script" path="res://Scripts/StatsSystem/PlayerStats.gd" id="7_ydiew"]
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
 [ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="9_18lcm"]
 [ext_resource type="PackedScene" uid="uid://bqk45wqb4qmb8" path="res://Scenes/SkillTreeSystem/SkillTreeTabs.tscn" id="9_q6ypw"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
+[ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
+
+[sub_resource type="Resource" id="Resource_orbpq"]
+resource_name = "PlayerDamageStatT1"
+script = ExtResource("7_ydiew")
+value = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
 shader = ExtResource("6_6waxn")
@@ -32,6 +40,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6oa8x")
+
+[node name="SkillTreeCamera" type="Camera2D" parent="."]
+light_mask = 64
+visibility_layer = 64
+position = Vector2(580, 327)
+position_smoothing_enabled = true
+script = ExtResource("5_duwky")
+BASE_MOVE_SPEED = 2.5
 
 [node name="UpgradesHolder" type="Control" parent="."]
 unique_name_in_owner = true
@@ -54,7 +70,7 @@ mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
-upgrade_data = ExtResource("6_26cjf")
+skillnode_data = ExtResource("6_26cjf")
 stat_to_upgrade = ExtResource("5_v73wo")
 save_name = "PlayerHealthUpgradeFiatT1"
 
@@ -68,8 +84,8 @@ tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 next_tier_nodes = [NodePath("../HealthUpgradeII")]
-upgrade_data = ExtResource("7_4c22w")
-stat_to_upgrade = ExtResource("9_18lcm")
+skillnode_data = ExtResource("7_4c22w")
+stat_to_upgrade = SubResource("Resource_orbpq")
 upgrade_type = 2
 save_name = "PlayerDamageUpgradeFiatT1"
 
@@ -82,7 +98,7 @@ offset_bottom = -226.5
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 use_bitcoin = true
-upgrade_data = ExtResource("8_yacem")
+skillnode_data = ExtResource("8_yacem")
 stat_to_upgrade = ExtResource("5_v73wo")
 save_name = "PlayerHealthUpgradeBitcoinT2"
 
@@ -95,33 +111,37 @@ offset_bottom = 100.5
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 next_tier_nodes = [NodePath("../DamageUpgradeII")]
-upgrade_data = ExtResource("6_aog38")
+skillnode_data = ExtResource("6_aog38")
 stat_to_upgrade = ExtResource("7_ihsdj")
 upgrade_type = 1
 save_name = "PlayerSpeedUpgradeFiatT1"
 
 [node name="DamageUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
 layout_mode = 1
-offset_left = 326.0
-offset_top = 155.5
-offset_right = 396.0
-offset_bottom = 225.5
+offset_left = 258.0
+offset_top = 166.5
+offset_right = 328.0
+offset_bottom = 236.5
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 use_bitcoin = true
-upgrade_data = ExtResource("11_6em56")
+skillnode_data = ExtResource("11_6em56")
 stat_to_upgrade = ExtResource("9_18lcm")
 upgrade_type = 2
 save_name = "PlayerDamageUpgradeBitcoinT2"
 
-[node name="SkillTreeCamera" type="Camera2D" parent="."]
-light_mask = 64
-visibility_layer = 64
-position = Vector2(580, 327)
-position_smoothing_enabled = true
-script = ExtResource("5_duwky")
-BASE_MOVE_SPEED = 2.5
+[node name="NewWeapon" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 1
+offset_left = 463.0
+offset_top = 230.5
+offset_right = 533.0
+offset_bottom = 300.5
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_076p6")
+skillnode_data = ExtResource("13_a2onp")
+save_name = "AWPSniperUnlock"
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -1

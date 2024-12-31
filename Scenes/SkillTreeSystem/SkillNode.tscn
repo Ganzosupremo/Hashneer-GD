@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=13 format=3 uid="uid://dekniu7v110w4"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="2_e6wyl"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
-[ext_resource type="Resource" uid="uid://52vdo08klv6d" path="res://Skills/damage_upgrade.tres" id="2_qyqpv"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_16pb4"]
@@ -77,7 +76,6 @@ enabled_label_settings = SubResource("LabelSettings_xbut0")
 disabled_label_settings = SubResource("LabelSettings_wgeri")
 bitcoin_icon = ExtResource("2_e6wyl")
 dollar_icon = ExtResource("5_dcm06")
-upgrade_data = ExtResource("2_qyqpv")
 
 [node name="CurrencyIcon" type="TextureRect" parent="."]
 layout_mode = 1

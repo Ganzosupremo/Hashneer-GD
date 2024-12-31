@@ -1,8 +1,11 @@
 extends Node2D
-class_name Blockchain
+class_name Timechain
 
 signal reward_issued(btc_reward: float)
 signal block_found(block: BitcoinBlock)
+
+## A Bitcoin wallet, it will contain all player funds, fiat and bitcois.
+@onready var bitcoin_wallet: BitcoinWallet = %BitcoinWallet
 
 const COIN: int = 100
 #change to 2.1 mill later
@@ -55,7 +58,7 @@ func get_latest_block() -> BitcoinBlock:
 	return chain.back()
 
 func create_block(miner: String) -> BitcoinBlock:
-	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s" % height)
+	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s" % height + "Mined by: %s" % miner)
 
 func get_blockheight() -> int:
 	return height
@@ -97,7 +100,7 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 """Issues the block reward to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String, reward: float) -> void:
 	if miner == "Player" or miner == "player":
-		BitcoinWallet.add_bitcoin(reward)
+		self.bitcoin_wallet.add_bitcoin(reward)
 		emit_signal("reward_issued", reward)
 	elif miner == "AI":
 		coins_lost += reward
@@ -124,38 +127,27 @@ func _exceeds_coin_limit_cap() -> bool:
 		return true
 	return false
 
-## ----------------- PERSISTENCE DATA FUNCTIONS -------------------------
+## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
 func save_data():
 	var network_data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	SaveSystem.set_var("network_data", network_data)
+	GameManager.game_data_to_save.bitcoin_network_data = network_data
+	# SaveSystem.set_var("network_data", network_data)
 
 func load_data():
 	if loaded == true: return
-	
-	var network_data = SaveSystem.get_var("network_data")
-	
-	var res: BitcoinNetworkData = build_res(network_data, BitcoinNetworkData.new())
 
-	for i in res.chain.size():
-		res.chain[i] = build_res(res.chain[i], BitcoinBlock.new())
+	var net_data: BitcoinNetworkData = GameManager.get_resource_from_game_data("network_data")
+	# # if !SaveSystem.has("network_data"): return
+	# # var network_data: Dictionary = SaveSystem.get_var("network_data")
+	# # var res: BitcoinNetworkData = Utils.dict_to_resource(network_data, BitcoinNetworkData.new())
+	# # print("Loaded network data: {0}".format([res]))
+	# # for i in res.chain.size():
+	# # 	res.chain[i] = Utils.dict_to_resource(res.chain[i], BitcoinBlock.new())
 	
-	self.chain = res.chain
-	self.height = res.height
-	self.coins_lost = res.coins_lost
-	self.current_reward = res.block_subsidy
-	self.coins_in_circulation = res.coins_in_circulation
+	self.chain = net_data.chain
+	self.height = net_data.height
+	self.coins_lost = net_data.coins_lost
+	self.current_reward = net_data.block_subsidy
+	self.coins_in_circulation = net_data.coins_in_circulation
 	loaded = true
-
-func build_res(data: Dictionary, type: Resource):
-	var res := type
-	#if index == -1:
-		#res = BitcoinNetworkData.new()
-	#else:
-		#res = BitcoinBlock.new()
-	
-	for i in range(data.size()):
-		var key = data.keys()[i]
-		var value = data.values()[i]
-		res.set(key, value)
-	return res

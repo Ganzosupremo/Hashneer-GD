@@ -4,7 +4,6 @@ class_name PlayerController
 @export var speed: float = 200.0
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
-@export var weapons_array: Array = []
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
@@ -18,8 +17,9 @@ class_name PlayerController
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var quadrant_builder: QuadrantBuilder
-var player_details: PlayerDetails
+var player_details: PlayerDetails = PlayerDetails.new()
 var damage_multiplier: float = 1.0
+var weapons_array: Array = []
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -39,6 +39,7 @@ func set_player():
 	_apply_stats()
 	
 	initial_weapon = player_details.initial_weapon
+	weapons_array = player_details.weapons_array.duplicate(true)
 	dead_sound_effect = player_details.dead_sound_effect
 	_sound_effect_component.set_sound(dead_sound_effect)
 	set_weapon()
@@ -138,10 +139,14 @@ func get_active_weapon_node() -> ActiveWeaponComponent:
 func get_current_weapon() -> WeaponDetails:
 	return get_active_weapon_node().get_current_weapon()
 
+func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
+	if !weapons_array.has(weapon_to_add):
+		weapons_array.append(weapon_to_add)
+
 ## ----------- PERSISTENCE DATA FUNCTIONS --------------------------------------
 
 func save_data():
-	var data: PlayerData = PlayerData.new(speed, _health.get_initial_health(), active_weapon.get_current_weapon(), active_weapon.weapons_array)
+	var data: PlayerSaveData = PlayerSaveData.new(speed, _health.get_initial_health(), active_weapon.get_current_weapon(), active_weapon.weapons_array)
 	SaveSystem.set_var("player_data", data)
 	#data.player_data.current_weapon = active_weapon.get_current_weapon()
 	#data.player_data.weapons_array = weapons_array

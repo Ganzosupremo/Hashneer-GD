@@ -22,7 +22,7 @@ func _load_save_file(file_name: String) -> void:
 		PersistenceDataManager.load_game()
 	else:
 		PersistenceDataManager.save_game(true)
-	goto_menu()
+	go_to_menu()
 
-func goto_menu():
+func go_to_menu():
 	SceneManager.switch_scene_with_packed(main_game)

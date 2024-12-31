@@ -2,16 +2,12 @@ extends Control
 
 @onready var title_label: AnimatedLabel = %Title
 @onready var bg: Panel = %Panel
+@onready var ai_miner: AIMiner = %AIMiner
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
 
 @onready var skill_tree_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 @onready var world_scene: PackedScene = preload("res://Scenes/BlockLevels/World.tscn")
-
-const ERROR_404: String = "Code 404: Health has reached zero..."
-const ERROR_200: String = "Code 200: You have successfully mined the block..."
-const ERROR_401: String = "Code 401: Block has been mined by other miner"
-const ERROR_210: String = "Code 210: Level terminated by user..."
 
 var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
@@ -24,10 +20,10 @@ func _ready() -> void:
 	self.visible = false
 
 func _on_zero_health() -> void:
-	init_ui(ERROR_404)
+	open_ui(Constants.ERROR_404)
 
 func _on_block_mined(block: BitcoinBlock) -> void:
-	init_ui(ERROR_200 if block.miner == "Player" else ERROR_401)
+	open_ui(Constants.ERROR_200 if block.miner == "Player" else Constants.ERROR_401)
 
 func _on_quadrant_hitted(fiat_gained: float) -> void:
 	fiat_gained_so_far += fiat_gained
@@ -35,7 +31,7 @@ func _on_quadrant_hitted(fiat_gained: float) -> void:
 func _on_reward_issued(reward: float) -> void:
 	btc_gained_this_time += reward
 
-func init_ui(title: String) -> void:
+func open_ui(title: String) -> void:
 	title_label.text = title
 	
 	btc_gained_label.text = "%.2f" % btc_gained_this_time
@@ -45,9 +41,8 @@ func init_ui(title: String) -> void:
 func _open() -> void:
 	self.visible = true
 	title_label.animate_label(0.05)
-	btc_gained_label.animate_label(0.1)
-	fiat_gained_label.animate_label(0.1)
-	#tween_menu()
+	btc_gained_label.animate_label(0.15)
+	fiat_gained_label.animate_label(0.15)
 
 func _on_menu_button_pressed() -> void:
 	save()
@@ -59,3 +54,8 @@ func _on_retry_button_pressed() -> void:
 
 func save():
 	PersistenceDataManager.save_game()
+
+
+func _on_terminate_button_pressed() -> void:
+	ai_miner.stop_mining()
+	open_ui(Constants.ERROR_210)

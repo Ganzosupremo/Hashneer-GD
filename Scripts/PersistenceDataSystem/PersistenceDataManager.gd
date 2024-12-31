@@ -9,6 +9,9 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game(true)
 
+func get_save_path() -> String:
+	return "user://saves/"
+
 func find_all_persistence_objects() -> Array:
 	return Interface.implementations(get_tree().get_nodes_in_group("PersistentNodes"), IPersistenceData)
 

@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dbe8alxu5tq2"]
-
-[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/BitcoinNetwork.gd" id="1_wvsh5"]
-
-[node name="BitcoinNetwork" type="Node2D" groups=["PersistentNodes"]]
-script = ExtResource("1_wvsh5")

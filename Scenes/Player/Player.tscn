@@ -1,12 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=12 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_y4psy"]
 [ext_resource type="AudioStream" uid="uid://cmek8vf55vh73" path="res://Audio/Shrink-Sound-Effect.wav" id="3_ejl5x"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="3_vql12"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerCamera.gd" id="4_dj2nu"]
-[ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="4_ei04s"]
-[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="4_mamnx"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="5_r61be"]
 [ext_resource type="PackedScene" uid="uid://t3kn17jmsmy1" path="res://Scenes/Components/ActiveWeaponComponent.tscn" id="6_ltgru"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
@@ -23,7 +21,6 @@ script = ExtResource("1_ha4ea")
 speed = 300.0
 initial_weapon = ExtResource("6_vaewd")
 dead_sound_effect = ExtResource("3_vql12")
-weapons_array = [ExtResource("6_vaewd"), ExtResource("4_mamnx"), ExtResource("4_ei04s")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
 shape = SubResource("CircleShape2D_1sxoh")

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbe8alxu5tq2"]
+
+[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/BitcoinNetwork.gd" id="1_wvsh5"]
+[ext_resource type="PackedScene" uid="uid://vyrmgi326ctc" path="res://Scenes/BitcoinNetwork/BitcoinWallet.tscn" id="2_g12pk"]
+
+[node name="BitcoinNetwork" type="Node2D" groups=["PersistentNodes"]]
+script = ExtResource("1_wvsh5")
+
+[node name="BitcoinWallet" parent="." instance=ExtResource("2_g12pk")]
+unique_name_in_owner = true

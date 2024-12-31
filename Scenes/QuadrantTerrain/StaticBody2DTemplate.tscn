@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=5 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
+[ext_resource type="AudioStream" uid="uid://dd74dfmgbb8bs" path="res://Audio/FractureBodyHitSound.wav" id="3_yiuqt"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="3_yxxnb"]
 
 [node name="StaticBody2D" type="StaticBody2D"]
@@ -11,6 +12,7 @@ script = ExtResource("1_obgke")
 
 [node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
 unique_name_in_owner = true
+stream = ExtResource("3_yiuqt")
 
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true

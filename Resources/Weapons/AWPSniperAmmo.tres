@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=3 format=3 uid="uid://j0b1rc1iki68"]
+
+[ext_resource type="Script" path="res://Scripts/Resources/AmmoDetails.gd" id="1_h4fyi"]
+
+[sub_resource type="Gradient" id="Gradient_xsvdn"]
+offsets = PackedFloat32Array(0, 0.495413, 1)
+colors = PackedColorArray(0.044306, 0.40851, 0.366935, 1, 0.281376, 0.561392, 0.28835, 1, 0.136992, 0.685775, 0.866122, 1)
+
+[resource]
+script = ExtResource("1_h4fyi")
+min_lifetime = 1.0
+max_lifetime = 8.0
+bullet_damage = 100.0
+bullet_speed = 1000.0
+size = 10
+bullets_per_shoot_min = 1
+bullets_per_shoot_max = 1
+bullet_spawn_interval_min = 0.0
+bullet_spawn_interval_max = 0.0
+trail_gradient = SubResource("Gradient_xsvdn")
+trail_length = 15
+trail_width = 15.0
+emits_particles = true
+randomness = 0.5
+lifetime_randomness = 0.25

@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 script = ExtResource("1_dcscb")
 
 [node name="Panel" type="Panel" parent="."]
@@ -198,16 +199,20 @@ custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Go To Main Menu"
-enter_delay = 0.2
+enter_animation = false
+enter_delay = 0.25
+enter_position = Vector2(0, 0)
 
 [node name="RetryButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Retry Level"
+enter_animation = false
 wait_for = NodePath("../MenuButton")
 wait_for_is_child = true
 enter_delay = 0.2
+enter_position = Vector2(0, 0)
 
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/RetryButton" to="." method="_on_retry_button_pressed"]

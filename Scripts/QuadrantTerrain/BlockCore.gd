@@ -100,7 +100,7 @@ func _destroy_block_core(source, cuts: float, min_area: float) -> void:
 		_spawn_fracture_body(info_dic, texture_info)
 
 func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -> void:
-	var body_instance = get_parent()._pool_fracture_bodies.getInstance()
+	var body_instance = get_parent().pool_fracture_bodies.getInstance()
 	if not body_instance: 
 		return
 	

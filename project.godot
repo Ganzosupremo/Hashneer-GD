@@ -25,15 +25,16 @@ GameManager="*res://Scenes/GameManager.tscn"
 SceneManager="*res://Scenes/Scene_manager.tscn"
 Interface="*res://Scripts/Interface.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
-BitcoinNetwork="*res://Scenes/BitcoinNetwork/Bitcoin_network.tscn"
-BitcoinWallet="*res://Scenes/BitcoinNetwork/bitcoin_wallet.tscn"
-EffectsManager="*res://Scripts/Managers/EffectsManager.gd"
+BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
+EffectsManager="res://Scripts/Managers/EffectsManager.gd"
+BitcoinWallet="res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 window/vsync/vsync_mode=2
 
 [dotnet]

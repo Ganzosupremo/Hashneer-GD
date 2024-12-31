@@ -25,9 +25,10 @@ signal quadrant_hitted(fiat_gained: float)
 @onready var _rigid_bodies_parent: Node2D = %RigidBodiesParent
 @onready var _pool_cut_visualizer: PoolFracture = $"../Pool_FractureCutVisualizer"
 @onready var _pool_fracture_shards: PoolFracture = $"../Pool_FractureShards"
-@onready var _pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
+@onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
+@onready var bitcoin_wallet: BitcoinWallet = %BitcoinWallet
 
 var polygon_fracture: PolygonFracture
 var _fracture_disabled:bool = false
@@ -41,16 +42,17 @@ func _ready() -> void:
 	_init_builder()
 
 func _init_builder() -> void:
-	builder_args = GameManager.builder_args
+	var builder_data: QuadrantBuilderArgs = GameManager.builder_args
+	builder_args = builder_data
 	
-	quadrant_size = Vector2i(builder_args.quadrant_size, builder_args.quadrant_size)
-	grid_size = builder_args.grid_size
+	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
+	grid_size = builder_data.grid_size
 	
-	block_core_cuts = builder_args.block_core_cuts_delaunay
-	min_area = builder_args.block_core_cut_min_area
+	block_core_cuts = builder_data.block_core_cuts_delaunay
+	min_area = builder_data.block_core_cut_min_area
 	
-	quadrants_initial_health = builder_args.initial_health
-	resource_droprate_multiplier = builder_args.drop_rate_multiplier
+	quadrants_initial_health = builder_data.initial_health
+	resource_droprate_multiplier = builder_data.drop_rate_multiplier
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -82,7 +84,7 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	
 	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
 	emit_signal("quadrant_hitted", fiat_gained_on_collision)
-	BitcoinWallet.add_fiat(fiat_gained_on_collision)
+	BitcoinNetwork.bitcoin_wallet.add_fiat(fiat_gained_on_collision)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
@@ -98,7 +100,7 @@ func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, min
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
 
-func _generate_quadrants(quadrants_initial_health: float) -> void:
+func _generate_quadrants(initial_health: float) -> void:
 	for i in range(grid_size.x):
 		for j in range(grid_size.y):
 			var quadrant: FracturableStaticBody2D = quadrant_scene.instantiate()
@@ -106,13 +108,31 @@ func _generate_quadrants(quadrants_initial_health: float) -> void:
 			quadrant.rectangle_size = Vector2(250,250)
 			quadrant.placed_in_level = true
 			quadrant.position = Vector2(i * quadrant_size.x * 1.25, j * quadrant_size.y * 1.25)
-			quadrant.set_fracture_body(quadrants_initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
+			quadrant.set_fracture_body(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
 			#quadrant.set_texture_with_texture(builder_args.quadrant_texture)
 	_set_block_core_position()
 
 func _set_player_position() -> void:
-	var children: Array = get_children()
-	player.global_position = children[_rng.randi_range(0, len(children)-1)].global_position
+	## Set the player position to a random position within the grid of quadrants with a little offset
+	## This is to avoid the player to be spawned in the same position as the block core or inside a quadrant
+	var offset: Vector2 = Vector2(20, 20)
+	var max_limit: float = max(quadrant_size.x * grid_size.x, quadrant_size.y * grid_size.y) * 1.1
+	
+	var random_x: float
+	var random_y: float
+	
+	# Ensure the player spawns outside the grid boundaries but within the max limit
+	if _rng.randf() < 0.5:
+		random_x = clamp(_rng.randi_range(-1, 0) * quadrant_size.x - offset.x, -max_limit, max_limit)
+	else:
+		random_x = clamp(_rng.randi_range(grid_size.x, grid_size.x + 1) * quadrant_size.x + offset.x, -max_limit, max_limit)
+	
+	if _rng.randf() < 0.5:
+		random_y = clamp(_rng.randi_range(-1, 0) * quadrant_size.y - offset.y, -max_limit, max_limit)
+	else:
+		random_y = clamp(_rng.randi_range(grid_size.y, grid_size.y + 1) * quadrant_size.y + offset.y, -max_limit, max_limit)
+	
+	player.global_position = Vector2(random_x, random_y)
 
 func _set_block_core_position():
 	var center: Vector2 = quadrant_size * grid_size * 0.5
@@ -147,29 +167,29 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 
 """Spawns little polygons at the position where the collision happened"""
 func _spawn_fracture_body(fracture_shard : Dictionary, texture_info : Dictionary, new_mass : float, life_time : float) -> void:
-	var instance = _pool_fracture_shards.getInstance()
-	if not instance:
+	var instance_fbody = _pool_fracture_shards.getInstance()
+	if not instance_fbody:
 		return
 	
-	instance.spawn(fracture_shard.spawn_pos, fracture_shard.spawn_rot, fracture_shard.source_global_trans.get_scale(), life_time)
-	instance.setPolygon(fracture_shard.centered_shape, _cur_fracture_color, PolygonLib.setTextureOffset(texture_info, fracture_shard.centroid))
-	instance.setMass(new_mass)
+	instance_fbody.spawn(fracture_shard.spawn_pos, fracture_shard.spawn_rot, fracture_shard.source_global_trans.get_scale(), life_time)
+	instance_fbody.setPolygon(fracture_shard.centered_shape, _cur_fracture_color, PolygonLib.setTextureOffset(texture_info, fracture_shard.centroid))
+	instance_fbody.setMass(new_mass)
 
 """Spawns a little polygon that serve as feedback to the player on where the collision happened"""
 func _spawn_cut_visualizers(pos : Vector2, poly : PackedVector2Array, fade_speed : float) -> void:
-	var instance = _pool_cut_visualizer.getInstance()
-	instance.spawn(pos, fade_speed)
-	instance.setPolygon(poly)
+	var instance_visualizers = _pool_cut_visualizer.getInstance()
+	instance_visualizers.spawn(pos, fade_speed)
+	instance_visualizers.setPolygon(poly)
 
 func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary) -> void:
-	var instance = staticbody_template.instantiate()
-	_rigid_bodies_parent.add_child(instance)
-	instance.global_position = shape_info.spawn_pos
-	instance.global_rotation = shape_info.spawn_rot
-	instance.set_polygon(shape_info.centered_shape)
-	#instance.modulate = color
-	instance.set_initial_health(quadrants_initial_health)
-	instance.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
+	var instance_staticbody: FracturableStaticBody2D = staticbody_template.instantiate()
+	_rigid_bodies_parent.add_child(instance_staticbody)
+	instance_staticbody.global_position = shape_info.spawn_pos
+	instance_staticbody.global_rotation = shape_info.spawn_rot
+	instance_staticbody.set_polygon(shape_info.centered_shape)
+	instance_staticbody.self_modulate = color
+	instance_staticbody.set_initial_health(quadrants_initial_health)
+	instance_staticbody.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
 
 static func get_instance() -> QuadrantBuilder:
 	return instance
