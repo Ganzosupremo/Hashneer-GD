@@ -130,14 +130,14 @@ func _exceeds_coin_limit_cap() -> bool:
 ## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
 func save_data():
-	var network_data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	GameManager.game_data_to_save.bitcoin_network_data = network_data
+	var network_data: BitcoinNetworkData = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
+	GameManager.set_resource_to_game_data_dic(network_data, GameManager.NetworkDataSaveName)
 	# SaveSystem.set_var("network_data", network_data)
 
 func load_data():
 	if loaded == true: return
 
-	var net_data: BitcoinNetworkData = GameManager.get_resource_from_game_data("network_data")
+	var net_data: BitcoinNetworkData = GameManager.get_resource_from_game_data_dic(GameManager.NetworkDataSaveName)
 	# # if !SaveSystem.has("network_data"): return
 	# # var network_data: Dictionary = SaveSystem.get_var("network_data")
 	# # var res: BitcoinNetworkData = Utils.dict_to_resource(network_data, BitcoinNetworkData.new())

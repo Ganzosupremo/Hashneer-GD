@@ -89,11 +89,11 @@ func get_bitcoin_balance() -> float:
 	return bitcoin_balance
 
 func save_data():
-	var wallet_data = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
-	GameManager.game_data_to_save.bitcoin_wallet_data = wallet_data
+	var wallet_data: BitcoinWalletData = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
+	GameManager.set_resource_to_game_data_dic(wallet_data, GameManager.WalletDataSaveName)
 
 func load_data():
-	var wallet_data: BitcoinWalletData = GameManager.get_resource_from_game_data("wallet_data")
+	var wallet_data: BitcoinWalletData = GameManager.get_resource_from_game_data_dic(GameManager.WalletDataSaveName)
 	self.bitcoin_balance = wallet_data.btc_holdings
 	self.fiat_balance = wallet_data.fiat_holdings
 	self.bitcoin_price = wallet_data.bitcoin_price

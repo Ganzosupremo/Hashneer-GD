@@ -27,6 +27,10 @@ const LEVELS_UNLOCKED: String = "levels_unlocked"
 const SAVED_PREVIOUS_LEVELS_UNLOCKED: String = "previous_levels_unlocked_index"
 const PLAYER_DETAILS_SAVE_KEY: String = "player_details"
 
+const NetworkDataSaveName: String = "network_data"
+const WalletDataSaveName: String = "wallet_data"
+const PlayerDataSaveName: String = "player_data"
+const SkillNodesDataDicsSaveName: String = "skill_nodes_data_dic"
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -63,6 +67,11 @@ func init_tween() -> Tween:
 func init_timer(delay: float) -> SceneTreeTimer:
 	return get_tree().create_timer(delay)
 
+func set_resource_to_game_data_dic(resource, key: String, set_in_subdic: bool = false) -> void:
+	if !set_in_subdic:
+		game_data_resources_dictionary[key] = resource
+	else:
+		game_data_resources_dictionary[SkillNodesDataDicsSaveName][key] = resource
 
 ## Returns the resource contained within game_data_resource_dictionary.
 ## Key: Key to retrieve
@@ -70,7 +79,7 @@ func init_timer(delay: float) -> SceneTreeTimer:
 ## True if the value should be retrieved from an array. Example SkillNodeData.
 ##
 ## The value id to retrieve from the array.
-func get_resource_from_game_data(key: String, retrieve_from_dic: bool = false, id: String = "Should be defined"):
+func get_resource_from_game_data_dic(key: String, retrieve_from_dic: bool = false, id: String = "Should be defined"):
 	if !retrieve_from_dic:
 		return game_data_resources_dictionary[key]
 	else:

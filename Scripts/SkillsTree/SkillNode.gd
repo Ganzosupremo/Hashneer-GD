@@ -242,7 +242,8 @@ func _unlock_next_tier() -> void:
 
 
 func save_data() -> void:
-	GameManager.game_data_to_save.skill_nodes_data_dic[save_name] = skillnode_data
+	GameManager.set_resource_to_game_data_dic(skillnode_data, GameManager.SkillNodesDataDicsSaveName, true)
+	#GameManager.game_data_to_save.skill_nodes_data_dic[save_name] = skillnode_data
 
 
 
@@ -260,7 +261,7 @@ func load_data() -> void:
 	# skillnode_data = Utils.build_res_from_dictionary(data, SkillNodeData.new())
 	if !GameManager.has_resource(save_name,  true, save_name): return
 	
-	var loaded_res: SkillNodeData = GameManager.get_resource_from_game_data("skill_nodes_data_dic", true, save_name)
+	var loaded_res: SkillNodeData = GameManager.get_resource_from_game_data_dic(GameManager.SkillNodesDataDicsSaveName, true, save_name)
 	if loaded_res == null: 
 		print_debug("No Resource Found at %s " % SAVE_PATH)
 		return
