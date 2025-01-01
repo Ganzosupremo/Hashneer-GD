@@ -72,4 +72,4 @@ func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool
 		price_background.add_theme_stylebox_override("panel", can_afford_upgrade_style)
 
 func _get_currency_balance(use_bitcoin) -> float:
-	return BitcoinNetwork.bitcoin_wallet.get_bitcoin_balance() if use_bitcoin else BitcoinNetwork.bitcoin_wallet.get_fiat_balance()
+	return BitcoinWallet.get_bitcoin_balance() if use_bitcoin else BitcoinWallet.get_fiat_balance()

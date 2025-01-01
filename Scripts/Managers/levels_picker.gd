@@ -2,7 +2,7 @@ extends Control
 
 @onready var container: GridContainer = %Grid
 @onready var main_menu_scene: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTreeBitcoin.tscn")
+@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 var children: Array
 

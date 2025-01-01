@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_kfevs"]
 
 [resource]
+resource_name = "SpeedF1SkillNodeData"
 script = ExtResource("1_kfevs")
 feature_type = 3
 upgrade_name = "INCREASE SPEED"

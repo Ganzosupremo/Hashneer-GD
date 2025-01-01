@@ -8,6 +8,7 @@ atlas = ExtResource("2_n31ef")
 region = Rect2(0, 0, 16, 16)
 
 [resource]
+resource_name = "DamageB1SkillNodeData"
 script = ExtResource("1_jyv82")
 feature_type = 3
 upgrade_name = "INCREASE DAMAGE"

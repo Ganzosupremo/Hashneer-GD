@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=3 uid="uid://c63juqbjnho33"]
+[gd_scene load_steps=4 format=3 uid="uid://c63juqbjnho33"]
 
-[ext_resource type="Texture2D" uid="uid://dfwrk73ka6j8x" path="res://example/skilltree_borders.png" id="1_cj8l8"]
 [ext_resource type="Shader" path="res://Shaders/Laser_beams.gdshader" id="1_dlssw"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_om537"]
@@ -25,15 +24,10 @@ shader_parameter/noise_scale = Vector2(1, 1)
 [sub_resource type="Gradient" id="Gradient_lk3lr"]
 colors = PackedColorArray(0, 0, 0, 0.780392, 1, 1, 1, 0.788235)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_pehn1"]
-atlas = ExtResource("1_cj8l8")
-region = Rect2(0, 0, 128, 8)
-
 [node name="SkillBranch" type="Line2D"]
 light_mask = 255
 visibility_layer = 255
 z_index = -1
 material = SubResource("ShaderMaterial_om537")
 gradient = SubResource("Gradient_lk3lr")
-texture = SubResource("AtlasTexture_pehn1")
 texture_mode = 2

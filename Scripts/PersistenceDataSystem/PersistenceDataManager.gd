@@ -21,7 +21,7 @@ func save_game(save_to_disk: bool = false) -> void:
 	for node in persistence_data_objects:
 		if Interface.implements(node, IPersistenceData):
 			node.save_data()
-			print_debug("Nodes Saved: %s" % i)
+			#print_debug("Nodes Saved: %s" % i)
 			i += 1
 	
 	if save_to_disk:
@@ -31,4 +31,5 @@ func load_game() -> void:
 	persistence_data_objects = find_all_persistence_objects()
 	
 	for node in persistence_data_objects:
-		node.load_data()
+		if Interface.implements(node, IPersistenceData):
+			node.load_data()

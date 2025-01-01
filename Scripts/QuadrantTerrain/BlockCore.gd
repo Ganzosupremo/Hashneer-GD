@@ -84,7 +84,6 @@ func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Col
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
 		GameManager.level_completed()
-		#emit_signal("block_mined")
 
 func _destroy_block_core(source, cuts: float, min_area: float) -> void:
 	visible = false

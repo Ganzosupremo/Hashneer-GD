@@ -68,7 +68,8 @@ func _physics_process(_delta) -> void:
 func _apply_stats() -> void:
 	var stats_array = player_details.apply_stats()
 	
-	speed = stats_array[0]
+	player_details.speed = stats_array[0]
+	speed = player_details.speed
 	damage_multiplier = stats_array[1]
 	_health.set_max_health(stats_array[2])
 
@@ -142,6 +143,7 @@ func get_current_weapon() -> WeaponDetails:
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
 		weapons_array.append(weapon_to_add)
+		active_weapon._weapons_list = weapons_array
 
 ## ----------- PERSISTENCE DATA FUNCTIONS --------------------------------------
 

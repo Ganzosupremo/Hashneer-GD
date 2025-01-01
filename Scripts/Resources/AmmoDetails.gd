@@ -36,3 +36,21 @@ class_name AmmoDetails
 @export_range(0.0, 1.0) var randomness: float = 0.5
 ## Particle lifetime randomness ratio, escales the lifetime of it's original value
 @export_range(0.0, 1.0) var lifetime_randomness = 0.25
+
+func _init(_damage = 25.0, _speed = 1000.0) -> void:
+    min_lifetime = 1.0
+    max_lifetime = 10.0
+    bullet_damage = _damage
+    bullet_speed = _speed
+    size = 10
+    bullets_per_shoot_min = 1
+    bullets_per_shoot_max = 1
+    bullet_spawn_interval_min = 0.0
+    bullet_spawn_interval_max = 0.0
+    collision_effect_details = null
+    trail_gradient = Gradient.new()
+    trail_length = 20
+    trail_width = 20.0
+    emits_particles = true
+    randomness = 0.5
+    lifetime_randomness = 0.25

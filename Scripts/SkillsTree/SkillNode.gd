@@ -57,18 +57,23 @@ const implements = [
 
 func _enter_tree() -> void:
 	if !skillnode_data: return
+	SAVE_PATH = "user://saves/SkillsTree/{0}.tres".format([save_name])
 
 	skillnode_data.upgrade_maxed.connect(_on_upgrade_maxed)
 	skillnode_data.next_tier_unlocked.connect(_unlock_next_tier)
 
 func _ready() -> void:
+	if is_unlocked:
+		unlock()
+	else:
+		lock()
+	
 	if skillnode_data and skillnode_data.check_next_tier_unlock():
 		_unlock_next_tier()
 	if skillnode_data and skillnode_data.check_upgrade_maxed_out():
 		_on_upgrade_maxed()
 	
 	currency_icon.texture = bitcoin_icon if use_bitcoin else dollar_icon
-	SAVE_PATH = "user://saves/SkillsTree/{0}.tres".format([save_name])
 
 # ___________________ PUBLIC FUNCTIONS ________________________
 
@@ -95,6 +100,10 @@ func unlock() -> void:
 
 func is_skill_unlocked() -> bool:
 	return is_unlocked
+
+func set_node_identifier(id: int = 0) -> void:
+	node_identifier = id
+	skillnode_data.set_id(id)
 
 # _____________________PRIVATE FUNCTIONS________________________
 
@@ -242,10 +251,15 @@ func _unlock_next_tier() -> void:
 
 
 func save_data() -> void:
-	GameManager.set_resource_to_game_data_dic(skillnode_data, GameManager.SkillNodesDataDicsSaveName, true)
+	var data = skillnode_data.duplicate(true)
+	var error = ResourceSaver.save(data, SAVE_PATH)
+	if error != OK:
+		print_debug("Error saving data: {0}".format([error]))
+	else:
+		print_debug("Saved data: {0}".format([skillnode_data]))
+
+	#GameManager.set_resource_to_game_data_dic(skillnode_data, GameManager.ResourceDataType.SkillNodeData, save_name)
 	#GameManager.game_data_to_save.skill_nodes_data_dic[save_name] = skillnode_data
-
-
 
 	# SaveSystem.set_var(save_name if !save_name.is_empty() else skillnode_data.upgrade_name, self.skillnode_data)
 	# var error = ResourceSaver.save(skillnode_data, SAVE_PATH)
@@ -259,16 +273,14 @@ func load_data() -> void:
 	# 	return
 	# var data = SaveSystem.get_var(saved_name)
 	# skillnode_data = Utils.build_res_from_dictionary(data, SkillNodeData.new())
-	if !GameManager.has_resource(save_name,  true, save_name): return
-	
-	var loaded_res: SkillNodeData = GameManager.get_resource_from_game_data_dic(GameManager.SkillNodesDataDicsSaveName, true, save_name)
-	if loaded_res == null: 
+	#var loaded_res: SkillNodeData = GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.SkillNodeData, save_name)
+	if !ResourceLoader.exists(SAVE_PATH, "SkillNodeData"):
 		print_debug("No Resource Found at %s " % SAVE_PATH)
 		return
-
-
+	
+	var loaded_res = ResourceLoader.load(SAVE_PATH).duplicate(true)
+	print_debug("Loaded Skill node data: {0}".format([loaded_res]))
 	skillnode_data = loaded_res
-
 	if skillnode_data.check_next_tier_unlock():
 		_unlock_next_tier()
 	if skillnode_data.check_upgrade_maxed_out():

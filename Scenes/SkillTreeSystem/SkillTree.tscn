@@ -31,7 +31,7 @@ shader_parameter/bg_color = null
 shader_parameter/size = 100.0
 shader_parameter/prob = 1.006
 
-[node name="SkillTree" type="Control" groups=["PersistentNodes", "SkillsTree"]]
+[node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
 layout_mode = 3
 anchors_preset = 15
@@ -116,7 +116,7 @@ stat_to_upgrade = ExtResource("7_ihsdj")
 upgrade_type = 1
 save_name = "PlayerSpeedUpgradeFiatT1"
 
-[node name="DamageUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 1
 offset_left = 258.0
 offset_top = 166.5
@@ -126,6 +126,7 @@ tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("3_13utr")
 use_bitcoin = true
+next_tier_nodes = [NodePath("../NewWeapon")]
 skillnode_data = ExtResource("11_6em56")
 stat_to_upgrade = ExtResource("9_18lcm")
 upgrade_type = 2

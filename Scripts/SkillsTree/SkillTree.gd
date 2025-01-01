@@ -10,18 +10,15 @@ const implements: Array = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
-func _exit_tree() -> void:
-	PersistenceDataManager.save_game()
-
 func _ready() -> void:
-	PersistenceDataManager.load_game()
 	skill_nodes = _get_skill_nodes()
 	
 	var id: int = 0
 	for node in skill_nodes:
 		node.pressed.connect(Callable(node, "_on_skill_pressed"))
-		node.node_identifier = id
+		node.set_node_identifier(id)
 		id += 1
+	PersistenceDataManager.load_game()
 
 func _get_skill_nodes() -> Array:
 	var nodes: Array = []
@@ -33,7 +30,6 @@ func _get_skill_nodes() -> Array:
 func _on_main_menu_button_pressed() -> void:
 	PersistenceDataManager.save_game()
 	SceneManager.switch_scene_with_packed(MAIN_GAME_UI)
-
 
 func save_data() -> void:
 	pass

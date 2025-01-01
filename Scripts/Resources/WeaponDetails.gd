@@ -35,5 +35,21 @@ func set_fire_rate(value: float) -> void:
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
 
+
+func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
+	weapon_name = "Default Weapon"
+	weapon_texture = null
+	fire_sound = null
+	weapon_damage_multiplier = 1.0
+	ammo_details = AmmoDetails.new()
+	weapon_shoot_effect = null
+	fire_rate = 0.25
+	precharge_time = 0.0
+	spread_min = 0.0
+	spread_max = 0.001
+	shake_strength = 1.0
+	shake_decay = 5.0
+
+
 func _to_string() -> String:
 	return "WeaponDetails for %s" % weapon_name + "\n\nWeapon texture: %s" % weapon_texture + "\n\nFire sound: %s" % fire_sound + "\n\nAmmo details: %s" % ammo_details + "\n\nWeapon shoot effect: %s" % weapon_shoot_effect + "\n\nFire rate: %.2f" % fire_rate + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nWeapon spread: min %.2f - max %.2f" % [spread_min, spread_max] + "\n\nCamera shake strength: %.2f" % shake_strength + "\n\nCamera shake decay: %.2f" % shake_decay

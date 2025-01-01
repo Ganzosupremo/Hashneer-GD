@@ -2,7 +2,7 @@ extends Control
 
 @onready var title_label: AnimatedLabel = %Title
 @onready var bg: Panel = %Panel
-@onready var ai_miner: AIMiner = %AIMiner
+@onready var ai_miner: AIMiner = %MinerAI
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
 
@@ -45,15 +45,15 @@ func _open() -> void:
 	fiat_gained_label.animate_label(0.15)
 
 func _on_menu_button_pressed() -> void:
-	save()
+	#save()
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
 func _on_retry_button_pressed() -> void:
-	save()
+	#save()
 	SceneManager.switch_scene_with_packed(world_scene)
 
-func save():
-	PersistenceDataManager.save_game()
+func save(to_disk: bool = false):
+	PersistenceDataManager.save_game(to_disk)
 
 
 func _on_terminate_button_pressed() -> void:

@@ -26,8 +26,8 @@ SceneManager="*res://Scenes/Scene_manager.tscn"
 Interface="*res://Scripts/Interface.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
+BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 EffectsManager="res://Scripts/Managers/EffectsManager.gd"
-BitcoinWallet="res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 
 [display]
 

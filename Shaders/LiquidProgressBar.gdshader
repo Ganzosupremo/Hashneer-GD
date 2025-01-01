@@ -44,7 +44,7 @@ float noise( in vec2 p )
 
     vec2  i = floor( p + (p.x+p.y)*K1 );
     vec2  a = p - i + (i.x+i.y)*K2;
-    float m = step(a.y,a.x); 
+    float m = step(a.y,a.x);
     vec2  o = vec2(m,1.0-m);
     vec2  b = a - o + K2;
     vec2  c = a - 1.0 + 2.0*K2;
@@ -107,7 +107,7 @@ void fragment()
     vec4 nh = hn_fdm(uv_screen* 10.0, iTime * speed);
     float h = nh.w;
     vec3 norm = nh.xyz;
-    
+
     if (dot(sun_dir, norm) > 0.98) {
         fragColor = specular_colour;
     } else {

@@ -40,17 +40,19 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 @export var upgrade_max_level : int = 10
 
 var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
-var upgrade_level: int = 0
-	#set(value):
-		#upgrade_level = value
-		#check_next_tier_unlock()
-		#check_upgrade_maxed_out()
+@export var upgrade_level: int = 0:
+	set(value):
+		upgrade_level = value
+		check_next_tier_unlock()
+		check_upgrade_maxed_out()
 var _id: int = 0
 var current_power: float = 0.0
 
 # ------------------ MAIN FUNCTIONS ----------------------------
 
 func apply_upgrade() -> float:
+	if get_upgrade_power() <= 0.0:
+		return _power()
 	return get_upgrade_power()
 
 func buy_upgrade(in_bitcoin: bool = false) -> bool:
@@ -58,54 +60,54 @@ func buy_upgrade(in_bitcoin: bool = false) -> bool:
 	
 	return _buy_with_bitcoin() if in_bitcoin else _buy_with_fiat()
 
+func set_id(id:int = 0) -> void:
+	_id = id
 
 func _buy_with_bitcoin() -> bool:
-	if BitcoinNetwork.bitcoin_wallet.spend_bitcoin(upgrade_cost()):
+	if BitcoinWallet.spend_bitcoin(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		check_upgrade_maxed_out()
 		check_next_tier_unlock()
 		_upgrade_power()
 		return true
 	else:
-		print("Not enough Bitcoin balance: {0}".format([BitcoinNetwork.bitcoin_wallet.get_bitcoin_balance()]))
+		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
 		return false
 
 
 func _buy_with_fiat() -> bool:
-	if BitcoinNetwork.bitcoin_wallet.spend_fiat(upgrade_cost()):
+	if BitcoinWallet.spend_fiat(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		check_upgrade_maxed_out()
 		check_next_tier_unlock()
 		_upgrade_power()
 		return true
 	else:
-		print("Not enough fiat balance: {0}".format([BitcoinNetwork.bitcoin_wallet.get_fiat_balance()]))
+		print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 		return false
 
 func buy_max(in_bitcoin: bool = false) -> void:
 	if upgrade_level >= upgrade_max_level: return
 	
 	if !in_bitcoin:
-		if BitcoinNetwork.bitcoin_wallet.spend_fiat(_buy_max(in_bitcoin)):
+		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
 			_upgrade_power()
 			#apply_upgrade()
 			return
 		else:
-			print("Not enough fiat balance: {0}".format([BitcoinNetwork.bitcoin_wallet.get_fiat_balance()]))
+			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 			return
 	
-	if BitcoinNetwork.bitcoin_wallet.spend_bitcoin(_buy_max(in_bitcoin)):
+	if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
 		_upgrade_power()
 		#apply_upgrade()
 	else:
-		print("Not enough Bitcoin balance: {0}".format([BitcoinNetwork.bitcoin_wallet.get_bitcoin_balance()]))
+		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
 
 func _buy_max(in_bitcoin: bool = false) -> float:
 	var balance: float = 0.0
-	if in_bitcoin:
-		balance = BitcoinNetwork.bitcoin_wallet.get_bitcoin_balance()
-	else:
-		balance = BitcoinNetwork.bitcoin_wallet.get_fiat_balance()
+
+	balance = BitcoinWallet.get_bitcoin_balance() if in_bitcoin else BitcoinWallet.get_fiat_balance()
 	
 	var n: int = floor(_log((balance * (upgrade_cost_multiplier - 1.0)) / upgrade_cost() + 1.0, upgrade_cost_multiplier))
 	if n >= upgrade_max_level: n = upgrade_max_level

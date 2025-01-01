@@ -1,5 +1,5 @@
 extends Node2D
-class_name BitcoinWallet
+class_name BWallet
 
 signal money_changed(amount_changed: float, is_bitcoin: bool) 
 
@@ -10,6 +10,7 @@ var bitcoin_balance: float = 0.0
 var fiat_balance: float = 0.0
 var bitcoin_price: float = 0.0
 var static_bitcoin_price: float = 95_000.0
+var data: BitcoinWalletData
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -19,7 +20,7 @@ func _ready() -> void:
 	BitcoinNetwork.reward_issued.connect(on_reward_issued)
 	request.request_completed.connect(on_request_completed)
 	request.request(API_REQUEST)
-	
+	data = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
 	await request.request_completed
 	
 	var timer: Timer = Timer.new()
@@ -90,10 +91,24 @@ func get_bitcoin_balance() -> float:
 
 func save_data():
 	var wallet_data: BitcoinWalletData = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
-	GameManager.set_resource_to_game_data_dic(wallet_data, GameManager.WalletDataSaveName)
+	var error = ResourceSaver.save(wallet_data, GameManager.WalletDataSaveName)
+	if error != OK:
+		print_debug("not saved: ", error)
+	else:
+		print_debug("saved: ", wallet_data)
+	# GameManager.set_resource_to_game_data_dic(wallet_data, GameManager.ResourceDataType.WalletData)
 
 func load_data():
-	var wallet_data: BitcoinWalletData = GameManager.get_resource_from_game_data_dic(GameManager.WalletDataSaveName)
-	self.bitcoin_balance = wallet_data.btc_holdings
-	self.fiat_balance = wallet_data.fiat_holdings
-	self.bitcoin_price = wallet_data.bitcoin_price
+	
+	var wallet_data: BitcoinWalletData = ResourceLoader.load(GameManager.WalletDataSaveName, "BitcoinWalletData", ResourceLoader.CACHE_MODE_REPLACE)   #GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.WalletData)
+	if wallet_data == null: 
+		print_debug("not loaded: ", wallet_data)
+		return
+	print_debug("loaded: ", wallet_data)
+	data = wallet_data.duplicate(true)
+	self.bitcoin_balance = data.btc_holdings
+	self.fiat_balance = data.fiat_holdings
+	self.bitcoin_price = data.bitcoin_price
+
+func _to_string() -> String:
+	return "BTC holdings: %d\n" % bitcoin_balance + "Fiat Holdings: %d" % fiat_balance + "Current BTC price: %d" % bitcoin_price

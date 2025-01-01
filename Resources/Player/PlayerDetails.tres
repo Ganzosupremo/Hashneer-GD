@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="7_e3bw3"]
 
 [resource]
+resource_name = "PlayerDetailsToUse"
 script = ExtResource("1_6qe4h")
 speed = 400.0
 max_health = 200.0

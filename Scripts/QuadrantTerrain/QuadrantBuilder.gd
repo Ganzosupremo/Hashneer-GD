@@ -28,7 +28,7 @@ signal quadrant_hitted(fiat_gained: float)
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
-@onready var bitcoin_wallet: BitcoinWallet = %BitcoinWallet
+#@onready var bitcoin_wallet: BWallet = %BWallet
 
 var polygon_fracture: PolygonFracture
 var _fracture_disabled:bool = false
@@ -84,7 +84,7 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	
 	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
 	emit_signal("quadrant_hitted", fiat_gained_on_collision)
-	BitcoinNetwork.bitcoin_wallet.add_fiat(fiat_gained_on_collision)
+	BitcoinWallet.add_fiat(fiat_gained_on_collision)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
