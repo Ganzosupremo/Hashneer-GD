@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="SkillNodeData" load_steps=4 format=3 uid="uid://c6lryfoxdvlix"]
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=3 format=3 uid="uid://c6lryfoxdvlix"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_7da8l"]
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="2_ji62a"]
-[ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="3_bc31m"]
 
 [resource]
 script = ExtResource("1_7da8l")
@@ -14,10 +13,11 @@ upgrade_tier = 0
 is_upgrade = false
 status = 0
 is_percentage = false
-weapon_to_unlock = ExtResource("3_bc31m")
+weapon_to_unlock = 3
 ability_to_unlock = ""
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 0.0
 upgrade_cost_base = 100000.0
 upgrade_cost_multiplier = 0.0
 upgrade_max_level = 1
+upgrade_level = 0

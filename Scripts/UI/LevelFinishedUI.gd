@@ -2,7 +2,6 @@ extends Control
 
 @onready var title_label: AnimatedLabel = %Title
 @onready var bg: Panel = %Panel
-@onready var ai_miner: AIMiner = %MinerAI
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
 
@@ -14,13 +13,23 @@ var btc_gained_this_time: float = 0.0
 
 func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
-	BitcoinNetwork.block_found.connect(_on_block_mined)
+	#BitcoinNetwork.block_found.connect(_on_block_mined)
 	GameManager.current_quadrant_builder.quadrant_hitted.connect(_on_quadrant_hitted)
+	GameManager.current_block_core.destroyed.connect(_on_core_destroyed)
 	BitcoinNetwork.reward_issued.connect(_on_reward_issued)
 	self.visible = false
 
 func _on_zero_health() -> void:
 	open_ui(Constants.ERROR_404)
+
+func _on_core_destroyed() -> void:
+	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
+	if block.mined:
+		open_ui(Constants.ERROR_500)
+	elif block.miner == "Player":
+		open_ui(Constants.ERROR_200)
+	else:
+		open_ui(Constants.ERROR_401)
 
 func _on_block_mined(block: BitcoinBlock) -> void:
 	open_ui(Constants.ERROR_200 if block.miner == "Player" else Constants.ERROR_401)
@@ -45,11 +54,11 @@ func _open() -> void:
 	fiat_gained_label.animate_label(0.15)
 
 func _on_menu_button_pressed() -> void:
-	#save()
+	save()
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
 func _on_retry_button_pressed() -> void:
-	#save()
+	save()
 	SceneManager.switch_scene_with_packed(world_scene)
 
 func save(to_disk: bool = false):
@@ -57,5 +66,5 @@ func save(to_disk: bool = false):
 
 
 func _on_terminate_button_pressed() -> void:
-	ai_miner.stop_mining()
+	GameManager.game_terminated.emit()
 	open_ui(Constants.ERROR_210)

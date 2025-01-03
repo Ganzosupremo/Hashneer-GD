@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerDetails" load_steps=8 format=3 uid="uid://cy7f2rybcjt4v"]
+[gd_resource type="Resource" script_class="PlayerDetails" load_steps=10 format=3 uid="uid://cy7f2rybcjt4v"]
 
 [ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="1_3ldop"]
 [ext_resource type="Script" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
@@ -7,16 +7,18 @@
 [ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="4_hsb6s"]
 [ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="6_t0dqd"]
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="7_e3bw3"]
+[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="8_xqi15"]
+[ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="9_v2pjf"]
 
 [resource]
 resource_name = "PlayerDetailsToUse"
 script = ExtResource("1_6qe4h")
-speed = 400.0
-max_health = 200.0
+speed = 250.0
+max_health = 100.0
 damage_multiplier = 1.0
 initial_weapon = ExtResource("2_n5hxn")
 dead_sound_effect = ExtResource("1_gkrcx")
-weapons_array = [ExtResource("7_e3bw3")]
+weapons_array = [ExtResource("7_e3bw3"), ExtResource("8_xqi15"), ExtResource("9_v2pjf")]
 speed_stat = ExtResource("6_t0dqd")
 damage_multiplier_stat = ExtResource("1_3ldop")
 max_health_stat = ExtResource("4_hsb6s")

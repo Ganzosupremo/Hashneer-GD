@@ -24,3 +24,4 @@ upgrade_power_multiplier = 1.05
 upgrade_cost_base = 15000.0
 upgrade_cost_multiplier = 1.4
 upgrade_max_level = 10
+upgrade_level = 0

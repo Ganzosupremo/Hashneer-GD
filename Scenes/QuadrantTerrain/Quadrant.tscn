@@ -2,15 +2,15 @@
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_ltviw"]
 [ext_resource type="Texture2D" uid="uid://cmuco4odvfka8" path="res://icon.svg" id="2_ul1f3"]
+[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturablePolygonHit.wav" id="3_7qa4m"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_12thv"]
-[ext_resource type="AudioStream" uid="uid://dd74dfmgbb8bs" path="res://Audio/FractureBodyHitSound.wav" id="3_q6e65"]
 [ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="4_l7pwh"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_rnr3l"]
 
 [sub_resource type="Resource" id="Resource_ll7g4"]
 script = ExtResource("4_l7pwh")
-sound_volume = -10.0
-audio_stream = ExtResource("3_q6e65")
+sound_volume = 1.0
+audio_stream = ExtResource("3_7qa4m")
 sound_pitch = 1.0
 
 [node name="Quadrant" type="StaticBody2D"]
@@ -29,6 +29,7 @@ script = ExtResource("3_12thv")
 
 [node name="HitSoundComponent" parent="." instance=ExtResource("4_rnr3l")]
 unique_name_in_owner = true
+max_polyphony = 50
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 

@@ -68,11 +68,16 @@ func _init_builder() -> void:
 	
 	_generate_quadrants(quadrants_initial_health)
 
-"""Fractures the polygon (quadrant) at the specified position"""
+## Handles the fracturing of the source polygon at the given position.
+## @param source The source polygon to be fractured.
+## @param cut_pos The position where the cut occurred.
+## @param cut_shape The shape of the cut.
+## @param cut_rot The rotation of the cut.
+## @param fade_speed The speed at which the visualizer fades.
 func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStaticBody2D, bullet_launch_velocity:float = 410.0, bullet_damage: float = 25.0, bullet_speed: float = 500.0) -> void:
 	var p = bullet_launch_velocity / bullet_speed
 	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
-	other_body.get_sound_component().play_sound()
+	other_body.play_sound_on_hit()
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
 	if !other_body.take_damage(bullet_damage):
@@ -94,8 +99,8 @@ which at the same time will mine a bitcoin block"""
 func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
 	if _fracture_disabled: return
 	
-	other_body.get_sound_component().play_sound()
-	block_core.fracture_all(other_body, block_core_cuts,  min_area, bullet_damage, _cur_fracture_color, instakill, miner)
+	other_body.play_sound_on_hit()
+	block_core.fracture_all(other_body, block_core_cuts, min_area, bullet_damage, _cur_fracture_color, instakill, miner)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
@@ -105,12 +110,11 @@ func _generate_quadrants(initial_health: float) -> void:
 		for j in range(grid_size.y):
 			var quadrant: FracturableStaticBody2D = quadrant_scene.instantiate()
 			quadrants.add_child(quadrant)
-			quadrant.rectangle_size = Vector2(250,250)
+			quadrant.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
 			quadrant.placed_in_level = true
-			quadrant.position = Vector2(i * quadrant_size.x * 1.25, j * quadrant_size.y * 1.25)
+			quadrant.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
 			quadrant.set_fracture_body(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
-			#quadrant.set_texture_with_texture(builder_args.quadrant_texture)
-	_set_block_core_position()
+	_set_quadrant_core()
 
 func _set_player_position() -> void:
 	## Set the player position to a random position within the grid of quadrants with a little offset
@@ -134,9 +138,10 @@ func _set_player_position() -> void:
 	
 	player.global_position = Vector2(random_x, random_y)
 
-func _set_block_core_position():
+func _set_quadrant_core():
 	var center: Vector2 = quadrant_size * grid_size * 0.5
 	block_core.global_position = center
+	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
 	_spawn_cut_visualizers(cut_pos, cut_shape, fade_speed)
@@ -158,15 +163,20 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 		for fracture_shard in fracture:
 			var area_p : float = fracture_shard.area / total_area
 			var rand_lifetime : float = _rng.randf_range(1.5, 2.5) + 2.0 * area_p
-			_spawn_fracture_body(fracture_shard, source.getTextureInfo(), s_mass * area_p, rand_lifetime)
+			_spawn_fracture_shards(fracture_shard, source.getTextureInfo(), s_mass * area_p, rand_lifetime)
 	
 	for shape in cut_fracture_info.shapes:
 		call_deferred("_spawn_staticbody", shape, source.modulate, source.getTextureInfo())
 	
 	source.queue_free()
 
-"""Spawns little polygons at the position where the collision happened"""
-func _spawn_fracture_body(fracture_shard : Dictionary, texture_info : Dictionary, new_mass : float, life_time : float) -> void:
+## Spawns little polygons shards (for visual effects) at the position where the collision happened.
+## The shards will have a random lifetime and mass based on the area of the original polygon that was fractured.
+## The shards will shrink and disappear after the lifetime is over.
+## @param texture_info The dictionary containing the texture information.
+## @param new_mass The new mass of the shard.
+## @param life_time The lifetime of the shard.
+func _spawn_fracture_shards(fracture_shard : Dictionary, texture_info : Dictionary, new_mass : float, life_time : float) -> void:
 	var instance_fbody = _pool_fracture_shards.getInstance()
 	if not instance_fbody:
 		return
@@ -175,12 +185,16 @@ func _spawn_fracture_body(fracture_shard : Dictionary, texture_info : Dictionary
 	instance_fbody.setPolygon(fracture_shard.centered_shape, _cur_fracture_color, PolygonLib.setTextureOffset(texture_info, fracture_shard.centroid))
 	instance_fbody.setMass(new_mass)
 
-"""Spawns a little polygon that serve as feedback to the player on where the collision happened"""
+## Spawns a little polygon cut that serves as feedback to the player on where the collision happened.
+## @param pos The position where the cut occurred.
+## @param poly The shape of the cut.
+## @param fade_speed The speed at which the visualizer fades.
 func _spawn_cut_visualizers(pos : Vector2, poly : PackedVector2Array, fade_speed : float) -> void:
 	var instance_visualizers = _pool_cut_visualizer.getInstance()
 	instance_visualizers.spawn(pos, fade_speed)
 	instance_visualizers.setPolygon(poly)
 
+## Spawn a static body at the collision position with the ramaining shape of the original polygon
 func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary) -> void:
 	var instance_staticbody: FracturableStaticBody2D = staticbody_template.instantiate()
 	_rigid_bodies_parent.add_child(instance_staticbody)
@@ -188,7 +202,7 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.global_rotation = shape_info.spawn_rot
 	instance_staticbody.set_polygon(shape_info.centered_shape)
 	instance_staticbody.self_modulate = color
-	instance_staticbody.set_initial_health(quadrants_initial_health)
+	instance_staticbody.set_fracture_body(quadrants_initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
 	instance_staticbody.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
 
 static func get_instance() -> QuadrantBuilder:

@@ -72,6 +72,7 @@ is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
 skillnode_data = ExtResource("6_26cjf")
 stat_to_upgrade = ExtResource("5_v73wo")
+stat_type = 1
 save_name = "PlayerHealthUpgradeFiatT1"
 
 [node name="DamageUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -86,7 +87,7 @@ icon = ExtResource("3_13utr")
 next_tier_nodes = [NodePath("../HealthUpgradeII")]
 skillnode_data = ExtResource("7_4c22w")
 stat_to_upgrade = SubResource("Resource_orbpq")
-upgrade_type = 2
+stat_type = 3
 save_name = "PlayerDamageUpgradeFiatT1"
 
 [node name="HealthUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
@@ -100,6 +101,7 @@ icon = ExtResource("3_13utr")
 use_bitcoin = true
 skillnode_data = ExtResource("8_yacem")
 stat_to_upgrade = ExtResource("5_v73wo")
+stat_type = 1
 save_name = "PlayerHealthUpgradeBitcoinT2"
 
 [node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -113,7 +115,7 @@ icon = ExtResource("3_13utr")
 next_tier_nodes = [NodePath("../DamageUpgradeII")]
 skillnode_data = ExtResource("6_aog38")
 stat_to_upgrade = ExtResource("7_ihsdj")
-upgrade_type = 1
+stat_type = 2
 save_name = "PlayerSpeedUpgradeFiatT1"
 
 [node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -129,7 +131,7 @@ use_bitcoin = true
 next_tier_nodes = [NodePath("../NewWeapon")]
 skillnode_data = ExtResource("11_6em56")
 stat_to_upgrade = ExtResource("9_18lcm")
-upgrade_type = 2
+stat_type = 3
 save_name = "PlayerDamageUpgradeBitcoinT2"
 
 [node name="NewWeapon" parent="UpgradesHolder" instance=ExtResource("2_riue2")]

@@ -46,3 +46,43 @@ static func copy_properties(parent: Node, child: Node) -> void:
 		var parent_properties = parent.call("get_properties")
 		child.call("set_properties", parent_properties)
 	
+static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
+	var weapon_names_to_string = {
+		Constants.WeaponNames.PISTOL: "Pistol",
+		Constants.WeaponNames.SHOTGUN: "Shotgun",
+		Constants.WeaponNames.RIFLE: "Rifle",
+		Constants.WeaponNames.SNIPER: "Sniper",
+		Constants.WeaponNames.MACHINE_GUN: "Machine Gun",
+		Constants.WeaponNames.ROCKET_LAUNCHER: "Rocket Launcher",
+		Constants.WeaponNames.GRENADE_LAUNCHER: "Grenade Launcher",
+		Constants.WeaponNames.FLAMETHROWER: "Flamethrower",
+		Constants.WeaponNames.LASER: "Laser",
+		Constants.WeaponNames.RAILGUN: "Railgun",
+		Constants.WeaponNames.PLASMA: "Plasma",
+		Constants.WeaponNames.RAYGUN: "Raygun",
+		Constants.WeaponNames.BAZOOKA: "Bazooka",
+		Constants.WeaponNames.CANNON: "Cannon",
+		Constants.WeaponNames.BFG: "BFG",
+		Constants.WeaponNames.MINIGUN: "Minigun",
+		Constants.WeaponNames.CHAINSAW: "Chainsaw",
+		Constants.WeaponNames.SWORD: "Sword",
+		Constants.WeaponNames.AXE: "Axe",
+		Constants.WeaponNames.HAMMER: "Hammer",
+		Constants.WeaponNames.MACE: "Mace",
+		Constants.WeaponNames.SPEAR: "Spear",
+		Constants.WeaponNames.BOW: "Bow",
+		Constants.WeaponNames.CROSSBOW: "Crossbow",
+		Constants.WeaponNames.SHURIKEN: "Shuriken",
+		Constants.WeaponNames.KUNAI: "Kunai",
+		Constants.WeaponNames.NINJA_STAR: "Ninja Star"
+	}
+	
+	if weapon_names_to_string.has(weapon_name):
+		return weapon_names_to_string[weapon_name]
+	return "Unknown Weapon"
+
+static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
+	for key in enum_type.keys():
+		if enum_type[key] == _enum:
+			return key
+	return "Unknown Enum"

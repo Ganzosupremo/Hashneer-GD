@@ -1,6 +1,6 @@
 class_name BlockCore extends FracturableStaticBody2D
 
-#signal block_mined()
+signal destroyed()
 
 @onready var _shatter_visualizer: Polygon2D = $ShatterVisualizer
 @onready var _shatter_line_2d: Line2D = $ShatterVisualizer/ShatterLine2D
@@ -15,6 +15,7 @@ func _ready() -> void:
 	GameManager.current_block_core = self
 	_poly_fracture = PolygonFracture.new()
 	_rng.randomize()
+	_hit_sound_component.set_sound(hit_sound_effect)
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		
@@ -77,12 +78,16 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 
 func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
-	_slowdown_timer.start(0.21)
-	Engine.time_scale = 0.21
+
 	if !core_destroyed:
 		core_destroyed = true
+		_hit_sound_component.set_sound(hit_sound_effect)
+		_hit_sound_component.play_sound()
+		_slowdown_timer.start(0.21)
+		Engine.time_scale = 0.21
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
+		destroyed.emit()
 		GameManager.level_completed()
 
 func _destroy_block_core(source, cuts: float, min_area: float) -> void:

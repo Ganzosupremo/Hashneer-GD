@@ -6,9 +6,10 @@ class_name AIMiner extends Node2D
 @export var time: float = 0.0
 
 func _ready() -> void:
-	BitcoinNetwork.block_found.connect(_on_block_found)
 	ai_timer.timeout.connect(on_timeout)
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_power)
+	GameManager.current_block_core.destroyed.connect(stop_mining)
+	GameManager.game_terminated.connect(stop_mining)
 	ai_timer.start(time)
 
 func stop_mining() -> void:
@@ -22,6 +23,3 @@ func _process(_delta: float) -> void:
 
 func on_timeout() -> void:
 	GameManager.current_quadrant_builder.fracture_all(GameManager.current_block_core, 0.0, "AI", true)
-
-func _on_block_found(_block: BitcoinBlock) -> void:
-	stop_mining()

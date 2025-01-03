@@ -38,14 +38,6 @@ shader_parameter/total_phases = 5
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_5odol")
 
-[node name="Player" parent="." instance=ExtResource("2_d3k6k")]
-unique_name_in_owner = true
-position = Vector2(145, -12)
-speed = 400.0
-
-[node name="RigidBodiesParent" type="Node2D" parent="."]
-unique_name_in_owner = true
-
 [node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
 script = ExtResource("1_o08pr")
 quadrants_initial_health = 100.0
@@ -71,6 +63,14 @@ position = Vector2(1237, -236)
 [node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
 unique_name_in_owner = true
 position = Vector2(649, -456)
+
+[node name="Player" parent="." instance=ExtResource("2_d3k6k")]
+unique_name_in_owner = true
+position = Vector2(145, -12)
+speed = 400.0
+
+[node name="RigidBodiesParent" type="Node2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Pool_FractureBullets" parent="." instance=ExtResource("2_okdg1")]
 max_amount = 10

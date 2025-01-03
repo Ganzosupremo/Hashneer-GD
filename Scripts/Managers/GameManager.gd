@@ -1,12 +1,22 @@
 extends Node2D
 
+signal game_terminated()
+
 @export_category("Player Resources")
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
 
-@export_category("Weapon Resources")
-## Just in case something needs to access the different weapon details
+@export_category("Weapon Resource")
+## This dictionary is used to store all the weapons available in the game.
 @export var weapon_details_dictionary: Dictionary
+
+@export_category("Stats Resource")
+## This dictionary is used to store all the stats available in the game.
+@export var base_stats_dictionary: Dictionary = {
+	"speed": 400.0,
+	"health": 300.0,
+	"damage_mul": 1.0
+}
 
 var game_levels: Array = []
 var levels_unlocked: int = 1
@@ -18,44 +28,31 @@ var player: PlayerController
 var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
-var game_data_to_save: GameData
-var game_data_resources_dictionary: Dictionary = {}
+var unlocked_weapons: Dictionary = {}
+var upgraded_stats: Dictionary = {}
 
 var loaded: bool = false
 
-const LEVELS_UNLOCKED: String = "levels_unlocked"
-const SAVED_PREVIOUS_LEVELS_UNLOCKED: String = "previous_levels_unlocked_index"
-const PLAYER_DETAILS_SAVE_KEY: String = "player_details"
-
-const NetworkDataSaveName: String = "user://saves/network_data.tres"
-const WalletDataSaveName: String = "user://saves/wallet_data.tres"
-const PlayerDataSaveName: String = "user://saves/player_data.tres"
-const GameManagerSavePath: String = "user://saves/save_not_nigga.tres"
-const SkillNodesDataDicsSaveName: String = "skill_nodes_data_dic"
-
-
-enum ResourceDataType {
-	None = 0,
-	NetworkData = 1,
-	WalletData = 2,
-	PlayerData = 3,
-	SkillNodeData = 4
-}
+const NetworkDataSaveName: String = "network_data"
+const WalletDataSaveName: String = "wallet_data"
+const GameManagerSaveName: String = "save_not_nigga"
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
 func _ready() -> void:
-	ResourceLoader.add_resource_format_loader(HashneerFormatLoader.new())
-	ResourceSaver.add_resource_format_saver(HashneerFormatSaver.new())
-	game_data_to_save = GameData.new()
-	_setup_dictionary()
+	player_details.speed = base_stats_dictionary["speed"]
+	player_details.max_health = base_stats_dictionary["health"]
+	player_details.damage_multiplier = base_stats_dictionary["damage_mul"]
+
 
 ## ___________________________PUBLIC FUNCTIONS__________________________________________
 
 func level_completed() -> void:
 	if levels_unlocked < previous_levels_unlocked_index:
+		return
+	if current_level < previous_levels_unlocked_index: # Means the player is in an already completed level
 		return
 	
 	levels_unlocked += 1
@@ -64,12 +61,10 @@ func level_completed() -> void:
 func add_weapon_details_to_dictionary(key: String, value: WeaponDetails) -> void:
 	weapon_details_dictionary[key] = value
 	
-	
 func get_weapon_details_from_dictionary(key: String) -> WeaponDetails:
 	if weapon_details_dictionary.has(key):
 		return weapon_details_dictionary[key]
 	else:
-		printerr("NO WEAPON FOUND FOR {0} ON {1}".format([key, self.name]))
 		return null
 
 func init_tween() -> Tween:
@@ -78,98 +73,111 @@ func init_tween() -> Tween:
 func init_timer(delay: float) -> SceneTreeTimer:
 	return get_tree().create_timer(delay)
 
-func set_resource_to_game_data_dic(resource, type: ResourceDataType, key: String = "Only define if type is ResourceDataType.SkillNodeData") -> void:
-	match type:
-		ResourceDataType.NetworkData:
-			game_data_to_save.bitcoin_network_data = resource
-			print_debug("Resource %s" % resource + "setted on %s" % game_data_to_save)
-		ResourceDataType.WalletData:
-			game_data_to_save.bitcoin_network_data = resource
-			print_debug("Resource %s" % resource + "setted on %s" % game_data_to_save)
-		ResourceDataType.PlayerData:
-			game_data_to_save.player_data = resource
-			print_debug("Resource %s" % resource + "setted on %s" % game_data_to_save)
-		ResourceDataType.SkillNodeData:
-			game_data_to_save.skill_nodes_data_dic[key] = resource
-			print_debug("Resource %s" % resource + "setted on %s" % game_data_to_save.skill_nodes_data_dic)
+func unlock_weapon(weapon_name: String) -> void:
+	if unlocked_weapons.has(weapon_name):
+		return
+	
+	var weapon_details: WeaponDetails = get_weapon_details_from_dictionary(weapon_name)
+	if weapon_details:
+		unlocked_weapons[weapon_name] = weapon_details
+		player_details.add_weapon_to_array(weapon_details)
+		print("Weapon Unlocked: {0}".format([weapon_name]))
+	else:
+		printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
 
-	# if !set_in_subdic:
-	# 	game_data_resources_dictionary[key] = resource
-	# else:
-	# 	game_data_resources_dictionary[SkillNodesDataDicsSaveName][key] = resource
 
-## Returns the resource contained within game_data_resource_dictionary.
-## Key: Key to retrieve
-##
-## True if the value should be retrieved from an array. Example SkillNodeData.
-##
-## The value id to retrieve from the array.
-func get_resource_from_game_data_dic(type: ResourceDataType, key: String = "Only define if type is ResourceDataType.SkillNodeData"):
-	match type:
-		ResourceDataType.NetworkData:
-			return game_data_to_save.bitcoin_network_data
-		ResourceDataType.WalletData:
-			return game_data_to_save.bitcoin_wallet_data
-		ResourceDataType.PlayerData:
-			return game_data_to_save.player_data
-		ResourceDataType.SkillNodeData:
-			return game_data_to_save.skill_nodes_data_dic[key]
-		ResourceDataType.None:
-			print_debug("No Resource type defined, returning null...")
-			return null
-	# if !retrieve_from_dic:
-	# 	return game_data_resources_dictionary[key]
-	# else:
-	# 	return game_data_resources_dictionary["skill_nodes_data_dic"][id]
+func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYPE) -> void:
+	upgraded_stats[stat_name] = {"value": value, "stat_type": stat_type}
+	match stat_type:
+		SkillNode.STAT_TYPE.SPEED:
+			#upgraded_stats[stat_name] = value
+			player_details.speed += value
+		SkillNode.STAT_TYPE.HEALTH:
+			#upgraded_stats[stat_name] = value
+			player_details.max_health += value
+		SkillNode.STAT_TYPE.DAMAGE:
+			#upgraded_stats[stat_name] = value
+			player_details.damage_multiplier += value
+		_:
+			printerr("NO STAT FOUND FOR {0}".format([stat_name]))
 
 ## ___________________________PRIVATE FUNCTIONS______________________________________________
 
-func _setup_dictionary() -> void:
-	game_data_resources_dictionary = {
-		"network_data": game_data_to_save.bitcoin_network_data,
-		"wallet_data": game_data_to_save.bitcoin_wallet_data,
-		"player_data": game_data_to_save.player_data,
-		"skill_nodes_data_dic": game_data_to_save.skill_nodes_data_dic
-	}
+
 
 ## ___________________________PERSISTENCE DATA FUNCTIONS_____________________________________
 
 func save_data() -> void:
-	var data: GameManagerData = GameManagerData.new(levels_unlocked, previous_levels_unlocked_index, current_level)
-	var error = ResourceSaver.save(data, GameManagerSavePath)
-	if error != OK:
-		print_debug("Failed at saving resource: %s" % error)
+	SaveSystem.set_var(GameManagerSaveName, _build_dictionary_to_save())
 
-	var player_data: PlayerSaveData = PlayerSaveData.new(150.0,1000.0,player_details.initial_weapon, player_details.weapons_array, player_details)
-	var p_error = ResourceSaver.save(player_data, PlayerDataSaveName)
-	if p_error != OK:
-		print_debug("Failed at saving player data: %s" % p_error)
-	
-	# SaveSystem.set_var(LEVELS_UNLOCKED, levels_unlocked)
-	# SaveSystem.set_var(SAVED_PREVIOUS_LEVELS_UNLOCKED, previous_levels_unlocked_index)
-	# SaveSystem.set_var(PLAYER_DETAILS_SAVE_KEY, player_details)
+func _build_dictionary_to_save() -> Dictionary:
+	var unlocked_weapons_keys: Array = unlocked_weapons.keys()
+	return {
+		"levels_unlocked": levels_unlocked,
+		"previous_levels_unlocked_index": previous_levels_unlocked_index,
+		"current_level": current_level,
+		# "player_speed": player_details.speed,
+		# "player_health": player_details.max_health,
+		# "player_damage_multiplier": player_details.damage_multiplier,
+		"unlocked_weapons": unlocked_weapons_keys,
+		"upgraded_stats": upgraded_stats
+	}
+
 
 func load_data() -> void:
 	if loaded: return
+	
+	if !SaveSystem.has(GameManagerSaveName): return
+	var data: Dictionary = SaveSystem.get_var(GameManagerSaveName)
 
-	if !ResourceLoader.exists(GameManagerSavePath):
-		return
-	var loaded_game_data: GameManagerData = ResourceLoader.load(GameManagerSavePath).duplicate(true)
-	levels_unlocked = loaded_game_data.levels_unlocked
-	previous_levels_unlocked_index = loaded_game_data.previous_levels_unlocked_index
-	current_level = loaded_game_data.current_level
+	levels_unlocked = data["levels_unlocked"]
+	previous_levels_unlocked_index = data["previous_levels_unlocked_index"]
+	current_level = data["current_level"]
+	# player_details.speed = data["player_speed"]
+	# player_details.max_health = data["player_health"]
+	# player_details.damage_multiplier = data["player_damage_multiplier"]
 
-	var loaded_player_data: PlayerSaveData = ResourceLoader.load(PlayerDataSaveName)
-	if loaded_player_data == null: return
-	game_data_to_save.player_data = loaded_player_data
-	print_debug("Player data loaded %s" % game_data_to_save.player_data)
+	_load_unlocked_weapons(data)
+	
+	if !data.has("upgraded_stats"): return
+
+	upgraded_stats = data["upgraded_stats"]
+	_apply_upgraded_stats()
 	loaded = true
-	# if SaveSystem.has(LEVELS_UNLOCKED) and SaveSystem.has(SAVED_PREVIOUS_LEVELS_UNLOCKED):
-	# 	levels_unlocked = SaveSystem.get_var(LEVELS_UNLOCKED)
-	# 	previous_levels_unlocked_index = SaveSystem.get_var(SAVED_PREVIOUS_LEVELS_UNLOCKED)
-	# if !SaveSystem.has(PLAYER_DETAILS_SAVE_KEY): return
-	# var data: Dictionary = SaveSystem.get_var(PLAYER_DETAILS_SAVE_KEY)
-	# player_details = Utils.dict_to_resource(data, PlayerDetails.new())
 
-func _get_resource_save_path() -> String:
-	return "user://saves/game_data.tres"
+func _load_unlocked_weapons(data: Dictionary) -> void:
+	var unlocked_weapons_keys: Array = data["unlocked_weapons"]
+	for weapon_name in unlocked_weapons_keys:
+		unlock_weapon(weapon_name)
+
+func _apply_upgraded_stats() -> void:
+	for stat_name in upgraded_stats.keys():
+		var stat_info: Dictionary = upgraded_stats[stat_name]
+		var value: float = stat_info["value"]
+		var stat_int: int = stat_info["stat_type"]
+		var stat_type: SkillNode.STAT_TYPE = _int_to_stat_type(stat_int)
+		match stat_type:
+			SkillNode.STAT_TYPE.SPEED:
+				player_details.speed += value
+				print("Speed: {0}".format([player_details.speed]))
+			SkillNode.STAT_TYPE.HEALTH:
+				player_details.max_health += value
+				print("Max Health: {0}".format([player_details.max_health]))
+			SkillNode.STAT_TYPE.DAMAGE:
+				player_details.damage_multiplier += value
+				print("Damage Multiplier: {0}".format([player_details.damage_multiplier]))
+			_:
+				printerr("NO STAT FOUND FOR {0}".format([stat_name]))
+
+func _int_to_stat_type(value: int) -> SkillNode.STAT_TYPE:
+	match value:
+		0:
+			return SkillNode.STAT_TYPE.NONE
+		1:
+			return SkillNode.STAT_TYPE.HEALTH
+		2:
+			return SkillNode.STAT_TYPE.SPEED
+		3:
+			return SkillNode.STAT_TYPE.DAMAGE
+		_:
+			return SkillNode.STAT_TYPE.NONE

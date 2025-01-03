@@ -52,4 +52,4 @@ func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
 
 
 func _to_string() -> String:
-	return "WeaponDetails for %s" % weapon_name + "\n\nWeapon texture: %s" % weapon_texture + "\n\nFire sound: %s" % fire_sound + "\n\nAmmo details: %s" % ammo_details + "\n\nWeapon shoot effect: %s" % weapon_shoot_effect + "\n\nFire rate: %.2f" % fire_rate + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nWeapon spread: min %.2f - max %.2f" % [spread_min, spread_max] + "\n\nCamera shake strength: %.2f" % shake_strength + "\n\nCamera shake decay: %.2f" % shake_decay
+	return "Weapon name: %s" % weapon_name + "\n\nWeapon texture: %" % weapon_texture + "\n\nFire sound: %" % fire_sound + "\n\nAmmo details: %" % ammo_details + "\n\nWeapon shoot effect: %" % weapon_shoot_effect + "\n\nFire rate: %.2f" % fire_rate + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nWeapon spread: min %.2f - max %.2f" % [spread_min, spread_max] + "\n\nCamera shake strength: %.2f" % shake_strength + "\n\nCamera shake decay: %.2f" % shake_decay

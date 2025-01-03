@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=6 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Texture2D" uid="uid://bkqkbj26vyaw7" path="res://Textures/Black Image.png" id="2_ikvkl"]
+[ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_7m2w8"]
 
@@ -16,6 +17,7 @@ collision_mask = 192
 script = ExtResource("1_dt8bo")
 placed_in_level = true
 poly_texture = ExtResource("2_ikvkl")
+hit_sound_effect = ExtResource("3_ar8vc")
 polygon_shape = 4
 cir_radius = 150.0
 cir_smoothing = 2

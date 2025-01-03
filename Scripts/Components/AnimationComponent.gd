@@ -241,7 +241,7 @@ func _recenter() -> Tween:
 	tween.tween_property(
 		target, "rotation_degrees", 0, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_IN)
 
-	return tween
+	return tween.finished
 
 
 func _tilt(x: float, rotation: float) -> Tween:

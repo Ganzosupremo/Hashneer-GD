@@ -1,4 +1,4 @@
-class_name SoundEffectComponent extends AudioStreamPlayer
+class_name SoundEffectComponent extends AudioStreamPlayer2D
 
 var _sound_details: SoundEffectDetails
 
@@ -9,10 +9,10 @@ func play_sound() -> void:
 func stop_sound() -> void:
 	stop()
 
-func set_sound(sound_effect: SoundEffectDetails) -> void:
-	if !sound_effect: return
+func set_sound(sound_data: SoundEffectDetails) -> void:
+	if !sound_data: return
 	
-	_sound_details = sound_effect
+	_sound_details = sound_data
 	stream = _sound_details.audio_stream
 	pitch_scale = _sound_details.sound_pitch
 	volume_db = _sound_details.sound_volume

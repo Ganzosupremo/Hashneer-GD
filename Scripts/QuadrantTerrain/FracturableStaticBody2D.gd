@@ -13,8 +13,6 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @export var poly_texture: Texture2D
 @export var hit_sound_effect: SoundEffectDetails
 
-
-
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
 @export var polygon_shape: PolygonShape
@@ -52,9 +50,8 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export var n3 : float = 0
 
 func _ready() -> void:
-	if hit_sound_effect != null:
-		_hit_sound_component.set_sound(hit_sound_effect)
-	
+	#if hit_sound_effect != null:
+		#_hit_sound_component.set_sound(hit_sound_effect)
 	
 	_rng.randomize()
 	if placed_in_level:
@@ -88,27 +85,30 @@ func create_polygon_shape() -> PackedVector2Array:
 		_:
 			return PackedVector2Array([])
 
+func play_sound_on_hit() -> void:
+	_hit_sound_component.play_sound()
 
-# Geters and Setters
+# ______________________Geters and Setters_______________________________________
+
 func set_initial_health(initial_health: float) -> void:
 	health.set_max_health(initial_health)
 
 func set_fracture_body(initial_healt: float, fracture_texture: Texture2D, sound_details: SoundEffectDetails) -> void:
-	await get_tree().physics_frame
+	await GameManager.get_tree().process_frame
 	
-	set_initial_health(initial_healt)
 	set_texture_with_texture(fracture_texture)
 	set_hit_sound_effect(sound_details)
-
+	set_initial_health(initial_healt)
 
 func set_texture_with_texture(new_texture: Texture2D) -> void:
 	_polygon2d.texture = new_texture
 
-
-func set_hit_sound_effect(sound: SoundEffectDetails) -> void:
-	hit_sound_effect = sound
-	_hit_sound_component.set_sound(hit_sound_effect)
-
+func set_hit_sound_effect(sound: SoundEffectDetails, save_it: bool = true) -> void:
+	if save_it:
+		hit_sound_effect = sound
+		_hit_sound_component.set_sound(hit_sound_effect)
+	else:
+		_hit_sound_component.set_sound(sound)
 
 func set_polygon(poly : PackedVector2Array) -> void:
 	setPolygon(poly)

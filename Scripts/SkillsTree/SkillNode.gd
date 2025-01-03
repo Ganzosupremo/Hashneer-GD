@@ -1,7 +1,15 @@
 class_name SkillNode extends Button
 
-## DEPRECATED
-enum UPGRADE_TYPE {HEALTH, SPEED, DAMAGE}
+## The type of stat to upgrade.
+enum STAT_TYPE {
+	## Default state.
+	NONE = 0,
+	## Upgrades the player's health.
+	HEALTH = 1,
+	## Upgrades the player's speed.
+	SPEED = 2,
+	## Upgrades the player's damage multiplier.
+	DAMAGE = 3}
 enum FEATURE_TYPE {
 	## Default state.
 	NONE,
@@ -32,8 +40,8 @@ enum FEATURE_TYPE {
 @export var skillnode_data : SkillNodeData
 ## If the data is an upgrade and not an unlock, this needs to be specified.
 @export var stat_to_upgrade: PlayerStat
-## DEPRECATED
-@export var upgrade_type: UPGRADE_TYPE
+## The type of stat to upgrade.
+@export var stat_type: STAT_TYPE
 
 @export_group("Save Settings")
 ## A save name for the skillnode_data resource.
@@ -48,7 +56,8 @@ enum FEATURE_TYPE {
 
 var is_maxed_out: bool = false
 var node_identifier: int = 0
-var status: SkillNodeData.SKILL_NODE_STATUS = SkillNodeData.SKILL_NODE_STATUS.LOCKED
+var current_upgrade_power: float = 0.0
+var node_state: SkillNodeData.SKILL_NODE_STATUS = SkillNodeData.SKILL_NODE_STATUS.LOCKED
 var SAVE_PATH: String = ""
 
 const implements = [
@@ -68,10 +77,10 @@ func _ready() -> void:
 	else:
 		lock()
 	
-	if skillnode_data and skillnode_data.check_next_tier_unlock():
-		_unlock_next_tier()
-	if skillnode_data and skillnode_data.check_upgrade_maxed_out():
-		_on_upgrade_maxed()
+	# if skillnode_data and skillnode_data.check_next_tier_unlock():
+	# 	_unlock_next_tier()
+	# if skillnode_data and skillnode_data.check_upgrade_maxed_out():
+	# 	_on_upgrade_maxed()
 	
 	currency_icon.texture = bitcoin_icon if use_bitcoin else dollar_icon
 
@@ -79,8 +88,8 @@ func _ready() -> void:
 
 func lock() -> void:
 	print_debug("Locked")
-	# status = SkillNodeData.SKILL_NODE_STATUS.LOCKED
-	# skillnode_data.set_upgrade_status(status)
+	# node_state = SkillNodeData.SKILL_NODE_STATUS.LOCKED
+	# skillnode_data.set_upgrade_status(node_state)
 	hide()
 	_set_disabled_state(true)
 	is_unlocked = false
@@ -89,8 +98,8 @@ func lock() -> void:
 
 func unlock() -> void:
 	#print_debug("Unlocked")
-	# status = SkillNodeData.SKILL_NODE_STATUS.UNLOCKED
-	# self.skillnode_data.set_upgrade_status(status)
+	# node_state = SkillNodeData.SKILL_NODE_STATUS.UNLOCKED
+	# self.skillnode_data.set_upgrade_status(node_state)
 	show()
 	_set_disabled_state(false)
 	is_unlocked = true
@@ -119,10 +128,8 @@ func _unlock_or_upgrade() -> void:
 			print_debug("Define a feature type...")
 
 func _unlock_weapon() -> void:
-	if skillnode_data.weapon_to_unlock:
-		#var player = GameManager.player_details
-		GameManager.player_details.add_weapon_to_array(skillnode_data.weapon_to_unlock)
-		print("Unlocked new weapon: {0}".format([skillnode_data.weapon_to_unlock.weapon_name]))
+	GameManager.unlock_weapon(Utils.weapon_name_to_string(skillnode_data.weapon_to_unlock))
+	print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
 
 func _unlock_ability() -> void:
 	if skillnode_data.ability_to_unlock:
@@ -130,7 +137,8 @@ func _unlock_ability() -> void:
 		print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 
 func _upgrade_stat() -> void:
-	stat_to_upgrade.value = skillnode_data.apply_upgrade()
+	current_upgrade_power += skillnode_data.apply_upgrade()
+	GameManager.upgrade_stat(save_name, current_upgrade_power, stat_type)
 	#print_debug("The {0} has now the value of {1}".format([stat_to_upgrade.resource_name, stat_to_upgrade.value]))
 
 func _is_next_tier_node_unlocked() -> bool:
@@ -143,8 +151,8 @@ func _is_next_tier_node_unlocked() -> bool:
 
 ## DEPRECATED
 func update_ui() -> void:
-	self.status = self.skillnode_data.get_upgrade_status()
-	match self.status:
+	self.node_state = self.skillnode_data.get_upgrade_status()
+	match self.node_state:
 		SkillNodeData.SKILL_NODE_STATUS.LOCKED:
 			hide()
 			#_hide_next_node_line()
@@ -230,7 +238,6 @@ func _buy_upgrade() -> bool:
 	return skillnode_data.buy_upgrade(use_bitcoin)
 
 func _on_upgrade_maxed() -> void:
-	#print_debug("{0} maxed. Status: {1}".format([skillnode_data.upgrade_name, skillnode_data.status]))
 	show()
 	is_maxed_out = true
 	_set_disabled_state(true)
@@ -240,50 +247,51 @@ func _on_upgrade_maxed() -> void:
 	_unlock_or_upgrade()
 
 func _unlock_next_tier() -> void:
-	#print("Unlocking next tier nodes...")
 	for node in next_tier_nodes:
 		if node.is_unlocked:
 			continue  # Skip nodes that are already unlocked
 		node.unlock()
-		#print("{0} unlocked".format([node]))
 
-# --------------------- PERSISTENCE FUNCTIONS ----------------------
+# ________________________PERSISTENCE FUNCTIONS__________________________
 
 
 func save_data() -> void:
-	var data = skillnode_data.duplicate(true)
-	var error = ResourceSaver.save(data, SAVE_PATH)
-	if error != OK:
-		print_debug("Error saving data: {0}".format([error]))
-	else:
-		print_debug("Saved data: {0}".format([skillnode_data]))
+	# I don't think is necesary to save the entire resource, I can save only the upgrade_level and upgrade_max_level
+	# var data = skillnode_data.duplicate(true)
+	# var error = ResourceSaver.save(data, SAVE_PATH)
+	# if error != OK:
+	# 	print_debug("Error saving data: {0}".format([error]))
+	# else:
+	# 	print_debug("Saved data: {0}".format([skillnode_data]))
 
 	#GameManager.set_resource_to_game_data_dic(skillnode_data, GameManager.ResourceDataType.SkillNodeData, save_name)
 	#GameManager.game_data_to_save.skill_nodes_data_dic[save_name] = skillnode_data
 
-	# SaveSystem.set_var(save_name if !save_name.is_empty() else skillnode_data.upgrade_name, self.skillnode_data)
+	SaveSystem.set_var(save_name if !save_name.is_empty() else skillnode_data.upgrade_name, self._build_save_dictionary())
 	# var error = ResourceSaver.save(skillnode_data, SAVE_PATH)
 	# if error != OK:
 	# 	print("Error saving data: {0}".format([error]))
 
+func _build_save_dictionary() -> Dictionary:
+	return {
+		"upgrade_level": skillnode_data.upgrade_level,
+		"node_state": skillnode_data.status
+	}
+
 func load_data() -> void:
-	# var saved_name: String = save_name if !save_name.is_empty() else skillnode_data.upgrade_name
-	# if !SaveSystem.has(saved_name):
-	# 	print("No data upgrade data found in node {0}".format([self.name]))
-	# 	return
-	# var data = SaveSystem.get_var(saved_name)
-	# skillnode_data = Utils.build_res_from_dictionary(data, SkillNodeData.new())
-	#var loaded_res: SkillNodeData = GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.SkillNodeData, save_name)
-	if !ResourceLoader.exists(SAVE_PATH, "SkillNodeData"):
-		print_debug("No Resource Found at %s " % SAVE_PATH)
+	var saved_name: String = save_name if !save_name.is_empty() else skillnode_data.upgrade_name
+	if !SaveSystem.has(saved_name):
+		print("No data upgrade data found in node {0}".format([self.name]))
 		return
+	var data: Dictionary = SaveSystem.get_var(saved_name)
 	
-	var loaded_res = ResourceLoader.load(SAVE_PATH).duplicate(true)
-	print_debug("Loaded Skill node data: {0}".format([loaded_res]))
-	skillnode_data = loaded_res
-	if skillnode_data.check_next_tier_unlock():
-		_unlock_next_tier()
-	if skillnode_data.check_upgrade_maxed_out():
-		_on_upgrade_maxed()
+	skillnode_data.upgrade_level = data["upgrade_level"]
+	skillnode_data.status = data["node_state"]
+	
+	# if skillnode_data.check_next_tier_unlock():
+	# 	_unlock_next_tier()
+	# if skillnode_data.check_upgrade_maxed_out():
+	# 	_on_upgrade_maxed()
+	# _unlock_or_upgrade()
 	if !is_maxed_out:
 		_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings)

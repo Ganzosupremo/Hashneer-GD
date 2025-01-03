@@ -22,7 +22,7 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 
 @export_category("Feature Unlock Settings")
 
-@export var weapon_to_unlock: WeaponDetails
+@export var weapon_to_unlock: Constants.WeaponNames
 @export var ability_to_unlock: String
 
 @export_category("Upgrade Power")
@@ -45,20 +45,25 @@ var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
 		upgrade_level = value
 		check_next_tier_unlock()
 		check_upgrade_maxed_out()
+
 var _id: int = 0
 var current_power: float = 0.0
 
-# ------------------ MAIN FUNCTIONS ----------------------------
+# ___________________MAIN FUNCTIONS______________________
 
 func apply_upgrade() -> float:
-	if get_upgrade_power() <= 0.0:
-		return _power()
-	return get_upgrade_power()
+	current_power = get_upgrade_power()
+	return current_power
 
 func buy_upgrade(in_bitcoin: bool = false) -> bool:
 	if upgrade_level >= upgrade_max_level: return false
 	
-	return _buy_with_bitcoin() if in_bitcoin else _buy_with_fiat()
+	var success: bool = _buy_with_bitcoin() if in_bitcoin else _buy_with_fiat()
+	if success:
+		apply_upgrade()
+		check_next_tier_unlock()
+		check_upgrade_maxed_out()
+	return success
 
 func set_id(id:int = 0) -> void:
 	_id = id
@@ -66,9 +71,6 @@ func set_id(id:int = 0) -> void:
 func _buy_with_bitcoin() -> bool:
 	if BitcoinWallet.spend_bitcoin(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
-		check_upgrade_maxed_out()
-		check_next_tier_unlock()
-		_upgrade_power()
 		return true
 	else:
 		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
@@ -78,9 +80,6 @@ func _buy_with_bitcoin() -> bool:
 func _buy_with_fiat() -> bool:
 	if BitcoinWallet.spend_fiat(upgrade_cost()):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
-		check_upgrade_maxed_out()
-		check_next_tier_unlock()
-		_upgrade_power()
 		return true
 	else:
 		print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
@@ -89,20 +88,18 @@ func _buy_with_fiat() -> bool:
 func buy_max(in_bitcoin: bool = false) -> void:
 	if upgrade_level >= upgrade_max_level: return
 	
-	if !in_bitcoin:
-		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
-			_upgrade_power()
-			#apply_upgrade()
+	if in_bitcoin:
+		if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
+			apply_upgrade()
 			return
 		else:
-			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+			print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
 			return
-	
-	if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
-		_upgrade_power()
-		#apply_upgrade()
 	else:
-		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
+		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
+			apply_upgrade()
+		else:
+			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 
 func _buy_max(in_bitcoin: bool = false) -> float:
 	var balance: float = 0.0
@@ -120,7 +117,7 @@ func _buy_max(in_bitcoin: bool = false) -> float:
 	return upgrade_cost() * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
 
 
-#----------------------- COST FUNCTIONS ---------------------
+# _________________________COST FUNCTIONS______________________
 
 func upgrade_cost() -> float:
 	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level)
@@ -128,18 +125,10 @@ func upgrade_cost() -> float:
 func upgrade_cost_string() -> String:
 	return str(upgrade_cost())
 
-# ----------------------- POWER FUNCTIONS -------------------------
+# _____________________POWER FUNCTIONS______________________
 
 func get_upgrade_power() -> float:
-	return current_power
-
-func _upgrade_power() -> void:
-	current_power += _power()
-
-func _power() -> float:
-	var total: float = 0.0
-	total += upgrade_base_power * pow(upgrade_power_multiplier, upgrade_level)
-	return total
+	return upgrade_base_power * pow(upgrade_power_multiplier, upgrade_level)
 
 # --------------- OTHER FUNCTIONS -------------------------
 
@@ -150,7 +139,7 @@ func _log(value: float, base: float) -> float:
 func check_upgrade_maxed_out() -> bool:
 	if upgrade_level >= upgrade_max_level:
 		if status != SKILL_NODE_STATUS.MAXED_OUT:
-			print("Upgrade maxed out, shoud become gold now...")
+			print("Upgrade maxed out, should become gold now...")
 			emit_signal("upgrade_maxed")
 		status = SKILL_NODE_STATUS.MAXED_OUT
 		return true

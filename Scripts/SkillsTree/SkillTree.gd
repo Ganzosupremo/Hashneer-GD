@@ -28,7 +28,7 @@ func _get_skill_nodes() -> Array:
 	return nodes
 
 func _on_main_menu_button_pressed() -> void:
-	PersistenceDataManager.save_game()
+	PersistenceDataManager.save_game(true)
 	SceneManager.switch_scene_with_packed(MAIN_GAME_UI)
 
 func save_data() -> void:

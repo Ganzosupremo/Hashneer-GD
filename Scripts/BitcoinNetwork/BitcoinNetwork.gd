@@ -12,7 +12,6 @@ const COIN: int = 100
 const TOTAL_COINS: float = 21_000_000.0
 const TOTAL_BLOCKS: int = 105
 
-var data: BitcoinNetworkData
 var coins_in_circulation: float = 0.0
 var halving_interval: int = 21
 var height: int = 0
@@ -24,10 +23,6 @@ var loaded: bool = false
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
-
-func _ready():
-	data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	chain.clear()
 
 ## ---------------------- PUBLIC FUNCTIONS ---------------------------
 
@@ -41,6 +36,7 @@ func mine_block(miner: String) -> void:
 	
 	if chain.size() == 0:
 		block.previous_hash = block.block_hash
+		block.data = "The Times: Chancellor on Brink of Second Bailout for Banks."
 	else:
 		block.previous_hash = get_latest_block().block_hash
 	
@@ -51,10 +47,14 @@ func mine_block(miner: String) -> void:
 	
 	block.reward = _get_block_subsidy()
 	_issue_block_reward(miner, block.reward)
-	emit_signal("block_found", block)
+	print_debug("Block found")
+	block_found.emit([block])
 	
 	height += 1
 
+
+func get_block_by_id(id: int) -> BitcoinBlock:
+	return chain[id]
 
 func get_latest_block() -> BitcoinBlock:
 	return chain.back()
@@ -102,7 +102,6 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 """Issues the block reward to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String, reward: float) -> void:
 	if miner == "Player" or miner == "player":
-		BitcoinWallet.add_bitcoin(reward)
 		emit_signal("reward_issued", reward)
 	elif miner == "AI":
 		coins_lost += reward
@@ -132,35 +131,56 @@ func _exceeds_coin_limit_cap() -> bool:
 ## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
 func save_data():
-	var network_data: BitcoinNetworkData = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	var error = ResourceSaver.save(network_data, GameManager.NetworkDataSaveName)
-	if error != OK:
-		print_debug("not saved: ", error)
-	else:
-		print_debug("saved: ", network_data)
-	#GameManager.set_resource_to_game_data_dic(network_data, GameManager.ResourceDataType.NetworkData)
-	# SaveSystem.set_var("network_data", network_data)
+	# var network_data: BitcoinNetworkData = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
+	# var error = ResourceSaver.save(network_data, GameManager.NetworkDataSaveName)
+	# if error != OK:
+	# 	print_debug("not saved: ", error)
+	# else:
+	# 	print_debug("saved: ", network_data)
+	SaveSystem.set_var(GameManager.NetworkDataSaveName, _build_dictionary_to_save())
+
+func _build_dictionary_to_save() -> Dictionary:
+	return {
+		"chain": chain,
+		"height": height,
+		"current_reward": current_reward,
+		"coins_lost": coins_lost,
+		"coins_in_circulation": coins_in_circulation
+	}
 
 func load_data():
 	if loaded: return
+	
+	if !SaveSystem.has(GameManager.NetworkDataSaveName): return
+	
+	var data: Dictionary = SaveSystem.get_var(GameManager.NetworkDataSaveName)
+	var saved_chain: Array = data["chain"]
+	
+	for i in saved_chain.size():
+		saved_chain[i] = Utils.build_res_from_dictionary(saved_chain[i], BitcoinBlock.new())
+	
+	chain = saved_chain.duplicate(true)
+	height = data["height"]
+	current_reward = data["current_reward"]
+	coins_lost = data["coins_lost"]
+	coins_in_circulation = data["coins_in_circulation"]
 
-	var net_data: BitcoinNetworkData = ResourceLoader.load(GameManager.NetworkDataSaveName, "BitcoinNetworkData", ResourceLoader.CACHE_MODE_REPLACE_DEEP)   #GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.NetworkData)
+	# var net_data: BitcoinNetworkData = ResourceLoader.load(GameManager.NetworkDataSaveName, "BitcoinNetworkData", ResourceLoader.CACHE_MODE_REPLACE_DEEP)   #GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.NetworkData)
 	# # if !SaveSystem.has("network_data"): return
 	# # var network_data: Dictionary = SaveSystem.get_var("network_data")
 	# # var res: BitcoinNetworkData = Utils.dict_to_resource(network_data, BitcoinNetworkData.new())
 	# # print("Loaded network data: {0}".format([res]))
-	# # for i in res.chain.size():
-	# # 	res.chain[i] = Utils.dict_to_resource(res.chain[i], BitcoinBlock.new())
-	
-	if net_data == null:
-		print_debug("not loaded: ", net_data)
-		return
 
-	print_debug("Loaded network data: %s" % net_data)
-	data = net_data.duplicate(true)
-	self.chain = data.chain
-	self.height = data.height
-	self.coins_lost = data.coins_lost
-	self.current_reward = data.block_subsidy
-	self.coins_in_circulation = data.coins_in_circulation
+	
+	# if net_data == null:
+	# 	print_debug("not loaded: ", net_data)
+	# 	return
+
+	# print_debug("Loaded network data: %s" % net_data)
+	# data = net_data.duplicate(true)
+	# self.chain = data.chain
+	# self.height = data.height
+	# self.coins_lost = data.coins_lost
+	# self.current_reward = data.block_subsidy
+	# self.coins_in_circulation = data.coins_in_circulation
 	loaded = true

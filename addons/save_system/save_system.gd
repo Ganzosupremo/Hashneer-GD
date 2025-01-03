@@ -104,6 +104,8 @@ func set_var(key_path : String, value):
 			value = _resource_to_dict(value)
 		elif value is Array:
 			value = _parse_array(value)
+		elif value is Dictionary:
+			value = _parse_dictionary(value)
 		
 		if not has(key_path): # Read :HasIncludesNull
 			return
@@ -117,11 +119,29 @@ func set_var(key_path : String, value):
 	
 	if value is Resource: # Resource, has to be nested and translated.
 		current_state_dictionary[key_path] = _resource_to_dict(value)
+	elif value is Array:
+		current_state_dictionary[key_path] = _parse_array(value)
+	elif value is Dictionary:
+		current_state_dictionary[key_path] = _parse_dictionary(value)
 	else: # Simple value.
 		current_state_dictionary[key_path] = value
 
+func _parse_dictionary(dict : Dictionary) -> Dictionary:
+	var result := {}
+	for key in dict.keys():
+		var value = dict[key]
+		if value is Resource:
+			result[key] = _resource_to_dict(value)
+		elif value is Array:
+			result[key] = _parse_array(value)
+		elif value is Dictionary:
+			result[key] = _parse_dictionary(value)
+		else:
+			result[key] = value
+	return result
 
-# Saves the current state.
+
+## Saves the current state.
 func save():
 	var file : FileAccess
 	var full_path: String = _build_full_path()
@@ -146,7 +166,7 @@ func save():
 		push_error("Failed to open save file for writing at: ", full_path)
 
 
-# Loads the root dictionary stored in the save file.
+## Loads the root dictionary stored in the save file.
 func load():
 	var file : FileAccess
 	var full_path: String = _build_full_path()

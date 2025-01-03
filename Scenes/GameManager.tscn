@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=7 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="2_vk5qk"]
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="3_2ukmo"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="4_qrgf1"]
 [ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="5_pjvbh"]
+[ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="6_m48lw"]
 
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")
@@ -12,5 +13,6 @@ player_details = ExtResource("2_vk5qk")
 weapon_details_dictionary = {
 "AK47": ExtResource("3_2ukmo"),
 "Pistol": ExtResource("4_qrgf1"),
-"Shotgun": ExtResource("5_pjvbh")
+"Shotgun": ExtResource("5_pjvbh"),
+"Sniper": ExtResource("6_m48lw")
 }

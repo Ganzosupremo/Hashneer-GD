@@ -17,12 +17,10 @@ func find_all_persistence_objects() -> Array:
 
 func save_game(save_to_disk: bool = false) -> void:
 	persistence_data_objects = find_all_persistence_objects()
-	var i: int = 0
+
 	for node in persistence_data_objects:
 		if Interface.implements(node, IPersistenceData):
 			node.save_data()
-			#print_debug("Nodes Saved: %s" % i)
-			i += 1
 	
 	if save_to_disk:
 		SaveSystem.save()

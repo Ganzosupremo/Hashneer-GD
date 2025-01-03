@@ -20,8 +20,9 @@ func _init(_speed: float = 250.0) -> void:
 	damage_multiplier = 1.0
 
 func add_weapon_to_array(weapon: WeaponDetails) -> void:
-	if !weapons_array.has(weapon):
-		weapons_array.append(weapon)
+	if weapons_array.has(weapon): return
+
+	weapons_array.append(weapon)
 
 func apply_stats() -> Array:
 	speed += speed_stat.value
