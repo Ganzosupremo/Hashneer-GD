@@ -7,13 +7,13 @@
 script = ExtResource("1_7da8l")
 feature_type = 1
 upgrade_name = "Sniper has joined the chat"
-upgrade_description = "Unlocks the sniper."
+upgrade_description = "Unlocks the sniper rifle."
 skill_image = ExtResource("2_ji62a")
 upgrade_tier = 0
 is_upgrade = false
 status = 0
 is_percentage = false
-weapon_to_unlock = 3
+weapon_to_unlock = 4
 ability_to_unlock = ""
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 0.0

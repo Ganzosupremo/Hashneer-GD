@@ -5,30 +5,31 @@
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
-[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_16pb4"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_7srpc"]
 [ext_resource type="PackedScene" uid="uid://j8t0bm46hh8i" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.tscn" id="8_l6k4y"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="9_2p7q1"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_xbut0"]
-font = ExtResource("6_16pb4")
-font_size = 19
-outline_size = 1
-outline_color = Color(0, 1, 0, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_lqf14"]
+font = ExtResource("6_7srpc")
+font_size = 14
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.27)
-shadow_offset = Vector2(-1, 2)
+shadow_color = Color(0, 0, 0, 0.145098)
+shadow_offset = Vector2(2.5, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_wgeri"]
-font = ExtResource("6_16pb4")
-font_size = 19
-outline_size = 2
-outline_color = Color(1, 0, 0, 1)
+font = ExtResource("6_7srpc")
+font_size = 14
+font_color = Color(1, 1, 1, 0.6)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.316)
-shadow_offset = Vector2(-1, 2)
+shadow_color = Color(0, 0, 0, 0.145098)
+shadow_offset = Vector2(2.5, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ykbn"]
-bg_color = Color(0.6, 0.6, 0.6, 0.292)
+bg_color = Color(0.2, 0.255, 0.361, 0.705)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -39,20 +40,20 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+corner_detail = 3
 
-[sub_resource type="LabelSettings" id="LabelSettings_r86ox"]
-font = ExtResource("6_16pb4")
-font_size = 19
-outline_size = 2
-outline_color = Color(1, 0, 0, 1)
+[sub_resource type="LabelSettings" id="LabelSettings_ikhkv"]
+font = ExtResource("6_7srpc")
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.316)
-shadow_offset = Vector2(-1, 2)
+shadow_color = Color(0, 0, 0, 0.144)
+shadow_offset = Vector2(2.5, 1)
 
 [node name="SkillNode" type="Button" groups=["PersistentNodes"]]
 light_mask = 64
 visibility_layer = 64
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(64, 64)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -60,8 +61,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -35.0
 offset_top = -35.0
-offset_right = 35.0
-offset_bottom = 35.0
+offset_right = 55.0
+offset_bottom = 55.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(8, 8)
@@ -72,7 +73,7 @@ icon = ExtResource("2_e6wyl")
 autowrap_mode = 3
 icon_alignment = 1
 script = ExtResource("2_jhy1s")
-enabled_label_settings = SubResource("LabelSettings_xbut0")
+enabled_label_settings = SubResource("LabelSettings_lqf14")
 disabled_label_settings = SubResource("LabelSettings_wgeri")
 bitcoin_icon = ExtResource("2_e6wyl")
 dollar_icon = ExtResource("5_dcm06")
@@ -90,26 +91,35 @@ grow_horizontal = 0
 scale = Vector2(0.33, 0.33)
 texture = ExtResource("2_e6wyl")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -44.0
-offset_top = -23.0
-offset_right = -1.0
+offset_left = -60.0
+offset_top = -19.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
+theme = ExtResource("1_0662n")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 3
+theme_override_constants/margin_bottom = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
 theme = ExtResource("1_0662n")
 theme_override_styles/panel = SubResource("StyleBoxFlat_5ykbn")
 
-[node name="SkillLabel" type="Label" parent="PanelContainer"]
+[node name="SkillLabel" type="Label" parent="MarginContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme = ExtResource("1_0662n")
 text = "LOCKED"
-label_settings = SubResource("LabelSettings_r86ox")
+label_settings = SubResource("LabelSettings_ikhkv")
 horizontal_alignment = 1
 vertical_alignment = 1
 uppercase = true
@@ -130,11 +140,12 @@ offset_bottom = -90.0
 grow_vertical = 1
 
 [node name="AnimationComponent" parent="." instance=ExtResource("9_2p7q1")]
-from_center = false
 tween_time = 0.5
-tween_transition = 5
+tween_transition = 11
 tween_ease = 2
 tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
 enter_transition = 4
 enter_scale = Vector2(0, 0)
 

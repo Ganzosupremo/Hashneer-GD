@@ -27,16 +27,21 @@ const implements = [
 ## ---------------------- PUBLIC FUNCTIONS ---------------------------
 
 """Mines and adds the new block to the chain"""
-func mine_block(miner: String) -> void:
-	var block: BitcoinBlock = create_block(miner)
+func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
+	var block: BitcoinBlock = null
+	if new_block != null:
+		block = new_block
+	else:
+		block = create_block(miner)
 	
 	# Check if mining should be stopped right away
-	if _check_mining_stopped(block):
+	if _should_stop_mining(block):
+		print_debug("Block already mined. H: ", block.height)
 		return
 	
 	if chain.size() == 0:
 		block.previous_hash = block.block_hash
-		block.data = "The Times: Chancellor on Brink of Second Bailout for Banks."
+		block.data = TEN
 	else:
 		block.previous_hash = get_latest_block().block_hash
 	
@@ -48,10 +53,12 @@ func mine_block(miner: String) -> void:
 	block.reward = _get_block_subsidy()
 	_issue_block_reward(miner, block.reward)
 	print_debug("Block found")
-	block_found.emit([block])
+	block_found.emit(block)
 	
 	height += 1
 
+func is_current_level_block(block: BitcoinBlock) -> bool:
+	return block.height == GameManager.current_level
 
 func get_block_by_id(id: int) -> BitcoinBlock:
 	return chain[id]
@@ -60,38 +67,28 @@ func get_latest_block() -> BitcoinBlock:
 	return chain.back()
 
 func create_block(miner: String) -> BitcoinBlock:
-	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s" % height + "Mined by: %s" % miner)
+	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s " % height + "Mined by: %s" % miner)
 
 func get_blockheight() -> int:
 	return height
 
 ## ---------------- INTERNAL FUNCTIONS ---------------------------------
 
-func _create_genesis_block() -> void:
-	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "The Times: Chancellor on Brink of Second Bailout for Banks.")
-	chain.append(genesis_block)
-	mine_block("System")
-
-"""
-Checks if the new block is valid and hasn't been mined before, returns true if block has
-already been mined before, false otherwise
-"""
-func _check_mining_stopped(new_block: BitcoinBlock) -> bool:
+## Checks if the new block is valid and hasn't been mined before, returns true if block has
+## already been mined before, false otherwise
+func _should_stop_mining(new_block: BitcoinBlock) -> bool:
 	# we don't check since it's the genesis block
-	if chain.size() == 0: return false
+	if chain.size() == 1: return false
 	
 	if height > TOTAL_BLOCKS:
 		return true
 	
 	if new_block.mined:
 		return true
-	
-	var last_block = get_latest_block()
-	if last_block == null: last_block = new_block
-
-	# Check if the new block is at the same height as the last block in the chain
-	if new_block.height == last_block.height or new_block.height <= last_block.height:
-		return true
+	# Check if the block has already been mined
+	for block in chain:
+		if block.height == new_block.height:
+			return true
 	
 	return false
 
@@ -184,3 +181,7 @@ func load_data():
 	# self.current_reward = data.block_subsidy
 	# self.coins_in_circulation = data.coins_in_circulation
 	loaded = true
+
+
+
+const TEN: String = "The Times: Chancellor on Brink of Second Bailout for Banks."

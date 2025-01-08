@@ -4,7 +4,7 @@ const save_text1: String = "SaveOne.sav"
 const save_text2: String = "SaveTwo.sav"
 const save_text3: String = "SaveThree.sav"
 
-@onready var main_game: PackedScene = preload("res://Scenes/UI/MainGameUI.tscn")
+@onready var main_game: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 func _on_slot_button_pressed() -> void:
 	_load_save_file(save_text1)
@@ -18,8 +18,7 @@ func _on_slot_button_3_pressed() -> void:
 func _load_save_file(file_name: String) -> void:
 	SaveSystem.var_file_name = file_name
 	if SaveSystem.has_save_file(file_name):
-		SaveSystem.load()
-		PersistenceDataManager.load_game()
+		PersistenceDataManager.load_game(true)
 	else:
 		PersistenceDataManager.save_game(true)
 	go_to_menu()

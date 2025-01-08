@@ -50,13 +50,17 @@ func _ready() -> void:
 ## ___________________________PUBLIC FUNCTIONS__________________________________________
 
 func level_completed() -> void:
-	if levels_unlocked < previous_levels_unlocked_index:
-		return
-	if current_level < previous_levels_unlocked_index: # Means the player is in an already completed level
-		return
+	if player_in_completed_level(): return
 	
 	levels_unlocked += 1
 	previous_levels_unlocked_index = levels_unlocked-1
+
+func player_in_completed_level() -> bool:
+	if levels_unlocked < previous_levels_unlocked_index:
+		return true
+	if current_level < previous_levels_unlocked_index: # Means the player is in an already completed level
+		return true
+	return false
 
 func add_weapon_details_to_dictionary(key: String, value: WeaponDetails) -> void:
 	weapon_details_dictionary[key] = value

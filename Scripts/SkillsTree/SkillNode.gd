@@ -35,8 +35,10 @@ enum FEATURE_TYPE {
 @export var bitcoin_icon: Texture2D
 ## When the currency to use is set to the dollar
 @export var dollar_icon: Texture2D
+## When the skillnode is maxed out, this icon will be displayed.
+@export var icon_on_maxed_out: Texture2D
 
-@export_group("Upgrade Data Settings")
+@export_group("Skill Node Data Settings")
 @export var skillnode_data : SkillNodeData
 ## If the data is an upgrade and not an unlock, this needs to be specified.
 @export var stat_to_upgrade: PlayerStat
@@ -149,35 +151,14 @@ func _is_next_tier_node_unlocked() -> bool:
 
 # ______________________UI FUNCTIONS___________________________
 
-## DEPRECATED
-func update_ui() -> void:
-	self.node_state = self.skillnode_data.get_upgrade_status()
-	match self.node_state:
-		SkillNodeData.SKILL_NODE_STATUS.LOCKED:
-			hide()
-			#_hide_next_node_line()
-			_set_disabled_state(true)
-			is_unlocked = false
-			_update_skill_status_label("LOCKED", disabled_label_settings)
-			_set_modulate_color(Color.GRAY)
-		SkillNodeData.SKILL_NODE_STATUS.UNLOCKED:
-			show()
-			#_hide_next_node_line()
-			_set_disabled_state(false)
-			is_unlocked = true
-			_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings)
-			_set_modulate_color(Color.WHITE)
-		SkillNodeData.SKILL_NODE_STATUS.MAXED_OUT:
-			show()
-			#_hide_next_node_line()
-			_unlock_next_tier()
-			_set_disabled_state(true)
-			_update_skill_status_label("MAXED")
-			_set_modulate_color(Color.GOLD)
+func _update_icon_on_maxed_out() -> void:
+	icon = icon_on_maxed_out
+	currency_icon.visible = false
 
 func _update_skill_status_label(new_text, label_settings: LabelSettings = null):
 		skill_label_status.text = new_text
-		skill_label_status.label_settings = enabled_label_settings
+		if label_settings != null:
+			skill_label_status.label_settings = label_settings
 		skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(), true)
 
 func _hide_next_node_line() -> void:
@@ -241,8 +222,8 @@ func _on_upgrade_maxed() -> void:
 	show()
 	is_maxed_out = true
 	_set_disabled_state(true)
-	_update_skill_status_label("MAXED")
-	_set_modulate_color(Color.GOLD)
+	_update_skill_status_label("MAXED", disabled_label_settings)
+	_update_icon_on_maxed_out()
 	_unlock_next_tier()
 	_unlock_or_upgrade()
 
@@ -256,21 +237,7 @@ func _unlock_next_tier() -> void:
 
 
 func save_data() -> void:
-	# I don't think is necesary to save the entire resource, I can save only the upgrade_level and upgrade_max_level
-	# var data = skillnode_data.duplicate(true)
-	# var error = ResourceSaver.save(data, SAVE_PATH)
-	# if error != OK:
-	# 	print_debug("Error saving data: {0}".format([error]))
-	# else:
-	# 	print_debug("Saved data: {0}".format([skillnode_data]))
-
-	#GameManager.set_resource_to_game_data_dic(skillnode_data, GameManager.ResourceDataType.SkillNodeData, save_name)
-	#GameManager.game_data_to_save.skill_nodes_data_dic[save_name] = skillnode_data
-
 	SaveSystem.set_var(save_name if !save_name.is_empty() else skillnode_data.upgrade_name, self._build_save_dictionary())
-	# var error = ResourceSaver.save(skillnode_data, SAVE_PATH)
-	# if error != OK:
-	# 	print("Error saving data: {0}".format([error]))
 
 func _build_save_dictionary() -> Dictionary:
 	return {
@@ -288,10 +255,5 @@ func load_data() -> void:
 	skillnode_data.upgrade_level = data["upgrade_level"]
 	skillnode_data.status = data["node_state"]
 	
-	# if skillnode_data.check_next_tier_unlock():
-	# 	_unlock_next_tier()
-	# if skillnode_data.check_upgrade_maxed_out():
-	# 	_on_upgrade_maxed()
-	# _unlock_or_upgrade()
 	if !is_maxed_out:
 		_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings)

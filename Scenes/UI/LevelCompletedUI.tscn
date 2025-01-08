@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
+[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="2_re8gt"]
 [ext_resource type="LabelSettings" uid="uid://c14kyf6almnse" path="res://Resources/TitleLabelSettings.tres" id="3_jcu7c"]
 [ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="4_0pib0"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="4_ny3yf"]
@@ -9,20 +10,18 @@
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="6_exueb"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="8_0w0kp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1jpya"]
-bg_color = Color(0, 0.026, 0.104, 0.751)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wbly3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aji5v"]
 draw_center = false
 border_width_left = 5
 border_width_top = 5
 border_width_right = 5
 border_width_bottom = 5
-border_color = Color(0, 0, 0, 0.813)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+border_color = Color(0, 0.0705882, 0.2, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+corner_detail = 1
 
 [node name="LevelCompletedUI" type="Control"]
 process_mode = 3
@@ -36,6 +35,20 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_dcscb")
 
+[node name="AnimationComponent" parent="." instance=ExtResource("2_re8gt")]
+enter_animation = true
+tween_time = 0.0
+tween_position = Vector2(0, 0)
+tween_size = Vector2(1920, 1080)
+tween_rotation = 0.0
+enter_time = 0.5
+enter_transition = 3
+enter_ease = 2
+enter_scale = Vector2(0, 0)
+enter_position = Vector2(0, 0)
+enter_size = Vector2(0, 0)
+enter_rotation = 360.0
+
 [node name="Panel" type="Panel" parent="."]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(260, 300)
@@ -47,7 +60,6 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_0si0w")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1jpya")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 1
@@ -115,7 +127,7 @@ custom_minimum_size = Vector2(300, 160)
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_0si0w")
-theme_override_styles/panel = SubResource("StyleBoxFlat_wbly3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_aji5v")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer"]
 custom_minimum_size = Vector2(225, 0)
@@ -188,22 +200,27 @@ layout_mode = 2
 theme = ExtResource("1_0si0w")
 
 [node name="VButtonContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(875, 150)
+custom_minimum_size = Vector2(875, 80)
 layout_mode = 2
 mouse_filter = 2
 theme = ExtResource("1_0si0w")
 alignment = 1
 
-[node name="MenuButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" instance=ExtResource("8_0w0kp")]
+[node name="MenuButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Go To Main Menu"
-enter_animation = false
+tween_time = 0.5
+tween_transition = 5
+tween_ease = 2
+tween_position = Vector2(50, 0)
+wait_for = NodePath("../../../../..")
 enter_delay = 0.25
 enter_position = Vector2(0, 0)
 
 [node name="RetryButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
+visible = false
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
 size_flags_vertical = 3

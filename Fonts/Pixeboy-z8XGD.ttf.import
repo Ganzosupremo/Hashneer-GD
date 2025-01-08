@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://dccffhvl0wg7a"
-path="res://.godot/imported/alagard.ttf-c1b576e01565606c2037056a85f30e1b.fontdata"
+uid="uid://dul7tynglvgto"
+path="res://.godot/imported/Pixeboy-z8XGD.ttf-c24559eccadc9623fbb101dbb7d537f6.fontdata"
 
 [deps]
 
-source_file="res://Fonts/alagard.ttf"
-dest_files=["res://.godot/imported/alagard.ttf-c1b576e01565606c2037056a85f30e1b.fontdata"]
+source_file="res://Fonts/Pixeboy-z8XGD.ttf"
+dest_files=["res://.godot/imported/Pixeboy-z8XGD.ttf-c24559eccadc9623fbb101dbb7d537f6.fontdata"]
 
 [params]
 
@@ -32,8 +32,11 @@ preload=[{
 "chars": [],
 "glyphs": [],
 "name": "New Configuration",
-"size": Vector2i(16, 0)
+"size": Vector2i(16, 0),
+"variation_embolden": 0.0
 }]
-language_support={}
+language_support={
+"en": true
+}
 script_support={}
 opentype_features={}

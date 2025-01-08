@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://c5g160romy6eq"]
+[gd_scene load_steps=16 format=3 uid="uid://c5g160romy6eq"]
 
 [ext_resource type="Script" path="res://Scripts/Managers/levels_picker.gd" id="1_b2jb1"]
 [ext_resource type="Shader" path="res://Shaders/Plasma_waves.gdshader" id="2_x4vgw"]
@@ -7,6 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="5_j8gby"]
 [ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="6_sjlrs"]
 [ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="7_3yere"]
+[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="8_kkwoc"]
+[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="8_s6s82"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="9_le43h"]
+[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="10_b1h4f"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_24jkk"]
 shader = ExtResource("2_x4vgw")
@@ -29,6 +33,30 @@ shader_parameter/warpAmplitude = 1.0
 shader_parameter/offsetFrequency = 0.5
 shader_parameter/minOffsetSpread = 1.0
 shader_parameter/maxOffsetSpread = 4.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_go8r3"]
+shader = ExtResource("10_b1h4f")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(200, 70)
+shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_18tgf"]
+shader = ExtResource("10_b1h4f")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(200, 70)
+shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_el8fa"]
+shader = ExtResource("10_b1h4f")
+shader_parameter/circle_center = Vector2(-0.125, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(410, 80)
+shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/margin = Vector2(0, 0)
 
 [node name="LevelsSelector" type="Control"]
 layout_mode = 3
@@ -95,7 +123,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
 theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 40
 button_mask = 5
 text = "Element Zero"
 icon_alignment = 1
@@ -109,8 +137,21 @@ quadrants_initial_health = 50.0
 drop_rate_multiplier = 1.0
 hit_sound_effect = ExtResource("7_3yere")
 cuts = 200
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton2" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton" instance=ExtResource("8_kkwoc")]
+enter_animation = true
+
+[node name="LevelSelectorButton2" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -128,8 +169,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 75.0
 drop_rate_multiplier = 1.2
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton3" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton2" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton3" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -147,8 +202,22 @@ grid_size = Vector2(7, 7)
 colpol_texture = ExtResource("6_sjlrs")
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton2")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton4" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton3" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton4" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -167,8 +236,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 125.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton3")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton5" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton4" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton5" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -187,8 +270,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 150.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton4")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton6" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton5" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton6" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -207,8 +304,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 175.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton5")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton7" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton6" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton7" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -227,8 +338,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 200.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton6")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton8" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton7" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton8" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -247,8 +372,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 225.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton7")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton9" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton8" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton9" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -267,8 +406,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 250.0
 drop_rate_multiplier = 1.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton8")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton10" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton9" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton10" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -287,8 +440,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 300.0
 drop_rate_multiplier = 1.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton9")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton11" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton10" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton11" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -307,8 +474,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 350.0
 drop_rate_multiplier = 1.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton10")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton12" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton11" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton12" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -327,8 +508,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 400.0
 drop_rate_multiplier = 1.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton11")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton13" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton12" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton13" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -347,8 +542,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 500.0
 drop_rate_multiplier = 1.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton12")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton14" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton13" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton14" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -367,8 +576,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 600.0
 drop_rate_multiplier = 1.9
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton13")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton15" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton14" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton15" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -387,8 +610,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 700.0
 drop_rate_multiplier = 2.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton14")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton16" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton15" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton16" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -407,8 +644,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 800.0
 drop_rate_multiplier = 2.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton15")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton17" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton16" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton17" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -427,8 +678,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 1000.0
 drop_rate_multiplier = 2.2
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton16")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton18" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton17" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton18" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -447,8 +712,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton17")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton19" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton18" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton19" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -467,8 +746,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 2000.0
 drop_rate_multiplier = 2.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton18")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton20" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton19" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton20" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -487,8 +780,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 2500.0
 drop_rate_multiplier = 2.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton19")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton21" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton20" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton21" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -507,8 +814,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 2750.0
 drop_rate_multiplier = 3.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton20")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton22" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton21" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton22" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -527,8 +848,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 3000.0
 drop_rate_multiplier = 3.25
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton21")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton23" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton22" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton23" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -547,8 +882,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 3000.0
 drop_rate_multiplier = 3.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton22")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton24" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton23" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton24" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -567,8 +916,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 3000.0
 drop_rate_multiplier = 3.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton23")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton25" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton24" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton25" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -587,8 +950,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 3500.0
 drop_rate_multiplier = 3.75
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton24")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton26" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton25" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton26" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -607,8 +984,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 3750.0
 drop_rate_multiplier = 3.75
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton25")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton27" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton26" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton27" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -627,8 +1018,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 4000.0
 drop_rate_multiplier = 4.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton26")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton28" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton27" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton28" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -647,8 +1052,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 4250.0
 drop_rate_multiplier = 4.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton27")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton29" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton28" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton29" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -667,8 +1086,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 4500.0
 drop_rate_multiplier = 4.25
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton28")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton30" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton29" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton30" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -687,8 +1120,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 5000.0
 drop_rate_multiplier = 4.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton29")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton31" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton30" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton31" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -707,8 +1154,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 5500.0
 drop_rate_multiplier = 4.75
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton30")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton32" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton31" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton32" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -727,8 +1188,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 6000.0
 drop_rate_multiplier = 4.8
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton31")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton33" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton32" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton33" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -747,8 +1222,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 6500.0
 drop_rate_multiplier = 4.9
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton32")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton34" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton33" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton34" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -767,8 +1256,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 7000.0
 drop_rate_multiplier = 5.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton33")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton35" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton34" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton35" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -787,8 +1290,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 7500.0
 drop_rate_multiplier = 5.0
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton34")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton36" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton35" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton36" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -807,8 +1324,22 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 8000.0
 drop_rate_multiplier = 5.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton35")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
-[node name="LevelSelectorButton37" type="Button" parent="ScrollContainer/Grid"]
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton36" instance=ExtResource("8_kkwoc")]
+
+[node name="LevelSelectorButton37" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -827,33 +1358,76 @@ colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 9000.0
 drop_rate_multiplier = 5.5
 hit_sound_effect = ExtResource("7_3yere")
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+wait_for = NodePath("../LevelSelectorButton36")
+wait_for_is_child = true
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
+
+[node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton37" instance=ExtResource("8_kkwoc")]
 
 [node name="HFlowContainer" type="HFlowContainer" parent="."]
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.847
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -21.0
-offset_bottom = -0.143982
+offset_top = -95.0
+offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 0
 pivot_offset = Vector2(576, 60)
+theme = ExtResource("3_mml05")
+theme_override_constants/h_separation = 1350
 alignment = 1
 
-[node name="MenuButton" type="Button" parent="HFlowContainer"]
+[node name="Menu" parent="HFlowContainer" instance=ExtResource("8_s6s82")]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
-theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 32
 text = "Main Menu"
+tween_time = 0.3
+tween_transition = 1
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+enter_rotation = 0.0
 
-[node name="ShopButton" type="Button" parent="HFlowContainer"]
-custom_minimum_size = Vector2(200, 70)
+[node name="RippleComponentUI" parent="HFlowContainer/Menu" instance=ExtResource("9_le43h")]
+material = SubResource("ShaderMaterial_go8r3")
+layout_mode = 1
+
+[node name="SkillTree" parent="HFlowContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_s6s82")]
+custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
-theme = ExtResource("3_mml05")
-theme_override_font_sizes/font_size = 32
-text = "Shop"
+text = "Go Back to Skill Tree"
+tween_time = 0.3
+tween_transition = 1
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+wait_for = NodePath("../Menu")
+wait_for_is_child = true
+enter_rotation = 0.0
 
-[connection signal="pressed" from="HFlowContainer/MenuButton" to="." method="_on_menu_button_pressed"]
-[connection signal="pressed" from="HFlowContainer/ShopButton" to="." method="_on_shop_button_pressed"]
+[node name="RippleComponentUI" parent="HFlowContainer/SkillTree" instance=ExtResource("9_le43h")]
+material = SubResource("ShaderMaterial_18tgf")
+layout_mode = 1
+
+[node name="TweenableButton" parent="HFlowContainer" instance=ExtResource("8_s6s82")]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+text = "Appreciate Ripple Effect Buton"
+
+[node name="RippleComponentUI" parent="HFlowContainer/TweenableButton" instance=ExtResource("9_le43h")]
+material = SubResource("ShaderMaterial_el8fa")
+layout_mode = 1
+
+[connection signal="pressed" from="HFlowContainer/Menu" to="." method="_on_menu_pressed"]
+[connection signal="pressed" from="HFlowContainer/SkillTree" to="." method="_on_skill_tree_pressed"]

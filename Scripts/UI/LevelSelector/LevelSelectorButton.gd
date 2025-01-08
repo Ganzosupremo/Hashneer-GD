@@ -1,5 +1,4 @@
-extends Button
-class_name LevelSelectorButton
+class_name LevelSelectorButton extends TweenableButton
 
 @export_category("Level Params")
 @export var levelto_load: PackedScene
@@ -21,6 +20,7 @@ var builder_args: QuadrantBuilderArgs
 var level_index: int = 0
 
 func _ready() -> void:
+	Utils.copy_properties(self, animation_component)
 	self.pressed.connect(on_button_pressed)
 
 func init_builder_args() -> void:

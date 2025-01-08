@@ -161,7 +161,6 @@ tween_ease = 2
 tween_position = Vector2(-20, 0)
 enter_time = 0.6
 enter_transition = 10
-enter_position = Vector2(0, 0)
 
 [node name="HealthUI" type="Control" parent="GameUI"]
 layout_mode = 3

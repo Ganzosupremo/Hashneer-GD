@@ -12,7 +12,7 @@ class_name SkillInfoPanelInNode extends Control
 
 
 @onready var skill_title: Label = $PanelContainer/VBoxContainer/SkillTitle
-@onready var skill_description: RichTextLabel = $PanelContainer/VBoxContainer/SkillDescription
+@onready var skill_description: Label = $PanelContainer/VBoxContainer/SkillDescription
 @onready var skill_cost: Label = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/SkillCost
 @onready var fiat_texture: TextureRect = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/FiatTexture
 @onready var btc_texture: TextureRect = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/BTCTexture

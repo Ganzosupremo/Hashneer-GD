@@ -25,7 +25,10 @@ func save_game(save_to_disk: bool = false) -> void:
 	if save_to_disk:
 		SaveSystem.save()
 
-func load_game() -> void:
+func load_game(initial_load:bool = false) -> void:
+	if initial_load:
+		SaveSystem.load()
+	
 	persistence_data_objects = find_all_persistence_objects()
 	
 	for node in persistence_data_objects:

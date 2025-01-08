@@ -14,9 +14,8 @@ config/name="Hasheneer"
 config/tags=PackedStringArray("bitcoin")
 run/main_scene="res://Scenes/UI/Main_menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
-boot_splash/bg_color=Color(0.831373, 0.317647, 0.0392157, 1)
 boot_splash/image="res://Textures/Bitcoin_pixel_art.png"
-config/icon="res://Textures/Bitcoin pixel art nuevo2.png"
+config/icon="res://Textures/Hashneneer Logo.png"
 
 [autoload]
 
@@ -33,6 +32,7 @@ EffectsManager="res://Scripts/Managers/EffectsManager.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
+window/size/mode=3
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=2
@@ -144,4 +144,8 @@ Mouse_Wheel_Up={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/default_filters/use_nearest_mipmap_filter=true
 environment/screen_space_reflection/roughness_quality=2
+anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/screen_space_aa=1
+anti_aliasing/quality/use_taa=true

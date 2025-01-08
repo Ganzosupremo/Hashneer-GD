@@ -18,13 +18,14 @@ func _ready() -> void:
 	GameManager.current_block_core.destroyed.connect(_on_core_destroyed)
 	BitcoinNetwork.reward_issued.connect(_on_reward_issued)
 	self.visible = false
+	_open()
 
 func _on_zero_health() -> void:
 	open_ui(Constants.ERROR_404)
 
 func _on_core_destroyed() -> void:
 	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
-	if block.mined:
+	if not BitcoinNetwork.is_current_level_block(block):
 		open_ui(Constants.ERROR_500)
 	elif block.miner == "Player":
 		open_ui(Constants.ERROR_200)
@@ -45,6 +46,7 @@ func open_ui(title: String) -> void:
 	
 	btc_gained_label.text = "%.2f" % btc_gained_this_time
 	fiat_gained_label.text = "%.2f" % fiat_gained_so_far
+	#save()
 	_open()
 
 func _open() -> void:
@@ -52,18 +54,16 @@ func _open() -> void:
 	title_label.animate_label(0.05)
 	btc_gained_label.animate_label(0.15)
 	fiat_gained_label.animate_label(0.15)
+	
 
 func _on_menu_button_pressed() -> void:
-	save()
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
 func _on_retry_button_pressed() -> void:
-	save()
 	SceneManager.switch_scene_with_packed(world_scene)
 
 func save(to_disk: bool = false):
 	PersistenceDataManager.save_game(to_disk)
-
 
 func _on_terminate_button_pressed() -> void:
 	GameManager.game_terminated.emit()

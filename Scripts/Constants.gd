@@ -17,6 +17,7 @@ const ERROR_210: String = "Code 210: Level terminated by user..."
 const ERROR_500: String = "Code 500: This block has already been mined. No reward will be given..."
 
 enum WeaponNames{
+    NONE,
     PISTOL,
     SHOTGUN,
     RIFLE,

@@ -22,7 +22,7 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 
 @export_category("Feature Unlock Settings")
 
-@export var weapon_to_unlock: Constants.WeaponNames
+@export var weapon_to_unlock: Constants.WeaponNames = Constants.WeaponNames.NONE
 @export var ability_to_unlock: String
 
 @export_category("Upgrade Power")

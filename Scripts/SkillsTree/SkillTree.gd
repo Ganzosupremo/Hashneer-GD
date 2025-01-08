@@ -4,11 +4,7 @@ class_name SkillTreeManager extends Control
 @export var player_details: PlayerDetails = PlayerDetails.new()
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-
-const PLAYER_DETAILS_SAVE_KEY: String = "player_saved_data"
-const implements: Array = [
-	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
-]
+@onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/Levels_selector.tscn")
 
 func _ready() -> void:
 	skill_nodes = _get_skill_nodes()
@@ -27,28 +23,11 @@ func _get_skill_nodes() -> Array:
 			nodes.append(child)
 	return nodes
 
-func _on_main_menu_button_pressed() -> void:
+func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game(true)
-	SceneManager.switch_scene_with_packed(MAIN_GAME_UI)
+	SceneManager.switch_scene_with_packed(LEVELS_SELECTOR)
 
-func save_data() -> void:
-	pass
-	# var player_data: PlayerSaveData = PlayerSaveData.new(player_details.speed, player_details.max_health, player_details.initial_weapon, player_details.weapons_array, player_details)
-	# SaveSystem.set_var(PLAYER_DETAILS_SAVE_KEY, player_data)
 
-func load_data() -> void:
-	pass
-	#if !SaveSystem.has(PLAYER_DETAILS_SAVE_KEY): return
-	#
-	#var data: Dictionary = SaveSystem.get_var(PLAYER_DETAILS_SAVE_KEY)
-	#print("Player data loaded: {0}".format([data]))
-#
-	#var res = Utils.dict_to_resource(data, PlayerSaveData.new(), true)
-	#for i in res.saved_weapons_array.size():
-		#res.saved_weapons_array[i] = Utils.dict_to_resource(res.saved_weapons_array[i], WeaponDetails.new(), true)
-		#print("Weapon details loaded: {0}".format([res.saved_weapons_array[i]]))
-	#
-	#self.player_details = res.player_details
-	#self.player_details.weapons_array = res.saved_weapons_array
-	#self.player_details.speed = res.speed
-	#self.player_details.max_health = res.max_health
+func _on_quit_game_pressed() -> void:
+	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
+	get_tree().quit()
