@@ -6,15 +6,23 @@ extends Camera2D
 @export var BASE_MOVE_SPEED: float = 2.0
 @export var SMOOTH_FACTOR: float = 0.1
 
+@onready var settings: SettingsUI = $"../FrontLayer/Settings"
+
+
+
 var dragging: bool = false
 var last_clicked_position: Vector2 = Vector2.ZERO
 var target_zoom: float = 1.0
 var target_position: Vector2 = Vector2.ZERO
 
+var stop_dragging: bool = false
+
 func _ready():
+	settings.visibility_state_changed.connect(_on_settings_visibility_changed)
 	target_position = position
 
 func _process(_delta):
+	if stop_dragging: return
 	# Smoothly interpolate the zoom
 	var current_zoom = zoom.x
 	current_zoom = lerp(current_zoom, target_zoom, SMOOTH_FACTOR)
@@ -24,6 +32,7 @@ func _process(_delta):
 	position = position.lerp(target_position, SMOOTH_FACTOR)
 
 func _input(event: InputEvent) -> void:
+	if stop_dragging: return
 	if Input.is_action_pressed("skill_tree_zoom_in"):
 		target_zoom = max(MIN_ZOOM, target_zoom - ZOOM_SPEED)
 	elif Input.is_action_pressed("skill_tree_zoom_out"):
@@ -42,3 +51,8 @@ func _input(event: InputEvent) -> void:
 		dragging = false
 
 
+func _on_settings_visibility_changed(v: bool) -> void:
+	if v:
+		stop_dragging = true
+	else:
+		stop_dragging = false

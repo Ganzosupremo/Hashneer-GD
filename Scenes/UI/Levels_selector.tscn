@@ -24,7 +24,7 @@ shader_parameter/minorLineFrequency = 1.0
 shader_parameter/scale = 5.0
 shader_parameter/lineColor = Color(0.541176, 0.509804, 0.752941, 1)
 shader_parameter/minLineWidth = 0.02
-shader_parameter/maxLineWidth = 0.695
+shader_parameter/maxLineWidth = 0.69
 shader_parameter/lineAmplitude = 1.0
 shader_parameter/lineFrequency = 0.2
 shader_parameter/linesPerGroup = 21
@@ -39,7 +39,7 @@ shader = ExtResource("10_b1h4f")
 shader_parameter/circle_center = Vector2(-0.35, 0)
 shader_parameter/time = 0.0
 shader_parameter/size = Vector2(200, 70)
-shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/color = Color(0.2, 0.254902, 0.360784, 1)
 shader_parameter/margin = Vector2(0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_18tgf"]
@@ -47,7 +47,7 @@ shader = ExtResource("10_b1h4f")
 shader_parameter/circle_center = Vector2(-0.35, 0)
 shader_parameter/time = 0.0
 shader_parameter/size = Vector2(200, 70)
-shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/color = Color(0.2, 0.254902, 0.360784, 1)
 shader_parameter/margin = Vector2(0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_el8fa"]
@@ -55,7 +55,7 @@ shader = ExtResource("10_b1h4f")
 shader_parameter/circle_center = Vector2(-0.125, 0)
 shader_parameter/time = 0.0
 shader_parameter/size = Vector2(410, 80)
-shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/color = Color(0.2, 0.254902, 0.360784, 1)
 shader_parameter/margin = Vector2(0, 0)
 
 [node name="LevelsSelector" type="Control"]
@@ -122,6 +122,7 @@ custom_minimum_size = Vector2(140, 90)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 40
 button_mask = 5
@@ -155,6 +156,7 @@ enter_animation = true
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -189,6 +191,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -222,6 +225,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -233,7 +237,6 @@ levelto_load = ExtResource("5_j8gby")
 quadrant_size = 200
 grid_size = Vector2(8, 8)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 125.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
 enter_animation = true
@@ -256,6 +259,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -267,7 +271,6 @@ levelto_load = ExtResource("5_j8gby")
 quadrant_size = 500
 grid_size = Vector2(10, 10)
 colpol_texture = ExtResource("6_sjlrs")
-quadrants_initial_health = 150.0
 drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
 enter_animation = true
@@ -290,6 +293,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -302,7 +306,6 @@ quadrant_size = 200
 grid_size = Vector2(10, 10)
 colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 175.0
-drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
 enter_animation = true
 tween_time = 0.25
@@ -324,6 +327,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -336,7 +340,6 @@ quadrant_size = 200
 grid_size = Vector2(10, 10)
 colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 200.0
-drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
 enter_animation = true
 tween_time = 0.25
@@ -358,6 +361,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -370,7 +374,6 @@ quadrant_size = 200
 grid_size = Vector2(10, 10)
 colpol_texture = ExtResource("6_sjlrs")
 quadrants_initial_health = 225.0
-drop_rate_multiplier = 1.3
 hit_sound_effect = ExtResource("7_3yere")
 enter_animation = true
 tween_time = 0.25
@@ -392,6 +395,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -426,6 +430,7 @@ custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -456,10 +461,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton10" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton11" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -490,10 +497,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton11" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton12" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -524,10 +533,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton12" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton13" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -558,10 +569,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton13" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton14" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -592,10 +605,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton14" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton15" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -626,10 +641,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton15" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton16" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -660,10 +677,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton16" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton17" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -694,10 +713,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton17" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton18" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -728,10 +749,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton18" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton19" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -762,10 +785,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton19" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton20" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -796,10 +821,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton20" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton21" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -830,10 +857,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton21" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton22" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -864,10 +893,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton22" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton23" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -898,10 +929,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton23" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton24" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -932,10 +965,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton24" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton25" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -966,10 +1001,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton25" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton26" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1000,10 +1037,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton26" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton27" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1034,10 +1073,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton27" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton28" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1068,10 +1109,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton28" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton29" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1102,10 +1145,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton29" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton30" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1136,10 +1181,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton30" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton31" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1170,10 +1217,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton31" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton32" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1204,10 +1253,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton32" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton33" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1238,10 +1289,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton33" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton34" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1272,10 +1325,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton34" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton35" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1306,10 +1361,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton35" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton36" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1340,10 +1397,12 @@ enter_ease = 3
 [node name="AnimationComponent" parent="ScrollContainer/Grid/LevelSelectorButton36" instance=ExtResource("8_kkwoc")]
 
 [node name="LevelSelectorButton37" type="Button" parent="ScrollContainer/Grid" node_paths=PackedStringArray("wait_for")]
+visible = false
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 7
+focus_next = NodePath("../../../HFlowContainer/Menu")
 theme = ExtResource("3_mml05")
 theme_override_font_sizes/font_size = 69
 button_mask = 5
@@ -1391,6 +1450,11 @@ alignment = 1
 [node name="Menu" parent="HFlowContainer" instance=ExtResource("8_s6s82")]
 custom_minimum_size = Vector2(200, 70)
 layout_mode = 2
+focus_neighbor_left = NodePath("../SkillTree")
+focus_neighbor_top = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_neighbor_right = NodePath("../TweenableButton")
+focus_neighbor_bottom = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_next = NodePath("../SkillTree")
 text = "Main Menu"
 tween_time = 0.3
 tween_transition = 1
@@ -1406,6 +1470,12 @@ layout_mode = 1
 [node name="SkillTree" parent="HFlowContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_s6s82")]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
+focus_neighbor_left = NodePath("../TweenableButton")
+focus_neighbor_top = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_neighbor_right = NodePath("../Menu")
+focus_neighbor_bottom = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_next = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_previous = NodePath("../Menu")
 text = "Go Back to Skill Tree"
 tween_time = 0.3
 tween_transition = 1
@@ -1421,8 +1491,12 @@ material = SubResource("ShaderMaterial_18tgf")
 layout_mode = 1
 
 [node name="TweenableButton" parent="HFlowContainer" instance=ExtResource("8_s6s82")]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(420, 80)
 layout_mode = 2
+focus_neighbor_left = NodePath("../Menu")
+focus_neighbor_top = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
+focus_neighbor_right = NodePath("../SkillTree")
+focus_neighbor_bottom = NodePath("../../ScrollContainer/Grid/LevelSelectorButton")
 text = "Appreciate Ripple Effect Buton"
 
 [node name="RippleComponentUI" parent="HFlowContainer/TweenableButton" instance=ExtResource("9_le43h")]

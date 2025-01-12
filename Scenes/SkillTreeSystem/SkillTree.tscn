@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=49 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
@@ -20,7 +20,34 @@
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
+[ext_resource type="Resource" uid="uid://bk3blai1anpdr" path="res://Resources/Upgrades/Fiat/ShotgunUnlock.tres" id="20_cet81"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="21_h6krv"]
+[ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="22_jhrlo"]
+[ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
+[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
+[ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Bitcoin/AK47Unlock.tres" id="23_lm8ko"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
+shader = ExtResource("6_6waxn")
+shader_parameter/bg_color = null
+shader_parameter/size = 100.0
+shader_parameter/prob = 1.006
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5ntv"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(150, 50)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l6eh8"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(150, 50)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a3dkl"]
 atlas = ExtResource("4_wkdkc")
@@ -91,6 +118,14 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_thpqi"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_mbr24"]
 atlas = ExtResource("4_wkdkc")
 region = Rect2(65, 0, 31, 32)
@@ -107,35 +142,13 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_thpqi"]
-shader = ExtResource("8_co7u8")
-shader_parameter/circle_center = Vector2(-0.35, 0)
-shader_parameter/time = 0.0
-shader_parameter/size = Vector2(64, 64)
-shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
-shader_parameter/margin = Vector2(0, 0)
+[sub_resource type="AtlasTexture" id="AtlasTexture_dufvt"]
+atlas = ExtResource("23_gapw6")
+region = Rect2(0, 0, 32, 17)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
-shader = ExtResource("6_6waxn")
-shader_parameter/bg_color = null
-shader_parameter/size = 100.0
-shader_parameter/prob = 1.006
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s5ntv"]
-shader = ExtResource("8_co7u8")
-shader_parameter/circle_center = Vector2(-0.35, 0)
-shader_parameter/time = 0.0
-shader_parameter/size = Vector2(150, 50)
-shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
-shader_parameter/margin = Vector2(0, 0)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_l6eh8"]
-shader = ExtResource("8_co7u8")
-shader_parameter/circle_center = Vector2(-0.35, 0)
-shader_parameter/time = 0.0
-shader_parameter/size = Vector2(150, 50)
-shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
-shader_parameter/margin = Vector2(0, 0)
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kd05"]
+atlas = ExtResource("23_gapw6")
+region = Rect2(0, 0, 32, 17)
 
 [node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
@@ -146,145 +159,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_6oa8x")
-
-[node name="SkillTreeCamera" type="Camera2D" parent="."]
-light_mask = 64
-visibility_layer = 64
-position = Vector2(580, 327)
-position_smoothing_enabled = true
-script = ExtResource("5_duwky")
-BASE_MOVE_SPEED = 2.5
-
-[node name="UpgradesHolder" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_bottom = -3.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 1
-
-[node name="HealthUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = -11.0
-offset_top = -20.5
-offset_right = 59.0
-offset_bottom = 49.5
-mouse_default_cursor_shape = 2
-icon = SubResource("AtlasTexture_a3dkl")
-is_unlocked = true
-next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
-icon_on_maxed_out = SubResource("AtlasTexture_egfro")
-skillnode_data = ExtResource("6_26cjf")
-stat_to_upgrade = ExtResource("5_v73wo")
-stat_type = 1
-save_name = "PlayerHealthUpgradeFiatT1"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeI" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_1qxbe")
-layout_mode = 1
-
-[node name="DamageUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = 65.0
-offset_top = -145.5
-offset_right = 135.0
-offset_bottom = -75.5
-tooltip_text = "CLICK MEEEE!!!!"
-mouse_default_cursor_shape = 2
-icon = SubResource("AtlasTexture_5le2m")
-expand_icon = true
-next_tier_nodes = [NodePath("../HealthUpgradeII")]
-icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
-skillnode_data = ExtResource("7_4c22w")
-stat_to_upgrade = SubResource("Resource_orbpq")
-stat_type = 3
-save_name = "PlayerDamageUpgradeFiatT1"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeI" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_xfjlr")
-layout_mode = 1
-
-[node name="HealthUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = 175.0
-offset_top = -296.5
-offset_right = 245.0
-offset_bottom = -226.5
-mouse_default_cursor_shape = 2
-icon = SubResource("AtlasTexture_kb7ay")
-use_bitcoin = true
-icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
-skillnode_data = ExtResource("8_yacem")
-stat_to_upgrade = ExtResource("5_v73wo")
-stat_type = 1
-save_name = "PlayerHealthUpgradeBitcoinT2"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeII" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_ta8n5")
-layout_mode = 1
-
-[node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = 152.0
-offset_top = 30.5
-offset_right = 222.0
-offset_bottom = 100.5
-mouse_default_cursor_shape = 2
-icon = SubResource("AtlasTexture_xduqf")
-expand_icon = true
-next_tier_nodes = [NodePath("../DamageUpgradeII")]
-icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
-skillnode_data = ExtResource("6_aog38")
-stat_to_upgrade = ExtResource("7_ihsdj")
-stat_type = 2
-save_name = "PlayerSpeedUpgradeFiatT1"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/SpeedUpgradeI" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_5vqad")
-layout_mode = 1
-
-[node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = 258.0
-offset_top = 166.5
-offset_right = 328.0
-offset_bottom = 236.5
-tooltip_text = "CLICK MEEEE!!!!"
-mouse_default_cursor_shape = 2
-icon = SubResource("AtlasTexture_mbr24")
-expand_icon = true
-use_bitcoin = true
-next_tier_nodes = [NodePath("../NewWeapon")]
-icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
-skillnode_data = ExtResource("11_6em56")
-stat_to_upgrade = ExtResource("9_18lcm")
-stat_type = 3
-save_name = "PlayerDamageUpgradeBitcoinT2"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeII" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_u6ijy")
-layout_mode = 1
-
-[node name="NewWeapon" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
-layout_mode = 1
-offset_left = 463.0
-offset_top = 230.5
-offset_right = 533.0
-offset_bottom = 300.5
-tooltip_text = "CLICK MEEEE!!!!"
-mouse_default_cursor_shape = 2
-icon = ExtResource("7_076p6")
-expand_icon = true
-icon_on_maxed_out = ExtResource("7_076p6")
-skillnode_data = ExtResource("13_a2onp")
-save_name = "AWPSniperUnlock"
-
-[node name="RippleComponentUI" parent="UpgradesHolder/NewWeapon" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_thpqi")
-layout_mode = 1
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -1
@@ -353,6 +227,224 @@ enter_rotation = 0.0
 
 [node name="RippleComponentUI" parent="FrontLayer/ButtonContainer/StartGame" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_l6eh8")
+layout_mode = 1
+
+[node name="Settings" parent="FrontLayer" instance=ExtResource("22_u5dcr")]
+visible = false
+
+[node name="SkillTreeCamera" type="Camera2D" parent="."]
+light_mask = 64
+visibility_layer = 64
+position = Vector2(580, 327)
+position_smoothing_enabled = true
+script = ExtResource("5_duwky")
+BASE_MOVE_SPEED = 2.5
+
+[node name="UpgradesHolder" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 928.0
+offset_top = 508.0
+offset_right = 992.0
+offset_bottom = 572.0
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_a3dkl")
+is_unlocked = true
+next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
+icon_on_maxed_out = SubResource("AtlasTexture_egfro")
+skillnode_data = ExtResource("6_26cjf")
+stat_to_upgrade = ExtResource("5_v73wo")
+stat_type = 1
+save_name = "PlayerHealthUpgradeFiatT1"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeI" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_1qxbe")
+layout_mode = 1
+
+[node name="DamageUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1025.0
+offset_top = 416.0
+offset_right = 1089.0
+offset_bottom = 480.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_5le2m")
+expand_icon = true
+next_tier_nodes = [NodePath("../HealthUpgradeII")]
+icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
+skillnode_data = ExtResource("7_4c22w")
+stat_to_upgrade = SubResource("Resource_orbpq")
+stat_type = 3
+save_name = "PlayerDamageUpgradeFiatT1"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeI" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_xfjlr")
+layout_mode = 1
+
+[node name="HealthUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1124.0
+offset_top = 336.0
+offset_right = 1188.0
+offset_bottom = 400.0
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_kb7ay")
+use_bitcoin = true
+icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
+skillnode_data = ExtResource("8_yacem")
+stat_to_upgrade = ExtResource("5_v73wo")
+stat_type = 1
+save_name = "PlayerHealthUpgradeBitcoinT2"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeII" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_ta8n5")
+layout_mode = 1
+
+[node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1045.0
+offset_top = 587.0
+offset_right = 1109.0
+offset_bottom = 651.0
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_xduqf")
+expand_icon = true
+next_tier_nodes = [NodePath("../DamageUpgradeII"), NodePath("../ShotgunUnlock")]
+icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
+skillnode_data = ExtResource("6_aog38")
+stat_to_upgrade = ExtResource("7_ihsdj")
+stat_type = 2
+save_name = "PlayerSpeedUpgradeFiatT1"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/SpeedUpgradeI" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_5vqad")
+layout_mode = 1
+
+[node name="ShotgunUnlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1163.0
+offset_top = 511.0
+offset_right = 1227.0
+offset_bottom = 575.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("22_jhrlo")
+expand_icon = true
+icon_on_maxed_out = ExtResource("22_jhrlo")
+skillnode_data = ExtResource("20_cet81")
+save_name = "ShotgunUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/ShotgunUnlock" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_thpqi")
+layout_mode = 1
+
+[node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1164.0
+offset_top = 655.0
+offset_right = 1228.0
+offset_bottom = 719.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_mbr24")
+expand_icon = true
+use_bitcoin = true
+next_tier_nodes = [NodePath("../SniperUnlock")]
+icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
+skillnode_data = ExtResource("11_6em56")
+stat_to_upgrade = ExtResource("9_18lcm")
+stat_type = 3
+save_name = "PlayerDamageUpgradeBitcoinT2"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeII" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_u6ijy")
+layout_mode = 1
+
+[node name="SniperUnlock" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1281.0
+offset_top = 741.0
+offset_right = 1345.0
+offset_bottom = 805.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("7_076p6")
+expand_icon = true
+next_tier_nodes = [NodePath("../AK47Unlock")]
+icon_on_maxed_out = ExtResource("7_076p6")
+skillnode_data = ExtResource("13_a2onp")
+save_name = "AWPSniperUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/SniperUnlock" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_thpqi")
+layout_mode = 1
+
+[node name="AK47Unlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1468.0
+offset_top = 821.0
+offset_right = 1532.0
+offset_bottom = 885.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_dufvt")
+expand_icon = true
+use_bitcoin = true
+icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
+skillnode_data = ExtResource("23_lm8ko")
+save_name = "AK47Unlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/AK47Unlock" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_thpqi")
 layout_mode = 1
 
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]

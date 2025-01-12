@@ -3,10 +3,14 @@ extends Control
 @onready var container: GridContainer = %Grid
 @onready var main_menu_scene: PackedScene = load("res://Scenes/UI/Main_menu.tscn")
 @onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
+@onready var level_one: LevelSelectorButton = $ScrollContainer/Grid/LevelSelectorButton
+
+
 
 var children: Array
 
 func _ready() -> void:
+	level_one.grab_focus()
 	children = container.get_children()
 	for i in children.size():
 		children[i].level_index = i

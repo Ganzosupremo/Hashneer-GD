@@ -11,11 +11,18 @@ config_version=5
 [application]
 
 config/name="Hasheneer"
+config/version="0.0.1"
 config/tags=PackedStringArray("bitcoin")
 run/main_scene="res://Scenes/UI/Main_menu.tscn"
+config/use_custom_user_dir=true
+config/custom_user_dir_name="Nigga_pls"
 config/features=PackedStringArray("4.3", "Forward Plus")
-boot_splash/image="res://Textures/Bitcoin_pixel_art.png"
-config/icon="res://Textures/Hashneneer Logo.png"
+boot_splash/bg_color=Color(0, 0, 0, 1)
+boot_splash/image="res://Textures/Disclaimer Hasheneer.png"
+config/icon="res://Textures/Icons/Hashneneer Logo.png"
+config/macos_native_icon="res://Textures/Icons/Hashneneer Logo.icns"
+config/windows_native_icon="res://Textures/Icons/Hashneneer-Logo.ico"
+boot_splash/minimum_display_time=1000
 
 [autoload]
 
@@ -144,6 +151,8 @@ Mouse_Wheel_Up={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+textures/vram_compression/import_s3tc_bptc=true
+textures/vram_compression/import_etc2_astc=true
 textures/default_filters/use_nearest_mipmap_filter=true
 environment/screen_space_reflection/roughness_quality=2
 anti_aliasing/quality/msaa_2d=1

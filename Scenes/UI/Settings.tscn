@@ -1,0 +1,187 @@
+[gd_scene load_steps=7 format=3 uid="uid://c2hb4iulgyrsa"]
+
+[ext_resource type="Script" path="res://Scripts/UI/Settings.gd" id="1_0t1x7"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_i76vb"]
+[ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="2_6s6fx"]
+[ext_resource type="Texture2D" uid="uid://dghmigof504jv" path="res://Textures/UI/play_icon.png" id="4_q4irc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvi8v"]
+bg_color = Color(0, 0, 0, 0.209)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+shadow_color = Color(0.016, 0.4, 0.784, 0.7)
+shadow_size = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ast0f"]
+bg_color = Color(0, 0.094, 0.271, 0.392)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 1
+shadow_color = Color(0.016, 0.4, 0.784, 0.7)
+shadow_size = 7
+
+[node name="Settings" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("1_0t1x7")
+
+[node name="BG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_i76vb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_pvi8v")
+
+[node name="Panel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 407.0
+offset_top = 142.0
+offset_right = -309.0
+offset_bottom = -160.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_i76vb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ast0f")
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_override_constants/separation = 15
+
+[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 156
+text = "Settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = -1
+visible_ratio = 1.0
+animate_on_ready = true
+
+[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+alignment = 1
+
+[node name="ResolutionCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+alignment = 1
+
+[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Resolution"
+visible_characters = -1
+visible_ratio = 1.0
+
+[node name="Resolutions" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(280, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+theme_override_font_sizes/font_size = 45
+alignment = 1
+selected = 1
+
+[node name="VSyncCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+alignment = 1
+
+[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "V-Sync"
+visible_characters = -1
+visible_ratio = 1.0
+animate_on_ready = true
+
+[node name="Vsync" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+theme_override_font_sizes/font_size = 45
+text = "Enabled"
+alignment = 1
+
+[node name="FullscreenCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+alignment = 1
+
+[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_override_font_sizes/font_size = 100
+text = "Fullscreen"
+visible_characters = -1
+visible_ratio = 1.0
+animate_on_ready = true
+
+[node name="Fullscreen" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+theme_override_font_sizes/font_size = 45
+button_pressed = true
+icon = ExtResource("4_q4irc")
+alignment = 1
+icon_alignment = 1
+expand_icon = true

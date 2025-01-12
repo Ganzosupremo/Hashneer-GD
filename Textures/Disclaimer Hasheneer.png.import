@@ -2,22 +2,22 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buxp21u1ujgmv"
-path="res://.godot/imported/Hashneneer Logo.png-89af504edd31f1f9fbe0a589dca8166c.ctex"
+uid="uid://biwy6ux3wn3vb"
+path="res://.godot/imported/Disclaimer Hasheneer.png-3a6f4fb64062943432783f4ecff76c00.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Hashneneer Logo.png"
-dest_files=["res://.godot/imported/Hashneneer Logo.png-89af504edd31f1f9fbe0a589dca8166c.ctex"]
+source_file="res://Textures/Disclaimer Hasheneer.png"
+dest_files=["res://.godot/imported/Disclaimer Hasheneer.png-3a6f4fb64062943432783f4ecff76c00.ctex"]
 
 [params]
 
 compress/mode=0
 compress/high_quality=false
-compress/lossy_quality=0.95
+compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmek3vskirk8m"]
+[gd_scene load_steps=15 format=3 uid="uid://dmek3vskirk8m"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
@@ -9,6 +9,22 @@
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="6_exueb"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="8_0w0kp"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="10_32soc"]
+[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="11_4y267"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q47g5"]
+bg_color = Color(0, 0.094, 0.271, 0.414)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aji5v"]
 draw_center = false
@@ -23,6 +39,14 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 corner_detail = 1
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1lrfk"]
+shader = ExtResource("11_4y267")
+shader_parameter/circle_center = Vector2(-0.15, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(300, 80)
+shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [node name="LevelCompletedUI" type="Control"]
 process_mode = 3
 layout_direction = 2
@@ -32,7 +56,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 script = ExtResource("1_dcscb")
 
 [node name="AnimationComponent" parent="." instance=ExtResource("2_re8gt")]
@@ -58,8 +81,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
 theme = ExtResource("1_0si0w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q47g5")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 1
@@ -212,12 +235,17 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Go To Main Menu"
 tween_time = 0.5
-tween_transition = 5
+tween_transition = 2
 tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
 tween_position = Vector2(50, 0)
 wait_for = NodePath("../../../../..")
-enter_delay = 0.25
-enter_position = Vector2(0, 0)
+enter_time = 0.5
+enter_delay = 0.15
+
+[node name="RippleComponentUI" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" instance=ExtResource("10_32soc")]
+material = SubResource("ShaderMaterial_1lrfk")
+layout_mode = 1
 
 [node name="RetryButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
 visible = false
@@ -229,7 +257,6 @@ enter_animation = false
 wait_for = NodePath("../MenuButton")
 wait_for_is_child = true
 enter_delay = 0.2
-enter_position = Vector2(0, 0)
 
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/RetryButton" to="." method="_on_retry_button_pressed"]

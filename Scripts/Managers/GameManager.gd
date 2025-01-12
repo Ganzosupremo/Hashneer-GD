@@ -20,7 +20,7 @@ signal game_terminated()
 
 var game_levels: Array = []
 var levels_unlocked: int = 1
-var previous_levels_unlocked_index: int = 1
+var previous_levels_unlocked_index: int = 0
 var current_level: int = 0
 
 var builder_args: QuadrantBuilderArgs
@@ -137,10 +137,6 @@ func load_data() -> void:
 	levels_unlocked = data["levels_unlocked"]
 	previous_levels_unlocked_index = data["previous_levels_unlocked_index"]
 	current_level = data["current_level"]
-	# player_details.speed = data["player_speed"]
-	# player_details.max_health = data["player_health"]
-	# player_details.damage_multiplier = data["player_damage_multiplier"]
-
 	_load_unlocked_weapons(data)
 	
 	if !data.has("upgraded_stats"): return

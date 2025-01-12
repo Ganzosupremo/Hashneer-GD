@@ -52,6 +52,7 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 		Constants.WeaponNames.SHOTGUN: "Shotgun",
 		Constants.WeaponNames.RIFLE: "Rifle",
 		Constants.WeaponNames.SNIPER: "Sniper",
+		Constants.WeaponNames.AK47: "AK47",
 		Constants.WeaponNames.MACHINE_GUN: "Machine Gun",
 		Constants.WeaponNames.ROCKET_LAUNCHER: "Rocket Launcher",
 		Constants.WeaponNames.GRENADE_LAUNCHER: "Grenade Launcher",

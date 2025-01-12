@@ -107,6 +107,8 @@ vertical = true
 [node name="StartGame" parent="AspectRatioContainer/FlowContainer" instance=ExtResource("5_3o1w0")]
 custom_minimum_size = Vector2(250, 70)
 layout_mode = 2
+focus_neighbor_top = NodePath("../QuitGame")
+focus_neighbor_bottom = NodePath("../QuitGame")
 theme_override_font_sizes/font_size = 51
 text = "Start Game"
 tween_ease = 2
@@ -124,6 +126,8 @@ layout_mode = 1
 [node name="QuitGame" parent="AspectRatioContainer/FlowContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("5_3o1w0")]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
+focus_neighbor_top = NodePath("../StartGame")
+focus_neighbor_bottom = NodePath("../StartGame")
 theme_override_font_sizes/font_size = 51
 text = "Quit Game"
 tween_ease = 2

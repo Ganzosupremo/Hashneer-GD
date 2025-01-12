@@ -99,14 +99,14 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 """Issues the block reward to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String, reward: float) -> void:
 	if miner == "Player" or miner == "player":
-		emit_signal("reward_issued", reward)
+		reward_issued.emit(reward)
 	elif miner == "AI":
 		coins_lost += reward
 		print("Reward issued to the AI")
 
 func _get_block_subsidy() -> float:
 	var halvings: int = height / halving_interval
-	if (halvings >= 8):
+	if (halvings > 5):
 		return 0.0
 	
 	var subsidy = 500 * COIN
@@ -128,12 +128,6 @@ func _exceeds_coin_limit_cap() -> bool:
 ## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
 func save_data():
-	# var network_data: BitcoinNetworkData = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	# var error = ResourceSaver.save(network_data, GameManager.NetworkDataSaveName)
-	# if error != OK:
-	# 	print_debug("not saved: ", error)
-	# else:
-	# 	print_debug("saved: ", network_data)
 	SaveSystem.set_var(GameManager.NetworkDataSaveName, _build_dictionary_to_save())
 
 func _build_dictionary_to_save() -> Dictionary:
@@ -161,25 +155,6 @@ func load_data():
 	current_reward = data["current_reward"]
 	coins_lost = data["coins_lost"]
 	coins_in_circulation = data["coins_in_circulation"]
-
-	# var net_data: BitcoinNetworkData = ResourceLoader.load(GameManager.NetworkDataSaveName, "BitcoinNetworkData", ResourceLoader.CACHE_MODE_REPLACE_DEEP)   #GameManager.get_resource_from_game_data_dic(GameManager.ResourceDataType.NetworkData)
-	# # if !SaveSystem.has("network_data"): return
-	# # var network_data: Dictionary = SaveSystem.get_var("network_data")
-	# # var res: BitcoinNetworkData = Utils.dict_to_resource(network_data, BitcoinNetworkData.new())
-	# # print("Loaded network data: {0}".format([res]))
-
-	
-	# if net_data == null:
-	# 	print_debug("not loaded: ", net_data)
-	# 	return
-
-	# print_debug("Loaded network data: %s" % net_data)
-	# data = net_data.duplicate(true)
-	# self.chain = data.chain
-	# self.height = data.height
-	# self.coins_lost = data.coins_lost
-	# self.current_reward = data.block_subsidy
-	# self.coins_in_circulation = data.coins_in_circulation
 	loaded = true
 
 

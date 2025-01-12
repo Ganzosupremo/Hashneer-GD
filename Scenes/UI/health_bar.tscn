@@ -8,17 +8,17 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gioec"]
 shader = ExtResource("6_p77wj")
-shader_parameter/backFillColour = Color(0.62, 1, 1, 1)
-shader_parameter/frontFillInnerColour = Color(0.35, 1, 1, 1)
-shader_parameter/frontFillOuterColour = Color(0, 0.35, 1, 1)
-shader_parameter/ringColour = Color(0, 0.16, 0.13, 1)
-shader_parameter/fresnelColour = Color(0, 0.88, 1, 1)
-shader_parameter/innerRingGlowColour = Color(0, 1, 1, 1)
+shader_parameter/backFillColour = Color(1, 0.717647, 0, 1)
+shader_parameter/frontFillInnerColour = Color(1, 0.866667, 0, 1)
+shader_parameter/frontFillOuterColour = Color(1, 0.533333, 0, 1)
+shader_parameter/ringColour = Color(0, 0, 0, 1)
+shader_parameter/fresnelColour = Color(1, 0.866667, 0, 1)
+shader_parameter/innerRingGlowColour = Color(1, 0.917647, 0, 1)
 shader_parameter/fillcolour = Color(1, 1, 1, 1)
 shader_parameter/ringWidth = 0.15
 shader_parameter/innerCircleRadiusOffset = 0.0
 shader_parameter/fill_per = 1.0
-shader_parameter/resolution = 32.0
+shader_parameter/resolution = 64.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o05bc"]
 shader = ExtResource("4_1b1hd")
@@ -75,7 +75,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 30)
 layout_mode = 2
 theme = ExtResource("2_byxxf")
-theme_override_font_sizes/font_size = 27
+theme_override_font_sizes/font_size = 30
 text = "100 / 100"
 horizontal_alignment = 1
 vertical_alignment = 1

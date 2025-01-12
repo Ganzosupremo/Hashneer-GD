@@ -5,20 +5,17 @@ extends Control
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
 
-@onready var skill_tree_scene: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
-@onready var world_scene: PackedScene = preload("res://Scenes/BlockLevels/World.tscn")
+@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
 
 func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
-	#BitcoinNetwork.block_found.connect(_on_block_mined)
 	GameManager.current_quadrant_builder.quadrant_hitted.connect(_on_quadrant_hitted)
 	GameManager.current_block_core.destroyed.connect(_on_core_destroyed)
 	BitcoinNetwork.reward_issued.connect(_on_reward_issued)
 	self.visible = false
-	_open()
 
 func _on_zero_health() -> void:
 	open_ui(Constants.ERROR_404)
@@ -46,7 +43,7 @@ func open_ui(title: String) -> void:
 	
 	btc_gained_label.text = "%.2f" % btc_gained_this_time
 	fiat_gained_label.text = "%.2f" % fiat_gained_so_far
-	#save()
+	save()
 	_open()
 
 func _open() -> void:
@@ -59,8 +56,8 @@ func _open() -> void:
 func _on_menu_button_pressed() -> void:
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
-func _on_retry_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(world_scene)
+#func _on_retry_button_pressed() -> void:
+	#SceneManager.switch_scene_with_packed(world_scene)
 
 func save(to_disk: bool = false):
 	PersistenceDataManager.save_game(to_disk)
