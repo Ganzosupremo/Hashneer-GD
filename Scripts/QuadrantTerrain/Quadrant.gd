@@ -14,6 +14,7 @@ var damage_to_deal: float = 25.0
 
 func _ready() -> void:
 	_rng.randomize()
+	builder_args = GameManager.builder_args
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		
@@ -32,31 +33,27 @@ func _ready() -> void:
 func create_polygon_shape() -> PackedVector2Array:
 	return PolygonLib.createRectanglePolygon(rectangle_size, rectangle_local_center)
 
-
-
-
-
-
-func init_health(health: float = -1) -> void:
-	if health != -1:
-		initial_health = health
-		initial_health += increase_health(health)
+func init_health(_health: float = -1) -> void:
+	if _health != -1:
+		initial_health = _health
+		initial_health += increase_health(_health)
 		current_health = initial_health
 	else:
 		initial_health = 5000.0
 		current_health = initial_health
 
-
-
-func increase_health(health: float) -> float:
-	return health * pow(5.0, GameManager.current_level_index)
+func increase_health(_health: float) -> float:
+	return _health * pow(5.0, GameManager.current_level_index)
 
 """
 Inflicts damage to the polygon, if the polygon's health is zero, then the polygon can
 be carved returning true, false otherwise
 """
 func take_damage(damage_taken: float, instakill: bool = false) -> bool:
-	current_health = max(0, current_health - damage_taken)  # Clamp the value to a minimum of 0
+	if instakill:
+		current_health = 0.0
+	else:
+		current_health = max(0, current_health - damage_taken)  # Clamp the value to a minimum of 0
 	
 	if current_health <= 0.0 && is_carved == false:
 		can_carve = true

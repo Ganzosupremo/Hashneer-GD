@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://bkqvmk284u4ap"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_fvp7h"]
+[ext_resource type="Script" path="res://Scripts/UI/LevelSelector/LevelSelectorButton.gd" id="2_st11g"]
+[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="3_feokr"]
+[ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="4_r6x5x"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="5_7te4v"]
+
+[node name="LevelSelectorButton" type="Button"]
+custom_minimum_size = Vector2(140, 90)
+size_flags_horizontal = 3
+size_flags_vertical = 7
+theme = ExtResource("1_fvp7h")
+theme_override_font_sizes/font_size = 40
+button_mask = 5
+text = "Element Zero"
+icon_alignment = 1
+language = "en"
+script = ExtResource("2_st11g")
+levelto_load = ExtResource("3_feokr")
+quadrant_size = 200
+grid_size = Vector2(6, 6)
+colpol_texture = ExtResource("4_r6x5x")
+quadrants_initial_health = 50.0
+drop_rate_multiplier = 1.0
+hit_sound_effect = ExtResource("5_7te4v")
+cuts = 200
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
+enter_time = 0.3
+enter_transition = 11

@@ -1,11 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://d4bsaxj0j3hoc"]
+[gd_scene load_steps=16 format=3 uid="uid://d4bsaxj0j3hoc"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Main_menu.gd" id="1_n1dpb"]
 [ext_resource type="Script" path="res://Scripts/UI/MainMenuParallexackground.gd" id="2_y71ea"]
 [ext_resource type="Texture2D" uid="uid://b5rivhjq0n3tx" path="res://Textures/parallax-space-backgound.png" id="3_rktvw"]
 [ext_resource type="Shader" path="res://Shaders/Black_hole.gdshader" id="4_fwbrq"]
-[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="6_2tau6"]
-[ext_resource type="Texture2D" uid="uid://dghmigof504jv" path="res://Textures/UI/play_icon.png" id="7_4m12u"]
+[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="5_3o1w0"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="6_udh87"]
+[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="7_a0eer"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_fmrpa"]
 noise_type = 2
@@ -49,6 +50,22 @@ shader_parameter/iChannel0 = SubResource("NoiseTexture2D_n330n")
 shader_parameter/iChannel1 = SubResource("NoiseTexture2D_48fop")
 shader_parameter/iChannel2 = SubResource("NoiseTexture2D_pu4p4")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5y1js"]
+shader = ExtResource("7_a0eer")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(250, 70)
+shader_parameter/color = Color(0.2, 0.254902, 0.360784, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_75ayw"]
+shader = ExtResource("7_a0eer")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(250, 50)
+shader_parameter/color = Color(0.2, 0.254902, 0.360784, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [node name="MainMenu" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -87,25 +104,44 @@ layout_mode = 2
 alignment = 1
 vertical = true
 
-[node name="StartGame" type="Button" parent="AspectRatioContainer/FlowContainer"]
+[node name="StartGame" parent="AspectRatioContainer/FlowContainer" instance=ExtResource("5_3o1w0")]
+custom_minimum_size = Vector2(250, 70)
 layout_mode = 2
-theme = ExtResource("6_2tau6")
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_colors/font_focus_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_pressed_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_normal_color = Color(1, 1, 1, 1)
-theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 34
+focus_neighbor_top = NodePath("../QuitGame")
+focus_neighbor_bottom = NodePath("../QuitGame")
+theme_override_font_sizes/font_size = 51
 text = "Start Game"
-icon = ExtResource("7_4m12u")
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+enter_time = 0.4
+enter_transition = 6
+enter_delay = 0.5
+enter_rotation = 0.0
 
-[node name="QuitGameButton" type="Button" parent="AspectRatioContainer/FlowContainer"]
+[node name="RippleComponentUI" parent="AspectRatioContainer/FlowContainer/StartGame" instance=ExtResource("6_udh87")]
+material = SubResource("ShaderMaterial_5y1js")
+layout_mode = 1
+
+[node name="QuitGame" parent="AspectRatioContainer/FlowContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("5_3o1w0")]
+custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
-theme = ExtResource("6_2tau6")
-theme_override_font_sizes/font_size = 34
+focus_neighbor_top = NodePath("../StartGame")
+focus_neighbor_bottom = NodePath("../StartGame")
+theme_override_font_sizes/font_size = 51
 text = "Quit Game"
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+wait_for = NodePath("../StartGame")
+wait_for_is_child = true
+enter_time = 0.4
+enter_transition = 6
+enter_rotation = 0.0
+
+[node name="RippleComponentUI" parent="AspectRatioContainer/FlowContainer/QuitGame" instance=ExtResource("6_udh87")]
+material = SubResource("ShaderMaterial_75ayw")
+layout_mode = 1
 
 [connection signal="pressed" from="AspectRatioContainer/FlowContainer/StartGame" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="AspectRatioContainer/FlowContainer/QuitGameButton" to="." method="_on_quit_game_button_pressed"]
+[connection signal="pressed" from="AspectRatioContainer/FlowContainer/QuitGame" to="." method="_on_quit_game_button_pressed"]

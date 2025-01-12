@@ -1,8 +1,11 @@
 extends Node2D
-class_name Blockchain
+class_name Timechain
 
 signal reward_issued(btc_reward: float)
 signal block_found(block: BitcoinBlock)
+
+## A Bitcoin wallet, it will contain all player funds, fiat and bitcois.
+#@onready var bitcoin_wallet: BitcoinWallet = %BitcoinWallet
 
 const COIN: int = 100
 #change to 2.1 mill later
@@ -21,21 +24,24 @@ const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
-func _ready():
-	chain.clear()
-
 ## ---------------------- PUBLIC FUNCTIONS ---------------------------
 
 """Mines and adds the new block to the chain"""
-func mine_block(miner: String) -> void:
-	var block: BitcoinBlock = create_block(miner)
+func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
+	var block: BitcoinBlock = null
+	if new_block != null:
+		block = new_block
+	else:
+		block = create_block(miner)
 	
 	# Check if mining should be stopped right away
-	if _check_mining_stopped(block):
+	if _should_stop_mining(block):
+		print_debug("Block already mined. H: ", block.height)
 		return
 	
 	if chain.size() == 0:
 		block.previous_hash = block.block_hash
+		block.data = TEN
 	else:
 		block.previous_hash = get_latest_block().block_hash
 	
@@ -46,47 +52,43 @@ func mine_block(miner: String) -> void:
 	
 	block.reward = _get_block_subsidy()
 	_issue_block_reward(miner, block.reward)
-	emit_signal("block_found", block)
+	print_debug("Block found")
+	block_found.emit(block)
 	
 	height += 1
 
+func is_current_level_block(block: BitcoinBlock) -> bool:
+	return block.height == GameManager.current_level
+
+func get_block_by_id(id: int) -> BitcoinBlock:
+	return chain[id]
 
 func get_latest_block() -> BitcoinBlock:
 	return chain.back()
 
 func create_block(miner: String) -> BitcoinBlock:
-	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s" % height)
+	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s " % height + "Mined by: %s" % miner)
 
 func get_blockheight() -> int:
 	return height
 
 ## ---------------- INTERNAL FUNCTIONS ---------------------------------
 
-func _create_genesis_block() -> void:
-	var genesis_block: BitcoinBlock = BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "The Times: Chancellor on Brink of Second Bailout for Banks.")
-	chain.append(genesis_block)
-	mine_block("System")
-
-"""
-Checks if the new block is valid and hasn't been mined before, returns true if block has
-already been mined before, false otherwise
-"""
-func _check_mining_stopped(new_block: BitcoinBlock) -> bool:
+## Checks if the new block is valid and hasn't been mined before, returns true if block has
+## already been mined before, false otherwise
+func _should_stop_mining(new_block: BitcoinBlock) -> bool:
 	# we don't check since it's the genesis block
-	if chain.size() == 0: return false
+	if chain.size() == 1: return false
 	
 	if height > TOTAL_BLOCKS:
 		return true
 	
 	if new_block.mined:
 		return true
-	
-	var last_block = get_latest_block()
-	if last_block == null: last_block = new_block
-
-	# Check if the new block is at the same height as the last block in the chain
-	if new_block.height == last_block.height or new_block.height <= last_block.height:
-		return true
+	# Check if the block has already been mined
+	for block in chain:
+		if block.height == new_block.height:
+			return true
 	
 	return false
 
@@ -97,15 +99,14 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 """Issues the block reward to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String, reward: float) -> void:
 	if miner == "Player" or miner == "player":
-		BitcoinWallet.add_bitcoin(reward)
-		emit_signal("reward_issued", reward)
+		reward_issued.emit(reward)
 	elif miner == "AI":
 		coins_lost += reward
 		print("Reward issued to the AI")
 
 func _get_block_subsidy() -> float:
 	var halvings: int = height / halving_interval
-	if (halvings >= 8):
+	if (halvings > 5):
 		return 0.0
 	
 	var subsidy = 500 * COIN
@@ -124,38 +125,38 @@ func _exceeds_coin_limit_cap() -> bool:
 		return true
 	return false
 
-## ----------------- PERSISTENCE DATA FUNCTIONS -------------------------
+## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
 func save_data():
-	var network_data = BitcoinNetworkData.new(chain, height, current_reward, coins_lost, coins_in_circulation)
-	SaveSystem.set_var("network_data", network_data)
+	SaveSystem.set_var(GameManager.NetworkDataSaveName, _build_dictionary_to_save())
+
+func _build_dictionary_to_save() -> Dictionary:
+	return {
+		"chain": chain,
+		"height": height,
+		"current_reward": current_reward,
+		"coins_lost": coins_lost,
+		"coins_in_circulation": coins_in_circulation
+	}
 
 func load_data():
-	if loaded == true: return
+	if loaded: return
 	
-	var network_data = SaveSystem.get_var("network_data")
+	if !SaveSystem.has(GameManager.NetworkDataSaveName): return
 	
-	var res: BitcoinNetworkData = build_res(network_data, BitcoinNetworkData.new())
-
-	for i in res.chain.size():
-		res.chain[i] = build_res(res.chain[i], BitcoinBlock.new())
+	var data: Dictionary = SaveSystem.get_var(GameManager.NetworkDataSaveName)
+	var saved_chain: Array = data["chain"]
 	
-	self.chain = res.chain
-	self.height = res.height
-	self.coins_lost = res.coins_lost
-	self.current_reward = res.block_subsidy
-	self.coins_in_circulation = res.coins_in_circulation
+	for i in saved_chain.size():
+		saved_chain[i] = Utils.build_res_from_dictionary(saved_chain[i], BitcoinBlock.new())
+	
+	chain = saved_chain.duplicate(true)
+	height = data["height"]
+	current_reward = data["current_reward"]
+	coins_lost = data["coins_lost"]
+	coins_in_circulation = data["coins_in_circulation"]
 	loaded = true
 
-func build_res(data: Dictionary, type: Resource):
-	var res := type
-	#if index == -1:
-		#res = BitcoinNetworkData.new()
-	#else:
-		#res = BitcoinBlock.new()
-	
-	for i in range(data.size()):
-		var key = data.keys()[i]
-		var value = data.values()[i]
-		res.set(key, value)
-	return res
+
+
+const TEN: String = "The Times: Chancellor on Brink of Second Bailout for Banks."

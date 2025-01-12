@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=4 format=3 uid="uid://bidjra86l58ip"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jpyj5"]
+[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_hq1eh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wmu8x"]
+atlas = ExtResource("2_hq1eh")
+region = Rect2(0, 0, 32, 17)
+
+[resource]
+script = ExtResource("1_jpyj5")
+feature_type = 1
+upgrade_name = "AK-47 Joins the rooster"
+upgrade_description = "Unlocks the AK-47 rifle"
+skill_image = SubResource("AtlasTexture_wmu8x")
+upgrade_tier = 0
+is_upgrade = false
+status = 0
+is_percentage = false
+weapon_to_unlock = 5
+ability_to_unlock = ""
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 0.0
+upgrade_cost_base = 50000.0
+upgrade_cost_multiplier = 0.0
+upgrade_max_level = 1
+upgrade_level = 0

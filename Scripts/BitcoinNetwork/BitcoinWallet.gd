@@ -1,7 +1,6 @@
 extends Node2D
-class_name Wallet
+class_name BWallet
 
-signal money_printer_goes(fiat_amount: float)
 signal money_changed(amount_changed: float, is_bitcoin: bool) 
 
 const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
@@ -10,7 +9,7 @@ const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
 var bitcoin_balance: float = 0.0
 var fiat_balance: float = 0.0
 var bitcoin_price: float = 0.0
-var static_bitcoin_price: float = 35000.0
+var static_bitcoin_price: float = 95_000.0
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -20,7 +19,6 @@ func _ready() -> void:
 	BitcoinNetwork.reward_issued.connect(on_reward_issued)
 	request.request_completed.connect(on_request_completed)
 	request.request(API_REQUEST)
-	
 	await request.request_completed
 	
 	var timer: Timer = Timer.new()
@@ -90,12 +88,23 @@ func get_bitcoin_balance() -> float:
 	return bitcoin_balance
 
 func save_data():
-	var wallet_data = BitcoinWalletData.new(bitcoin_balance, fiat_balance, bitcoin_price)
-	SaveSystem.set_var("wallet_data", wallet_data)
+	SaveSystem.set_var(GameManager.WalletDataSaveName, _build_dictionary_to_save())
+
+func _build_dictionary_to_save() -> Dictionary:
+	return {
+		"btc_holdings": bitcoin_balance,
+		"fiat_holdings": fiat_balance,
+		"btc_price": bitcoin_price
+	}
 
 func load_data():
-	var wallet_data = SaveSystem.get_var("wallet_data")
+	if !SaveSystem.has(GameManager.WalletDataSaveName): return
 	
-	self.bitcoin_balance = wallet_data["btc_holdings"]
-	self.fiat_balance = wallet_data["fiat_holdings"]
-	self.bitcoin_price = wallet_data["bitcoin_price"]
+	var data: Dictionary = SaveSystem.get_var(GameManager.WalletDataSaveName)
+
+	bitcoin_balance = data["btc_holdings"]
+	fiat_balance = data["fiat_holdings"]
+	bitcoin_price = data["btc_price"]
+
+func _to_string() -> String:
+	return "BTC holdings: %d\n" % bitcoin_balance + "Fiat Holdings: %d" % fiat_balance + "Current BTC price: %d" % bitcoin_price

@@ -1,12 +1,16 @@
 extends Control
 
 @onready var container: GridContainer = %Grid
-@onready var main_menu_scene: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTreeBitcoin.tscn")
+@onready var main_menu_scene: PackedScene = load("res://Scenes/UI/Main_menu.tscn")
+@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
+@onready var level_one: LevelSelectorButton = $ScrollContainer/Grid/LevelSelectorButton
+
+
 
 var children: Array
 
 func _ready() -> void:
+	level_one.grab_focus()
 	children = container.get_children()
 	for i in children.size():
 		children[i].level_index = i
@@ -30,8 +34,9 @@ func disable_levels() -> void:
 		button.text = str(button.level_index)
 		button.disabled = true
 
-func _on_menu_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(main_menu_scene)
-
-func _on_shop_button_pressed() -> void:
+func _on_skill_tree_pressed() -> void:
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
+
+
+func _on_menu_pressed() -> void:
+	SceneManager.switch_scene_with_packed(main_menu_scene)

@@ -12,7 +12,7 @@ class_name SkillInfoPanelInNode extends Control
 
 
 @onready var skill_title: Label = $PanelContainer/VBoxContainer/SkillTitle
-@onready var skill_description: RichTextLabel = $PanelContainer/VBoxContainer/SkillDescription
+@onready var skill_description: Label = $PanelContainer/VBoxContainer/SkillDescription
 @onready var skill_cost: Label = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/SkillCost
 @onready var fiat_texture: TextureRect = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/FiatTexture
 @onready var btc_texture: TextureRect = $PanelContainer/VBoxContainer/PriceBackground/HBoxContainer/BTCTexture
@@ -70,11 +70,6 @@ func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool
 		price_background.add_theme_stylebox_override("panel", cannot_afford_upgrade_style)
 	else:
 		price_background.add_theme_stylebox_override("panel", can_afford_upgrade_style)
-	
-	
 
 func _get_currency_balance(use_bitcoin) -> float:
-	if use_bitcoin:
-		return BitcoinWallet.get_bitcoin_balance()
-	else:
-		return BitcoinWallet.get_fiat_balance()
+	return BitcoinWallet.get_bitcoin_balance() if use_bitcoin else BitcoinWallet.get_fiat_balance()

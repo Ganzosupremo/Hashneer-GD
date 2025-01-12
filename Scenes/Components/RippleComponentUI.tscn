@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://bth3shtncydri"]
+
+[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="1_qf6bd"]
+[ext_resource type="Script" path="res://Scripts/Components/RipleComponentUI.gd" id="2_qstg6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5xu3d"]
+shader = ExtResource("1_qf6bd")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[node name="RippleComponentUI" type="ColorRect"]
+material = SubResource("ShaderMaterial_5xu3d")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("2_qstg6")

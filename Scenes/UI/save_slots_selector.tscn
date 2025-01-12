@@ -1,7 +1,47 @@
-[gd_scene load_steps=3 format=3 uid="uid://cuc6kdwjoycnp"]
+[gd_scene load_steps=14 format=3 uid="uid://cuc6kdwjoycnp"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_c01e8"]
 [ext_resource type="Script" path="res://Scripts/UI/SaveSlotsSelector.gd" id="1_tniih"]
+[ext_resource type="Shader" path="res://Shaders/SaveSlotsSelectorBG.gdshader" id="2_a4jvq"]
+[ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_vdhhf"]
+[ext_resource type="Texture2D" uid="uid://b5rivhjq0n3tx" path="res://Textures/parallax-space-backgound.png" id="4_6h02o"]
+[ext_resource type="LabelSettings" uid="uid://c14kyf6almnse" path="res://Resources/TitleLabelSettings.tres" id="4_o3l7o"]
+[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="7_owchr"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="8_wwymj"]
+[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="9_3vs7s"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_idm4x"]
+shader = ExtResource("2_a4jvq")
+shader_parameter/background_color = Color(0, 0.0705882, 0.2, 1)
+shader_parameter/line_color = Color(0.865817, 0.424483, 0.111307, 1)
+shader_parameter/line_freq = 9.56
+shader_parameter/height = 0.6
+shader_parameter/speed = 0.2
+shader_parameter/scale = Vector2(2, 16)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iy8hc"]
+shader = ExtResource("9_3vs7s")
+shader_parameter/circle_center = Vector2(-0.55, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(500, 900)
+shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ktxsb"]
+shader = ExtResource("9_3vs7s")
+shader_parameter/circle_center = Vector2(-0.47, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(500, 900)
+shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ostk3"]
+shader = ExtResource("9_3vs7s")
+shader_parameter/circle_center = Vector2(-0.495, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(500, 900)
+shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
+shader_parameter/margin = Vector2(0, 0)
 
 [node name="SaveSlotsSelector" type="Control"]
 layout_mode = 3
@@ -13,6 +53,20 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_tniih")
 
+[node name="Texture" type="TextureRect" parent="."]
+texture_filter = 1
+texture_repeat = 2
+material = SubResource("ShaderMaterial_idm4x")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("1_c01e8")
+texture = ExtResource("4_6h02o")
+
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -20,31 +74,110 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme = ExtResource("1_c01e8")
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 70
 
-[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_c01e8")
+theme_override_constants/separation = 45
+
+[node name="AnimatedLabel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_vdhhf")]
+layout_mode = 2
+text = "Choose a Slu... I Mean Slot"
+label_settings = ExtResource("4_o3l7o")
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters = -1
+visible_ratio = 1.0
+animate_on_ready = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1800, 900)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_c01e8")
 alignment = 1
 
-[node name="SlotButton" type="Button" parent="MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
+[node name="VSeparator4" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
 theme = ExtResource("1_c01e8")
-text = "Enter Game"
 
-[node name="SlotButton2" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="SlotButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_owchr")]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("1_c01e8")
-text = "Enter Game"
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 180
+text = "Slot 3"
+from_center = false
+tween_time = 0.3
+tween_transition = 8
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+enter_rotation = 0.0
 
-[node name="SlotButton3" type="Button" parent="MarginContainer/HBoxContainer"]
+[node name="RippleComponentUI" parent="MarginContainer/VBoxContainer/HBoxContainer/SlotButton" instance=ExtResource("8_wwymj")]
+material = SubResource("ShaderMaterial_iy8hc")
+layout_mode = 1
+
+[node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("1_c01e8")
-text = "Enter Game"
 
-[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton" to="." method="_on_slot_button_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton2" to="." method="_on_slot_button_2_pressed"]
-[connection signal="pressed" from="MarginContainer/HBoxContainer/SlotButton3" to="." method="_on_slot_button_3_pressed"]
+[node name="SlotButton2" parent="MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("7_owchr")]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 180
+text = "Slot 2"
+from_center = false
+tween_time = 0.3
+tween_transition = 8
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+wait_for = NodePath("../SlotButton")
+wait_for_is_child = true
+enter_rotation = 0.0
+
+[node name="RippleComponentUI" parent="MarginContainer/VBoxContainer/HBoxContainer/SlotButton2" instance=ExtResource("8_wwymj")]
+material = SubResource("ShaderMaterial_ktxsb")
+layout_mode = 1
+
+[node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="SlotButton3" parent="MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("7_owchr")]
+custom_minimum_size = Vector2(500, 100)
+layout_mode = 2
+size_flags_horizontal = 1
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 180
+text = "Slot 0"
+from_center = false
+tween_time = 0.3
+tween_transition = 8
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
+wait_for = NodePath("../SlotButton2")
+wait_for_is_child = true
+enter_rotation = 0.0
+
+[node name="RippleComponentUI" parent="MarginContainer/VBoxContainer/HBoxContainer/SlotButton3" instance=ExtResource("8_wwymj")]
+material = SubResource("ShaderMaterial_ostk3")
+layout_mode = 1
+
+[node name="VSeparator3" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton" to="." method="_on_slot_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton2" to="." method="_on_slot_button_2_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton3" to="." method="_on_slot_button_3_pressed"]

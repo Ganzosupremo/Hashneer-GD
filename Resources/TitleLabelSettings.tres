@@ -1,11 +1,11 @@
 [gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://c14kyf6almnse"]
 
-[ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="1_ox40n"]
+[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="1_chn45"]
 
 [resource]
-font = ExtResource("1_ox40n")
-font_size = 69
-outline_size = 7
+font = ExtResource("1_chn45")
+font_size = 100
+outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.569)

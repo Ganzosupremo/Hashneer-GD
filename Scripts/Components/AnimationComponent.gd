@@ -193,17 +193,6 @@ func _connect_signals() -> void:
 			)
 		)
 
-
-"""If the wait_for node is not an animation component node.
-This will check if the animation component is present as a child of the node."""
-#func _has_animation_component() -> bool:
-	#if wait_for is AnimationComponentUI:
-		#return true
-	#elif wait_for is not AnimationComponentUI and wait_for.get_child(0) is AnimationComponentUI:
-		#return true
-	#else:
-		#return false
-
 # --------------- SHAKE ANIMATION PROPERTIES AND METHODS -----------------------------
 
 var x_max: float = 1.5
@@ -241,7 +230,7 @@ func _recenter() -> Tween:
 	tween.tween_property(
 		target, "rotation_degrees", 0, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_IN)
 
-	return tween
+	return tween.finished
 
 
 func _tilt(x: float, rotation: float) -> Tween:

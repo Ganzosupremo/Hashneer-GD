@@ -1,7 +1,7 @@
 extends Node2D
 class_name FireWeaponComponent
 
-signal fire_weapon(has_fired: bool, fired_previous_frame: bool)
+signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplier: float)
 
 @export var player_camera: PlayerCamera
 @export var active_weapon_component: ActiveWeaponComponent
@@ -31,24 +31,23 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	fire_weapon.disconnect(on_fire_weapon)
 
-func on_fire_weapon(_has_fired:bool, _fired_previous_frame: bool) -> void:
-	weapon_fire()
+func on_fire_weapon(_has_fired:bool, _fired_previous_frame: bool, damage_multiplier: float) -> void:
+	weapon_fire(damage_multiplier)
 
-func weapon_fire() -> void:
+func weapon_fire(damage_multiplier: float) -> void:
 	if ready_to_fire():
 		current_weapon = active_weapon_component.get_current_weapon()
-		_sound_effect_component.set_sound(active_weapon_component.get_current_weapon_fire_sound())
+		active_weapon_component.play_sound_on_fire()
 		
 		if player_camera:
 			player_camera.shake(current_weapon.shake_strength, current_weapon.shake_decay)
 		
-		fire_ammo()
+		fire_ammo(damage_multiplier)
 		reset_cooldown_timer()
 
-func fire_ammo() -> void:
+func fire_ammo(damage_multiplier: float) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	#var shoot_effect = active_weapon_component.get_current_weapon().weapon_shoot_effect
-	#_create_fire_effects(shoot_effect)
+	ammo.bullet_damage *= damage_multiplier
 	fire_ammo_async(ammo)
 
 func _create_fire_effects(shoot_effect: ParticleEffectDetails):
@@ -74,8 +73,6 @@ func fire_ammo_async(ammo: AmmoDetails):
 	while ammo_counter < bullets_per_shoot:
 		ammo_counter += 1
 		var bullet: FractureBullet = bullet_scene.instantiate()
-		#var bullet: BulletC = bullet_scene.instantiate()
-		
 		# change if the bullet doesn't spawn on the world
 		owner.owner.add_child(bullet)
 		if not bullet: 
@@ -94,9 +91,7 @@ func fire_ammo_async(ammo: AmmoDetails):
 		
 		_fire_cooldown_timer.start(spawn_interval)
 		await _fire_cooldown_timer.timeout
-	
-	#for sound effects
-	_sound_effect_component.play_sound()
+
 
 func ready_to_fire() -> bool:
 	if fire_rate_cooldown_timer >= 0.0:

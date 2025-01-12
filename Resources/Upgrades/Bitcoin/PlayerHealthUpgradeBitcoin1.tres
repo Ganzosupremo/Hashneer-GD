@@ -1,23 +1,22 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://cv5phm62w12fs"]
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=2 format=3 uid="uid://cv5phm62w12fs"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_82lh6"]
-[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="2_r7jeo"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ruefw"]
-atlas = ExtResource("2_r7jeo")
-region = Rect2(0, 0, 16, 16)
 
 [resource]
+resource_name = "HealthB1SkillNodeData"
 script = ExtResource("1_82lh6")
-upgrade_name = "INCREASE HEALTH"
-upgrade_description = "by 50 HP"
-skill_image = SubResource("AtlasTexture_ruefw")
-upgrade_tier = 1
+feature_type = 3
+upgrade_name = "A half heart"
+upgrade_description = "Increase health by 50 HP."
+upgrade_tier = 2
 is_upgrade = true
 status = 0
 is_percentage = false
+weapon_to_unlock = 0
+ability_to_unlock = ""
 upgrade_base_power = 50.0
 upgrade_power_multiplier = 1.0
-upgrade_cost_base = 1500.0
+upgrade_cost_base = 2500.0
 upgrade_cost_multiplier = 1.05
 upgrade_max_level = 21
+upgrade_level = 0

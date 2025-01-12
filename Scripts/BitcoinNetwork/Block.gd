@@ -26,4 +26,4 @@ func calculate_block_hash() -> String:
 	return res.hex_encode()
 	
 func _to_string() -> String:
-	return "Height: %s" % height + "\n\nTimestamp: %s" % timestamp + "\n\nHash: %s" % block_hash + "\n\nPrevious Hash: %s" % previous_hash + "\n\nData: %s" % data + "\n\nBlock Subsidy: %.2f" % reward
+	return "Height-%d" % height + "\n\nTimestamp-%s" % timestamp + "\n\nHash-%s" % block_hash + "\n\nPrevious Hash-%s" % previous_hash + "\n\nData-%s" % data + "\n\nBlock Subsidy-%.2f" % reward

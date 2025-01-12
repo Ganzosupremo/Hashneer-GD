@@ -36,10 +36,7 @@ func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
 	bg.visible = false
 	emit_signal("scene_switched")
 
-func switch_scene(res_path: String, level_index: int = -1):
-	if level_index != -1:
-		GameManager.current_level_index = level_index
-		PersistenceDataManager.save_game()
+func switch_scene(res_path: String, _level_index: int = -1):
 	call_deferred("_deferred_switch_scene", res_path)
 
 func _deferred_switch_scene(res_path: String):

@@ -1,16 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=7 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
+[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturablePolygonHit.wav" id="2_rdcfh"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_0mtpy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="3_yxxnb"]
+
+[sub_resource type="Resource" id="Resource_0ewf5"]
+script = ExtResource("3_0mtpy")
+sound_volume = 1.0
+audio_stream = ExtResource("2_rdcfh")
+sound_pitch = 1.0
 
 [node name="StaticBody2D" type="StaticBody2D"]
 collision_layer = 8
 collision_mask = 248
 script = ExtResource("1_obgke")
+hit_sound_effect = SubResource("Resource_0ewf5")
 
 [node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
 unique_name_in_owner = true
+max_polyphony = 50
 
 [node name="Health" type="Node2D" parent="."]
 unique_name_in_owner = true

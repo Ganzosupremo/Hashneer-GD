@@ -50,7 +50,7 @@ class_name TweenableButton extends Button
 ## It will fetch the AnimationComponentUI node automatically from this parent. The wait_for var needs to be defined
 @export var wait_for_is_child: bool = false
 ## How much time the animations takes.
-@export var enter_time: float = 1.0
+@export_range(0.0, 1.0, .1) var enter_time: float = .5
 ## The type of transition for the animation.
 @export var enter_transition: Tween.TransitionType
 @export var enter_ease: Tween.EaseType
@@ -58,16 +58,16 @@ class_name TweenableButton extends Button
 @export var enter_delay: float = 0.0
 @export_subgroup("Scaling")
 ## The scale by which the node starts from.
-@export var enter_scale: Vector2 = Vector2.ONE
+@export var enter_scale: Vector2 = Vector2.ZERO
 @export_subgroup("Position")
 ## The position by which the node starts from.
-@export var enter_position: Vector2 = Vector2.ONE
+@export var enter_position: Vector2 = Vector2.ZERO
 @export_subgroup("Size")
 ## The size by which the node starts from.
-@export var enter_size: Vector2 = Vector2.ONE
+@export var enter_size: Vector2 = Vector2.ZERO
 @export_subgroup("Rotation")
 ## The rotation by which the node starts from.
-@export_range(0.0, 360.0, 1.0) var enter_rotation: float = 1.0
+@export_range(0.0, 360.0, 1.0) var enter_rotation: float = 0.0
 @export_subgroup("Modulation")
 ## The modulation by which the node starts from.
 @export var enter_modulate: Color = Color.WHITE

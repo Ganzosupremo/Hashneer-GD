@@ -4,7 +4,6 @@ class_name PlayerController
 @export var speed: float = 200.0
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
-@export var weapons_array: Array = []
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
@@ -18,39 +17,22 @@ class_name PlayerController
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var quadrant_builder: QuadrantBuilder
-var player_details: PlayerDetails
+var player_details: PlayerDetails = PlayerDetails.new()
 var damage_multiplier: float = 1.0
+var weapons_array: Array = []
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
 func _ready() -> void:
-	player_details = GameManager.player_details
 	GameManager.player = self
-	PersistenceDataManager.load_game()
+	player_details = GameManager.player_details.duplicate(true)
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
+	GameManager.current_block_core.destroyed.connect(deactivate_player)
+	GameManager.game_terminated.connect(deactivate_player)
 	set_player()
-
-func set_player():
-	if !player_details: return
-	
-	_apply_stats()
-	
-	initial_weapon = player_details.initial_weapon
-	dead_sound_effect = player_details.dead_sound_effect
-	_sound_effect_component.set_sound(dead_sound_effect)
-	set_weapon()
-
-func set_weapon() -> void:
-	active_weapon.set_weapon(initial_weapon)
-	
-	for weapon in weapons_array:
-		active_weapon.add_weapon_to_list(weapon)
-
-func _on_block_found(_block: BitcoinBlock):
-	can_move = false
 
 func _process(_delta: float) -> void:
 	if !can_move: return
@@ -64,6 +46,31 @@ func _physics_process(_delta) -> void:
 	if !can_move: return
 	move()
 
+## ___________________PUBLIC FUNCTIONS__________________________
+
+func set_player() -> void:
+	if !player_details: return
+	
+	_apply_stats()
+	
+	initial_weapon = player_details.initial_weapon
+	weapons_array = player_details.weapons_array.duplicate(true)
+	dead_sound_effect = player_details.dead_sound_effect
+	_sound_effect_component.set_sound(dead_sound_effect)
+	set_weapon()
+
+func set_weapon() -> void:
+	active_weapon.set_weapon(initial_weapon)
+	
+	for weapon in weapons_array:
+		active_weapon.add_weapon_to_list(weapon)
+
+func deactivate_player() -> void:
+	print("Deactivating player")
+	can_move = false
+
+## ___________________PRIVATE FUNCTIONS__________________________
+
 func _apply_stats() -> void:
 	var stats_array = player_details.apply_stats()
 	
@@ -72,7 +79,7 @@ func _apply_stats() -> void:
 	_health.set_max_health(stats_array[2])
 
 
-## ------------ INPUT FUNCTIONS ------------------------------------
+## ___________________INPUT FUNCTIONS__________________________
 
 func move() -> void:
 	var direction_horizontal : float = Input.get_axis("Move_left", "Move_right")
@@ -100,14 +107,16 @@ func switch_weapon() -> void:
 
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
-		fire_weapon.emit_signal("fire_weapon", true, fired_previous_frame)
+		fire_weapon.emit_signal("fire_weapon", true, fired_previous_frame, damage_multiplier)
 		fired_previous_frame = true
 	else:
 		fired_previous_frame = false
 
 
+## ___________________SIGNAL FUNCTIONS__________________________
+
 func on_zero_power() -> void:
-	can_move = false
+	deactivate_player()
 	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
 	_sound_effect_component.play_sound()
 	tween.tween_property(self, "scale", Vector2(0.0,0.0), 1.5).from_current()
@@ -116,9 +125,10 @@ func on_zero_power() -> void:
 	await tween.finished
 	visible = false
 
+func _on_block_found(_block: BitcoinBlock):
+	deactivate_player()
 
-## ------------------------------------------
-## SETTERS AND GETTERS
+## _________________SETTERS AND GETTERS______________________
 
 func get_max_health() -> float:
 	return _health.get_max_health()
@@ -138,15 +148,15 @@ func get_active_weapon_node() -> ActiveWeaponComponent:
 func get_current_weapon() -> WeaponDetails:
 	return get_active_weapon_node().get_current_weapon()
 
-## ----------- PERSISTENCE DATA FUNCTIONS --------------------------------------
+func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
+	if !weapons_array.has(weapon_to_add):
+		weapons_array.append(weapon_to_add)
+		active_weapon._weapons_list = weapons_array
+
+## ____________________PERSISTENCE DATA FUNCTIONS______________________
 
 func save_data():
-	var data: PlayerData = PlayerData.new(speed, _health.get_initial_health(), active_weapon.get_current_weapon(), active_weapon.weapons_array)
-	SaveSystem.set_var("player_data", data)
-	#data.player_data.current_weapon = active_weapon.get_current_weapon()
-	#data.player_data.weapons_array = weapons_array
+	pass
 
 func load_data():
-	var data = SaveSystem.get_var("player_data")
-	#active_weapon.set_weapon(data["current_weapon"])
-	#weapons_array = data["weapons_array"]
+	pass

@@ -1,57 +1,61 @@
-[gd_scene load_steps=4 format=3 uid="uid://bjsnsabkmnmts"]
+[gd_scene load_steps=6 format=3 uid="uid://bjsnsabkmnmts"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_85mv8"]
 [ext_resource type="Script" path="res://Scripts/UI/weapon_ui.gd" id="1_yet40"]
+[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="3_7t0sr"]
 [ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="3_bwso0"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_g78ha"]
+atlas = ExtResource("3_7t0sr")
+region = Rect2(0, 0, 32, 17)
+
 [node name="WeaponUI" type="Control"]
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 0
 grow_vertical = 0
 mouse_filter = 1
 script = ExtResource("1_yet40")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
+anchors_preset = 2
 anchor_top = 1.0
-anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -300.0
-offset_top = -201.0
-grow_horizontal = 0
+offset_top = -193.0
+offset_right = 300.0
 grow_vertical = 0
-theme = ExtResource("1_85mv8")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 25
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-layout_mode = 2
 theme = ExtResource("1_85mv8")
 theme_override_constants/separation = 5
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 0
+size_flags_vertical = 4
 theme = ExtResource("1_85mv8")
 
-[node name="WeaponTexture" type="TextureRect" parent="MarginContainer/VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("1_85mv8")
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+texture = SubResource("AtlasTexture_g78ha")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="WeaponName" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="WeaponName" type="Label" parent="VBoxContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 20)
 layout_mode = 2
 theme = ExtResource("1_85mv8")
 theme_override_font_sizes/font_size = 38

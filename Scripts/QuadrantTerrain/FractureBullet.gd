@@ -20,19 +20,21 @@ var ammo_details: AmmoDetails
 
 
 func _ready() -> void:
-	# Delete if using the PoolFracture
+	# Delete if using the PoolFracturePool
 	Despawn.connect(despawn)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if state.get_contact_count() <= 0: return
 	
+	var damage_to_deal = ammo_details.bullet_damage * GameManager.player_details.damage_multiplier
+
 	var body = state.get_contact_collider_object(0)
 	if body is FracturableStaticBody2D and body is not BlockCore and quadrant_builder:
 		var pos : Vector2 = state.get_contact_collider_position(0)
-		quadrant_builder.fracture_quadrant_on_collision(pos, body, launch_velocity, ammo_details.bullet_damage, ammo_details.bullet_speed)
+		quadrant_builder.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
 		call_deferred("destroy")
 	elif body is BlockCore and quadrant_builder:
-		quadrant_builder.fracture_all(body, ammo_details.bullet_damage, "Player")
+		quadrant_builder.fracture_all(body, damage_to_deal, "Player")
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
@@ -57,7 +59,7 @@ func despawn(ref) -> void:
 	global_rotation = 0.0
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
-	# Delete if using the PoolFracture
+	# Delete if using the PoolFracturePool
 	queue_free()
 
 
@@ -76,7 +78,7 @@ func _on_Timer_timeout() -> void:
 	destroy()
 
 
-func _on_collision_detection_body_entered(body: Node2D) -> void:
+func _on_collision_detection_body_entered(_body: Node2D) -> void:
 	call_deferred("destroy")
 
 

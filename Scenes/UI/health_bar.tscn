@@ -1,8 +1,42 @@
-[gd_scene load_steps=6 format=3 uid="uid://c5hp70ml1r2a4"]
+[gd_scene load_steps=10 format=3 uid="uid://c5hp70ml1r2a4"]
 
 [ext_resource type="Script" path="res://Scripts/UI/HealthBar.gd" id="1_hkah6"]
 [ext_resource type="Texture2D" uid="uid://ba5kow1u7lg3n" path="res://Textures/UI/HealthBarTexture.png" id="2_bvk6a"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_byxxf"]
+[ext_resource type="Shader" path="res://Shaders/LiquidProgressBar.gdshader" id="4_1b1hd"]
+[ext_resource type="Shader" path="res://Shaders/LiquidFillSphere.gdshader" id="6_p77wj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_gioec"]
+shader = ExtResource("6_p77wj")
+shader_parameter/backFillColour = Color(1, 0.717647, 0, 1)
+shader_parameter/frontFillInnerColour = Color(1, 0.866667, 0, 1)
+shader_parameter/frontFillOuterColour = Color(1, 0.533333, 0, 1)
+shader_parameter/ringColour = Color(0, 0, 0, 1)
+shader_parameter/fresnelColour = Color(1, 0.866667, 0, 1)
+shader_parameter/innerRingGlowColour = Color(1, 0.917647, 0, 1)
+shader_parameter/fillcolour = Color(1, 1, 1, 1)
+shader_parameter/ringWidth = 0.15
+shader_parameter/innerCircleRadiusOffset = 0.0
+shader_parameter/fill_per = 1.0
+shader_parameter/resolution = 64.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o05bc"]
+shader = ExtResource("4_1b1hd")
+shader_parameter/bg_color = Color(0.157274, 0.157274, 0.157274, 1)
+shader_parameter/uv_scale = 1.0
+shader_parameter/percentage = 0.284
+shader_parameter/speed = 1.0
+shader_parameter/wave_1_speed = -1.0
+shader_parameter/wave_2_speed = 1.0
+shader_parameter/wave_1_freq = 1.2
+shader_parameter/wave_2_freq = 1.0
+shader_parameter/wave_1_amp = 0.015
+shader_parameter/wave_2_amp = 0.01
+shader_parameter/sun_dir = Vector3(-0.2, 0.4, 0)
+shader_parameter/water_colour = Color(1, 1, 0, 1)
+shader_parameter/foam_colour = Color(0.922609, 0.92509, 0.143077, 1)
+shader_parameter/sky_colour = Color(0.720682, 0.517528, 0, 1)
+shader_parameter/specular_colour = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r0aya"]
 atlas = ExtResource("2_bvk6a")
@@ -12,29 +46,48 @@ region = Rect2(0, 0, 58, 18)
 atlas = ExtResource("2_bvk6a")
 region = Rect2(58, 0, 58, 18)
 
-[node name="HealthBar" type="Control"]
+[node name="HealthUI" type="Control"]
+custom_minimum_size = Vector2(160, 210)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
 mouse_filter = 2
 script = ExtResource("1_hkah6")
 
-[node name="THealthBar" type="TextureProgressBar" parent="."]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 10)
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(100, 100)
 layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.904
-anchor_bottom = 0.935
-offset_top = 0.207947
-offset_right = 320.0
-offset_bottom = 0.119934
-grow_vertical = 2
-max_value = 200.0
-value = 50.0
+offset_right = 150.0
+offset_bottom = 190.0
+theme = ExtResource("2_byxxf")
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="SphereHealth" type="ColorRect" parent="VBoxContainer"]
+unique_name_in_owner = true
+material = SubResource("ShaderMaterial_gioec")
+custom_minimum_size = Vector2(160, 170)
+layout_mode = 2
+
+[node name="Text" type="Label" parent="VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme = ExtResource("2_byxxf")
+theme_override_font_sizes/font_size = 30
+text = "100 / 100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="THealthBar" type="TextureProgressBar" parent="VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+material = SubResource("ShaderMaterial_o05bc")
+layout_mode = 2
+min_value = 300.0
+max_value = 350.0
+value = 300.0
 nine_patch_stretch = true
 stretch_margin_left = 4
 stretch_margin_top = 4
@@ -42,18 +95,3 @@ stretch_margin_right = 4
 stretch_margin_bottom = 4
 texture_under = SubResource("AtlasTexture_r0aya")
 texture_progress = SubResource("AtlasTexture_fm2w2")
-
-[node name="Text" type="Label" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_top = 0.836
-anchor_bottom = 0.901
-offset_top = 0.271973
-offset_right = 316.0
-offset_bottom = 0.151978
-grow_vertical = 0
-theme = ExtResource("2_byxxf")
-theme_override_font_sizes/font_size = 22
-text = "Power 100 / 100"
-vertical_alignment = 1

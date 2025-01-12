@@ -40,12 +40,12 @@ void fragment() {
 	float effective_beam_width = beam_width * cit + sqrt(pow(beam_height / 2.0, 2.0) - pow(beam_pos - beam_height / 2.0, 2.0));
 	float beam_x = fmod(TIME * noise(ci) * cit, 1.0);
 	float best_distance = min(abs(beam_x - UV.x), 1.0 - abs(beam_x - UV.x));
-	
-	if (beam_pos >= 0.0 && beam_pos <= beam_height && 
+
+	if (beam_pos >= 0.0 && beam_pos <= beam_height &&
 		best_distance <= effective_beam_width) i++;
-	
-	
+
+
 	i = clamp(i, 0.0, t - 1.0);
-	
+
 	COLOR = lerp(top_color, bottom_color, i / (t - 1.0));
 }

@@ -91,7 +91,7 @@ custom_minimum_size = Vector2(200, 300)
 layout_direction = 2
 layout_mode = 2
 theme = ExtResource("1_ibwsi")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 36
 text = "Start Game"
 
 [node name="AnimationComponent" parent="CenterContainer/VBoxContainer/HBoxContainer/StartButton" instance=ExtResource("5_8r3iq")]
@@ -115,7 +115,7 @@ enter_rotation = -10.0
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 theme = ExtResource("1_ibwsi")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 36
 text = "Shop
 "
 
@@ -145,8 +145,9 @@ alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 150)
 layout_mode = 2
+tooltip_text = "I don't do anything yet! So stop pressing me like crazy!"
 theme = ExtResource("1_ibwsi")
-theme_override_font_sizes/font_size = 26
+theme_override_font_sizes/font_size = 36
 text = "Settings
 "
 

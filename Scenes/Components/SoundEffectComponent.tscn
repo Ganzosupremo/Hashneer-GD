@@ -2,5 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Components/SoundEffectComponent.gd" id="1_yju88"]
 
-[node name="SoundEffectComponent" type="AudioStreamPlayer"]
+[node name="SoundEffectComponent" type="AudioStreamPlayer2D"]
+attenuation = 3.86374
+max_polyphony = 10
 script = ExtResource("1_yju88")

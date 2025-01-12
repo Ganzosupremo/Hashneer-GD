@@ -8,8 +8,8 @@ class_name SkillInfoWindow
 @onready var btc_cost: Label = %BTCCost
 
 
-var selected_skill_data: UpgradeData
-var bitcoin_upgrade_data: UpgradeData
+var selected_skill_data: SkillNodeData
+var bitcoin_upgrade_data: SkillNodeData
 
 signal opened
 signal closed
@@ -17,7 +17,7 @@ signal closed
 func _ready() -> void:
 	scale = Vector2.ZERO
 
-func set_info_window(fiat_upgrade: UpgradeData, bitcoin_upgrade: UpgradeData, title, description):
+func set_info_window(fiat_upgrade: SkillNodeData, bitcoin_upgrade: SkillNodeData, title, description):
 	selected_skill_data = fiat_upgrade
 	bitcoin_upgrade_data = bitcoin_upgrade
 	
