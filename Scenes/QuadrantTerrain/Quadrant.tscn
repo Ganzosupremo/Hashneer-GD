@@ -5,7 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturablePolygonHit.wav" id="3_7qa4m"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_12thv"]
 [ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="4_l7pwh"]
-[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_rnr3l"]
+[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_rnr3l"]
 
 [sub_resource type="Resource" id="Resource_ll7g4"]
 script = ExtResource("4_l7pwh")

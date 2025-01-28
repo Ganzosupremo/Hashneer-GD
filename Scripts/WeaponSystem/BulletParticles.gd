@@ -24,8 +24,10 @@ func start_particles():
 This method is used to set the trail particles that the bullet leaves behind,
 to init the particles on collision or for other purposes use the init_particles()
 """
-func set_trail_particles(enabled: bool, _lifetime_randomness, _new_randomness):
-	if enabled: start_particles()
+func set_trail_particles(enabled: bool, data: ParticleEffectDetails):
+	if enabled and data:
+		init_particles(data)
+		start_particles()
 	else: stop_particles()
 
 

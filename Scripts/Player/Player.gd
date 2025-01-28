@@ -9,21 +9,18 @@ class_name PlayerController
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
 @onready var _health: HealthComponent = %Health
-@onready var camera: PlayerCamera = %AdvancedCamera
+@onready var camera: AdvanceCamera = %AdvancedCamera
 @onready var _bullets_pool: PoolFracture = $"../Pool_FractureBullets"
 @onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 #@onready var animation_component: AnimationComponentUI = $AnimationComponent
 
 var fired_previous_frame: bool = false
 var can_move: bool = true
+var input: Vector2 = Vector2.ZERO
 var quadrant_builder: QuadrantBuilder
 var player_details: PlayerDetails = PlayerDetails.new()
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
-
-const implements = [
-	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
-]
 
 func _ready() -> void:
 	GameManager.player = self
@@ -42,9 +39,9 @@ func _process(_delta: float) -> void:
 	look_at(get_global_mouse_position())
 	
 
-func _physics_process(_delta) -> void:
+func _physics_process(delta) -> void:
 	if !can_move: return
-	move()
+	move(delta)
 
 ## ___________________PUBLIC FUNCTIONS__________________________
 
@@ -81,21 +78,20 @@ func _apply_stats() -> void:
 
 ## ___________________INPUT FUNCTIONS__________________________
 
-func move() -> void:
-	var direction_horizontal : float = Input.get_axis("Move_left", "Move_right")
-	var direction_vertical : float = Input.get_axis("Move_up","Move_down")
+func move(delta: float) -> void:
+	# var direction_horizontal : float = Input.get_axis("Move_left", "Move_right")
+	# var direction_vertical : float = Input.get_axis("Move_up","Move_down")
 	
-	if direction_horizontal:
-		velocity.x = direction_horizontal * speed
-	else:
-		velocity.x = move_toward(velocity.x, 0, speed)
-	if direction_vertical:
-		velocity.y = direction_vertical * speed
-	else:
-		velocity.y = move_toward(velocity.y, 0, speed)
+	input = get_input()
+
+	if input == Vector2.ZERO:
+		if velocity.length() > (Constants.Player_Friction * delta):
+			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
+		else: velocity = Vector2.ZERO
 	
-	if direction_horizontal != 0 and direction_vertical != 0:
-		velocity = Vector2(direction_horizontal, direction_vertical) * speed * 0.7
+	else:
+		velocity += (input * Constants.Player_Acceleration * delta)
+		velocity = velocity.limit_length(speed)
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -139,8 +135,15 @@ func get_current_health() -> float:
 func get_health_node() -> HealthComponent:
 	return _health
 
-func get_player_camera() -> PlayerCamera:
+func get_player_camera() -> AdvanceCamera:
 	return camera
+
+func get_input() -> Vector2:
+	var local: Vector2 = Vector2.ZERO
+	local.x = Input.get_axis("Move_left", "Move_right")
+	local.y = Input.get_axis("Move_up","Move_down")
+	return local.normalized()
+
 
 func get_active_weapon_node() -> ActiveWeaponComponent:
 	return active_weapon
@@ -152,11 +155,3 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
 		weapons_array.append(weapon_to_add)
 		active_weapon._weapons_list = weapons_array
-
-## ____________________PERSISTENCE DATA FUNCTIONS______________________
-
-func save_data():
-	pass
-
-func load_data():
-	pass

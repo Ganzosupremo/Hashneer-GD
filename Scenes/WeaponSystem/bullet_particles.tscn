@@ -1,13 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://dyoejfjm6wxw2"]
+[gd_scene load_steps=16 format=3 uid="uid://dyoejfjm6wxw2"]
 
 [ext_resource type="Script" path="res://Scripts/WeaponSystem/BulletParticles.gd" id="1_8o0vt"]
-[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_hmtuq"]
-
-[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_8u631"]
-particles_animation = true
-particles_anim_h_frames = 6
-particles_anim_v_frames = 1
-particles_anim_loop = false
 
 [sub_resource type="Curve" id="Curve_7rtf8"]
 min_value = -360.0
@@ -20,7 +13,7 @@ curve = SubResource("Curve_7rtf8")
 
 [sub_resource type="Gradient" id="Gradient_kg27v"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
+offsets = PackedFloat32Array(0, 0.36044, 0.573626, 0.773626, 1)
 colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_aon5r"]
@@ -28,18 +21,18 @@ gradient = SubResource("Gradient_kg27v")
 
 [sub_resource type="Curve" id="Curve_5sjrm"]
 max_value = 100.0
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_rw1dr"]
 curve = SubResource("Curve_5sjrm")
 
-[sub_resource type="Curve" id="Curve_haijc"]
-_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+[sub_resource type="Curve" id="Curve_h00ji"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CurveTexture" id="CurveTexture_jhn0u"]
-curve = SubResource("Curve_haijc")
+curve = SubResource("Curve_h00ji")
 
 [sub_resource type="Curve" id="Curve_gtffr"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -51,8 +44,12 @@ curve = SubResource("Curve_gtffr")
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u4870"]
 lifetime_randomness = 0.5
 particle_flag_align_y = true
-emission_shape = 1
-emission_sphere_radius = 5.0
+emission_shape_scale = Vector3(1, 1, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 2.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
 direction = Vector3(0, 0, 0)
 spread = 90.0
 initial_velocity_min = 40.0
@@ -60,15 +57,15 @@ initial_velocity_max = 100.0
 angular_velocity_min = 180.0
 angular_velocity_max = 360.0
 angular_velocity_curve = SubResource("CurveTexture_kfp7m")
-gravity = Vector3(0, -15, 0)
+gravity = Vector3(0, 0, 0)
 linear_accel_min = 40.0
 linear_accel_max = 100.0
-radial_accel_min = 50.0
-radial_accel_max = 100.0
-damping_min = 2.0
-damping_max = 5.0
+radial_accel_min = 36.5
+radial_accel_max = 86.5
+damping_max = 10.0
 damping_curve = SubResource("CurveTexture_rw1dr")
-scale_min = 0.4
+scale_min = 0.1
+scale_max = 0.5
 scale_curve = SubResource("CurveTexture_jhn0u")
 color_ramp = SubResource("GradientTexture1D_aon5r")
 turbulence_enabled = true
@@ -79,11 +76,6 @@ turbulence_influence_min = 0.2
 turbulence_influence_max = 0.34
 turbulence_initial_displacement_max = 9.0
 turbulence_influence_over_life = SubResource("CurveTexture_ynkcf")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_di4fx"]
-atlas = ExtResource("1_hmtuq")
-region = Rect2(137, 7, 108, 100)
-filter_clip = true
 
 [sub_resource type="Animation" id="Animation_qhxj8"]
 length = 0.001
@@ -141,12 +133,9 @@ modulate = Color(0.9, 0.9, 0.9, 1)
 light_mask = 32
 visibility_layer = 32
 z_index = 2
-material = SubResource("CanvasItemMaterial_8u631")
 emitting = false
 amount = 125
 process_material = SubResource("ParticleProcessMaterial_u4870")
-texture = SubResource("AtlasTexture_di4fx")
-explosiveness = 1.0
 visibility_rect = Rect2(100, 100, 400, 400)
 script = ExtResource("1_8o0vt")
 

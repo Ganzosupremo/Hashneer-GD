@@ -7,6 +7,7 @@ func _ready() -> void:
 	start_game.grab_focus()
 
 func _on_button_pressed() -> void:
+	await start_game.sound_effect_component_ui.play_sound()
 	SceneManager.switch_scene_with_packed(main_game_packed)
 
 func _on_quit_game_button_pressed() -> void:

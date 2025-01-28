@@ -18,6 +18,9 @@ class_name TweenableButton extends Button
 	"self_modulate",
 ]
 
+@export_group("On Click Sound Effects (Optional)")
+@export var on_click_sound_effect: SoundEffectDetails
+
 @export_category("Properties for Tweening")
 @export_group("Hover Animation Settings")
 @export_subgroup("Tweening Settings")
@@ -72,10 +75,30 @@ class_name TweenableButton extends Button
 ## The modulation by which the node starts from.
 @export var enter_modulate: Color = Color.WHITE
 
+@export_group("Shake Animation Settings")
+## If the pivot point should be below the node.
+@export var pivot_below: bool = false
+## Maximum amount of movement on the x-axis.
+@export var x_max: float = 0.5
+## Maximum amount of rotation.
+@export var r_max: float = 0.5
+## The time it takes to shake. Based on x position.
+@export var stop_threshold: float = 0.1
+## Duration of each tween
+@export var shake_time: float = 0.5
+## The type of transition for the shake animation.
+@export var shake_transition: Tween.TransitionType
+@export var shake_ease: Tween.EaseType
+## Amount of energy retained after each shake.
+@export var recovery_factor: float = 2.0/3.0
+
 @onready var animation_component: AnimationComponentUI = $AnimationComponent
+@onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 
 func _ready() -> void:
 	Utils.copy_properties(self, animation_component)
+	if on_click_sound_effect != null:
+		sound_effect_component_ui.set_sound(on_click_sound_effect)
 
 # ----------------- GETTERS ---------------------
 
@@ -106,5 +129,17 @@ func get_properties() -> Dictionary:
 		"enter_position": enter_position,
 		"enter_size": enter_size,
 		"enter_rotation": enter_rotation,
-		"enter_modulate": enter_modulate
+		"enter_modulate": enter_modulate,
+		"shake_time": shake_time,
+		"shake_transition": shake_transition,
+		"shake_ease": shake_ease,
+		"pivot_below": pivot_below,
+		"x_max": x_max,
+		"r_max": r_max,
+		"stop_threshold": stop_threshold,
+		"recovery_factor": recovery_factor
 	}
+
+
+func _on_mouse_entered() -> void:
+	sound_effect_component_ui.play_sound()

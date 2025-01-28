@@ -55,7 +55,7 @@ float flow(vec2 p) {
 	float z = 2.;
 	float rz = clouds_intesity;
 	vec2 bp = p;
-	
+
 	for(float i = 1.; i < 7.; ++i) {
 		p += localTime() * .6;
 		bp += localTime() * 5.9;
@@ -72,7 +72,7 @@ float flow(vec2 p) {
 }
 
 float rand(vec2 st) {
-	
+
     return fract(sin(dot(st.xy, vec2(12.9898,72.233))) * 53758.5453123);
 }
 
@@ -81,14 +81,14 @@ float rand(vec2 st) {
 void fragment() {
 	vec2 resolution = 1.0 / SCREEN_PIXEL_SIZE;
 	vec2 fragCoord = FRAGCOORD.xy;
-	fragCoord = vec2(fragCoord.x, fragCoord.y - resolution.y );//resolution.y 
-	
+	fragCoord = vec2(fragCoord.x, fragCoord.y - resolution.y );//resolution.y
+
 	vec2 p = fragCoord / resolution - 0.5;
-	
+
 	p.x *= resolution.x / resolution.y;
-	
+
 	p *= clouds_resolution;
-	
+
 	//float red = flow(p * (0.1 / sin(TIME * timeScaleFactor)));
 	//float blue = flow(p * (0.1 / cos(TIME * timeScaleFactor)));
 	//float green = flow(p * (0.1 / sin(TIME * timeScaleFactor)));
@@ -98,20 +98,20 @@ void fragment() {
 	float red = 0.2 * (sin(TIME * 0.1));
 	float blue = 0.1 ;
 	float green = 0.1 ;
-	
-	
+
+
 	float rz = flow(p);
 	vec3 col = vec3(red, blue, green) / rz;
 	col = pow(col, vec3(brightness));
-	
+
 	float stars = 0.0;
-	
+
 	if (rand(SCREEN_UV.xy / 20.0) > 0.995) //0.996
 	{
 		float r = rand(SCREEN_UV.xy);
 		stars = r * (0.5 * sin(TIME * (r * 2.0) + 1000.0 * r) + 0.5);
 	}
-	
+
 	if (stars_on) {
 		COLOR = vec4((col + stars) * colour_muiltiplier.rgb, 1.0) * colour_muiltiplier2;
 	}

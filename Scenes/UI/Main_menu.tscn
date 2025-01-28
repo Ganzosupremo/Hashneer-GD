@@ -1,6 +1,7 @@
-[gd_scene load_steps=16 format=3 uid="uid://d4bsaxj0j3hoc"]
+[gd_scene load_steps=17 format=3 uid="uid://d4bsaxj0j3hoc"]
 
 [ext_resource type="Script" path="res://Scripts/UI/Main_menu.gd" id="1_n1dpb"]
+[ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="2_wg8jh"]
 [ext_resource type="Script" path="res://Scripts/UI/MainMenuParallexackground.gd" id="2_y71ea"]
 [ext_resource type="Texture2D" uid="uid://b5rivhjq0n3tx" path="res://Textures/parallax-space-backgound.png" id="3_rktvw"]
 [ext_resource type="Shader" path="res://Shaders/Black_hole.gdshader" id="4_fwbrq"]
@@ -75,6 +76,11 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_n1dpb")
 
+[node name="AdvancedCamera" parent="." instance=ExtResource("2_wg8jh")]
+position = Vector2(959, 544)
+zoom = Vector2(1, 1)
+magnitude = 3
+
 [node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -111,13 +117,21 @@ focus_neighbor_top = NodePath("../QuitGame")
 focus_neighbor_bottom = NodePath("../QuitGame")
 theme_override_font_sizes/font_size = 51
 text = "Start Game"
-tween_ease = 2
+tween_transition = 11
+tween_ease = 0
 tween_scale = Vector2(0.8, 0.8)
-tween_position = Vector2(0, 0)
+tween_position = Vector2(0, 10)
 enter_time = 0.4
 enter_transition = 6
 enter_delay = 0.5
 enter_rotation = 0.0
+pivot_below = true
+x_max = 7.0
+r_max = 1.0
+stop_threshold = 6.5
+shake_time = 0.15
+shake_transition = 1
+shake_ease = 1
 
 [node name="RippleComponentUI" parent="AspectRatioContainer/FlowContainer/StartGame" instance=ExtResource("6_udh87")]
 material = SubResource("ShaderMaterial_5y1js")
@@ -138,6 +152,7 @@ wait_for_is_child = true
 enter_time = 0.4
 enter_transition = 6
 enter_rotation = 0.0
+shake_transition = 1
 
 [node name="RippleComponentUI" parent="AspectRatioContainer/FlowContainer/QuitGame" instance=ExtResource("6_udh87")]
 material = SubResource("ShaderMaterial_75ayw")

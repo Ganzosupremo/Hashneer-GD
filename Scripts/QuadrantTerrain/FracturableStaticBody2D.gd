@@ -88,6 +88,10 @@ func create_polygon_shape() -> PackedVector2Array:
 func play_sound_on_hit() -> void:
 	_hit_sound_component.play_sound()
 
+func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.Small):
+	GameManager.player.get_player_camera().shake_with_preset(magnitude)
+
+
 # ______________________Geters and Setters_______________________________________
 
 func set_initial_health(initial_health: float) -> void:

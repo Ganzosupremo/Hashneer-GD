@@ -10,11 +10,10 @@ signal Despawn(ref)
 @onready var _timer := %Timer
 @onready var _collision_box_component_polygon: CollisionPolygon2D = %CollisionBoxComponentPolygon
 
-@onready var trail_particles: PackedScene = preload("res://Scenes/WeaponSystem/bullet_particles.tscn")
+@onready var bullet_trail_particles: EffectParticles = %BulletTrailParticles
 @onready var trail: BulletTrailComponent = %BulletTrail
 
-
-var quadrant_builder: QuadrantBuilder = null
+var q_b: QuadrantBuilder = null
 var launch_velocity : float = 0.0
 var ammo_details: AmmoDetails
 
@@ -29,27 +28,26 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var damage_to_deal = ammo_details.bullet_damage * GameManager.player_details.damage_multiplier
 
 	var body = state.get_contact_collider_object(0)
-	if body is FracturableStaticBody2D and body is not BlockCore and quadrant_builder:
+	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
 		var pos : Vector2 = state.get_contact_collider_position(0)
-		quadrant_builder.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
+		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
 		call_deferred("destroy")
-	elif body is BlockCore and quadrant_builder:
-		quadrant_builder.fracture_all(body, damage_to_deal, "Player")
+	elif body is BlockCore and q_b:
+		q_b.fracture_all(body, damage_to_deal, "Player")
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
 	launch_velocity = vel.length()
 
-func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_builder: QuadrantBuilder, ammo_details: AmmoDetails) -> void:
-	setPolygon(PolygonLib.createCirclePolygon(ammo_details.size, 2))
+func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_builder: QuadrantBuilder, ammo_data: AmmoDetails) -> void:
+	self.ammo_details = ammo_data
+	self.q_b = quadrant_builder
 	
-	self.ammo_details = ammo_details
-	self.quadrant_builder = quadrant_builder
-	
+	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 2))
 	set_velocity(launch_vector)
 	global_position = pos
 	_timer.start(lifetime)
-	#set_trail_particles(ammo_details.emits_particles, ammo_details.lifetime_randomness)
+	set_trail_particles()
 	set_bullet_trail(ammo_details.trail_length, ammo_details.trail_gradient)
 	
 	linear_velocity = launch_vector
@@ -86,11 +84,5 @@ func set_bullet_trail(length: int, gradient: Gradient):
 	trail.spawn(length, gradient, ammo_details.trail_width)
 
 
-func set_trail_particles(enabled: bool = true, lifetime_randomness: float = 0.5, randomness: float = 0.5) -> void:
-	var instance: EffectParticles = trail_particles.instantiate()
-	add_child(instance)
-	instance.set_trail_particles(ammo_details.has_trail, lifetime_randomness, randomness)
-	instance.position = global_position
-	instance.randomness = randomness
-	instance.process_material.lifetime_randomness = lifetime_randomness
-	instance.start_particles()
+func set_trail_particles() -> void:
+	bullet_trail_particles.set_trail_particles(ammo_details.emits_trail_particles, ammo_details.particle_trail_details)

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bkqkbj26vyaw7" path="res://Textures/Black Image.png" id="2_ikvkl"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
-[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent.tscn" id="4_7m2w8"]
+[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
 
 [node name="BlockCore" type="StaticBody2D"]
 show_behind_parent = true

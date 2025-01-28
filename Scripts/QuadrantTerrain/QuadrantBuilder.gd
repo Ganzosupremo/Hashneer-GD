@@ -84,7 +84,7 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 		return
 	
 	if _fracture_disabled: return
-	
+	other_body.shake_camera_on_collision(Constants.ShakeMagnitude.Medium)
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	
 	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
@@ -94,7 +94,7 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
 
-"""Fractures the quadrant block,
+"""Fractures the quadrant block core,
 which at the same time will mine a bitcoin block"""
 func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
 	if _fracture_disabled: return

@@ -2,6 +2,7 @@ class_name AnimationComponentUI extends Node
 
 ## Used to signal that the enter animation has finished.
 signal entered
+signal tween_completed
 
 @export_category("General Settings")
 ## Moves the origin point to the center of the node.
@@ -75,6 +76,22 @@ signal entered
 ## The modulation by which the node starts from.
 @export var enter_modulate: Color = Color.WHITE
 
+@export_group("Shake Animation Settings")
+## If the pivot point should be below the node.
+@export var pivot_below: bool = false
+## Maximum amount of movement on the x-axis.
+@export var x_max: float = 0.5
+## Maximum amount of rotation.
+@export var r_max: float = 0.5
+## The time it takes to shake. Based on x position.
+@export var stop_threshold: float = 0.1
+## Duration of each tween
+@export var shake_time: float = 0.5
+## The type of transition for the shake animation.
+@export var shake_transition: Tween.TransitionType
+@export var shake_ease: Tween.EaseType
+## Amount of energy retained after each shake.
+@export var recovery_factor: float = 2.0/3.0
 
 var target: Control
 var default_scale: Vector2
@@ -193,60 +210,70 @@ func _connect_signals() -> void:
 			)
 		)
 
-# --------------- SHAKE ANIMATION PROPERTIES AND METHODS -----------------------------
+func _create_tween() -> Tween:
+	return GameManager.init_tween()
 
-var x_max: float = 1.5
-var rotation_max: float = 10
-const STOP_THRESHOLD: float = 0.1
-const RECOVERY_FACTOR: float = 2.0/3
+func start_shake() -> void:
+	add_shake(pivot_below, x_max, r_max, stop_threshold, shake_time, recovery_factor, shake_transition, shake_ease)
 
-signal tween_completed
+func add_shake(below_pivot: bool, max_x: float, max_r: float, threshold: float = 0.1, tween_duration: float = 0.5, energy_retained: float = 2.0/3.0, transition: Tween.TransitionType = Tween.TRANS_SINE, easing: Tween.EaseType = Tween.EASE_IN_OUT) -> void:
+	if not target: return
 
-func shake_tween():
-	var x = x_max
-	var r = rotation_max
+	var x = max_x
+	var r = max_r
 
-	while x > STOP_THRESHOLD:
-		# Tilt left
-		await _tilt(-x, r)
-		# Tilt right
-		await _tilt(x, r)
-		x *= RECOVERY_FACTOR
-		r *= RECOVERY_FACTOR
+	while x > threshold:
+		var tween: Tween = _tilt_left(below_pivot, x, r, tween_duration, transition, easing)
+		await tween.finished
+		#tween.free()
+		x *= energy_retained
+		r *= energy_retained
 
-	# Return to center
-	await _recenter()
+		_recenter()
 
+		tween = _tilt_right(below_pivot, x, r, tween_duration, transition, easing)
+		await tween.finished
+		#tween.free()
+		x *= energy_retained
+		r *= energy_retained
+
+		_recenter()
+	
 	tween_completed.emit()
 
+func _tilt_left(_below_pivot: bool, x: float, r: float, duration: float = 0.5, transition: Tween.TransitionType = Tween.TRANS_SINE, _ease: Tween.EaseType = Tween.EASE_IN_OUT) -> Tween:
+	var tween = _create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(target, "position:x", -x, duration).set_trans(transition).set_ease(_ease)
+
+	r = -r if _below_pivot else r
+	tween.tween_property(target, "rotation_degrees", r, duration).set_trans(transition).set_ease(_ease)
+
+	tween.play()
+	return tween
+
+func _tilt_right(_below_pivot: bool, x: float, r: float, duration: float = 0.5, transition: Tween.TransitionType = Tween.TRANS_SINE, _ease: Tween.EaseType = Tween.EASE_IN_OUT) -> Tween:
+	var tween = _create_tween()
+
+	tween.tween_property(target, "position:x", x, duration).set_trans(transition).set_ease(_ease)
+
+	r = -r if _below_pivot else r
+	tween.tween_property(target, "rotation_degrees", r, duration).set_trans(transition).set_ease(_ease)
+
+	tween.play()
+	return tween
 
 func _recenter() -> Tween:
 	var tween = _create_tween()
 
-	# Position
-	tween.tween_property(target, "position:x", target.position.x, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_IN)
+	var target_x: float = target.position.x
+	tween.tween_property(target, "position:x", 0.0, shake_time).from(target_x).set_trans(shake_transition).set_ease(shake_ease)
 
-	# Rotation
-	tween.tween_property(
-		target, "rotation_degrees", 0, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_IN)
+	var target_r = target.rotation_degrees
+	tween.tween_property(target, "rotation_degrees", 0.0, shake_time).from(target_r).set_trans(shake_transition).set_ease(shake_ease)
 
-	return tween.finished
-
-
-func _tilt(x: float, rotation: float) -> Tween:
-	var tween = _create_tween()
-
-	# Position (horizontal shake)
-	tween.tween_property(target, "position:x", target.position.x + x, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_OUT)
-
-	# Rotation (tilt)
-	var adjusted_rotation = -rotation if !from_center else rotation
-	tween.tween_property(target, "rotation_degrees", adjusted_rotation, tween_time).set_trans(tween_transition).set_ease(Tween.EASE_OUT)
-
+	tween.play()
 	return tween
-
-func _create_tween() -> Tween:
-	return GameManager.init_tween()
 
 # --------- SETTERS ------------
 

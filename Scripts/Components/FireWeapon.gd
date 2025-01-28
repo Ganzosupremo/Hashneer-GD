@@ -3,7 +3,7 @@ class_name FireWeaponComponent
 
 signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplier: float)
 
-@export var player_camera: PlayerCamera
+@export var player_camera: AdvanceCamera
 @export var active_weapon_component: ActiveWeaponComponent
 
 @onready var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")
@@ -40,7 +40,9 @@ func weapon_fire(damage_multiplier: float) -> void:
 		active_weapon_component.play_sound_on_fire()
 		
 		if player_camera:
-			player_camera.shake(current_weapon.shake_strength, current_weapon.shake_decay)
+			player_camera.shake(current_weapon.amplitude,\
+			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio,\
+			current_weapon.armonic_ration, current_weapon.phase_offset, current_weapon.samples, current_weapon.shake_trans)
 		
 		fire_ammo(damage_multiplier)
 		reset_cooldown_timer()
