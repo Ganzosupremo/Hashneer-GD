@@ -31,10 +31,16 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 @export var upgrade_power_multiplier: float = 1.2
 
 @export_category("Upgrade Cost")
-## The initial cost for this upgrade.
+## The initial cost for this upgrade. It has two base cost because of the inflation/deflation mecanic. Inflation inceases prices in fiat while deflation decreases prices in Bitcoin.
 @export var upgrade_cost_base: float = 10.0
 ## The cost for this upgrade will increase by this multiplier with each purchase.
 @export var upgrade_cost_multiplier: float = 1.2
+
+@export_category("Upgrade Cost Bitcoin")
+## The initial cost for this upgrade. It has two base cost because of the inflation/deflation mecanic. Inflation inceases prices in fiat while deflation decreases prices in Bitcoin.
+@export var upgrade_cost_base_btc: float = 1.0
+## The cost for this upgrade will increase by this multiplier with each purchase.
+@export var upgrade_cost_multiplier_btc: float = 1.1
 
 @export var upgrade_max_level : int = 10
 
@@ -68,7 +74,7 @@ func set_id(id:int = 0) -> void:
 	_id = id
 
 func _buy_with_bitcoin() -> bool:
-	if BitcoinWallet.spend_bitcoin(upgrade_cost()):
+	if BitcoinWallet.spend_bitcoin(upgrade_cost(true)):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
@@ -77,7 +83,7 @@ func _buy_with_bitcoin() -> bool:
 
 
 func _buy_with_fiat() -> bool:
-	if BitcoinWallet.spend_fiat(upgrade_cost()):
+	if BitcoinWallet.spend_fiat(upgrade_cost(false)):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
@@ -118,18 +124,28 @@ func _buy_max(in_bitcoin: bool = false) -> float:
 
 # _________________________COST FUNCTIONS______________________
 
-func upgrade_cost() -> float:
-	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level)
+func upgrade_cost(use_bitcoin: bool = false) -> float:
+	return _upgrade_cost_btc() if use_bitcoin else _upgrade_cost_fiat()
+
+func _upgrade_cost_fiat() -> float:
+	var inflation_adjustment = 1.0 + FED.get_total_inflation()
+	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment
+
+func _upgrade_cost_btc() -> float:
+	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level)
 
 func upgrade_cost_string() -> String:
-	return str(upgrade_cost())
+	return str(_upgrade_cost_fiat())
+
+func upgrade_cost_btc_string() -> String:
+	return str(_upgrade_cost_btc())
 
 # _____________________POWER FUNCTIONS______________________
 
 func get_upgrade_power() -> float:
 	return upgrade_base_power * pow(upgrade_power_multiplier, upgrade_level)
 
-# --------------- OTHER FUNCTIONS -------------------------
+# _____________________OTHER FUNCTIONS_____________________________
 
 func _log(value: float, base: float) -> float:
 	return 2.302585 / log(base) * (log(value) / log(10))
@@ -139,7 +155,7 @@ func check_upgrade_maxed_out() -> bool:
 	if upgrade_level >= upgrade_max_level:
 		if status != SKILL_NODE_STATUS.MAXED_OUT:
 			print("Upgrade maxed out, should become gold now...")
-			emit_signal("upgrade_maxed")
+			upgrade_maxed.emit()
 		status = SKILL_NODE_STATUS.MAXED_OUT
 		return true
 	return false
@@ -148,7 +164,7 @@ func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
 		if status != SKILL_NODE_STATUS.UNLOCKED:
 			print("Next tier node should unlock now...")
-			emit_signal("next_tier_unlocked")
+			next_tier_unlocked.emit()
 		status = SKILL_NODE_STATUS.UNLOCKED
 		return true
 	return false

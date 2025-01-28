@@ -3,16 +3,14 @@ class_name Timechain
 
 signal reward_issued(btc_reward: float)
 signal block_found(block: BitcoinBlock)
-
-## A Bitcoin wallet, it will contain all player funds, fiat and bitcois.
-#@onready var bitcoin_wallet: BitcoinWallet = %BitcoinWallet
+signal halving_occurred(new_subsidy: float)
 
 const COIN: int = 100
 #change to 2.1 mill later
 const TOTAL_COINS: float = 21_000_000.0
 const TOTAL_BLOCKS: int = 105
 
-var coins_in_circulation: float = 0.0
+var bitcoins_in_circulation: float = 0.0
 var halving_interval: int = 21
 var height: int = 0
 var current_reward: float = 0.0
@@ -110,9 +108,13 @@ func _get_block_subsidy() -> float:
 		return 0.0
 	
 	var subsidy = 500 * COIN
+	var previous_subsidy: float = subsidy
 	
 	subsidy >>= halvings
-	coins_in_circulation += subsidy
+	bitcoins_in_circulation += subsidy
+
+	if subsidy != previous_subsidy:
+		halving_occurred.emit(subsidy)
 	
 	if _exceeds_coin_limit_cap():
 		print("Exceeds limit cap")
@@ -121,7 +123,7 @@ func _get_block_subsidy() -> float:
 
 """Returns true if the coins in circulation are more than the TOTAL_COINS"""
 func _exceeds_coin_limit_cap() -> bool:
-	if coins_in_circulation >= TOTAL_COINS:
+	if bitcoins_in_circulation >= TOTAL_COINS:
 		return true
 	return false
 
@@ -136,7 +138,7 @@ func _build_dictionary_to_save() -> Dictionary:
 		"height": height,
 		"current_reward": current_reward,
 		"coins_lost": coins_lost,
-		"coins_in_circulation": coins_in_circulation
+		"bitcoins_in_circulation": bitcoins_in_circulation
 	}
 
 func load_data():
@@ -154,7 +156,7 @@ func load_data():
 	height = data["height"]
 	current_reward = data["current_reward"]
 	coins_lost = data["coins_lost"]
-	coins_in_circulation = data["coins_in_circulation"]
+	bitcoins_in_circulation = data["bitcoins_in_circulation"]
 	loaded = true
 
 

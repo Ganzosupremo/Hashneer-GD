@@ -6,6 +6,8 @@ class_name SkillTreeManager extends Control
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 @onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/Levels_selector.tscn")
 
+var _use_btc_as_currency: bool = false
+
 func _ready() -> void:
 	skill_nodes = _get_skill_nodes()
 	
@@ -27,7 +29,15 @@ func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game(true)
 	SceneManager.switch_scene_with_packed(LEVELS_SELECTOR)
 
-
 func _on_quit_game_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
+
+func set_use_btc_bool(value: bool) -> void:
+	_use_btc_as_currency = value
+
+	for node in skill_nodes:
+		node.set_use_btc_as_currency(_use_btc_as_currency)
+
+func get_use_btc_bool() -> bool:
+	return _use_btc_as_currency

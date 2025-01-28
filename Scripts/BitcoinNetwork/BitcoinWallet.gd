@@ -48,7 +48,7 @@ func add_fiat(amount: float) -> void:
 	if amount <= 0.0: return
 	
 	fiat_balance += amount
-	#emit_signal("money_printer_goes", fiat_balance)
+	
 	emit_signal("money_changed", fiat_balance, false)
 
 func spend_fiat(amount_to_spend: float) -> bool:

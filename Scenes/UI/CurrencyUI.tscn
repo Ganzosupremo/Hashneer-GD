@@ -79,3 +79,27 @@ theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 26
 text = "5555555555555"
 vertical_alignment = 1
+
+[node name="ChangeCurrency" type="PanelContainer" parent="PanelContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+theme = ExtResource("2_vnajj")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/ChangeCurrency"]
+layout_mode = 2
+theme = ExtResource("2_vnajj")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 20
+
+[node name="UseBTCButton" type="CheckButton" parent="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_vnajj")
+theme_override_font_sizes/font_size = 27
+text = "Use BTC?"
+flat = true
+alignment = 1
+
+[connection signal="toggled" from="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer/UseBTCButton" to="." method="_on_use_btc_button_toggled"]

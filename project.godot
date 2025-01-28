@@ -27,12 +27,13 @@ boot_splash/minimum_display_time=1000
 [autoload]
 
 SaveSystem="*res://addons/save_system/save_system.gd"
+PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 GameManager="*res://Scenes/GameManager.tscn"
 SceneManager="*res://Scenes/Scene_manager.tscn"
 Interface="*res://Scripts/Interface.gd"
-PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
+FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 EffectsManager="res://Scripts/Managers/EffectsManager.gd"
 
 [display]

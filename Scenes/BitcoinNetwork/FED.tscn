@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://2fsigrbea2wp"]
+
+[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/FED.gd" id="1_5xcds"]
+
+[node name="FED" type="Node2D"]
+script = ExtResource("1_5xcds")

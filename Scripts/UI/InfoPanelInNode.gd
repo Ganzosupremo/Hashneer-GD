@@ -1,7 +1,5 @@
 class_name SkillInfoPanelInNode extends Control
 
-@export var use_btc_icon: bool = true
-
 @export_category("Price Background Styles")
 ## Used when the player can afford the upgrade.
 @export var can_afford_upgrade_style: StyleBoxFlat
@@ -20,6 +18,7 @@ class_name SkillInfoPanelInNode extends Control
 @onready var price_background: PanelContainer = $PanelContainer/VBoxContainer/PriceBackground
 
 var current_currency: float = 0.0
+var use_btc_icon: bool = false
 
 func _ready() -> void:
 	visible = false
