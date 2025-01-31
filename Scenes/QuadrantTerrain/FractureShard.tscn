@@ -3,14 +3,15 @@
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/ShardFracture.gd" id="1_2mrbc"]
 
 [sub_resource type="Curve" id="Curve_qaurp"]
-_data = [Vector2(0.222222, 0), 0.0, 0.0, 0, 0, Vector2(0.922222, 0.993976), -0.457455, -0.457455, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 1.4, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Polygon2D" type="Polygon2D"]
 script = ExtResource("1_2mrbc")
-lin_drag = 8.0
-ang_drag = 0.5
-gravity_scale = 0.0
+lin_drag = 125.0
+ang_drag = 256.0
+gravity_direction = Vector2(1, 1)
+gravity_scale = 2.0
 lifetime_scale_curve = SubResource("Curve_qaurp")
 
 [node name="Line2D" type="Line2D" parent="."]

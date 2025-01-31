@@ -1,0 +1,28 @@
+[gd_scene load_steps=3 format=3 uid="uid://qunjg2m0sxbv"]
+
+[ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="1_doxdn"]
+[ext_resource type="Script" path="res://block_core_test.gd" id="1_n2d7n"]
+
+[node name="BlockCoreTest" type="Node2D"]
+script = ExtResource("1_n2d7n")
+
+[node name="BlockCore" parent="." instance=ExtResource("1_doxdn")]
+position = Vector2(840, 501)
+randomize_texture_properties = false
+cir_radius = 360.0
+cir_smoothing = 10
+rectangle_size = Vector2(50, 100)
+beam_dir = Vector2(-60, 70)
+beam_distance = 10.0
+beam_start_width = 2.0
+beam_end_width = 9.0
+s_a = 900.0
+s_b = 900.0
+e_n = 1.0
+m = 29.0
+min_n1 = 0.5
+n1 = 0.6
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(971, 540)
+zoom = Vector2(0.35, 0.35)

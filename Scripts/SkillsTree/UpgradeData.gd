@@ -132,7 +132,8 @@ func _upgrade_cost_fiat() -> float:
 	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment
 
 func _upgrade_cost_btc() -> float:
-	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level)
+	var deflation_adjustment = 1.0 + BitcoinNetwork.get_total_deflation()
+	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level) / deflation_adjustment
 
 func upgrade_cost_string() -> String:
 	return str(_upgrade_cost_fiat())

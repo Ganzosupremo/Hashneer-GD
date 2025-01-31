@@ -17,7 +17,6 @@ class_name SkillInfoPanelInNode extends Control
 @onready var animation_component: AnimationComponentUI = $AnimationComponent
 @onready var price_background: PanelContainer = $PanelContainer/VBoxContainer/PriceBackground
 
-var current_currency: float = 0.0
 var use_btc_icon: bool = false
 
 func _ready() -> void:
@@ -30,8 +29,8 @@ func activate_panel(title: String, description: String, cost: float, use_bitcoin
 	animation_component.start_tween()
 
 func deactivate_panel() -> void:
+	price_background.remove_theme_stylebox_override("panel")
 	visible = false
-	animation_component.reset()
 
 func _set_cost_icon(use_bitcoin: bool) -> void:
 	use_btc_icon = use_bitcoin
@@ -44,7 +43,6 @@ func _set_cost_icon(use_bitcoin: bool) -> void:
 
 func change_labels(title: String, description: String, cost: float, is_maxed_out: bool = false) -> void:
 	skill_title.text = title
-	
 	if description.is_empty():
 		skill_description.hide()
 	else:
@@ -58,8 +56,6 @@ func update_cost_label(cost: float, is_maxed_out: bool = false) -> void:
 	skill_cost.text = "WELL DONE!" if is_maxed_out else "%.2f" % cost
 
 func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool = false) -> void:
-	current_currency = _get_currency_balance(use_bitcoin)
-	
 	price_background.remove_theme_stylebox_override("panel")
 	if is_maxed_out:
 		price_background.add_theme_stylebox_override("panel", max_ugraded_style)

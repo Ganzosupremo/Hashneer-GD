@@ -10,7 +10,7 @@ signal Despawn(ref)
 @onready var _timer := %Timer
 @onready var _collision_box_component_polygon: CollisionPolygon2D = %CollisionBoxComponentPolygon
 
-@onready var bullet_trail_particles: EffectParticles = %BulletTrailParticles
+# @onready var bullet_trail_particles: EffectParticles = %BulletTrailParticles
 @onready var trail: BulletTrailComponent = %BulletTrail
 
 var q_b: QuadrantBuilder = null
@@ -47,7 +47,7 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	set_velocity(launch_vector)
 	global_position = pos
 	_timer.start(lifetime)
-	set_trail_particles()
+	#set_trail_particles()
 	set_bullet_trail(ammo_details.trail_length, ammo_details.trail_gradient)
 	
 	linear_velocity = launch_vector
@@ -57,6 +57,7 @@ func despawn(ref) -> void:
 	global_rotation = 0.0
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
+	
 	# Delete if using the PoolFracturePool
 	queue_free()
 
@@ -84,5 +85,5 @@ func set_bullet_trail(length: int, gradient: Gradient):
 	trail.spawn(length, gradient, ammo_details.trail_width)
 
 
-func set_trail_particles() -> void:
-	bullet_trail_particles.set_trail_particles(ammo_details.emits_trail_particles, ammo_details.particle_trail_details)
+# func set_trail_particles() -> void:
+# 	bullet_trail_particles.set_trail_particles(ammo_details.emits_trail_particles, ammo_details.particle_trail_details)

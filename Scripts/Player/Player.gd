@@ -63,7 +63,6 @@ func set_weapon() -> void:
 		active_weapon.add_weapon_to_list(weapon)
 
 func deactivate_player() -> void:
-	print("Deactivating player")
 	can_move = false
 
 ## ___________________PRIVATE FUNCTIONS__________________________
@@ -79,9 +78,6 @@ func _apply_stats() -> void:
 ## ___________________INPUT FUNCTIONS__________________________
 
 func move(delta: float) -> void:
-	# var direction_horizontal : float = Input.get_axis("Move_left", "Move_right")
-	# var direction_vertical : float = Input.get_axis("Move_up","Move_down")
-	
 	input = get_input()
 
 	if input == Vector2.ZERO:

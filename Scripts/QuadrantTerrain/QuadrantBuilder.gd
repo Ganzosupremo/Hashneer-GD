@@ -28,18 +28,81 @@ signal quadrant_hitted(fiat_gained: float)
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
-#@onready var bitcoin_wallet: BWallet = %BWallet
+@onready var map_boundaries: StaticBody2D = %MapBoundaries
+
 
 var polygon_fracture: PolygonFracture
 var _fracture_disabled:bool = false
 var _cur_fracture_color: Color = fracture_body_color
 var builder_args: QuadrantBuilderArgs
+var _map_bounds: Rect2
 static var instance: QuadrantBuilder = self
 
 func _ready() -> void:
+	_calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
 	_init_builder()
+
+func _calculate_map_bounds() -> void:
+	var level_width: float = quadrant_size.x * grid_size.x
+	var level_height: float = quadrant_size.y * grid_size.y
+	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
+	_map_bounds = Rect2(
+		Vector2(-buffer, -buffer),
+		Vector2(level_width + buffer * 2, level_height + buffer * 2)
+	)
+
+	_create_boundary_walls()
+
+func _create_boundary_walls() -> void:
+	# Wall thickness
+	var thickness: float = 75.0
+	var horizontal_offset: float = 1.2
+
+	# Calculate map center
+	var center: Vector2 = Vector2(
+		_map_bounds.position.x + _map_bounds.size.x/2,
+		_map_bounds.position.y + _map_bounds.size.y/2
+	)
+
+	# Calculate adjusted width for top/bottom walls
+	var horizontal_wall_width: float = _map_bounds.size.x * horizontal_offset + thickness * 2
+	
+	var wall_configs: Array = [
+		# Top wall (adjusted width)
+		{
+			"size": Vector2(horizontal_wall_width, thickness),
+			"position": center + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
+		},
+		# Right wall
+		{
+			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+			"position": center + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
+		},
+		# Bottom wall (adjusted width)
+		{
+			"size": Vector2(horizontal_wall_width, thickness),
+			"position": center + Vector2(0, _map_bounds.size.y/2 + thickness/2)
+		},
+		# Left wall
+		{
+			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+			"position": center + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
+		}
+	]
+
+	for config in wall_configs:
+		var wall: StaticBody2D = StaticBody2D.new()
+		var collision_shape: CollisionShape2D = CollisionShape2D.new()
+		var rect_shape: RectangleShape2D = RectangleShape2D.new()
+
+		rect_shape.size = config.size
+		collision_shape.shape = rect_shape
+		wall.position = config.position
+
+		wall.add_child(collision_shape)
+		map_boundaries.add_child(wall)
 
 func _init_builder() -> void:
 	var builder_data: QuadrantBuilderArgs = GameManager.builder_args
@@ -65,8 +128,8 @@ func _init_builder() -> void:
 	quadrants.modulate = _cur_fracture_color
 	
 	_set_player_position()
-	
 	_generate_quadrants(quadrants_initial_health)
+	queue_redraw()
 
 ## Handles the fracturing of the source polygon at the given position.
 ## @param source The source polygon to be fractured.
@@ -84,7 +147,6 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 		return
 	
 	if _fracture_disabled: return
-	other_body.shake_camera_on_collision(Constants.ShakeMagnitude.Medium)
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	
 	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
@@ -120,27 +182,61 @@ func _set_player_position() -> void:
 	## Set the player position to a random position within the grid of quadrants with a little offset
 	## This is to avoid the player to be spawned in the same position as the block core or inside a quadrant
 	var offset: Vector2 = Vector2(20, 20)
-	var max_limit: float = max(quadrant_size.x * grid_size.x, quadrant_size.y * grid_size.y) * 1.1
+	var spawn_point: Vector2 = Vector2.ZERO
+
+		# Choose random edge to spawn
+	match _rng.randi_range(0, 3):
+		0: # Top
+			spawn_point = Vector2(
+				_rng.randf_range(_map_bounds.position.x, _map_bounds.end.x),
+				_map_bounds.position.y + offset.y
+			)
+		1: # Right
+			spawn_point = Vector2(
+				_map_bounds.end.x - offset.x,
+				_rng.randf_range(_map_bounds.position.y, _map_bounds.end.y)
+			)
+		2: # Bottom
+			spawn_point = Vector2(
+				_rng.randf_range(_map_bounds.position.x, _map_bounds.end.x),
+				_map_bounds.end.y - offset.y
+			)
+		3: # Left
+			spawn_point = Vector2(
+				_map_bounds.position.x + offset.x,
+				_rng.randf_range(_map_bounds.position.y, _map_bounds.end.y)
+			)
+	# var max_limit: float = max(quadrant_size.x * grid_size.x, quadrant_size.y * grid_size.y) * 1.1
 	
-	var random_x: float
-	var random_y: float
+	# var random_x: float
+	# var random_y: float
 	
-	# Ensure the player spawns outside the grid boundaries but within the max limit
-	if _rng.randf() < 0.5:
-		random_x = clamp(_rng.randi_range(-1, 0) * quadrant_size.x - offset.x, -max_limit, max_limit)
-	else:
-		random_x = clamp(_rng.randi_range(grid_size.x, grid_size.x + 1) * quadrant_size.x + offset.x, -max_limit, max_limit)
+	# # Ensure the player spawns outside the grid boundaries but within the max limit
+	# if _rng.randf() < 0.5:
+	# 	random_x = clamp(_rng.randi_range(-1, 0) * quadrant_size.x - offset.x, -max_limit, max_limit)
+	# else:
+	# 	random_x = clamp(_rng.randi_range(grid_size.x, grid_size.x + 1) * quadrant_size.x + offset.x, -max_limit, max_limit)
 	
-	if _rng.randf() < 0.5:
-		random_y = clamp(_rng.randi_range(-1, 0) * quadrant_size.y - offset.y, -max_limit, max_limit)
-	else:
-		random_y = clamp(_rng.randi_range(grid_size.y, grid_size.y + 1) * quadrant_size.y + offset.y, -max_limit, max_limit)
+	# if _rng.randf() < 0.5:
+	# 	random_y = clamp(_rng.randi_range(-1, 0) * quadrant_size.y - offset.y, -max_limit, max_limit)
+	# else:
+	# 	random_y = clamp(_rng.randi_range(grid_size.y, grid_size.y + 1) * quadrant_size.y + offset.y, -max_limit, max_limit)
 	
-	player.global_position = Vector2(random_x, random_y)
+	player.global_position = spawn_point
 
 func _set_quadrant_core():
-	var center: Vector2 = quadrant_size * grid_size * 0.5
-	block_core.global_position = center
+	var bounds: Rect2 = block_core.get_bounding_square()
+	var core_size: float = bounds.size.x
+
+	var padding: float = core_size * 0.5
+	var min_pos: Vector2 = Vector2(padding, padding)
+	var max_pos: Vector2 = quadrant_size * grid_size - Vector2i(padding, padding)
+
+	var random_x: float = _rng.randf_range(min_pos.x, max_pos.x)
+	var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
+
+	block_core.global_position = Vector2(random_x, random_y)
+	print("Block core position: ", block_core.global_position)
 	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
@@ -151,7 +247,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 	var source_transform: Transform2D = source.get_global_transform()
 	var cut_transform := Transform2D(cut_rot, cut_pos)
 	
-	var s_mass : float = 0.1
+	var s_mass : float = 1.0
 	
 	var cut_fracture_info: Dictionary = polygon_fracture.cutFracture(source_polygon, cut_shape, source_transform, cut_transform, 1000.0, 500.0, 100.0, 21)
 	
@@ -161,7 +257,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 	
 	for fracture in cut_fracture_info.fractures:
 		for fracture_shard in fracture:
-			var area_p : float = fracture_shard.area / total_area
+			var area_p: float = fracture_shard.area / total_area
 			var rand_lifetime : float = _rng.randf_range(1.5, 2.5) + 2.0 * area_p
 			_spawn_fracture_shards(fracture_shard, source.getTextureInfo(), s_mass * area_p, rand_lifetime)
 	

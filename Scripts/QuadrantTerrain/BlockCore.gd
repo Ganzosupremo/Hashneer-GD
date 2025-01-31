@@ -17,7 +17,7 @@ func _ready() -> void:
 	_rng.randomize()
 	_hit_sound_component.set_sound(hit_sound_effect)
 	if placed_in_level:
-		var poly = create_polygon_shape()
+		var poly: PackedVector2Array = create_polygon_shape()
 		
 		setPolygon(poly)
 		
@@ -31,11 +31,16 @@ func _ready() -> void:
 			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
+
+func _draw() -> void:
+	var bounds = get_bounding_square()
+	draw_rect(bounds, Color.GREEN, false)
+
 """
 This method checks if the block core's health 
 has been reduced to zero before fracturing the core.
 """
-func fracture_all(other_body, cuts: float, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
+func fracture_all(other_body, cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
 	if take_damage(bullet_damage, instakill):
 		_fracture_all(other_body, cuts, min_area, fracture_color, miner)
 	else:
@@ -76,7 +81,7 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_cur_fracture_color = color
 		_shatter_visualizer.self_modulate = _cur_fracture_color
 
-func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
+func _fracture_all(other_body, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 
 	if !core_destroyed:
@@ -90,7 +95,7 @@ func _fracture_all(other_body, cuts: float, min_area: float, fracture_color: Col
 		destroyed.emit()
 		GameManager.level_completed()
 
-func _destroy_block_core(source, cuts: float, min_area: float) -> void:
+func _destroy_block_core(source, cuts: int, min_area: float) -> void:
 	visible = false
 	_shatter_visualizer.visible = false
 	_shatter_line_2d.visible = false

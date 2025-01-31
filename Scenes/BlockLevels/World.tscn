@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=19 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
@@ -26,12 +26,21 @@ glow_hdr_threshold = 0.69
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xpeib"]
 shader = ExtResource("9_5uh2n")
-shader_parameter/bottom_color = Color(0, 0, 0, 1)
-shader_parameter/top_color = Color(0.352941, 0.4, 0.313726, 1)
-shader_parameter/beam_distance = 0.069
-shader_parameter/beam_height = 0.034
-shader_parameter/beam_width = 0.104
-shader_parameter/total_phases = 5
+shader_parameter/polar_coordinates = true
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 5.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 10.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.134027, 0.589603, 0.7744, 1)
+shader_parameter/colour_2 = Color(0.65983, 0.217629, 0.986704, 1)
+shader_parameter/colour_3 = Color(0, 0, 0, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
 
 [node name="World" type="Node2D"]
 
@@ -44,25 +53,22 @@ quadrants_initial_health = 100.0
 grid_size = Vector2i(8, 8)
 fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
 
-[node name="SpawnPosition 1" type="Marker2D" parent="QuadrantBuilder"]
-visible = false
-position = Vector2(1003, -123)
-
-[node name="SpawnPosition 2" type="Marker2D" parent="QuadrantBuilder"]
-visible = false
-position = Vector2(62, -174)
-
-[node name="SpawnPosition 3" type="Marker2D" parent="QuadrantBuilder"]
-visible = false
-position = Vector2(191, -444)
-
-[node name="SpawnPosition 4" type="Marker2D" parent="QuadrantBuilder"]
-visible = false
-position = Vector2(1237, -236)
-
 [node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
 unique_name_in_owner = true
 position = Vector2(649, -456)
+s_a = 150.0
+s_b = 150.0
+min_m = 20.15
+m = 30.0
+min_n1 = 0.4
+n1 = 0.6
+min_n3 = 0.25
+n3 = 0.55
+
+[node name="MapBoundaries" type="StaticBody2D" parent="QuadrantBuilder"]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 497
 
 [node name="Player" parent="." instance=ExtResource("2_d3k6k")]
 unique_name_in_owner = true
@@ -115,8 +121,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("3_fnuy8")
-theme_type_variation = &"Game Background"
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7u0u")
 metadata/_edit_lock_ = true
 
 [node name="GameUI" type="CanvasLayer" parent="."]

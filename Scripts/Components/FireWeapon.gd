@@ -10,7 +10,6 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition
-@onready var effect_particles: PackedScene = preload("res://Scenes/WeaponSystem/bullet_particles.tscn")
 @onready var _fire_cooldown_timer: Timer = %FireCooldownTimer
 @onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 
@@ -51,14 +50,6 @@ func fire_ammo(damage_multiplier: float) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
 	ammo.bullet_damage *= damage_multiplier
 	fire_ammo_async(ammo)
-
-func _create_fire_effects(shoot_effect: ParticleEffectDetails):
-	var ins: EffectParticles = effect_particles.instantiate()
-	add_child(ins)
-	ins.emitting = false
-	ins.init_particles(shoot_effect)
-	ins.position = shoot_effect_position.position
-	ins.start_particles()
 
 # Allows to fire many bullets at once
 func fire_ammo_async(ammo: AmmoDetails):

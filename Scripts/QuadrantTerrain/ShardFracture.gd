@@ -42,8 +42,8 @@ signal Despawn(ref)
 
 
 
-@export var lin_drag : float = 0.0 # (float, 0.0, 256.0, 0.05)
-@export var ang_drag : float = 0.0 # (float, 0.0, 256.0, 0.05)
+@export_range(0.0, 256.0, 0.05) var lin_drag: float = 0.0 # (float, 0.0, 256.0, 0.05)
+@export_range(0.0, 256.0, 0.05) var ang_drag: float = 0.0 # (float, 0.0, 256.0, 0.05)
 @export var gravity_direction: Vector2 = Vector2(0, 1)
 @export var gravity_scale: float = 10.0
 

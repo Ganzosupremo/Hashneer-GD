@@ -1,9 +1,9 @@
 class_name FracturableStaticBody2D extends StaticBody2D
 
-@onready var _polygon2d := $Polygon2D
-@onready var _line2d := $Polygon2D/Line2D
-@onready var _col_polygon2d := $CollisionPolygon2D
-@onready var _rng := RandomNumberGenerator.new()
+@onready var _polygon2d: Polygon2D = $Polygon2D
+@onready var _line2d: Line2D = $Polygon2D/Line2D
+@onready var _col_polygon2d: CollisionPolygon2D = $CollisionPolygon2D
+@onready var _rng: RandomNumberGenerator= RandomNumberGenerator.new()
 @onready var health: HealthComponent = %Health
 @onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
 
@@ -44,10 +44,14 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export var e_n : float = 0
 
 @export_group("Super Shape", "")
-@export var m : float = 0
-@export var n1 : float = 0
-@export var n2 : float = 0
-@export var n3 : float = 0
+@export_range(0.0, 30.0, 0.05) var min_m: float = 0.0
+@export_range(0.0, 30.0, 0.05) var m: float = 20.0
+@export_range(0.0, 1.0, 0.05) var min_n1: float = 0
+@export_range(0.0, 1.0, 0.05) var n1 : float = 0
+@export_range(0.0, 1.0, 0.05) var min_n2: float = 0
+@export_range(0.0, 1.0, 0.05) var n2 : float = 0
+@export_range(0.0, 1.0, 0.05) var min_n3: float = 0
+@export_range(0.0, 1.0, 0.05) var n3 : float = 0
 
 func _ready() -> void:
 	#if hit_sound_effect != null:
@@ -70,6 +74,18 @@ func _ready() -> void:
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
 
+func recreate_polygon_shape() -> void:
+	var poly = create_polygon_shape()
+	setPolygon(poly)
+
+	if randomize_texture_properties and is_instance_valid(poly_texture):
+		var rand_scale : float = _rng.randf_range(0.25, 0.75)
+		var t_size = poly_texture.get_size() / rand_scale
+		var offset_range = t_size.x * 0.25
+		_polygon2d.texture_offset = (t_size / 2) + Vector2(_rng.randf_range(-offset_range, offset_range), _rng.randf_range(-offset_range, offset_range))
+		_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
+		_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
+
 func create_polygon_shape() -> PackedVector2Array:
 	match polygon_shape:
 		PolygonShape.Circular:
@@ -81,7 +97,7 @@ func create_polygon_shape() -> PackedVector2Array:
 		PolygonShape.SuperEllipse:
 			return PolygonLib.createSuperEllipsePolygon(s_p_number, s_a, s_b, e_n, s_start_angle_deg, s_max_angle_deg)
 		PolygonShape.SuperShape:
-			return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, m, n1, n2, n3, s_start_angle_deg, s_max_angle_deg)
+			return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, _rng.randf_range(min_m, m), _rng.randf_range(min_n1, n1), _rng.randf_range(min_n2, n2), _rng.randf_range(min_n3, n3), s_start_angle_deg, s_max_angle_deg)
 		_:
 			return PackedVector2Array([])
 
@@ -152,6 +168,36 @@ func get_polygon() -> PackedVector2Array:
 
 func get_sound_component() -> SoundEffectComponent:
 	return _hit_sound_component
+
+
+func get_bounding_square() -> Rect2:
+	# Get polygon points from shape
+	var points = getPolygon()
+	
+	# Initialize bounds with first point
+	var min_x = points[0].x
+	var max_x = points[0].x
+	var min_y = points[0].y
+	var max_y = points[0].y
+	
+	# Find min/max coordinates
+	for point in points:
+		min_x = min(min_x, point.x)
+		max_x = max(max_x, point.x)
+		min_y = min(min_y, point.y)
+		max_y = max(max_y, point.y)
+	
+	# Calculate dimensions
+	var width = max_x - min_x
+	var height = max_y - min_y
+	var size = max(width, height)
+	
+	# Create square centered on polygon
+	var center = Vector2((min_x + max_x) / 2, (min_y + max_y) / 2)
+	var top_left = center - Vector2(size/2, size/2)
+
+	return Rect2(top_left, Vector2(size, size))
+
 
 """
 Deals damage to this quadrant, returns true if it's health is zero,

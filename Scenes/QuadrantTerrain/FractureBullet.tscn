@@ -39,6 +39,7 @@ default_color = Color(1, 1, 1, 0)
 
 [node name="BulletTrailParticles" parent="." instance=ExtResource("4_avyfh")]
 unique_name_in_owner = true
+visible = false
 top_level = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

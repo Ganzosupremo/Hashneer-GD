@@ -125,7 +125,7 @@ static func restorePolygon(cur_poly : PackedVector2Array, target_poly : PackedVe
 
 #TRIANGULATION
 #-------------------------------------------------------------------------------
-#returns a triangulation dictionary (is used in other funcs parameters)
+##returns a triangulation dictionary (is used in other funcs parameters)
 static func makeTriangles(poly : PackedVector2Array, triangle_points : PackedInt32Array, with_area : bool = true, with_centroid : bool = true) -> Dictionary:
 	var triangles : Array = []
 	var total_area : float = 0.0
@@ -146,17 +146,17 @@ static func makeTriangles(poly : PackedVector2Array, triangle_points : PackedInt
 		triangles.append(makeTriangle(points, area, centroid))
 	return {"triangles" : triangles, "area" : total_area}
 
-#returns a dictionary for triangles
+##returns a dictionary for triangles
 static func makeTriangle(points : PackedVector2Array, area : float, centroid : Vector2) -> Dictionary:
 	return {"points" : points, "area" : area, "centroid" : centroid}
 
-#triangulates a polygon and additionally calculates the centroid and area of each triangle alongside the total area of the polygon
+##triangulates a polygon and additionally calculates the centroid and area of each triangle alongside the total area of the polygon
 static func triangulatePolygon(poly : PackedVector2Array, with_area : bool = true, with_centroid : bool = true) -> Dictionary:
 	var total_area : float = 0.0
 	var triangle_points : PackedInt32Array = Geometry2D.triangulate_polygon(poly)
 	return makeTriangles(poly, triangle_points, with_area, with_centroid)
 
-#triangulates a polygon with the delaunay method and additionally calculates the centroid and area of each triangle alongside the total area of the polygon
+## triangulates a polygon with the delaunay method and additionally calculates the centroid and area of each triangle alongside the total area of the polygon
 static func triangulatePolygonDelaunay(poly : PackedVector2Array, with_area : bool = true, with_centroid : bool = true) -> Dictionary:
 	var total_area : float = 0.0
 	var triangle_points = Geometry2D.triangulate_delaunay(poly)
@@ -168,7 +168,7 @@ static func triangulatePolygonDelaunay(poly : PackedVector2Array, with_area : bo
 
 #UTILITY
 #-------------------------------------------------------------------------------
-#triangulates a polygon and sums the areas of the triangles
+##triangulates a polygon and sums the areas of the triangles
 static func getPolygonArea(poly : PackedVector2Array) -> float:
 	var total_area : float = 0.0
 	var triangle_points = Geometry2D.triangulate_polygon(poly)

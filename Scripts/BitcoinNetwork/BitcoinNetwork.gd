@@ -18,11 +18,20 @@ var coins_lost: float = 0.0
 var chain: Array = []
 var loaded: bool = false
 
+# Deflation parameters
+## The prices will be halved on every halving.
+var deflation_rate: float = 0.5
+## The total deflation since the begginning of times.
+var total_deflation: float = 0.0
+
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
-## ---------------------- PUBLIC FUNCTIONS ---------------------------
+func _ready() -> void:
+	halving_occurred.connect(_on_halving_ocurred)
+
+## __________________________PUBLIC FUNCTIONS________________________________
 
 """Mines and adds the new block to the chain"""
 func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
@@ -70,7 +79,11 @@ func create_block(miner: String) -> BitcoinBlock:
 func get_blockheight() -> int:
 	return height
 
-## ---------------- INTERNAL FUNCTIONS ---------------------------------
+func get_total_deflation() -> float:
+	return total_deflation
+
+
+## _______________________INTERNAL FUNCTIONS________________________________
 
 ## Checks if the new block is valid and hasn't been mined before, returns true if block has
 ## already been mined before, false otherwise
@@ -126,6 +139,10 @@ func _exceeds_coin_limit_cap() -> bool:
 	if bitcoins_in_circulation >= TOTAL_COINS:
 		return true
 	return false
+
+
+func _on_halving_ocurred(_new_subsidy: float) -> void:
+	total_deflation += deflation_rate
 
 ## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 

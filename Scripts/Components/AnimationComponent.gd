@@ -277,6 +277,6 @@ func _recenter() -> Tween:
 
 # --------- SETTERS ------------
 
-func set_properties(properties: Dictionary) -> void:
-	for key in properties.keys():
-			set(key, properties[key])
+func set_properties(base_properties: Dictionary) -> void:
+	for key in base_properties.keys():
+			set(key, base_properties[key])
