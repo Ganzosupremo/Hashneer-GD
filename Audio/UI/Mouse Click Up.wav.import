@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dyo26745f8yy4"
+path="res://.godot/imported/Mouse Click Up.wav-a9455a842b29b5cf24b78ee7434bbd00.sample"
+
+[deps]
+
+source_file="res://Audio/UI/Mouse Click Up.wav"
+dest_files=["res://.godot/imported/Mouse Click Up.wav-a9455a842b29b5cf24b78ee7434bbd00.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

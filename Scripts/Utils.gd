@@ -87,3 +87,37 @@ static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 		if enum_type[key] == _enum:
 			return key
 	return "Unknown Enum"
+
+static func format_currency(amount: int, use_short_format: bool = false) -> String:
+	if use_short_format:
+		return format_short_currency(amount)
+	return format_full_currency(amount)
+
+static func format_full_currency(amount: int) -> String:
+	var str_amount = str(amount)
+	var formatted = ""
+	var count = 0
+	
+	# Work from right to left
+	for i in range(str_amount.length() - 1, -1, -1):
+		if count > 0 and count % 3 == 0:
+			formatted = "," + formatted
+		formatted = str_amount[i] + formatted
+		count += 1
+	
+	return formatted
+
+static func format_short_currency(amount: int) -> String:
+	if amount < 1000:
+		return format_full_currency(amount)
+	
+	var suffixes: Array = ["K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D", "UN", "DD", "TD", "QD", "QQD", "SD", "SSD", "OD", "ND"]
+	var suffix_index: int = 0
+
+	while amount >= 1000 and suffix_index < suffixes.size() - 1:
+		amount /= 1000
+		suffix_index += 1
+	
+	# Round to 1 decimal place
+	var rounded: float = round(amount * 10) / 10
+	return "%s%s" % [str(rounded).trim_suffix(".0"), suffixes[suffix_index-1]]

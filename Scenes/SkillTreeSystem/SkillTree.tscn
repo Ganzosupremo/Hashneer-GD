@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=51 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
@@ -118,7 +118,7 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_thpqi"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8k647"]
 shader = ExtResource("8_co7u8")
 shader_parameter/circle_center = Vector2(-0.35, 0)
 shader_parameter/time = 0.0
@@ -142,6 +142,14 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_umhew"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_dufvt"]
 atlas = ExtResource("23_gapw6")
 region = Rect2(0, 0, 32, 17)
@@ -149,6 +157,14 @@ region = Rect2(0, 0, 32, 17)
 [sub_resource type="AtlasTexture" id="AtlasTexture_0kd05"]
 atlas = ExtResource("23_gapw6")
 region = Rect2(0, 0, 32, 17)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uh0ok"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
 
 [node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
@@ -313,7 +329,6 @@ offset_right = 1188.0
 offset_bottom = 400.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_kb7ay")
-use_bitcoin = true
 icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
 skillnode_data = ExtResource("8_yacem")
 stat_to_upgrade = ExtResource("5_v73wo")
@@ -369,7 +384,7 @@ skillnode_data = ExtResource("20_cet81")
 save_name = "ShotgunUnlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/ShotgunUnlock" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_thpqi")
+material = SubResource("ShaderMaterial_8k647")
 layout_mode = 1
 
 [node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -387,7 +402,6 @@ tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_mbr24")
 expand_icon = true
-use_bitcoin = true
 next_tier_nodes = [NodePath("../SniperUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skillnode_data = ExtResource("11_6em56")
@@ -420,7 +434,7 @@ skillnode_data = ExtResource("13_a2onp")
 save_name = "AWPSniperUnlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/SniperUnlock" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_thpqi")
+material = SubResource("ShaderMaterial_umhew")
 layout_mode = 1
 
 [node name="AK47Unlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
@@ -438,13 +452,12 @@ tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_dufvt")
 expand_icon = true
-use_bitcoin = true
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skillnode_data = ExtResource("23_lm8ko")
 save_name = "AK47Unlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/AK47Unlock" instance=ExtResource("7_hhrbb")]
-material = SubResource("ShaderMaterial_thpqi")
+material = SubResource("ShaderMaterial_uh0ok")
 layout_mode = 1
 
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]

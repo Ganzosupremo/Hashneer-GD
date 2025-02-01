@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=17 format=3 uid="uid://dekniu7v110w4"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="2_e6wyl"]
@@ -6,8 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_7srpc"]
+[ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/UI/MouseEntered.tres" id="6_p5k7w"]
+[ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/UI/MouseDown.tres" id="7_sbxpv"]
 [ext_resource type="PackedScene" uid="uid://j8t0bm46hh8i" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.tscn" id="8_l6k4y"]
+[ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/UI/MouseUp.tres" id="8_mtps6"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="9_2p7q1"]
+[ext_resource type="PackedScene" uid="uid://h856dh64su3t" path="res://Scenes/UIComponents/SoundEffectComponentUI.tscn" id="10_fwr42"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lqf14"]
 font = ExtResource("6_7srpc")
@@ -77,6 +81,9 @@ enabled_label_settings = SubResource("LabelSettings_lqf14")
 disabled_label_settings = SubResource("LabelSettings_wgeri")
 bitcoin_icon = ExtResource("2_e6wyl")
 dollar_icon = ExtResource("5_dcm06")
+on_mouse_entered_effect = ExtResource("6_p5k7w")
+on_mouse_down_effect = ExtResource("7_sbxpv")
+on_mouse_up_effect = ExtResource("8_mtps6")
 
 [node name="CurrencyIcon" type="TextureRect" parent="."]
 layout_mode = 1
@@ -129,7 +136,6 @@ unique_name_in_owner = true
 width = 35.0
 
 [node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
-visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5
@@ -140,14 +146,22 @@ offset_bottom = -90.0
 grow_vertical = 1
 
 [node name="AnimationComponent" parent="." instance=ExtResource("9_2p7q1")]
-tween_time = 0.5
-tween_transition = 11
+enter_animation = true
+tween_time = 0.25
+tween_transition = 10
 tween_ease = 2
 tween_scale = Vector2(0.8, 0.8)
 tween_position = Vector2(0, 0)
 tween_rotation = 0.0
-enter_transition = 4
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 enter_scale = Vector2(0, 0)
 
+[node name="SoundEffectComponentUI" parent="." instance=ExtResource("10_fwr42")]
+bus = &"SFX"
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
 [connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

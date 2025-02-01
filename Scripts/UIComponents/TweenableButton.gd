@@ -19,7 +19,9 @@ class_name TweenableButton extends Button
 ]
 
 @export_group("On Click Sound Effects (Optional)")
-@export var on_click_sound_effect: SoundEffectDetails
+@export var on_mouse_entered_effect: SoundEffectDetails
+@export var on_mouse_down_effect: SoundEffectDetails
+@export var on_mouse_up_effect: SoundEffectDetails
 
 @export_category("Properties for Tweening")
 @export_group("Hover Animation Settings")
@@ -97,8 +99,6 @@ class_name TweenableButton extends Button
 
 func _ready() -> void:
 	Utils.copy_properties(self, animation_component)
-	if on_click_sound_effect != null:
-		sound_effect_component_ui.set_sound(on_click_sound_effect)
 
 # ----------------- GETTERS ---------------------
 
@@ -141,5 +141,16 @@ func get_properties() -> Dictionary:
 	}
 
 
+# __________________SIGNAL____________________________
+
+func _on_button_up() -> void:
+	if sound_effect_component_ui == null: return
+	await sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
+
+func _on_button_down() -> void:
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_down_effect)
+
 func _on_mouse_entered() -> void:
-	sound_effect_component_ui.play_sound()
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)

@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://44b3lqo4rfge"]
+[gd_scene load_steps=8 format=3 uid="uid://44b3lqo4rfge"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_4d2yb"]
 [ext_resource type="Script" path="res://Scripts/UIComponents/TweenableButton.gd" id="2_511jm"]
-[ext_resource type="Resource" uid="uid://j6kh7yx0cxvx" path="res://Resources/Audio/OnClickSoundEffect.tres" id="3_2ta5a"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_cawim"]
+[ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/UI/MouseEntered.tres" id="3_mfelr"]
+[ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/UI/MouseDown.tres" id="4_car5k"]
 [ext_resource type="PackedScene" uid="uid://h856dh64su3t" path="res://Scenes/UIComponents/SoundEffectComponentUI.tscn" id="4_u6drn"]
+[ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/UI/MouseUp.tres" id="5_omgc2"]
 
 [node name="TweenableButton" type="Button"]
 anchors_preset = 8
@@ -24,7 +26,9 @@ theme = ExtResource("1_4d2yb")
 text = "Animated Button"
 script = ExtResource("2_511jm")
 enter_animation = true
-on_click_sound_effect = ExtResource("3_2ta5a")
+on_mouse_entered_effect = ExtResource("3_mfelr")
+on_mouse_down_effect = ExtResource("4_car5k")
+on_mouse_up_effect = ExtResource("5_omgc2")
 tween_time = 0.25
 tween_transition = 4
 tween_ease = 1
@@ -38,3 +42,9 @@ enter_rotation = 360.0
 [node name="AnimationComponent" parent="." instance=ExtResource("3_cawim")]
 
 [node name="SoundEffectComponentUI" parent="." instance=ExtResource("4_u6drn")]
+max_polyphony = 6
+bus = &"SFX"
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]

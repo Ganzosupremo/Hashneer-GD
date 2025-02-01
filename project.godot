@@ -24,6 +24,10 @@ config/macos_native_icon="res://Textures/Icons/Hashneneer Logo.icns"
 config/windows_native_icon="res://Textures/Icons/Hashneneer-Logo.ico"
 boot_splash/minimum_display_time=1000
 
+[audio]
+
+buses/default_bus_layout="res://Resources/MainAudioBus.tres"
+
 [autoload]
 
 SaveSystem="*res://addons/save_system/save_system.gd"

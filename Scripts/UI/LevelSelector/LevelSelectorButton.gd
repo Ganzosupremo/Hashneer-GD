@@ -22,6 +22,9 @@ var level_index: int = 0
 func _ready() -> void:
 	Utils.copy_properties(self, animation_component)
 	self.pressed.connect(on_button_pressed)
+	self.button_down.connect(_on_button_down)
+	self.button_up.connect(_on_button_up)
+	self.mouse_entered.connect(_on_mouse_entered)
 
 func init_builder_args() -> void:
 	builder_args = QuadrantBuilderArgs.new()

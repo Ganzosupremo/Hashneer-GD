@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://dshcft7kpcwn"]
+
+[ext_resource type="AudioStream" uid="uid://c0xrxo8htj88c" path="res://Audio/UI/Mouse Down.wav" id="1_pl1ed"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_uqnry"]
+
+[resource]
+script = ExtResource("1_uqnry")
+sound_volume = 1.0
+audio_stream = ExtResource("1_pl1ed")
+sound_pitch = 1.0

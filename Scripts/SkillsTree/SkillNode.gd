@@ -38,6 +38,11 @@ enum FEATURE_TYPE {
 ## When the skillnode is maxed out, this icon will be displayed.
 @export var icon_on_maxed_out: Texture2D
 
+@export_subgroup("On Click Sound Effects (Optional)")
+@export var on_mouse_entered_effect: SoundEffectDetails
+@export var on_mouse_down_effect: SoundEffectDetails
+@export var on_mouse_up_effect: SoundEffectDetails
+
 @export_group("Skill Node Data Settings")
 @export var skillnode_data : SkillNodeData
 ## If the data is an upgrade and not an unlock, this needs to be specified.
@@ -53,8 +58,8 @@ enum FEATURE_TYPE {
 @onready var skill_line: Line2D = %SkillBranch
 @onready var skill_label_status: Label = %SkillLabel
 @onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
-@onready var animation_component: AnimationComponentUI = $AnimationComponent
 @onready var currency_icon: TextureRect = $CurrencyIcon
+@onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 
 var is_maxed_out: bool = false
 var node_identifier: int = 0
@@ -83,13 +88,11 @@ func _ready() -> void:
 	# 	_unlock_next_tier()
 	# if skillnode_data and skillnode_data.check_upgrade_maxed_out():
 	# 	_on_upgrade_maxed()
-	
 	currency_icon.texture = bitcoin_icon if use_bitcoin else dollar_icon
 
 # ___________________ PUBLIC FUNCTIONS ________________________
 
 func lock() -> void:
-	print_debug("Locked")
 	hide()
 	_set_disabled_state(true)
 	is_unlocked = false
@@ -126,12 +129,13 @@ func _unlock_or_upgrade() -> void:
 
 func _unlock_weapon() -> void:
 	GameManager.unlock_weapon(Utils.weapon_name_to_string(skillnode_data.weapon_to_unlock))
-	print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
+	#print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
 
 func _unlock_ability() -> void:
 	if skillnode_data.ability_to_unlock:
+		pass
 		# Implement the logic to unlock the ability
-		print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
+		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 
 func _upgrade_stat() -> void:
 	current_upgrade_power += skillnode_data.apply_upgrade()
@@ -142,6 +146,9 @@ func _is_next_tier_node_unlocked() -> bool:
 		return node.is_skill_unlocked()
 	
 	return false
+
+func _buy_upgrade() -> bool:
+	return skillnode_data.buy_upgrade(use_bitcoin)
 
 # ______________________UI FUNCTIONS___________________________
 
@@ -195,12 +202,13 @@ func _set_line_points() -> void:
 
 func set_use_btc_as_currency(new_value: bool) -> void:
 	use_bitcoin = new_value
-	print("Use BTC toggled. State ", use_bitcoin)
 
 # _______________________SIGNALS__________________________________
 
 func _on_mouse_entered() -> void:
 	skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
 func _on_mouse_exited() -> void:
 	skill_info_panel.deactivate_panel()
@@ -213,8 +221,13 @@ func _on_skill_pressed() -> void:
 	_update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), is_maxed_out)
 	_unlock_or_upgrade()
 
-func _buy_upgrade() -> bool:
-	return skillnode_data.buy_upgrade(use_bitcoin)
+func _on_button_down() -> void:
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_down_effect)
+
+func _on_button_up() -> void:
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_upgrade_maxed() -> void:
 	show()

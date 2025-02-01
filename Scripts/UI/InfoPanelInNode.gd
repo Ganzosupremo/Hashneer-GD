@@ -8,6 +8,10 @@ class_name SkillInfoPanelInNode extends Control
 ## Used when the upgrade has benn maxed out.
 @export var max_ugraded_style: StyleBoxFlat
 
+@export_group("Label Settings")
+@export var normal_font: LabelSettings
+@export var maxed_out_font: LabelSettings
+
 
 @onready var skill_title: Label = $PanelContainer/VBoxContainer/SkillTitle
 @onready var skill_description: Label = $PanelContainer/VBoxContainer/SkillDescription
@@ -53,14 +57,15 @@ func change_labels(title: String, description: String, cost: float, is_maxed_out
 func update_cost_label(cost: float, is_maxed_out: bool = false) -> void:
 	_change_price_background(use_btc_icon, cost, is_maxed_out)
 	
-	skill_cost.text = "WELL DONE!" if is_maxed_out else "%.2f" % cost
+	skill_cost.text = "WELL DONE!" if is_maxed_out else Utils.format_currency(cost, true)
 
 func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool = false) -> void:
 	price_background.remove_theme_stylebox_override("panel")
 	if is_maxed_out:
 		price_background.add_theme_stylebox_override("panel", max_ugraded_style)
+		skill_cost.label_settings = maxed_out_font
 		return
-	
+	skill_cost.label_settings = normal_font
 	if _get_currency_balance(use_bitcoin) < cost:
 		price_background.add_theme_stylebox_override("panel", cannot_afford_upgrade_style)
 	else:

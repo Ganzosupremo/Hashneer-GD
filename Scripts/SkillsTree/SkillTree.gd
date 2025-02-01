@@ -5,6 +5,8 @@ class_name SkillTreeManager extends Control
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 @onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/Levels_selector.tscn")
+@onready var quit_game: TweenableButton = $FrontLayer/ButtonContainer/QuitGame
+@onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
 
 var _use_btc_as_currency: bool = false
 
@@ -14,6 +16,8 @@ func _ready() -> void:
 	var id: int = 0
 	for node in skill_nodes:
 		node.pressed.connect(Callable(node, "_on_skill_pressed"))
+		#node.button_down.connect(Callable(node, "_on_skill_button_down"))
+		#node.button_up.connect(Callable(node, "_on_skill_button_up"))
 		node.set_node_identifier(id)
 		id += 1
 	PersistenceDataManager.load_game()
@@ -27,9 +31,11 @@ func _get_skill_nodes() -> Array:
 
 func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game(true)
+	await start_game.sound_effect_component_ui.play_sound()
 	SceneManager.switch_scene_with_packed(LEVELS_SELECTOR)
 
 func _on_quit_game_pressed() -> void:
+	await quit_game.sound_effect_component_ui.play_sound()
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()
 
