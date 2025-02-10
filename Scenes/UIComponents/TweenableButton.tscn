@@ -30,16 +30,18 @@ on_mouse_entered_effect = ExtResource("3_mfelr")
 on_mouse_down_effect = ExtResource("4_car5k")
 on_mouse_up_effect = ExtResource("5_omgc2")
 tween_time = 0.25
-tween_transition = 4
-tween_ease = 1
-tween_position = Vector2(20, 1)
+tween_transition = 10
+tween_ease = 2
+tween_scale = Vector2(0.8, 0.8)
+tween_position = Vector2(0, 0)
 tween_rotation = 0.0
-enter_time = 0.69
-enter_transition = 11
-enter_ease = 2
-enter_rotation = 360.0
+enter_time = 0.2
+enter_transition = 7
+enter_ease = 3
 
 [node name="AnimationComponent" parent="." instance=ExtResource("3_cawim")]
+tween_position = Vector2(0, 0)
+tween_rotation = 0.0
 
 [node name="SoundEffectComponentUI" parent="." instance=ExtResource("4_u6drn")]
 max_polyphony = 6

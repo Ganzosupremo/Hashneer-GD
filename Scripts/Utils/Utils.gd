@@ -27,15 +27,15 @@ static func dict_to_resource(dict : Dictionary, target_resource : Resource, debu
 		var key = dict.keys()[i]
 		var value = dict.values()[i]
 		if debug:
-			print_debug("Processing key: ", key, " with value: ", value)
+			print("Processing key: ", key, " with value: ", value)
 		if typeof(value) == TYPE_DICTIONARY:
 			if debug:
-				print_debug("Found dictionary for {0} at key: {1}".format([value, key]))
+				Debugger.print("Found dictionary for {0} at key: {1}".format([value, key]))
 			var sub_res = dict_to_resource(value, target_resource)
 			res.set(key, sub_res)
 		else:
 			if debug:
-				print_debug("Setting key: ", key, " with value: ", value)
+				print("Setting key: ", key, " with value: ", value)
 			res.set(key, value)
 	return res
 

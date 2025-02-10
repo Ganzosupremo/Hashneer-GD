@@ -2,15 +2,15 @@ extends Node2D
 
 signal game_terminated()
 
-@export_category("Player Resources")
+@export_category("Player Resource")
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
 
-@export_category("Weapon Resource")
+@export_category("Weapons Dictionary")
 ## This dictionary is used to store all the weapons available in the game.
 @export var weapon_details_dictionary: Dictionary
-
-@export_category("Stats Resource")
+@export var game_levels: Array[QuadrantBuilderArgs]
+@export_category("Stats Dictionary")
 ## This dictionary is used to store all the stats available in the game.
 @export var base_stats_dictionary: Dictionary = {
 	"speed": 400.0,
@@ -18,13 +18,12 @@ signal game_terminated()
 	"damage_mul": 1.0
 }
 
-var game_levels: Array = []
 var levels_unlocked: int = 1
 var previous_levels_unlocked_index: int = 0
 var current_level: int = 0
 
-var builder_args: QuadrantBuilderArgs
-var player: PlayerController
+var current_builder_args: QuadrantBuilderArgs = null
+var player: PlayerController = null
 var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
@@ -54,6 +53,7 @@ func level_completed() -> void:
 	
 	levels_unlocked += 1
 	previous_levels_unlocked_index = levels_unlocked-1
+	game_terminated.emit()
 
 func player_in_completed_level() -> bool:
 	if levels_unlocked < previous_levels_unlocked_index:
@@ -104,6 +104,23 @@ func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYP
 			player_details.damage_multiplier += value
 		_:
 			printerr("NO STAT FOUND FOR {0}".format([stat_name]))
+
+
+## ___________________________LEVEL SELECTOR FUNCTIONS_____________________________________
+
+func _set_level_index(index: int) -> void:
+	print("Setting Level Index: {0}".format([index]))
+	current_level = index
+
+func _get_level_index() -> int:
+	return current_level
+
+func select_builder_args(index: int) -> void:
+	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args, index]))
+	current_builder_args = game_levels[index]
+
+func get_builder_args() -> QuadrantBuilderArgs:
+	return current_builder_args
 
 ## ___________________________PRIVATE FUNCTIONS______________________________________________
 

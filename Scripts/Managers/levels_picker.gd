@@ -15,8 +15,8 @@ func _ready() -> void:
 	for i in children.size():
 		children[i].level_index = i
 		children[i].init_builder_args()
-		if !GameManager.game_levels.has(i):
-			GameManager.game_levels.append(i)
+		if !GameManager.game_levels.has(children[i].builder_args):
+			GameManager.game_levels.append(children[i].builder_args)
 	disable_levels()
 
 func disable_levels() -> void:

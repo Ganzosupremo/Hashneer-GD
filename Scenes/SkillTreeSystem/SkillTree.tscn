@@ -1,7 +1,8 @@
-[gd_scene load_steps=51 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=52 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
+[ext_resource type="PackedScene" uid="uid://brtsijxypeeo5" path="res://Scenes/UI/LevelSelectorNew.tscn" id="3_23vid"]
 [ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_wkdkc"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
 [ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="5_v73wo"]
@@ -218,11 +219,8 @@ custom_minimum_size = Vector2(140, 50)
 layout_mode = 2
 text = "Quit Game"
 tween_time = 0.3
-tween_ease = 2
-tween_scale = Vector2(0.8, 0.8)
 tween_position = Vector2(20, 0)
 enter_transition = 10
-enter_rotation = 0.0
 
 [node name="RippleComponentUI" parent="FrontLayer/ButtonContainer/QuitGame" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_s5ntv")
@@ -233,19 +231,19 @@ custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 text = "Start Game"
 tween_time = 0.3
-tween_ease = 2
-tween_scale = Vector2(0.8, 0.8)
 tween_position = Vector2(-20, 0)
 wait_for = NodePath("../QuitGame")
 wait_for_is_child = true
 enter_transition = 10
-enter_rotation = 0.0
 
 [node name="RippleComponentUI" parent="FrontLayer/ButtonContainer/StartGame" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_l6eh8")
 layout_mode = 1
 
 [node name="Settings" parent="FrontLayer" instance=ExtResource("22_u5dcr")]
+visible = false
+
+[node name="LevelSelectorNew" parent="FrontLayer" instance=ExtResource("3_23vid")]
 visible = false
 
 [node name="SkillTreeCamera" type="Camera2D" parent="."]

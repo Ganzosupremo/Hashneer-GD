@@ -11,7 +11,7 @@ func _ready() -> void:
 		visible_ratio = 0.0
 	
 	if animate_on_ready:
-		animate_label(.1)
+		animate_label()
 
 func animate_label(speed: float = 0.25) -> void:
 	_animate_text_component.animate_text(speed)

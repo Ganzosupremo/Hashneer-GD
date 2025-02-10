@@ -14,7 +14,7 @@ var damage_to_deal: float = 25.0
 
 func _ready() -> void:
 	_rng.randomize()
-	builder_args = GameManager.builder_args
+	builder_args = GameManager.current_builder_args
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		

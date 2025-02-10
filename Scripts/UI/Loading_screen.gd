@@ -1,4 +1,4 @@
 extends Control
 
 func _ready() -> void:
-	print("Loaded")
+	Debugger.print("Loaded")

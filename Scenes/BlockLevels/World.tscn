@@ -162,7 +162,6 @@ text = "Terminate Session"
 autowrap_mode = 3
 tween_time = 0.5
 tween_transition = 3
-tween_ease = 2
 tween_position = Vector2(-20, 0)
 enter_time = 0.6
 enter_transition = 10

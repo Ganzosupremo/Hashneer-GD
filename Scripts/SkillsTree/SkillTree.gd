@@ -4,9 +4,10 @@ class_name SkillTreeManager extends Control
 @export var player_details: PlayerDetails = PlayerDetails.new()
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-@onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/Levels_selector.tscn")
+@onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/LevelsSelector.tscn")
 @onready var quit_game: TweenableButton = $FrontLayer/ButtonContainer/QuitGame
 @onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
+@onready var level_selector_new: LevelSelectorMenu = $FrontLayer/LevelSelectorNew
 
 var _use_btc_as_currency: bool = false
 
@@ -32,7 +33,7 @@ func _get_skill_nodes() -> Array:
 func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game(true)
 	await start_game.sound_effect_component_ui.play_sound()
-	SceneManager.switch_scene_with_packed(LEVELS_SELECTOR)
+	level_selector_new.open()
 
 func _on_quit_game_pressed() -> void:
 	await quit_game.sound_effect_component_ui.play_sound()

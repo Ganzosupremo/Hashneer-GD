@@ -105,7 +105,7 @@ func _create_boundary_walls() -> void:
 		map_boundaries.add_child(wall)
 
 func _init_builder() -> void:
-	var builder_data: QuadrantBuilderArgs = GameManager.builder_args
+	var builder_data: QuadrantBuilderArgs = GameManager.current_builder_args
 	builder_args = builder_data
 	
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)

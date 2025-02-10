@@ -1,17 +1,17 @@
 extends Resource
 class_name QuadrantBuilderArgs
 
-var quadrant_size: int
-var grid_size: Vector2
-var quadrant_texture: Texture2D
-var hit_sound: SoundEffectDetails
+@export var quadrant_size: int = 200
+@export var grid_size: Vector2 = Vector2(6, 6)
+@export var quadrant_texture: Texture2D
+@export var hit_sound: SoundEffectDetails
 
-var initial_health: float
-var drop_rate_multiplier: float
-var level_index: int
+@export var initial_health: float = 50.0
+@export var drop_rate_multiplier: float = 1.0
+@export var level_index: int = 0
 
-var block_core_cuts_delaunay: int
-var block_core_cut_min_area: float
+@export var block_core_cuts_delaunay: int = 200
+@export var block_core_cut_min_area: float = 100.0
 
 func _init() -> void:
 	quadrant_size = 0

@@ -13,7 +13,6 @@ func _ready() -> void:
 	_on_weapon_setted(_current_weapon)
 
 func _on_weapon_setted(weapon: WeaponDetails) -> void:
-	print_rich("Weapon Setted")
 	_set_active_weapon_state(weapon)
 
 func _set_active_weapon_state(weapon: WeaponDetails) -> void:

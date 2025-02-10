@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=21 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="2_vk5qk"]
@@ -6,6 +6,130 @@
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="4_qrgf1"]
 [ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="5_pjvbh"]
 [ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="6_m48lw"]
+[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="7_dsf0w"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="8_y7pxi"]
+[ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="9_q83hx"]
+[ext_resource type="Texture2D" uid="uid://3duidvbbbgyk" path="res://Textures/BG/medievalTile_14.png" id="10_rtlli"]
+
+[sub_resource type="Resource" id="Resource_2qui5"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 200
+grid_size = Vector2(6, 6)
+quadrant_texture = ExtResource("9_q83hx")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 50.0
+drop_rate_multiplier = 1.0
+level_index = 0
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_rmngw"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 200
+grid_size = Vector2(6, 6)
+quadrant_texture = ExtResource("9_q83hx")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 50.0
+drop_rate_multiplier = 1.0
+level_index = 1
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_885h5"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 250
+grid_size = Vector2(7, 7)
+quadrant_texture = ExtResource("9_q83hx")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 75.0
+drop_rate_multiplier = 1.1
+level_index = 2
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_2pchh"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 275
+grid_size = Vector2(7, 7)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 100.0
+drop_rate_multiplier = 1.2
+level_index = 3
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_vq5xj"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 300
+grid_size = Vector2(8, 8)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 100.0
+drop_rate_multiplier = 1.0
+level_index = 4
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_dxlcl"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 300
+grid_size = Vector2(8, 8)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 100.0
+drop_rate_multiplier = 1.3
+level_index = 5
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_46rwd"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 300
+grid_size = Vector2(8, 8)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 125.0
+drop_rate_multiplier = 1.35
+level_index = 6
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_3ywsn"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 350
+grid_size = Vector2(9, 9)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 175.0
+drop_rate_multiplier = 1.5
+level_index = 7
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_mcmpw"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 350
+grid_size = Vector2(9, 9)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 175.0
+drop_rate_multiplier = 1.6
+level_index = 8
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
+
+[sub_resource type="Resource" id="Resource_2sqe8"]
+script = ExtResource("7_dsf0w")
+quadrant_size = 400
+grid_size = Vector2(10, 10)
+quadrant_texture = ExtResource("10_rtlli")
+hit_sound = ExtResource("8_y7pxi")
+initial_health = 200.0
+drop_rate_multiplier = 1.6
+level_index = 9
+block_core_cuts_delaunay = 200
+block_core_cut_min_area = 100.0
 
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")
@@ -16,3 +140,4 @@ weapon_details_dictionary = {
 "Shotgun": ExtResource("5_pjvbh"),
 "Sniper": ExtResource("6_m48lw")
 }
+game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8")])
