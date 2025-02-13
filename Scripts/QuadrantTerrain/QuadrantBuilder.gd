@@ -126,7 +126,7 @@ func _init_builder() -> void:
 	color.h = _rng.randf()
 	_cur_fracture_color = color
 	block_nodes.modulate = _cur_fracture_color
-	
+
 	_set_player_position()
 	_initialize_grid_of_blocks(quadrants_initial_health)
 

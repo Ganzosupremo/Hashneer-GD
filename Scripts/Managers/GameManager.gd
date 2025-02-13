@@ -29,6 +29,7 @@ var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
 var unlocked_weapons: Dictionary = {}
 var upgraded_stats: Dictionary = {}
+var unlocked_abilities: Dictionary = {}
 
 var loaded: bool = false
 
@@ -89,7 +90,6 @@ func unlock_weapon(weapon_name: String) -> void:
 	else:
 		printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
 
-
 func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYPE) -> void:
 	upgraded_stats[stat_name] = {"value": value, "stat_type": stat_type}
 	match stat_type:
@@ -105,6 +105,8 @@ func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYP
 		_:
 			printerr("NO STAT FOUND FOR {0}".format([stat_name]))
 
+func register_unlocked_ability(ability_id: String) -> void:
+	unlocked_abilities[ability_id] = true
 
 ## ___________________________LEVEL SELECTOR FUNCTIONS_____________________________________
 

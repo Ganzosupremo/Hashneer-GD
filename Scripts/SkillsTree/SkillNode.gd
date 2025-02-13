@@ -137,7 +137,11 @@ func _unlock_weapon() -> void:
 	#print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
 
 func _unlock_ability() -> void:
-	pass
+	if skillnode_data.ability_to_unlock_id == "":
+		print_debug("No ability_id set in skillnode_data.")
+		return
+	
+	GameManager.register_unlocked_ability(skillnode_data.ability_to_unlock_id)
 		# Implement the logic to unlock the ability
 		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 

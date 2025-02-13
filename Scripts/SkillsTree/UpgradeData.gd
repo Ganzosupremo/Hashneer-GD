@@ -20,9 +20,9 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 ## Defines if the upgrade should be in percentage increase or flat increase.
 @export var is_percentage: bool = false
 
-@export_category("Feature Unlock Settings")
+@export_category("Features Unlock Settings")
 @export var weapon_to_unlock: Constants.WeaponNames = Constants.WeaponNames.NONE
-@export var ability_to_unlock: String
+@export var ability_to_unlock_id: String
 
 @export_category("Upgrade Power")
 ## The starting increase of this upgrade.

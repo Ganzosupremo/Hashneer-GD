@@ -5,6 +5,11 @@ class_name PlayerController
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
 
+@export_category("Abilities")
+@export var abilities: Dictionary = {
+	"block_core_finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
+}
+
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
@@ -21,6 +26,8 @@ var quadrant_builder: QuadrantBuilder
 var player_details: PlayerDetails = PlayerDetails.new()
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
+var _loaded_abilities: Dictionary = {}
+
 
 func _ready() -> void:
 	GameManager.player = self
@@ -47,9 +54,10 @@ func _physics_process(delta) -> void:
 
 func set_player() -> void:
 	if !player_details: return
-	
+	_instantiate_abilities()
+	_unlock_saved_abilities()
 	_apply_stats()
-	
+
 	initial_weapon = player_details.initial_weapon
 	weapons_array = player_details.weapons_array.duplicate(true)
 	dead_sound_effect = player_details.dead_sound_effect
@@ -65,7 +73,30 @@ func set_weapon() -> void:
 func deactivate_player() -> void:
 	can_move = false
 
+func unlock_ability(ability_id: String) -> void:
+	if !_loaded_abilities.has(ability_id):
+		print_debug("Ability with ID %s not found in player." % ability_id)		
+		return
+	
+	_loaded_abilities[ability_id].enable()
+	print_debug("Unlocked ability: %s" % ability_id)
+
+
 ## ___________________PRIVATE FUNCTIONS__________________________
+
+func _instantiate_abilities():
+	for ability in abilities:
+		var ability_instance: BaseAbility = abilities[ability].instantiate()
+		if ability_instance is not BaseAbility: return
+
+		ability_instance.disable()
+
+		_loaded_abilities[ability] = ability_instance
+		add_child(ability_instance)
+
+func _unlock_saved_abilities() -> void:
+	for ability_id in GameManager.unlocked_abilities.keys():
+		unlock_ability(ability_id)
 
 func _apply_stats() -> void:
 	var stats_array = player_details.apply_stats()

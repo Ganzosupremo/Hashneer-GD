@@ -27,6 +27,7 @@ func enable() -> void:
 
 func disable() -> void:
 	active = false
+	hide()
 
 ## This method will be overwritten by the child class.
 ## It will contain the logic for the ability.

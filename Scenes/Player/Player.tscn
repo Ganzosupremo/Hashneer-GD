@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=12 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_y4psy"]
@@ -10,7 +10,6 @@
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
 [ext_resource type="PackedScene" uid="uid://tgo2cl26po3f" path="res://Scenes/Components/HealthComponent.tscn" id="7_fkivy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="10_4cnpp"]
-[ext_resource type="PackedScene" uid="uid://di5istg4hebxi" path="res://Scenes/Player/Abilities/BlockCoreFinder.tscn" id="11_jpj4n"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
@@ -59,10 +58,3 @@ max_health = 100.0
 
 [node name="SoundEffectComponent" parent="." instance=ExtResource("10_4cnpp")]
 stream = ExtResource("3_ejl5x")
-
-[node name="BlockCoreFinder" parent="." instance=ExtResource("11_jpj4n")]
-light_mask = 16
-visibility_layer = 16
-ability_name = "Block Core Finder"
-ability_description = "Shows the way to the Block Core for the juicy bitcoins"
-ability_cooldown = 2.5
