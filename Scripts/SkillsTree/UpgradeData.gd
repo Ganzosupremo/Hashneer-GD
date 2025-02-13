@@ -115,10 +115,11 @@ func _buy_max(in_bitcoin: bool = false) -> float:
 	if n >= upgrade_max_level: n = upgrade_max_level
 	upgrade_level += n
 	
-	if check_upgrade_maxed_out():
+	if upgrade_level >= upgrade_max_level:
 		upgrade_level = upgrade_max_level
 	
 	check_next_tier_unlock()
+	check_upgrade_maxed_out()
 	return upgrade_cost() * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
 
 
@@ -153,9 +154,9 @@ func _log(value: float, base: float) -> float:
 
 
 func check_upgrade_maxed_out() -> bool:
-	if upgrade_level >= upgrade_max_level:
+	if upgrade_level == upgrade_max_level:
 		if status != SKILL_NODE_STATUS.MAXED_OUT:
-			print("Upgrade maxed out, should become gold now...")
+			print_debug("Upgrade maxed out, should become gold now...")
 			upgrade_maxed.emit()
 		status = SKILL_NODE_STATUS.MAXED_OUT
 		return true
@@ -164,7 +165,7 @@ func check_upgrade_maxed_out() -> bool:
 func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
 		if status != SKILL_NODE_STATUS.UNLOCKED:
-			print("Next tier node should unlock now...")
+			print_debug("Next tier node should unlock now...")
 			next_tier_unlocked.emit()
 		status = SKILL_NODE_STATUS.UNLOCKED
 		return true

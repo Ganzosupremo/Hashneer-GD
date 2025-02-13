@@ -17,8 +17,8 @@ const implements = [
 
 func _ready() -> void:
 	BitcoinNetwork.reward_issued.connect(on_reward_issued)
-	request.request_completed.connect(on_request_completed)
-	request.request(API_REQUEST)
+	#request.request_completed.connect(on_request_completed)
+	#request.request(API_REQUEST)
 	await request.request_completed
 	
 	var timer: Timer = Timer.new()
@@ -70,6 +70,7 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 		return false
 	
 	bitcoin_balance -= amount_to_spend
+	BitcoinNetwork.set_bitcoins_spent(amount_to_spend)
 	emit_signal("money_changed", bitcoin_balance, true)
 	return true
 

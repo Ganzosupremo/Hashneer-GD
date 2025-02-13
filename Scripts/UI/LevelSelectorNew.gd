@@ -64,7 +64,8 @@ func _update_level_info() -> void:
 	level_name.set_text("Level %d" % (level.level_index + 1))
 	level_size.set_text("Map Size: %dx%d" % [level.grid_size.x, level.grid_size.y])
 	quadrants_health.set_text("Block's Health: %d" % level.initial_health)
-	block_core_health.set_text("Block Core's Health: %d" % level.initial_health)
+	var block_cores_health = level.initial_health * 2.0
+	block_core_health.set_text("Block Core's Health: %d" % block_cores_health)
 
 	_update_button_states()
 

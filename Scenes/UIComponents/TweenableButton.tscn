@@ -16,8 +16,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -125.0
 offset_top = -18.0
-offset_right = 125.0
-offset_bottom = 18.0
+offset_right = 91.0
+offset_bottom = 12.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -41,6 +41,7 @@ enter_ease = 3
 
 [node name="AnimationComponent" parent="." instance=ExtResource("3_cawim")]
 tween_position = Vector2(0, 0)
+tween_size = Vector2(0, 0)
 tween_rotation = 0.0
 
 [node name="SoundEffectComponentUI" parent="." instance=ExtResource("4_u6drn")]

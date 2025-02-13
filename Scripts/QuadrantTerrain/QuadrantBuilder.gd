@@ -14,10 +14,10 @@ signal quadrant_hitted(fiat_gained: float)
 
 @export_group("Block Core Variables")
 @export var block_core_cuts: int = 50
-@export var min_area: float = 100.0
+@export var block_core_min_cut_area: float = 100.0
 
 @onready var player: PlayerController = %Player
-@onready var quadrants: Node2D = %Quadrants
+@onready var block_nodes: Node2D = %Quadrants
 @onready var quadrant_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/Quadrant.tscn")
 @onready var staticbody_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
 
@@ -112,7 +112,7 @@ func _init_builder() -> void:
 	grid_size = builder_data.grid_size
 	
 	block_core_cuts = builder_data.block_core_cuts_delaunay
-	min_area = builder_data.block_core_cut_min_area
+	block_core_min_cut_area = builder_data.block_core_cut_min_area
 	
 	quadrants_initial_health = builder_data.initial_health
 	resource_droprate_multiplier = builder_data.drop_rate_multiplier
@@ -125,11 +125,10 @@ func _init_builder() -> void:
 	color.v = fracture_body_color.v
 	color.h = _rng.randf()
 	_cur_fracture_color = color
-	quadrants.modulate = _cur_fracture_color
+	block_nodes.modulate = _cur_fracture_color
 	
 	_set_player_position()
-	_generate_quadrants(quadrants_initial_health)
-	queue_redraw()
+	_initialize_grid_of_blocks(quadrants_initial_health)
 
 ## Handles the fracturing of the source polygon at the given position.
 ## @param source The source polygon to be fractured.
@@ -162,25 +161,25 @@ func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, min
 	if _fracture_disabled: return
 	
 	other_body.play_sound_on_hit()
-	block_core.fracture_all(other_body, block_core_cuts, min_area, bullet_damage, _cur_fracture_color, instakill, miner)
+	block_core.fracture_all(other_body, block_core_cuts, block_core_min_cut_area, bullet_damage, _cur_fracture_color, instakill, miner)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)
 
-func _generate_quadrants(initial_health: float) -> void:
+func _initialize_grid_of_blocks(initial_health: float) -> void:
 	for i in range(grid_size.x):
 		for j in range(grid_size.y):
-			var quadrant: FracturableStaticBody2D = quadrant_scene.instantiate()
-			quadrants.add_child(quadrant)
-			quadrant.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
-			quadrant.placed_in_level = true
-			quadrant.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-			quadrant.set_fracture_body(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
-	_set_quadrant_core()
+			var block: FracturableStaticBody2D = staticbody_template.instantiate()
+			block_nodes.add_child(block)
+			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
+			block.placed_in_level = true
+			block.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
+			block.set_fracture_body(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
+	_initialize_block_core()
 
 func _set_player_position() -> void:
-	## Set the player position to a random position within the grid of quadrants with a little offset
-	## This is to avoid the player to be spawned in the same position as the block core or inside a quadrant
+	## Set the player position to a random position within the grid of blocks with a little offset
+	## This is to avoid the player to be spawned in the same position as the block core or inside a block
 	var offset: Vector2 = Vector2(20, 20)
 	var spawn_point: Vector2 = Vector2.ZERO
 
@@ -224,7 +223,7 @@ func _set_player_position() -> void:
 	
 	player.global_position = spawn_point
 
-func _set_quadrant_core():
+func _initialize_block_core():
 	var bounds: Rect2 = block_core.get_bounding_square()
 	var core_size: float = bounds.size.x
 
@@ -236,7 +235,7 @@ func _set_quadrant_core():
 	var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
 
 	block_core.global_position = Vector2(random_x, random_y)
-	print("Block core position: ", block_core.global_position)
+	block_core.health.set_max_health(quadrants_initial_health * 2.0) # May change to scale exponentially
 	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:

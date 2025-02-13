@@ -1,6 +1,7 @@
 extends Resource
 class_name QuadrantBuilderArgs
 
+@export var debug_name: String = ""
 @export var quadrant_size: int = 200
 @export var grid_size: Vector2 = Vector2(6, 6)
 @export var quadrant_texture: Texture2D

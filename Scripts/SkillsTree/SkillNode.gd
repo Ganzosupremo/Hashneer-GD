@@ -114,6 +114,11 @@ func set_node_identifier(id: int = 0) -> void:
 	node_identifier = id
 	skillnode_data.set_id(id)
 
+func is_next_tier_unlocked() -> bool:
+	return skillnode_data.check_next_tier_unlock()
+
+func is_this_skill_maxed_out() -> bool:
+	return skillnode_data.check_upgrade_maxed_out()
 # _____________________PRIVATE FUNCTIONS________________________
 
 func _unlock_or_upgrade() -> void:
@@ -132,8 +137,7 @@ func _unlock_weapon() -> void:
 	#print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
 
 func _unlock_ability() -> void:
-	if skillnode_data.ability_to_unlock:
-		pass
+	pass
 		# Implement the logic to unlock the ability
 		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 
@@ -174,7 +178,7 @@ func _hide_next_node_line() -> void:
 			node.skill_line.hide()
 
 func _update_info_panel(cost: float, maxed_out: bool = false) -> void:
-	skill_info_panel.update_cost_label(cost, maxed_out)
+	skill_info_panel.update_cost_label(int(cost), maxed_out)
 
 # ______________________SETTERS___________________________________
 
@@ -206,7 +210,7 @@ func set_use_btc_as_currency(new_value: bool) -> void:
 # _______________________SIGNALS__________________________________
 
 func _on_mouse_entered() -> void:
-	skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
+	skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(use_bitcoin)), use_bitcoin, is_maxed_out)
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
@@ -266,5 +270,8 @@ func load_data() -> void:
 	skillnode_data.upgrade_level = data["upgrade_level"]
 	skillnode_data.status = data["node_state"]
 	
-	if !is_maxed_out:
-		_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings, is_maxed_out)
+	if is_next_tier_unlocked():
+		_unlock_next_tier()
+	if is_this_skill_maxed_out():
+		_on_upgrade_maxed()
+	

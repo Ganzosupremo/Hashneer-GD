@@ -116,8 +116,8 @@ func _get_level_index() -> int:
 	return current_level
 
 func select_builder_args(index: int) -> void:
-	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args, index]))
 	current_builder_args = game_levels[index]
+	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
 
 func get_builder_args() -> QuadrantBuilderArgs:
 	return current_builder_args

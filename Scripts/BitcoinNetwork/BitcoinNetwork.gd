@@ -7,7 +7,7 @@ signal halving_occurred(new_subsidy: float)
 
 const COIN: int = 100
 #change to 2.1 mill later
-const TOTAL_COINS: float = 21_000_000.0
+const TOTAL_COINS: float = 2_100_000.0
 const TOTAL_BLOCKS: int = 105
 
 var bitcoins_in_circulation: float = 0.0
@@ -15,6 +15,7 @@ var halving_interval: int = 21
 var height: int = 0
 var current_reward: float = 0.0
 var coins_lost: float = 0.0
+var coins_spent: float = 0.0
 var chain: Array = []
 var loaded: bool = false
 
@@ -67,6 +68,12 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 func is_current_level_block(block: BitcoinBlock) -> bool:
 	return block.height == GameManager.current_level
 
+func set_bitcoins_in_circulation(value: float) -> void:
+	bitcoins_in_circulation += value
+
+func set_bitcoins_spent(value: float) -> void:
+	coins_spent += value
+
 func get_block_by_id(id: int) -> BitcoinBlock:
 	return chain[id]
 
@@ -82,6 +89,12 @@ func get_blockheight() -> int:
 func get_total_deflation() -> float:
 	return total_deflation
 
+func get_total_bitcoins_in_circulation() -> float:
+	bitcoins_in_circulation = coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
+	return bitcoins_in_circulation
+
+func get_bitcoins_spent() -> float:
+	return coins_spent
 
 ## _______________________INTERNAL FUNCTIONS________________________________
 
@@ -155,7 +168,7 @@ func _build_dictionary_to_save() -> Dictionary:
 		"height": height,
 		"current_reward": current_reward,
 		"coins_lost": coins_lost,
-		"bitcoins_in_circulation": bitcoins_in_circulation
+		"coins_spent": coins_spent
 	}
 
 func load_data():
@@ -173,7 +186,8 @@ func load_data():
 	height = data["height"]
 	current_reward = data["current_reward"]
 	coins_lost = data["coins_lost"]
-	bitcoins_in_circulation = data["bitcoins_in_circulation"]
+	coins_spent = data["coins_spent"]
+	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
 	loaded = true
 
 

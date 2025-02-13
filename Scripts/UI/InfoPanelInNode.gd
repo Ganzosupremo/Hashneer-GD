@@ -26,7 +26,7 @@ var use_btc_icon: bool = false
 func _ready() -> void:
 	visible = false
 
-func activate_panel(title: String, description: String, cost: float, use_bitcoin: bool, is_maxed_out: bool = false) -> void:
+func activate_panel(title: String, description: String, cost: int, use_bitcoin: bool, is_maxed_out: bool = false) -> void:
 	change_labels(title, description, cost, is_maxed_out)
 	_set_cost_icon(use_bitcoin)
 	visible = true
@@ -45,7 +45,7 @@ func _set_cost_icon(use_bitcoin: bool) -> void:
 		fiat_texture.visible = true
 		btc_texture.visible = false
 
-func change_labels(title: String, description: String, cost: float, is_maxed_out: bool = false) -> void:
+func change_labels(title: String, description: String, cost: int, is_maxed_out: bool = false) -> void:
 	skill_title.text = title
 	if description.is_empty():
 		skill_description.hide()
@@ -54,7 +54,7 @@ func change_labels(title: String, description: String, cost: float, is_maxed_out
 	
 	update_cost_label(cost, is_maxed_out)
 
-func update_cost_label(cost: float, is_maxed_out: bool = false) -> void:
+func update_cost_label(cost: int, is_maxed_out: bool = false) -> void:
 	_change_price_background(use_btc_icon, cost, is_maxed_out)
 	
 	skill_cost.text = "WELL DONE!" if is_maxed_out else Utils.format_currency(cost, true)

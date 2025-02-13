@@ -62,7 +62,6 @@ func _ready() -> void:
 		var poly = create_polygon_shape()
 		
 		setPolygon(poly)
-		#_polygon2d.texture = poly_texture
 		
 		
 		if randomize_texture_properties and is_instance_valid(poly_texture):
@@ -199,10 +198,8 @@ func get_bounding_square() -> Rect2:
 	return Rect2(top_left, Vector2(size, size))
 
 
-"""
-Deals damage to this quadrant, returns true if it's health is zero,
-false otherwise
-"""
+## Deals damage to this static body, returns true if it's health is zero,
+## false otherwise
 func take_damage(damage: float, instakill: bool = false) -> bool:
 	if instakill:
 		health.take_damage(1.79769e308)

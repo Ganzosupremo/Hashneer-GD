@@ -55,15 +55,20 @@ fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
 
 [node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
 unique_name_in_owner = true
+show_behind_parent = false
+top_level = true
 position = Vector2(649, -456)
-s_a = 150.0
-s_b = 150.0
-min_m = 20.15
+s_p_number = 30
+s_a = 400.0
+s_b = 400.0
+s_start_angle_deg = 0.0
+min_m = 20.0
 m = 30.0
 min_n1 = 0.4
-n1 = 0.6
-min_n3 = 0.25
-n3 = 0.55
+min_n2 = 0.4
+n2 = 0.45
+min_n3 = 0.4
+n3 = 0.45
 
 [node name="MapBoundaries" type="StaticBody2D" parent="QuadrantBuilder"]
 unique_name_in_owner = true
@@ -104,7 +109,7 @@ position = Vector2(425, 0)
 [node name="MinerAI" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_7o24j")
-time = 120.0
+time = 600.0
 
 [node name="AITimer" type="Timer" parent="MinerAI"]
 unique_name_in_owner = true

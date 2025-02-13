@@ -31,6 +31,10 @@ func _ready() -> void:
 			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("Test_input"):
+		recreate_polygon_shape()
+		queue_redraw()
 
 func _draw() -> void:
 	var bounds = get_bounding_square()
@@ -138,9 +142,10 @@ func _mine_block(miner: String = "Player") -> void:
 
 func _on_slow_down_timer_timeout() -> void:
 	Engine.time_scale = 1.0
-	queue_free()
+	hide()
 
 func setPolygon(poly: PackedVector2Array):
 	super.setPolygon(poly)
+	_line2d.points = poly
 	_shatter_visualizer.polygon = poly
 	_shatter_line_2d.points = poly

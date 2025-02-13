@@ -12,7 +12,7 @@ class_name PlayerController
 @onready var camera: AdvanceCamera = %AdvancedCamera
 @onready var _bullets_pool: PoolFracture = $"../Pool_FractureBullets"
 @onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
-#@onready var animation_component: AnimationComponentUI = $AnimationComponent
+@onready var rotation_container: Node2D = $RotationContainer
 
 var fired_previous_frame: bool = false
 var can_move: bool = true
@@ -36,7 +36,7 @@ func _process(_delta: float) -> void:
 	
 	fire()
 	switch_weapon()
-	look_at(get_global_mouse_position())
+	rotation_container.look_at(get_global_mouse_position())
 	
 
 func _physics_process(delta) -> void:
