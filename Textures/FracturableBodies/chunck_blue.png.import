@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bci7ycpoeqy0v"
-path="res://.godot/imported/bitcoin_monument.jpeg-711c257819d72db8bd70199a2cf5a891.ctex"
+uid="uid://nn54q1sory33"
+path="res://.godot/imported/chunck_blue.png-ff4fd36e7cafa0f56cb56e354f97556e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/bitcoin_monument.jpeg"
-dest_files=["res://.godot/imported/bitcoin_monument.jpeg-711c257819d72db8bd70199a2cf5a891.ctex"]
+source_file="res://Textures/FracturableBodies/chunck_blue.png"
+dest_files=["res://.godot/imported/chunck_blue.png-ff4fd36e7cafa0f56cb56e354f97556e.ctex"]
 
 [params]
 

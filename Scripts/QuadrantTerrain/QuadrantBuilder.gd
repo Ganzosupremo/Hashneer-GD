@@ -18,7 +18,6 @@ signal quadrant_hitted(fiat_gained: float)
 
 @onready var player: PlayerController = %Player
 @onready var block_nodes: Node2D = %Quadrants
-@onready var quadrant_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/Quadrant.tscn")
 @onready var staticbody_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
 
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
@@ -36,7 +35,6 @@ var _fracture_disabled:bool = false
 var _cur_fracture_color: Color = fracture_body_color
 var builder_args: QuadrantBuilderArgs
 var _map_bounds: Rect2
-static var instance: QuadrantBuilder = self
 
 func _ready() -> void:
 	_calculate_map_bounds()
@@ -126,6 +124,7 @@ func _init_builder() -> void:
 	color.h = _rng.randf()
 	_cur_fracture_color = color
 	block_nodes.modulate = _cur_fracture_color
+	_rigid_bodies_parent.modulate = _cur_fracture_color
 
 	_set_player_position()
 	_initialize_grid_of_blocks(quadrants_initial_health)
@@ -174,7 +173,7 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
 			block.placed_in_level = true
 			block.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-			block.set_fracture_body(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
+			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
 	_initialize_block_core()
 
 func _set_player_position() -> void:
@@ -205,22 +204,6 @@ func _set_player_position() -> void:
 				_map_bounds.position.x + offset.x,
 				_rng.randf_range(_map_bounds.position.y, _map_bounds.end.y)
 			)
-	# var max_limit: float = max(quadrant_size.x * grid_size.x, quadrant_size.y * grid_size.y) * 1.1
-	
-	# var random_x: float
-	# var random_y: float
-	
-	# # Ensure the player spawns outside the grid boundaries but within the max limit
-	# if _rng.randf() < 0.5:
-	# 	random_x = clamp(_rng.randi_range(-1, 0) * quadrant_size.x - offset.x, -max_limit, max_limit)
-	# else:
-	# 	random_x = clamp(_rng.randi_range(grid_size.x, grid_size.x + 1) * quadrant_size.x + offset.x, -max_limit, max_limit)
-	
-	# if _rng.randf() < 0.5:
-	# 	random_y = clamp(_rng.randi_range(-1, 0) * quadrant_size.y - offset.y, -max_limit, max_limit)
-	# else:
-	# 	random_y = clamp(_rng.randi_range(grid_size.y, grid_size.y + 1) * quadrant_size.y + offset.y, -max_limit, max_limit)
-	
 	player.global_position = spawn_point
 
 func _initialize_block_core():
@@ -297,8 +280,4 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.global_rotation = shape_info.spawn_rot
 	instance_staticbody.set_polygon(shape_info.centered_shape)
 	instance_staticbody.self_modulate = color
-	instance_staticbody.set_fracture_body(quadrants_initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
-	instance_staticbody.setTexture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
-
-static func get_instance() -> QuadrantBuilder:
-	return instance
+	instance_staticbody.set_fracture_body(quadrants_initial_health, shape_info, texture_info, builder_args.hit_sound)

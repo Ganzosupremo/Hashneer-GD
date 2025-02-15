@@ -1,9 +1,34 @@
-[gd_scene load_steps=6 format=3 uid="uid://bjsnsabkmnmts"]
+[gd_scene load_steps=9 format=3 uid="uid://bjsnsabkmnmts"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_85mv8"]
 [ext_resource type="Script" path="res://Scripts/UI/weapon_ui.gd" id="1_yet40"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="3_7t0sr"]
 [ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="3_bwso0"]
+[ext_resource type="Shader" path="res://Shaders/DiscretSunset.gdshader" id="3_y8kfk"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lpr62"]
+shader = ExtResource("3_y8kfk")
+shader_parameter/polar_coordinates = true
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 10.0
+shader_parameter/spin_rotation = null
+shader_parameter/spin_speed = 20.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.284999, 0.574857, 0.999987, 1)
+shader_parameter/colour_2 = Color(0.694513, 0, 0.0163672, 1)
+shader_parameter/colour_3 = Color(0, 0, 0, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.12
+shader_parameter/pixel_filter = 700.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6baf"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+corner_detail = 1
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g78ha"]
 atlas = ExtResource("3_7t0sr")
@@ -31,12 +56,14 @@ theme = ExtResource("1_85mv8")
 theme_override_constants/separation = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
+material = SubResource("ShaderMaterial_lpr62")
 clip_contents = true
 custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_85mv8")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y6baf")
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2

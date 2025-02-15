@@ -160,7 +160,7 @@ func save():
 	if file:
 		file.store_string(JSON.stringify(current_state_dictionary, "\t"))
 		file.close()
-		print("Game saved to: ", full_path)
+		#print("Game saved to: ", full_path)
 		emit_signal("saved")
 	else:
 		push_error("Failed to open save file for writing at: ", full_path)
@@ -220,10 +220,10 @@ func _check_if_dir_exists(dir: String) -> bool:
 	var directory: DirAccess = DirAccess.open("user://")
 	
 	if not directory.dir_exists(dir):
-		print("Directory does not exist. Creating directory: ", file_path)
+		#print("Directory does not exist. Creating directory: ", file_path)
 		var created_dir = directory.make_dir_recursive(file_path)
 		if created_dir != OK:
-			print("Failed to create directory: ", file_path)
+			#print("Failed to create directory: ", file_path)
 			return false
 		return true
 	return true
@@ -231,7 +231,7 @@ func _check_if_dir_exists(dir: String) -> bool:
 # Check and create the file if necessary
 func _check_if_file_exists(file: FileAccess, full_path: String):
 	if not FileAccess.file_exists(full_path):
-		print("File does not exist. Creating a new save file at: ", full_path)
+		#print("File does not exist. Creating a new save file at: ", full_path)
 		file = FileAccess.open(full_path, FileAccess.WRITE)
 		if file:
 			# Initialize the save file with an empty dictionary or default data

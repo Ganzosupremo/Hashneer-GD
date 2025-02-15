@@ -154,3 +154,7 @@ func _on_button_down() -> void:
 func _on_mouse_entered() -> void:
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
+
+func _on_focus_entered() -> void:
+	if sound_effect_component_ui == null: return
+	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)

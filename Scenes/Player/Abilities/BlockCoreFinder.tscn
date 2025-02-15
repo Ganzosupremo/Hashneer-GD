@@ -6,9 +6,9 @@
 [node name="BlockCoreFinder" type="Node2D"]
 scale = Vector2(2, 2)
 script = ExtResource("1_d5phx")
+ability_cooldown = 1.0
 
 [node name="Arrow" type="Sprite2D" parent="."]
-scale = Vector2(2, 2)
 texture = ExtResource("2_o1dvu")
 offset = Vector2(15, 0)
 

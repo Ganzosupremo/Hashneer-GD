@@ -78,7 +78,7 @@ func _buy_with_bitcoin() -> bool:
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
-		print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
+		# print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
 		return false
 
 
@@ -87,7 +87,7 @@ func _buy_with_fiat() -> bool:
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
-		print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+		# print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 		return false
 
 func buy_max(in_bitcoin: bool = false) -> void:
@@ -98,13 +98,14 @@ func buy_max(in_bitcoin: bool = false) -> void:
 			apply_upgrade()
 			return
 		else:
-			print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
+			# print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
 			return
 	else:
 		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
 			apply_upgrade()
 		else:
-			print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
+			return
+			# print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 
 func _buy_max(in_bitcoin: bool = false) -> float:
 	var balance: float = 0.0
@@ -156,7 +157,7 @@ func _log(value: float, base: float) -> float:
 func check_upgrade_maxed_out() -> bool:
 	if upgrade_level == upgrade_max_level:
 		if status != SKILL_NODE_STATUS.MAXED_OUT:
-			print_debug("Upgrade maxed out, should become gold now...")
+			# print_debug("Upgrade maxed out, should become gold now...")
 			upgrade_maxed.emit()
 		status = SKILL_NODE_STATUS.MAXED_OUT
 		return true
@@ -165,7 +166,7 @@ func check_upgrade_maxed_out() -> bool:
 func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
 		if status != SKILL_NODE_STATUS.UNLOCKED:
-			print_debug("Next tier node should unlock now...")
+			# print_debug("Next tier node should unlock now...")
 			next_tier_unlocked.emit()
 		status = SKILL_NODE_STATUS.UNLOCKED
 		return true

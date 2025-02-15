@@ -138,7 +138,7 @@ func _unlock_weapon() -> void:
 
 func _unlock_ability() -> void:
 	if skillnode_data.ability_to_unlock_id == "":
-		print_debug("No ability_id set in skillnode_data.")
+		# print_debug("No ability_id set in skillnode_data.")
 		return
 	
 	GameManager.register_unlocked_ability(skillnode_data.ability_to_unlock_id)
@@ -267,7 +267,7 @@ func _build_save_dictionary() -> Dictionary:
 func load_data() -> void:
 	var saved_name: String = save_name if !save_name.is_empty() else skillnode_data.upgrade_name
 	if !SaveSystem.has(saved_name):
-		print("No data upgrade data found in node {0}".format([self.name]))
+		# print("No data upgrade data found in node {0}".format([self.name]))
 		return
 	var data: Dictionary = SaveSystem.get_var(saved_name)
 	

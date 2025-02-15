@@ -1,10 +1,99 @@
-[gd_scene load_steps=6 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=20 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
-[ext_resource type="Texture2D" uid="uid://bkqkbj26vyaw7" path="res://Textures/Black Image.png" id="2_ikvkl"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
+[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/FracturableBodies/chunck_blue.png" id="5_erve3"]
+[ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="5_tatvt"]
+
+[sub_resource type="Resource" id="Resource_hf0pe"]
+metadata/__load_path__ = "res://Textures/Black Image.png"
+
+[sub_resource type="Curve" id="Curve_v7xtn"]
+_data = [Vector2(0, 1), 0.0, -0.572136, 0, 1, Vector2(0.587771, 0.663715), -0.977458, -0.977458, 0, 0, Vector2(1, 0), -1.61006, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_qkmet"]
+curve = SubResource("Curve_v7xtn")
+
+[sub_resource type="Gradient" id="Gradient_si13x"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.00428266, 0.496788, 0.715203, 1)
+colors = PackedColorArray(1, 0.202102, 0.135005, 1, 0.931946, 0.530337, 0, 1, 0.959, 0.689, 0.168, 1, 1, 0.827, 0.384, 0.604)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_pssee"]
+gradient = SubResource("Gradient_si13x")
+
+[sub_resource type="Curve" id="Curve_m7672"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_olwjf"]
+curve = SubResource("Curve_m7672")
+
+[sub_resource type="CurveTexture" id="CurveTexture_0qqqr"]
+
+[sub_resource type="Curve" id="Curve_geqys"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qfehm"]
+curve = SubResource("Curve_geqys")
+
+[sub_resource type="Curve" id="Curve_kkell"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_telbc"]
+curve = SubResource("Curve_kkell")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_epx75"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 2.0
+emission_ring_radius = 2.0
+emission_ring_inner_radius = 1.5
+angle_min = 180.0
+angle_max = 360.0
+angle_curve = SubResource("CurveTexture_qkmet")
+direction = Vector3(0, 1, 0)
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 15.0
+orbit_velocity_min = -0.2
+orbit_velocity_max = 0.2
+orbit_velocity_curve = SubResource("CurveTexture_qfehm")
+radial_velocity_min = 25.0
+radial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 15.0
+linear_accel_max = 30.0
+radial_accel_min = 5.0
+radial_accel_max = 15.0
+tangential_accel_min = 16.0
+tangential_accel_max = 70.0
+damping_min = 1.0
+damping_max = 8.0
+damping_curve = SubResource("CurveTexture_olwjf")
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_telbc")
+color_ramp = SubResource("GradientTexture1D_pssee")
+emission_curve = SubResource("CurveTexture_0qqqr")
+turbulence_enabled = true
+turbulence_noise_strength = 10.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.5
+turbulence_influence_max = 0.3
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 1.49012e-06
+sub_emitter_mode = 2
+sub_emitter_amount_at_end = 21
+sub_emitter_keep_velocity = true
 
 [node name="BlockCore" type="StaticBody2D"]
 show_behind_parent = true
@@ -16,7 +105,7 @@ collision_layer = 256
 collision_mask = 192
 script = ExtResource("1_dt8bo")
 placed_in_level = true
-poly_texture = ExtResource("2_ikvkl")
+poly_texture = SubResource("Resource_hf0pe")
 hit_sound_effect = ExtResource("3_ar8vc")
 polygon_shape = 4
 cir_radius = 150.0
@@ -43,6 +132,8 @@ unique_name_in_owner = true
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+texture_repeat = 3
+texture = ExtResource("5_erve3")
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
 
@@ -51,8 +142,27 @@ unique_name_in_owner = true
 [node name="SlowDownTimer" type="Timer" parent="."]
 
 [node name="ShatterVisualizer" type="Polygon2D" parent="."]
-modulate = Color(0.69, 0.496, 0, 1)
+modulate = Color(1, 0.647059, 0, 1)
+texture_repeat = 3
+texture = ExtResource("5_tatvt")
 
 [node name="ShatterLine2D" type="Line2D" parent="ShatterVisualizer"]
+
+[node name="BlockCoreParticles" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 50
+sub_emitter = NodePath("ExplosionEnd")
+process_material = SubResource("ParticleProcessMaterial_epx75")
+lifetime = 7.0
+randomness = 0.5
+visibility_rect = Rect2(-110.353, -119.791, 231.584, 221.743)
+
+[node name="ExplosionEnd" type="GPUParticles2D" parent="BlockCoreParticles"]
+emitting = false
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_epx75")
+explosiveness = 1.0
+randomness = 0.5
+visibility_rect = Rect2(-2.92889, -2.92596, 5.7912, 4642.98)
 
 [connection signal="timeout" from="SlowDownTimer" to="." method="_on_slow_down_timer_timeout"]

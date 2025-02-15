@@ -112,12 +112,21 @@ func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.S
 func set_initial_health(initial_health: float) -> void:
 	health.set_max_health(initial_health)
 
-func set_fracture_body(initial_healt: float, fracture_texture: Texture2D, sound_details: SoundEffectDetails) -> void:
+## Set the fracture body with the given initial health, shape and texture info
+func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_info: Dictionary, sound_details: SoundEffectDetails) -> void:
+	# await GameManager.get_tree().process_frame
+	
+	set_texture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
+	set_hit_sound_effect(sound_details)
+	set_initial_health(initial_health)
+
+## Set the fracture body with the given initial health, texture and sound details
+func setFractureBody(initial_health: float, texture: Texture2D, sound_details: SoundEffectDetails) -> void:
 	await GameManager.get_tree().process_frame
 	
-	set_texture_with_texture(fracture_texture)
+	set_texture_with_texture(texture)
 	set_hit_sound_effect(sound_details)
-	set_initial_health(initial_healt)
+	set_initial_health(initial_health)
 
 func set_texture_with_texture(new_texture: Texture2D) -> void:
 	_polygon2d.texture = new_texture

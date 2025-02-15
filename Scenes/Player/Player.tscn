@@ -1,18 +1,91 @@
-[gd_scene load_steps=12 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=23 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
-[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="2_y4psy"]
 [ext_resource type="AudioStream" uid="uid://cmek8vf55vh73" path="res://Audio/Shrink-Sound-Effect.wav" id="3_ejl5x"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="3_vql12"]
+[ext_resource type="Texture2D" uid="uid://bofairvras8si" path="res://Textures/Player/HasheneerPlayer.png" id="4_wp2gx"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="5_r61be"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_ynixv"]
 [ext_resource type="PackedScene" uid="uid://t3kn17jmsmy1" path="res://Scenes/Components/ActiveWeaponComponent.tscn" id="6_ltgru"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
 [ext_resource type="PackedScene" uid="uid://tgo2cl26po3f" path="res://Scenes/Components/HealthComponent.tscn" id="7_fkivy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="10_4cnpp"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="11_k55ag"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7bwj"]
+atlas = ExtResource("4_wp2gx")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qqwr2"]
+atlas = ExtResource("4_wp2gx")
+region = Rect2(37, 10, 32, 12)
+
+[sub_resource type="Gradient" id="Gradient_dcbmh"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.310493, 0.586724, 0.773019, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 1, 0.647059, 0, 1, 0.479183, 0.479183, 0.479182, 1, 0.179, 0.179, 0.179, 0.439)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_wbepu"]
+gradient = SubResource("Gradient_dcbmh")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_c01nr"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7srq1"]
+curve = SubResource("Curve_c01nr")
+
+[sub_resource type="Curve" id="Curve_2ohb1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xsnyf"]
+curve = SubResource("Curve_2ohb1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_e3fm8"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 1, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 5.0
+emission_ring_radius = 10.0
+emission_ring_inner_radius = 5.0
+angle_min = 1.07288e-05
+angle_max = 180.0
+spread = 90.0
+initial_velocity_min = 20.0
+initial_velocity_max = 200.0
+angular_velocity_min = 40.0
+angular_velocity_max = 100.0
+radial_velocity_min = 30.0
+radial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 50.0
+linear_accel_max = 80.0
+radial_accel_min = 30.0
+radial_accel_max = 60.0
+tangential_accel_min = 30.0
+tangential_accel_max = 60.0
+damping_max = 3.0
+damping_curve = SubResource("CurveTexture_7srq1")
+scale_min = 0.01
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_xsnyf")
+color_ramp = SubResource("GradientTexture1D_wbepu")
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed = Vector3(2, 2, 0)
+turbulence_noise_speed_random = 0.44
+turbulence_influence_max = 0.209
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i2bgt"]
+atlas = ExtResource("11_k55ag")
+region = Rect2(271, 17, 112, 96)
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 light_mask = 16
@@ -27,27 +100,45 @@ dead_sound_effect = ExtResource("3_vql12")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
 shape = SubResource("CircleShape2D_1sxoh")
 
+[node name="Body" type="Sprite2D" parent="."]
+modulate = Color(0.89359, 0.59756, 1.15514e-06, 1)
+texture = SubResource("AtlasTexture_q7bwj")
+
 [node name="RotationContainer" type="Node2D" parent="."]
 
-[node name="Sprite2D" type="Sprite2D" parent="RotationContainer" groups=["Player"]]
-texture = ExtResource("2_y4psy")
+[node name="WeaponSprite" type="Sprite2D" parent="RotationContainer" groups=["Player"]]
+modulate = Color(0.497441, 0.647927, 0.600023, 1)
+texture = SubResource("AtlasTexture_qqwr2")
+offset = Vector2(10.25, 0)
 
 [node name="BulletFirePosition" type="Marker2D" parent="RotationContainer" groups=["Player"]]
 unique_name_in_owner = true
-position = Vector2(20, 0)
+position = Vector2(29, 0)
 
 [node name="ShootEffectPosition" type="Marker2D" parent="RotationContainer/BulletFirePosition"]
 unique_name_in_owner = true
-position = Vector2(-1, 0)
+position = Vector2(-2, 0)
 
 [node name="AdvancedCamera" parent="." instance=ExtResource("5_ynixv")]
 unique_name_in_owner = true
 position_smoothing_enabled = true
 
-[node name="FireWeapon" parent="." node_paths=PackedStringArray("player_camera", "active_weapon_component") instance=ExtResource("5_r61be")]
+[node name="FireWeapon" parent="." node_paths=PackedStringArray("player_camera", "active_weapon_component", "_fire_effect_particles") instance=ExtResource("5_r61be")]
 unique_name_in_owner = true
 player_camera = NodePath("../AdvancedCamera")
 active_weapon_component = NodePath("../ActiveWeapon")
+_fire_effect_particles = NodePath("../ShootEffectParticles")
+
+[node name="ShootEffectParticles" type="GPUParticles2D" parent="."]
+unique_name_in_owner = true
+emitting = false
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_e3fm8")
+texture = SubResource("AtlasTexture_i2bgt")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
 
 [node name="ActiveWeapon" parent="." instance=ExtResource("6_ltgru")]
 unique_name_in_owner = true

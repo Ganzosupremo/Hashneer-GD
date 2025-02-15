@@ -75,11 +75,11 @@ func deactivate_player() -> void:
 
 func unlock_ability(ability_id: String) -> void:
 	if !_loaded_abilities.has(ability_id):
-		print_debug("Ability with ID %s not found in player." % ability_id)		
+		# print_debug("Ability with ID %s not found in player." % ability_id)		
 		return
 	
 	_loaded_abilities[ability_id].enable()
-	print_debug("Unlocked ability: %s" % ability_id)
+	# print_debug("Unlocked ability: %s" % ability_id)
 
 
 ## ___________________PRIVATE FUNCTIONS__________________________

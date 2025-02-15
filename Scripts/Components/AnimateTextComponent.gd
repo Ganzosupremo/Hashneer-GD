@@ -1,5 +1,7 @@
 class_name AnimateTextComponent extends Node2D
 
+signal animation_finished()
+
 ## Time between each character in seconds.
 @export_range(0.05, 1, 0.05) var typing_speed: float = 0.05 
 ## Optional callback to trigger when animation finishes.
@@ -43,6 +45,7 @@ func _start_typing_animation(speed: float) -> void:
 	label_node.visible_ratio = 1.0
 	_is_animating = false
 	
+	animation_finished.emit()
 	# Trigger callback if it's valid
 	if on_complete_callback.is_valid():
 		on_complete_callback.call()
@@ -51,6 +54,5 @@ func stop_typing() -> void:
 	"""
 	Stops the typing animation immediately.
 	"""
-	print("animation stopped")
 	_is_animating = false
 	label_node.visible_ratio = 1.0 # Complete the text immediately

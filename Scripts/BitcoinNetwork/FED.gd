@@ -13,7 +13,7 @@ func _on_halving_ocurred(_new_subsidy: float) -> void:
 	var inflation_amount: float = fiat_currency_in_circulation * inflation_rate
 	fiat_currency_in_circulation += inflation_amount
 	total_inflation += inflation_rate
-	print("Inflation applied: ", inflation_amount)
+	#print("Inflation applied: ", inflation_amount)
 
 func add_currency_in_circulation(new_coins) -> void:
 	fiat_currency_in_circulation += new_coins

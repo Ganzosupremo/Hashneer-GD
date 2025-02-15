@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bkqkbj26vyaw7"
-path="res://.godot/imported/Black Image.png-02e2398eb94ce9187b901855addad3de.ctex"
+uid="uid://bofairvras8si"
+path="res://.godot/imported/HasheneerPlayer.png-f8d3297cdf77db451f5c3a61a5f29eba.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/Black Image.png"
-dest_files=["res://.godot/imported/Black Image.png-02e2398eb94ce9187b901855addad3de.ctex"]
+source_file="res://Textures/Player/HasheneerPlayer.png"
+dest_files=["res://.godot/imported/HasheneerPlayer.png-f8d3297cdf77db451f5c3a61a5f29eba.ctex"]
 
 [params]
 

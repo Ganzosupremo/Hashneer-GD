@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nn54q1sory33"
-path="res://.godot/imported/chunck_blue.png-ff6171447b1e69d32280ab148ab2c96a.ctex"
+uid="uid://cp76ykxde57hh"
+path="res://.godot/imported/BlockTexture.png-c729dd047904ec06f33c4c5c338bfdc8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Textures/chunck_blue.png"
-dest_files=["res://.godot/imported/chunck_blue.png-ff6171447b1e69d32280ab148ab2c96a.ctex"]
+source_file="res://Textures/FracturableBodies/BlockTexture.png"
+dest_files=["res://.godot/imported/BlockTexture.png-c729dd047904ec06f33c4c5c338bfdc8.ctex"]
 
 [params]
 

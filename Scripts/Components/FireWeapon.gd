@@ -5,13 +5,13 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 
 @export var player_camera: AdvanceCamera
 @export var active_weapon_component: ActiveWeaponComponent
-
+@export var _fire_effect_particles: GPUParticles2D
+ 
 @onready var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition
 @onready var _fire_cooldown_timer: Timer = %FireCooldownTimer
-@onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 
 
 var fire_rate_cooldown_timer: float = 0.0
@@ -37,6 +37,8 @@ func weapon_fire(damage_multiplier: float) -> void:
 	if ready_to_fire():
 		current_weapon = active_weapon_component.get_current_weapon()
 		active_weapon_component.play_sound_on_fire()
+		_fire_effect_particles.global_position = shoot_effect_position.global_position
+		_fire_effect_particles.restart()
 		
 		if player_camera:
 			player_camera.shake(current_weapon.amplitude,\
@@ -79,8 +81,6 @@ func fire_ammo_async(ammo: AmmoDetails):
 		
 		bullet.spawn(bullet_spawn_position.position, launch_vector * launch_magnitude, randf_range(ammo.min_lifetime, ammo.max_lifetime), quadrant_builder, ammo)
 		bullet.transform = bullet_spawn_position.global_transform
-		#bullet.init_bullet(ammo)
-		#bullet.direction = initial_vector
 		
 		_fire_cooldown_timer.start(spawn_interval)
 		await _fire_cooldown_timer.timeout

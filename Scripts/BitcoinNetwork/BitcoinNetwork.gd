@@ -44,7 +44,7 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 	
 	# Check if mining should be stopped right away
 	if _should_stop_mining(block):
-		print_debug("Block already mined. H: ", block.height)
+		#print_debug("Block already mined. H: ", block.height)
 		return
 	
 	if chain.size() == 0:
@@ -60,7 +60,7 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 	
 	block.reward = _get_block_subsidy()
 	_issue_block_reward(miner, block.reward)
-	print_debug("Block found")
+	#print_debug("Block found")
 	block_found.emit(block)
 	
 	height += 1
@@ -126,7 +126,7 @@ func _issue_block_reward(miner: String, reward: float) -> void:
 		reward_issued.emit(reward)
 	elif miner == "AI":
 		coins_lost += reward
-		print("Reward issued to the AI")
+		#print("Reward issued to the AI")
 
 func _get_block_subsidy() -> float:
 	var halvings: int = height / halving_interval
@@ -143,7 +143,7 @@ func _get_block_subsidy() -> float:
 		halving_occurred.emit(subsidy)
 	
 	if _exceeds_coin_limit_cap():
-		print("Exceeds limit cap")
+		#print("Exceeds limit cap")
 		return 0.0
 	return subsidy
 

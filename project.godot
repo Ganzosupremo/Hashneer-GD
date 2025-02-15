@@ -13,7 +13,7 @@ config_version=5
 config/name="Hasheneer"
 config/version="0.0.1"
 config/tags=PackedStringArray("bitcoin")
-run/main_scene="res://Scenes/UI/Main_menu.tscn"
+run/main_scene="res://Scenes/UI/MainMenu.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Nigga_pls"
 config/features=PackedStringArray("4.3", "Forward Plus")
@@ -32,8 +32,8 @@ buses/default_bus_layout="res://Resources/MainAudioBus.tres"
 
 SaveSystem="*res://addons/save_system/save_system.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
-GameManager="*res://Scenes/GameManager.tscn"
-SceneManager="*res://Scenes/Scene_manager.tscn"
+GameManager="*res://Scenes/Manager/GameManager.tscn"
+SceneManager="*res://Scenes/Manager/SceneManager.tscn"
 Interface="*res://Scripts/Utils/Interface.gd"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
@@ -63,7 +63,8 @@ folder_colors={
 "res://Audio/": "red",
 "res://Resources/": "green",
 "res://Scenes/": "purple",
-"res://Scripts/": "teal"
+"res://Scripts/": "teal",
+"res://Textures/": "pink"
 }
 
 [filesystem]

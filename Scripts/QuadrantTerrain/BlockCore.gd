@@ -5,6 +5,8 @@ signal destroyed()
 @onready var _shatter_visualizer: Polygon2D = $ShatterVisualizer
 @onready var _shatter_line_2d: Line2D = $ShatterVisualizer/ShatterLine2D
 @onready var _slowdown_timer: Timer = $SlowDownTimer
+@onready var _block_core_particles: GPUParticles2D = $BlockCoreParticles
+
 
 var _poly_fracture: PolygonFracture
 var _cur_fracture_color: Color
@@ -16,6 +18,8 @@ func _ready() -> void:
 	_poly_fracture = PolygonFracture.new()
 	_rng.randomize()
 	_hit_sound_component.set_sound(hit_sound_effect)
+	_block_core_particles.emitting = true
+
 	if placed_in_level:
 		var poly: PackedVector2Array = create_polygon_shape()
 		
@@ -77,7 +81,7 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_shatter_line_2d.points = new_shape
 		
 		# Change color of the polygon
-		var color := Color.WHITE
+		var color: Color = source.self_modulate
 		color.s = fracture_color.s
 		color.v = fracture_color.v
 		color.h = _rng.randf()
@@ -89,6 +93,7 @@ func _fracture_all(other_body, cuts: int, min_area: float, fracture_color: Color
 	_cur_fracture_color = fracture_color
 
 	if !core_destroyed:
+		GameManager.level_completed()
 		core_destroyed = true
 		_hit_sound_component.set_sound(hit_sound_effect)
 		_hit_sound_component.play_sound()
@@ -97,7 +102,6 @@ func _fracture_all(other_body, cuts: int, min_area: float, fracture_color: Color
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
 		destroyed.emit()
-		GameManager.level_completed()
 
 func _destroy_block_core(source, cuts: int, min_area: float) -> void:
 	visible = false

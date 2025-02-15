@@ -86,9 +86,9 @@ func unlock_weapon(weapon_name: String) -> void:
 	if weapon_details:
 		unlocked_weapons[weapon_name] = weapon_details
 		player_details.add_weapon_to_array(weapon_details)
-		print("Weapon Unlocked: {0}".format([weapon_name]))
-	else:
-		printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
+		# print("Weapon Unlocked: {0}".format([weapon_name]))
+	# else:
+	# 	printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
 
 func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYPE) -> void:
 	upgraded_stats[stat_name] = {"value": value, "stat_type": stat_type}
@@ -103,15 +103,18 @@ func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYP
 			#upgraded_stats[stat_name] = value
 			player_details.damage_multiplier += value
 		_:
-			printerr("NO STAT FOUND FOR {0}".format([stat_name]))
+			return
+			# printerr("NO STAT FOUND FOR {0}".format([stat_name]))
 
 func register_unlocked_ability(ability_id: String) -> void:
+	if unlocked_abilities.has(ability_id): return
+	
 	unlocked_abilities[ability_id] = true
 
 ## ___________________________LEVEL SELECTOR FUNCTIONS_____________________________________
 
 func _set_level_index(index: int) -> void:
-	print("Setting Level Index: {0}".format([index]))
+	# print("Setting Level Index: {0}".format([index]))
 	current_level = index
 
 func _get_level_index() -> int:
@@ -119,7 +122,7 @@ func _get_level_index() -> int:
 
 func select_builder_args(index: int) -> void:
 	current_builder_args = game_levels[index]
-	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
+	# print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
 
 func get_builder_args() -> QuadrantBuilderArgs:
 	return current_builder_args
@@ -139,11 +142,9 @@ func _build_dictionary_to_save() -> Dictionary:
 		"levels_unlocked": levels_unlocked,
 		"previous_levels_unlocked_index": previous_levels_unlocked_index,
 		"current_level": current_level,
-		# "player_speed": player_details.speed,
-		# "player_health": player_details.max_health,
-		# "player_damage_multiplier": player_details.damage_multiplier,
 		"unlocked_weapons": unlocked_weapons_keys,
-		"upgraded_stats": upgraded_stats
+		"upgraded_stats": upgraded_stats,
+		"unlocked_abilities": unlocked_abilities
 	}
 
 
@@ -156,13 +157,19 @@ func load_data() -> void:
 	levels_unlocked = data["levels_unlocked"]
 	previous_levels_unlocked_index = data["previous_levels_unlocked_index"]
 	current_level = data["current_level"]
-	_load_unlocked_weapons(data)
 	
-	if !data.has("upgraded_stats"): return
+	_load_unlocked_weapons(data)
 
 	upgraded_stats = data["upgraded_stats"]
 	_apply_upgraded_stats()
+
+	_load_unlocked_abilities(data)
 	loaded = true
+
+func _load_unlocked_abilities(data: Dictionary) -> void:
+	var unlocked_abilities_keys: Array = data["unlocked_abilities"].keys()
+	for ability_id in unlocked_abilities_keys:
+		register_unlocked_ability(ability_id)
 
 func _load_unlocked_weapons(data: Dictionary) -> void:
 	var unlocked_weapons_keys: Array = data["unlocked_weapons"]
@@ -170,23 +177,25 @@ func _load_unlocked_weapons(data: Dictionary) -> void:
 		unlock_weapon(weapon_name)
 
 func _apply_upgraded_stats() -> void:
-	for stat_name in upgraded_stats.keys():
+	for stat_name in upgraded_stats:
 		var stat_info: Dictionary = upgraded_stats[stat_name]
 		var value: float = stat_info["value"]
 		var stat_int: int = stat_info["stat_type"]
 		var stat_type: SkillNode.STAT_TYPE = _int_to_stat_type(stat_int)
+		
 		match stat_type:
 			SkillNode.STAT_TYPE.SPEED:
 				player_details.speed += value
-				print("Speed: {0}".format([player_details.speed]))
+				# print("Speed: {0}".format([player_details.speed]))
 			SkillNode.STAT_TYPE.HEALTH:
 				player_details.max_health += value
-				print("Max Health: {0}".format([player_details.max_health]))
+				# print("Max Health: {0}".format([player_details.max_health]))
 			SkillNode.STAT_TYPE.DAMAGE:
 				player_details.damage_multiplier += value
-				print("Damage Multiplier: {0}".format([player_details.damage_multiplier]))
+				# print("Damage Multiplier: {0}".format([player_details.damage_multiplier]))
 			_:
-				printerr("NO STAT FOUND FOR {0}".format([stat_name]))
+				return
+				# printerr("NO STAT FOUND FOR {0}".format([stat_name]))
 
 func _int_to_stat_type(value: int) -> SkillNode.STAT_TYPE:
 	match value:

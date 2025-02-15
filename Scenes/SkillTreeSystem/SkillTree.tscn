@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=57 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
@@ -27,6 +27,8 @@
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
 [ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Bitcoin/AK47Unlock.tres" id="23_lm8ko"]
+[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]
+[ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/BlockCoreFinder.tres" id="29_5uag3"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
 shader = ExtResource("6_6waxn")
@@ -167,6 +169,22 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_anjtt"]
+atlas = ExtResource("28_2l470")
+region = Rect2(2, 2, 12, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mq3cn"]
+atlas = ExtResource("28_2l470")
+region = Rect2(2, 2, 12, 12)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5odtn"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
 layout_mode = 3
@@ -252,7 +270,8 @@ visibility_layer = 64
 position = Vector2(580, 327)
 position_smoothing_enabled = true
 script = ExtResource("5_duwky")
-BASE_MOVE_SPEED = 2.5
+ZOOM_SPEED = 0.25
+SMOOTH_FACTOR = 0.25
 
 [node name="UpgradesHolder" type="Control" parent="."]
 unique_name_in_owner = true
@@ -435,7 +454,7 @@ save_name = "AWPSniperUnlock"
 material = SubResource("ShaderMaterial_umhew")
 layout_mode = 1
 
-[node name="AK47Unlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="AK47Unlock" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
@@ -450,12 +469,36 @@ tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_dufvt")
 expand_icon = true
+next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skillnode_data = ExtResource("23_lm8ko")
 save_name = "AK47Unlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/AK47Unlock" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_uh0ok")
+layout_mode = 1
+
+[node name="BlockCoreFinderUnlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1738.0
+offset_top = 746.0
+offset_right = 1802.0
+offset_bottom = 810.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = SubResource("AtlasTexture_anjtt")
+expand_icon = true
+icon_on_maxed_out = SubResource("AtlasTexture_mq3cn")
+skillnode_data = ExtResource("29_5uag3")
+save_name = "BlockCoreFinderUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/BlockCoreFinderUnlock" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_5odtn")
 layout_mode = 1
 
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]

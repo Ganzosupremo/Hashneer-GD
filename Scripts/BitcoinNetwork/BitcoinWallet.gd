@@ -48,22 +48,24 @@ func add_fiat(amount: float) -> void:
 	if amount <= 0.0: return
 	
 	fiat_balance += amount
-	
-	emit_signal("money_changed", fiat_balance, false)
+	money_changed.emit(fiat_balance, false)
+	#emit_signal("money_changed", fiat_balance, false)
 
 func spend_fiat(amount_to_spend: float) -> bool:
 	if amount_to_spend > fiat_balance:
 		return false
 	
 	fiat_balance -= amount_to_spend
-	emit_signal("money_changed", fiat_balance, false)
+	money_changed.emit(fiat_balance, false)
+	#emit_signal("money_changed", fiat_balance, false)
 	return true
 
 func add_bitcoin(amount_to_add: float) -> void:
 	if amount_to_add <= 0.0: return
 	
 	bitcoin_balance += amount_to_add
-	emit_signal("money_changed", bitcoin_balance, true)
+	money_changed.emit(bitcoin_balance, true)
+	#emit_signal("money_changed", bitcoin_balance, true)
 
 func spend_bitcoin(amount_to_spend: float) -> bool:
 	if amount_to_spend > bitcoin_balance:
@@ -71,7 +73,8 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 	
 	bitcoin_balance -= amount_to_spend
 	BitcoinNetwork.set_bitcoins_spent(amount_to_spend)
-	emit_signal("money_changed", bitcoin_balance, true)
+	money_changed.emit(bitcoin_balance, true)
+	#emit_signal("money_changed", bitcoin_balance, true)
 	return true
 
 ## exchanges the fiat currency to Bitcoin

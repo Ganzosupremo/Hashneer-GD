@@ -3,8 +3,7 @@
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="2_re8gt"]
-[ext_resource type="LabelSettings" uid="uid://c14kyf6almnse" path="res://Resources/TitleLabelSettings.tres" id="3_jcu7c"]
-[ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="4_0pib0"]
+[ext_resource type="Shader" path="res://Shaders/DiscretSunset.gdshader" id="3_m870y"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="4_ny3yf"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="6_exueb"]
@@ -12,19 +11,24 @@
 [ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="10_32soc"]
 [ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="11_4y267"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q47g5"]
-bg_color = Color(0, 0.094, 0.271, 0.414)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 1
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s1ley"]
+shader = ExtResource("3_m870y")
+shader_parameter/polar_coordinates = true
+shader_parameter/polar_center = Vector2(1, 1)
+shader_parameter/polar_zoom = 1.0
+shader_parameter/polar_repeat = 4.0
+shader_parameter/spin_rotation = 10.0
+shader_parameter/spin_speed = 10.0
+shader_parameter/offset = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.0509804, 0.384314, 0.266667, 1)
+shader_parameter/colour_2 = Color(0.027451, 0.0352941, 0.321569, 1)
+shader_parameter/colour_3 = Color(0.00784314, 0.00784314, 0.0784314, 1)
+shader_parameter/contrast = 2.0
+shader_parameter/spin_amount = 0.36
+shader_parameter/pixel_filter = 700.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f56pw"]
+bg_color = Color(1, 1, 1, 0.69)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_aji5v"]
 draw_center = false
@@ -74,6 +78,7 @@ enter_rotation = 360.0
 
 [node name="Panel" type="Panel" parent="."]
 unique_name_in_owner = true
+material = SubResource("ShaderMaterial_s1ley")
 custom_minimum_size = Vector2(260, 300)
 layout_mode = 1
 anchors_preset = 15
@@ -81,8 +86,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0si0w")
-theme_override_styles/panel = SubResource("StyleBoxFlat_q47g5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_f56pw")
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel"]
 layout_mode = 1
@@ -116,13 +120,11 @@ theme = ExtResource("1_0si0w")
 unique_name_in_owner = true
 custom_minimum_size = Vector2(810, 100)
 layout_mode = 2
+theme = ExtResource("1_0si0w")
+theme_type_variation = &"HeaderMedium"
+theme_override_font_sizes/font_size = 85
 text = "Code 404: Health reached zero..."
-label_settings = ExtResource("3_jcu7c")
-horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 3
-visible_characters = -1
-visible_ratio = 1.0
 
 [node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -169,8 +171,6 @@ theme_override_constants/margin_bottom = 0
 [node name="BTCContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-size_flags_horizontal = 4
-alignment = 1
 
 [node name="BTCIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer"]
 layout_mode = 2
@@ -180,11 +180,11 @@ stretch_mode = 5
 [node name="BTCGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer" instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "545542"
-label_settings = ExtResource("4_0pib0")
-horizontal_alignment = 1
-visible_characters = -1
-visible_ratio = 1.0
+theme = ExtResource("1_0si0w")
+theme_type_variation = &"HeaderSmall"
+text = "0
+"
+horizontal_alignment = 0
 
 [node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(225, 0)
@@ -202,7 +202,6 @@ theme_override_constants/margin_bottom = 0
 [node name="FiatContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-alignment = 1
 
 [node name="FiatIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer"]
 layout_mode = 2
@@ -212,11 +211,10 @@ stretch_mode = 5
 [node name="FiatGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer" instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
 layout_mode = 2
-text = "541554544"
-label_settings = ExtResource("4_0pib0")
-horizontal_alignment = 1
-visible_characters = -1
-visible_ratio = 1.0
+theme = ExtResource("1_0si0w")
+theme_type_variation = &"HeaderSmall"
+text = "0"
+horizontal_alignment = 0
 
 [node name="HSeparator3" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -235,7 +233,6 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Go To Main Menu"
 tween_size = Vector2(0, 0)
-tween_modulate = Color(0.70077, 0.911856, 0.27068, 1)
 wait_for = NodePath("../../../../..")
 enter_time = 0.3
 enter_transition = 11

@@ -31,9 +31,6 @@ func _ready() -> void:
 	add_child(shake_timer)
 	#global_position = _get_center_viewport()
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("ui_cut"):
-		shake_with_preset(magnitude)
 
 func shake(_amplitude: float = 3.0, _frequency: float = 5.0, _duration: float = 0.5, _axis_ratio: float = 0.0, _armonic_ratio: Array[int] = [1,1], _phase_offset_degrees: int  = 90, _samples: int = 10, _tween_trans: Tween.TransitionType = Tween.TransitionType.TRANS_SPRING) -> void:
 	amplitude = _amplitude

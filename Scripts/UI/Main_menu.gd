@@ -1,9 +1,8 @@
 extends Control
 
-@onready var main_game_packed: PackedScene = preload("res://Scenes/UI/save_slots_selector.tscn")
-@onready var start_game: TweenableButton = $AspectRatioContainer/FlowContainer/StartGame
-@onready var quit_game: TweenableButton = $AspectRatioContainer/FlowContainer/QuitGame
-
+@onready var main_game_packed: PackedScene = preload("res://Scenes/UI/SaveSlotsSelector.tscn")
+@onready var start_game: TweenableButton = %StartGame
+@onready var quit_game: TweenableButton = %QuitGame
 
 func _ready() -> void:
 	start_game.grab_focus()

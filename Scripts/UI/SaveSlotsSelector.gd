@@ -1,10 +1,10 @@
 extends Control
 
+@onready var main_game: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
+
 const save_text1: String = "SaveOne.sav"
 const save_text2: String = "SaveTwo.sav"
 const save_text3: String = "SaveThree.sav"
-
-@onready var main_game: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 func _on_slot_button_pressed() -> void:
 	_load_save_file(save_text1)

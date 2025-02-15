@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=4 format=3 uid="uid://cbwgvq0rara7k"]
+
+[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_eqd04"]
+[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="2_tqoro"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i742e"]
+atlas = ExtResource("2_tqoro")
+region = Rect2(2, 2, 12, 12)
+
+[resource]
+script = ExtResource("1_eqd04")
+feature_type = 2
+upgrade_name = "Block Core Finder"
+upgrade_description = "It shows you the way."
+skill_image = SubResource("AtlasTexture_i742e")
+upgrade_tier = 1
+is_upgrade = false
+status = 0
+is_percentage = false
+weapon_to_unlock = 0
+ability_to_unlock_id = "block_core_finder"
+upgrade_base_power = 5.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 3e+06
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 250000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
+upgrade_level = 0
