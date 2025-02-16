@@ -270,8 +270,6 @@ visibility_layer = 64
 position = Vector2(580, 327)
 position_smoothing_enabled = true
 script = ExtResource("5_duwky")
-ZOOM_SPEED = 0.25
-SMOOTH_FACTOR = 0.25
 
 [node name="UpgradesHolder" type="Control" parent="."]
 unique_name_in_owner = true

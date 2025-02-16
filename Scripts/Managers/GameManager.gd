@@ -117,7 +117,7 @@ func _set_level_index(index: int) -> void:
 	# print("Setting Level Index: {0}".format([index]))
 	current_level = index
 
-func _get_level_index() -> int:
+func get_level_index() -> int:
 	return current_level
 
 func select_builder_args(index: int) -> void:
@@ -141,7 +141,6 @@ func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"levels_unlocked": levels_unlocked,
 		"previous_levels_unlocked_index": previous_levels_unlocked_index,
-		"current_level": current_level,
 		"unlocked_weapons": unlocked_weapons_keys,
 		"upgraded_stats": upgraded_stats,
 		"unlocked_abilities": unlocked_abilities
@@ -156,7 +155,6 @@ func load_data() -> void:
 
 	levels_unlocked = data["levels_unlocked"]
 	previous_levels_unlocked_index = data["previous_levels_unlocked_index"]
-	current_level = data["current_level"]
 	
 	_load_unlocked_weapons(data)
 

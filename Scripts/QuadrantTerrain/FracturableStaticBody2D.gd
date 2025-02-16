@@ -1,3 +1,6 @@
+## A class that represents a destructible static body in 2D space.
+## It can be created with different shapes and supports texture customization,
+## health management, and collision detection.
 class_name FracturableStaticBody2D extends StaticBody2D
 
 @onready var _polygon2d: Polygon2D = $Polygon2D
@@ -8,9 +11,13 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
 
 @export_group("General")
+## If true, the body will be initialized with its shape when placed in level
 @export var placed_in_level: bool = false
+## If true, randomizes the texture scale, rotation and offset
 @export var randomize_texture_properties: bool = true
+## The texture to be applied to the polygon
 @export var poly_texture: Texture2D
+## Sound effect to play when the body is hit
 @export var hit_sound_effect: SoundEffectDetails
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
@@ -72,7 +79,7 @@ func _ready() -> void:
 			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
-
+## Recreates the polygon shape with current parameters
 func recreate_polygon_shape() -> void:
 	var poly = create_polygon_shape()
 	setPolygon(poly)
@@ -85,6 +92,7 @@ func recreate_polygon_shape() -> void:
 		_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 		_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
+## Creates a polygon shape based on the selected shape type and parameters
 func create_polygon_shape() -> PackedVector2Array:
 	match polygon_shape:
 		PolygonShape.Circular:
@@ -103,6 +111,8 @@ func create_polygon_shape() -> PackedVector2Array:
 func play_sound_on_hit() -> void:
 	_hit_sound_component.play_sound()
 
+## Triggers camera shake when body is hit
+## [param magnitude] The intensity of the camera shake
 func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.Small):
 	GameManager.player.get_player_camera().shake_with_preset(magnitude)
 
@@ -112,7 +122,11 @@ func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.S
 func set_initial_health(initial_health: float) -> void:
 	health.set_max_health(initial_health)
 
-## Set the fracture body with the given initial health, shape and texture info
+## Sets up the fracturable body with given parameters
+## [param initial_health] Starting health value
+## [param shape_info] Dictionary containing shape information
+## [param texture_info] Dictionary containing texture properties
+## [param sound_details] Sound effect details for hit reactions
 func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_info: Dictionary, sound_details: SoundEffectDetails) -> void:
 	# await GameManager.get_tree().process_frame
 	
@@ -120,7 +134,10 @@ func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_in
 	set_hit_sound_effect(sound_details)
 	set_initial_health(initial_health)
 
-## Set the fracture body with the given initial health, texture and sound details
+## Sets up the fracturable body with given parameters
+## [param initial_health] Starting health value
+## [param texture] Texture to apply to the body
+## [param sound_details] Sound effect details for hit reactions
 func setFractureBody(initial_health: float, texture: Texture2D, sound_details: SoundEffectDetails) -> void:
 	await GameManager.get_tree().process_frame
 	
@@ -177,7 +194,7 @@ func get_polygon() -> PackedVector2Array:
 func get_sound_component() -> SoundEffectComponent:
 	return _hit_sound_component
 
-
+## Returns a Rect2 representing the smallest square that contains the entire polygon
 func get_bounding_square() -> Rect2:
 	# Get polygon points from shape
 	var points = getPolygon()
@@ -207,15 +224,18 @@ func get_bounding_square() -> Rect2:
 	return Rect2(top_left, Vector2(size, size))
 
 
-## Deals damage to this static body, returns true if it's health is zero,
-## false otherwise
+## Applies damage to the fracturable body
+## [param damage] Amount of damage to apply
+## [param instakill] If true, immediately destroys the body
+## Returns true if the body is destroyed, false otherwise
 func take_damage(damage: float, instakill: bool = false) -> bool:
 	if instakill:
 		health.take_damage(1.79769e308)
 		return true
+	
 	health.take_damage(damage)
 	if health.get_current_health() <= 0.0:
 		return true
 	
-	GameManager.player.get_health_node().take_damage(1.0)
+	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false

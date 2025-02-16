@@ -36,6 +36,5 @@ func get_current_health() -> float:
 func get_max_health() -> float:
 	return max_health
 
-
 func _update_health() -> void:
 	emit_signal("update_health", current_health, max_health)

@@ -64,7 +64,7 @@ corner_detail = 1
 shader = ExtResource("9_3vs7s")
 shader_parameter/circle_center = Vector2(-0.55, 0)
 shader_parameter/time = 0.0
-shader_parameter/size = Vector2(500, 900)
+shader_parameter/size = Vector2(500, 600)
 shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
 shader_parameter/margin = Vector2(0, 0)
 
@@ -72,7 +72,7 @@ shader_parameter/margin = Vector2(0, 0)
 shader = ExtResource("9_3vs7s")
 shader_parameter/circle_center = Vector2(-0.47, 0)
 shader_parameter/time = 0.0
-shader_parameter/size = Vector2(500, 900)
+shader_parameter/size = Vector2(500, 600)
 shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
 shader_parameter/margin = Vector2(0, 0)
 
@@ -80,7 +80,7 @@ shader_parameter/margin = Vector2(0, 0)
 shader = ExtResource("9_3vs7s")
 shader_parameter/circle_center = Vector2(-0.495, 0)
 shader_parameter/time = 0.0
-shader_parameter/size = Vector2(500, 900)
+shader_parameter/size = Vector2(500, 600)
 shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
 shader_parameter/margin = Vector2(0, 0)
 

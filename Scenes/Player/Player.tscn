@@ -93,7 +93,6 @@ visibility_layer = 16
 collision_layer = 128
 collision_mask = 313
 script = ExtResource("1_ha4ea")
-speed = 300.0
 initial_weapon = ExtResource("6_vaewd")
 dead_sound_effect = ExtResource("3_vql12")
 

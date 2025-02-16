@@ -58,8 +58,8 @@ enum FEATURE_TYPE {
 @onready var skill_line: Line2D = %SkillBranch
 @onready var skill_label_status: Label = %SkillLabel
 @onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
-@onready var currency_icon: TextureRect = $CurrencyIcon
 @onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
+@onready var currency_icon: TextureRect = %CurrencyIcon
 
 var is_maxed_out: bool = false
 var node_identifier: int = 0
@@ -84,11 +84,7 @@ func _ready() -> void:
 	else:
 		lock()
 	
-	# if skillnode_data and skillnode_data.check_next_tier_unlock():
-	# 	_unlock_next_tier()
-	# if skillnode_data and skillnode_data.check_upgrade_maxed_out():
-	# 	_on_upgrade_maxed()
-	currency_icon.texture = bitcoin_icon if use_bitcoin else dollar_icon
+	set_currecy_icon(use_bitcoin)
 
 # ___________________ PUBLIC FUNCTIONS ________________________
 
@@ -210,6 +206,11 @@ func _set_line_points() -> void:
 
 func set_use_btc_as_currency(new_value: bool) -> void:
 	use_bitcoin = new_value
+	set_currecy_icon(use_bitcoin)
+	skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
+
+func set_currecy_icon(btc_icon: bool) -> void:
+	currency_icon.texture = bitcoin_icon if btc_icon else dollar_icon
 
 # _______________________SIGNALS__________________________________
 
@@ -278,4 +279,5 @@ func load_data() -> void:
 		_unlock_next_tier()
 	if is_this_skill_maxed_out():
 		_on_upgrade_maxed()
+	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings, is_maxed_out)
 	

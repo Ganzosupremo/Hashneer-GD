@@ -10,8 +10,8 @@
 [resource]
 resource_name = "PlayerDetailsToUse"
 script = ExtResource("1_6qe4h")
-speed = 350.0
-max_health = 350.0
+speed = 400.0
+max_health = 300.0
 damage_multiplier = 1.0
 initial_weapon = ExtResource("2_n5hxn")
 dead_sound_effect = ExtResource("1_gkrcx")

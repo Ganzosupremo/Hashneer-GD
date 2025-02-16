@@ -94,7 +94,7 @@ position = Vector2(425, 0)
 [node name="MinerAI" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_7o24j")
-time = 600.0
+time = 122.0
 
 [node name="AITimer" type="Timer" parent="MinerAI"]
 unique_name_in_owner = true
