@@ -23,7 +23,7 @@ var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
 var quadrant_builder: QuadrantBuilder
-var player_details: PlayerDetails = PlayerDetails.new()
+var player_details: PlayerDetails
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var _loaded_abilities: Dictionary = {}

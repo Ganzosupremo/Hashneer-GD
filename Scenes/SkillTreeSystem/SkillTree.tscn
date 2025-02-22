@@ -1,11 +1,10 @@
-[gd_scene load_steps=57 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=52 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
 [ext_resource type="PackedScene" uid="uid://brtsijxypeeo5" path="res://Scenes/UI/LevelSelectorNew.tscn" id="3_23vid"]
 [ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_wkdkc"]
 [ext_resource type="Script" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
-[ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="5_v73wo"]
 [ext_resource type="Shader" path="res://Shaders/Stars.gdshader" id="6_6waxn"]
 [ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
 [ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Fiat/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
@@ -13,11 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="7_076p6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
 [ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="7_hhrbb"]
-[ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="7_ihsdj"]
-[ext_resource type="Script" path="res://Scripts/StatsSystem/PlayerStats.gd" id="7_ydiew"]
 [ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="8_co7u8"]
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
-[ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="9_18lcm"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
@@ -75,11 +71,6 @@ region = Rect2(65, 0, 31, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_vvd2m"]
 atlas = ExtResource("4_wkdkc")
 region = Rect2(96, 0, 33, 32)
-
-[sub_resource type="Resource" id="Resource_orbpq"]
-resource_name = "PlayerDamageStatT1"
-script = ExtResource("7_ydiew")
-value = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xfjlr"]
 shader = ExtResource("8_co7u8")
@@ -279,6 +270,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+metadata/_edit_lock_ = true
 
 [node name="HealthUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
@@ -297,7 +289,6 @@ is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
 skillnode_data = ExtResource("6_26cjf")
-stat_to_upgrade = ExtResource("5_v73wo")
 stat_type = 1
 save_name = "PlayerHealthUpgradeFiatT1"
 
@@ -319,11 +310,9 @@ offset_bottom = 480.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_5le2m")
-expand_icon = true
 next_tier_nodes = [NodePath("../HealthUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
 skillnode_data = ExtResource("7_4c22w")
-stat_to_upgrade = SubResource("Resource_orbpq")
 stat_type = 3
 save_name = "PlayerDamageUpgradeFiatT1"
 
@@ -346,7 +335,6 @@ mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_kb7ay")
 icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
 skillnode_data = ExtResource("8_yacem")
-stat_to_upgrade = ExtResource("5_v73wo")
 stat_type = 1
 save_name = "PlayerHealthUpgradeBitcoinT2"
 
@@ -367,11 +355,9 @@ offset_right = 1109.0
 offset_bottom = 651.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_xduqf")
-expand_icon = true
 next_tier_nodes = [NodePath("../DamageUpgradeII"), NodePath("../ShotgunUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
 skillnode_data = ExtResource("6_aog38")
-stat_to_upgrade = ExtResource("7_ihsdj")
 stat_type = 2
 save_name = "PlayerSpeedUpgradeFiatT1"
 
@@ -393,7 +379,6 @@ offset_bottom = 575.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("22_jhrlo")
-expand_icon = true
 icon_on_maxed_out = ExtResource("22_jhrlo")
 skillnode_data = ExtResource("20_cet81")
 save_name = "ShotgunUnlock"
@@ -416,11 +401,9 @@ offset_bottom = 719.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_mbr24")
-expand_icon = true
 next_tier_nodes = [NodePath("../SniperUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skillnode_data = ExtResource("11_6em56")
-stat_to_upgrade = ExtResource("9_18lcm")
 stat_type = 3
 save_name = "PlayerDamageUpgradeBitcoinT2"
 
@@ -442,7 +425,6 @@ offset_bottom = 805.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_076p6")
-expand_icon = true
 next_tier_nodes = [NodePath("../AK47Unlock")]
 icon_on_maxed_out = ExtResource("7_076p6")
 skillnode_data = ExtResource("13_a2onp")
@@ -466,7 +448,6 @@ offset_bottom = 885.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_dufvt")
-expand_icon = true
 next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skillnode_data = ExtResource("23_lm8ko")
@@ -490,7 +471,6 @@ offset_bottom = 810.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_anjtt")
-expand_icon = true
 icon_on_maxed_out = SubResource("AtlasTexture_mq3cn")
 skillnode_data = ExtResource("29_5uag3")
 save_name = "BlockCoreFinderUnlock"

@@ -46,7 +46,7 @@ enum FEATURE_TYPE {
 @export_group("Skill Node Data Settings")
 @export var skillnode_data : SkillNodeData
 ## If the data is an upgrade and not an unlock, this needs to be specified.
-@export var stat_to_upgrade: PlayerStat
+@export var dstat_to_upgrade: PlayerStat
 ## The type of stat to upgrade.
 @export var stat_type: STAT_TYPE
 
@@ -101,7 +101,6 @@ func unlock() -> void:
 	is_unlocked = true
 	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings, is_maxed_out)
 	_set_modulate_color(Color.WHITE)
-	_unlock_or_upgrade()
 
 func is_skill_unlocked() -> bool:
 	return is_unlocked
@@ -142,8 +141,8 @@ func _unlock_ability() -> void:
 		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 
 func _upgrade_stat() -> void:
-	current_upgrade_power += skillnode_data.apply_upgrade()
-	GameManager.upgrade_stat(save_name, current_upgrade_power, stat_type)
+	current_upgrade_power = skillnode_data.apply_upgrade()
+	GameManager.upgrade_stat(Utils.player_stat_type_to_string(stat_type), current_upgrade_power, stat_type)
 
 func _is_next_tier_node_unlocked() -> bool:
 	for node in next_tier_nodes:
