@@ -99,7 +99,7 @@ sub_emitter_keep_velocity = true
 cull_mode = 2
 
 [sub_resource type="Gradient" id="Gradient_oy3r4"]
-offsets = PackedFloat32Array(0, 0.722603)
+offsets = PackedFloat32Array(0, 0.767123)
 colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_4tnpi"]
@@ -187,9 +187,12 @@ occluder = SubResource("OccluderPolygon2D_wyokf")
 occluder_light_mask = 128
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
-blend_mode = 2
-range_item_cull_mask = 48
+light_mask = 128
+visibility_layer = 128
+range_item_cull_mask = 50
 shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 5.0
 shadow_item_cull_mask = 48
 texture = SubResource("GradientTexture2D_4tnpi")
 texture_scale = 15.0
