@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=23 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
@@ -95,7 +95,20 @@ sub_emitter_mode = 2
 sub_emitter_amount_at_end = 21
 sub_emitter_keep_velocity = true
 
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_wyokf"]
+cull_mode = 2
+
+[sub_resource type="Gradient" id="Gradient_oy3r4"]
+offsets = PackedFloat32Array(0, 0.722603)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4tnpi"]
+gradient = SubResource("Gradient_oy3r4")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
 [node name="BlockCore" type="StaticBody2D"]
+modulate = Color(1, 1, 1.5, 1)
 show_behind_parent = true
 light_mask = 128
 visibility_layer = 128
@@ -110,9 +123,9 @@ hit_sound_effect = ExtResource("3_ar8vc")
 polygon_shape = 4
 cir_radius = 150.0
 cir_smoothing = 2
-s_p_number = 15
-s_a = 100.0
-s_b = 100.0
+s_p_number = 21
+s_a = 200.0
+s_b = 200.0
 s_start_angle_deg = 45.0
 e_n = 2.0
 min_n1 = 0.3
@@ -128,10 +141,12 @@ script = ExtResource("3_j3i4g")
 
 [node name="HitSoundComponent" parent="." instance=ExtResource("4_7m2w8")]
 unique_name_in_owner = true
+bus = &"SFX"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color(1, 1, 1.5, 1)
 texture_repeat = 3
 texture = ExtResource("5_erve3")
 
@@ -164,5 +179,19 @@ process_material = SubResource("ParticleProcessMaterial_epx75")
 explosiveness = 1.0
 randomness = 0.5
 visibility_rect = Rect2(-2.92889, -2.92596, 5.7912, 4642.98)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 128
+visibility_layer = 128
+occluder = SubResource("OccluderPolygon2D_wyokf")
+occluder_light_mask = 128
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+blend_mode = 2
+range_item_cull_mask = 48
+shadow_enabled = true
+shadow_item_cull_mask = 48
+texture = SubResource("GradientTexture2D_4tnpi")
+texture_scale = 15.0
 
 [connection signal="timeout" from="SlowDownTimer" to="." method="_on_slow_down_timer_timeout"]

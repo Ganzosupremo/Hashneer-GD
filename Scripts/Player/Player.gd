@@ -4,6 +4,7 @@ class_name PlayerController
 @export var speed: float = 200.0
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
+@export var move_sound_effect: SoundEffectDetails
 
 @export_category("Abilities")
 @export var abilities: Dictionary = {
@@ -34,8 +35,9 @@ func _ready() -> void:
 	player_details = GameManager.player_details.duplicate(true)
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
-	GameManager.current_block_core.destroyed.connect(deactivate_player)
+	GameManager.current_block_core.onBlockDestroyed.connect(deactivate_player)
 	GameManager.game_terminated.connect(deactivate_player)
+	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
 
 func _process(_delta: float) -> void:
@@ -61,7 +63,6 @@ func set_player() -> void:
 	initial_weapon = player_details.initial_weapon
 	weapons_array = player_details.weapons_array.duplicate(true)
 	dead_sound_effect = player_details.dead_sound_effect
-	_sound_effect_component.set_sound(dead_sound_effect)
 	set_weapon()
 
 func set_weapon() -> void:
@@ -115,10 +116,11 @@ func move(delta: float) -> void:
 		if velocity.length() > (Constants.Player_Friction * delta):
 			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
 		else: velocity = Vector2.ZERO
-	
+		_sound_effect_component.stop_sound()
 	else:
 		velocity += (input * Constants.Player_Acceleration * delta)
 		velocity = velocity.limit_length(speed)
+		_sound_effect_component.play_sound()
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -139,6 +141,7 @@ func fire() -> void:
 ## ___________________SIGNAL FUNCTIONS__________________________
 
 func on_zero_power() -> void:
+	_sound_effect_component.set_sound(dead_sound_effect)
 	deactivate_player()
 	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
 	_sound_effect_component.play_sound()

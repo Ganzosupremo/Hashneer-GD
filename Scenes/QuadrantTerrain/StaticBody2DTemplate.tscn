@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=10 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
-[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturablePolygonHit.wav" id="2_rdcfh"]
+[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="2_rdcfh"]
 [ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_0mtpy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="3_yxxnb"]
+[ext_resource type="AudioStream" uid="uid://b23scsgtlm1ea" path="res://Audio/FracturableTerrain/FracturableBodyDestroyed.wav" id="4_j1b78"]
 
 [sub_resource type="Resource" id="Resource_0ewf5"]
 script = ExtResource("3_0mtpy")
@@ -12,13 +13,26 @@ sound_volume = 1.0
 audio_stream = ExtResource("2_rdcfh")
 sound_pitch = 1.0
 
+[sub_resource type="Resource" id="Resource_u25mb"]
+script = ExtResource("3_0mtpy")
+sound_volume = 1.0
+audio_stream = ExtResource("4_j1b78")
+sound_pitch = 1.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qpjim"]
+closed = false
+cull_mode = 2
+
 [node name="FracturableStaticBody2D" type="StaticBody2D"]
+light_mask = 2
+visibility_layer = 2
 collision_layer = 8
 collision_mask = 248
 script = ExtResource("1_obgke")
 placed_in_level = true
 randomize_texture_properties = false
 hit_sound_effect = SubResource("Resource_0ewf5")
+sound_effect_on_destroy = SubResource("Resource_u25mb")
 polygon_shape = 1
 rectangle_size = Vector2(250, 250)
 
@@ -29,12 +43,25 @@ script = ExtResource("2_56ed8")
 [node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
 unique_name_in_owner = true
 max_polyphony = 50
+bus = &"SFX"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+light_mask = 2
+visibility_layer = 2
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+light_mask = 2
+visibility_layer = 2
 texture_repeat = 3
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
+light_mask = 2
+visibility_layer = 2
 
 [node name="Center" type="Polygon2D" parent="."]
+light_mask = 2
+visibility_layer = 2
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_qpjim")
+occluder_light_mask = 2

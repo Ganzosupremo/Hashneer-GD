@@ -9,9 +9,9 @@ signal Despawn(ref)
 @onready var _col_poly := $CollisionPolygon2D
 @onready var _timer := %Timer
 @onready var _collision_box_component_polygon: CollisionPolygon2D = %CollisionBoxComponentPolygon
-
-# @onready var bullet_trail_particles: EffectParticles = %BulletTrailParticles
 @onready var trail: BulletTrailComponent = %BulletTrail
+@onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
+
 
 var q_b: QuadrantBuilder = null
 var launch_velocity : float = 0.0
@@ -71,6 +71,7 @@ func setPolygon(polygon : PackedVector2Array) -> void:
 	_poly.set_polygon(polygon)
 	_col_poly.set_polygon(polygon)
 	_collision_box_component_polygon.set_polygon(polygon)
+	light_occluder_2d.occluder.polygon = polygon
 
 
 func _on_Timer_timeout() -> void:

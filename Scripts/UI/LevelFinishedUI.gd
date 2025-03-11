@@ -13,7 +13,7 @@ var btc_gained_this_time: float = 0.0
 func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
 	GameManager.current_quadrant_builder.quadrant_hitted.connect(_on_quadrant_hitted)
-	GameManager.current_block_core.destroyed.connect(_on_core_destroyed)
+	GameManager.current_block_core.onBlockDestroyed.connect(_on_core_destroyed)
 	BitcoinNetwork.reward_issued.connect(_on_reward_issued)
 	hide()
 

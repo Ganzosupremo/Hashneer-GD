@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bhkgu53rk0sek"
-path="res://.godot/imported/MP7Fire 1.wav-846a1bef6f455d6374c21aa8ddceb47d.sample"
+path="res://.godot/imported/MP7Fire 1.wav-ec0cde362c8aa24f9eebb935e89e8acf.sample"
 
 [deps]
 
-source_file="res://Audio/MP7Fire 1.wav"
-dest_files=["res://.godot/imported/MP7Fire 1.wav-846a1bef6f455d6374c21aa8ddceb47d.sample"]
+source_file="res://Audio/Weapons/MP7Fire 1.wav"
+dest_files=["res://.godot/imported/MP7Fire 1.wav-ec0cde362c8aa24f9eebb935e89e8acf.sample"]
 
 [params]
 

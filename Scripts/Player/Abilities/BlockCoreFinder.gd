@@ -14,7 +14,7 @@ func _ready() -> void:
 	timer.wait_time = ability_cooldown
 	timer.timeout.connect(activate)
 	timer.start()
-	GameManager.current_block_core.destroyed.connect(_on_block_found)
+	GameManager.current_block_core.onBlockDestroyed.connect(_on_block_found)
 	set_target_core(GameManager.current_block_core)
 
 func _process(_delta):

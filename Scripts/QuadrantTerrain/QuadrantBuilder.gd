@@ -138,7 +138,6 @@ func _init_builder() -> void:
 func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStaticBody2D, bullet_launch_velocity:float = 410.0, bullet_damage: float = 25.0, bullet_speed: float = 500.0) -> void:
 	var p = bullet_launch_velocity / bullet_speed
 	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
-	other_body.play_sound_on_hit()
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
 	if !other_body.take_damage(bullet_damage):
@@ -148,7 +147,7 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	
 	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
-	emit_signal("quadrant_hitted", fiat_gained_on_collision)
+	quadrant_hitted.emit(fiat_gained_on_collision)
 	BitcoinWallet.add_fiat(fiat_gained_on_collision)
 	
 	_fracture_disabled = true

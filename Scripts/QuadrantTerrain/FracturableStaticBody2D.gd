@@ -9,6 +9,8 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var _rng: RandomNumberGenerator= RandomNumberGenerator.new()
 @onready var health: HealthComponent = %Health
 @onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
+@onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
+
 
 @export_group("General")
 ## If true, the body will be initialized with its shape when placed in level
@@ -19,6 +21,8 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @export var poly_texture: Texture2D
 ## Sound effect to play when the body is hit
 @export var hit_sound_effect: SoundEffectDetails
+## Sound effect to play when the body is destroyed
+@export var sound_effect_on_destroy: SoundEffectDetails
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
@@ -60,9 +64,11 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_range(0.0, 1.0, 0.05) var min_n3: float = 0
 @export_range(0.0, 1.0, 0.05) var n3 : float = 0
 
+
+var destroyed: bool = false
+
 func _ready() -> void:
-	#if hit_sound_effect != null:
-		#_hit_sound_component.set_sound(hit_sound_effect)
+	health.zero_health.connect(_on_zero_health)
 	
 	_rng.randomize()
 	if placed_in_level:
@@ -116,6 +122,9 @@ func play_sound_on_hit() -> void:
 func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.Small):
 	GameManager.player.get_player_camera().shake_with_preset(magnitude)
 
+func _on_zero_health() -> void:
+	await _hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
+	destroyed = true
 
 # ______________________Geters and Setters_______________________________________
 
@@ -148,7 +157,7 @@ func setFractureBody(initial_health: float, texture: Texture2D, sound_details: S
 func set_texture_with_texture(new_texture: Texture2D) -> void:
 	_polygon2d.texture = new_texture
 
-func set_hit_sound_effect(sound: SoundEffectDetails, save_it: bool = true) -> void:
+func set_hit_sound_effect(sound: SoundEffectDetails, save_it: bool = false) -> void:
 	if save_it:
 		hit_sound_effect = sound
 		_hit_sound_component.set_sound(hit_sound_effect)
@@ -166,6 +175,7 @@ func setPolygon(poly : PackedVector2Array) -> void:
 	_col_polygon2d.set_polygon(poly)
 	poly.append(poly[0])
 	_line2d.points = poly
+	light_occluder_2d.occluder.polygon = poly
 
 func setTexture(texture_info : Dictionary) -> void:
 	_polygon2d.texture = texture_info.texture
@@ -231,11 +241,14 @@ func get_bounding_square() -> Rect2:
 func take_damage(damage: float, instakill: bool = false) -> bool:
 	if instakill:
 		health.take_damage(1.79769e308)
+		_hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
 		return true
 	
 	health.take_damage(damage)
 	if health.get_current_health() <= 0.0:
+		_hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
 		return true
 	
+	_hit_sound_component.set_and_play_sound(hit_sound_effect)
 	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false

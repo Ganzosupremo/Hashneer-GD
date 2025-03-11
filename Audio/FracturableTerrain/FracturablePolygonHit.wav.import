@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://l8vf7okafs76"
-path="res://.godot/imported/FracturablePolygonHit.wav-0a77a268d3c896c86ec62d311607a901.sample"
+path="res://.godot/imported/FracturablePolygonHit.wav-ba5dffd5420dbd900ca07372743d4a79.sample"
 
 [deps]
 
-source_file="res://Audio/FracturablePolygonHit.wav"
-dest_files=["res://.godot/imported/FracturablePolygonHit.wav-0a77a268d3c896c86ec62d311607a901.sample"]
+source_file="res://Audio/FracturableTerrain/FracturablePolygonHit.wav"
+dest_files=["res://.godot/imported/FracturablePolygonHit.wav-ba5dffd5420dbd900ca07372743d4a79.sample"]
 
 [params]
 

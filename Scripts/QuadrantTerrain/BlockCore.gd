@@ -1,6 +1,6 @@
 class_name BlockCore extends FracturableStaticBody2D
 
-signal destroyed()
+signal onBlockDestroyed()
 
 @onready var _shatter_visualizer: Polygon2D = $ShatterVisualizer
 @onready var _shatter_line_2d: Line2D = $ShatterVisualizer/ShatterLine2D
@@ -11,7 +11,6 @@ signal destroyed()
 var _poly_fracture: PolygonFracture
 var _cur_fracture_color: Color
 var level_index: int = 0
-var core_destroyed: bool = false
 
 func _ready() -> void:
 	GameManager.current_block_core = self
@@ -49,7 +48,7 @@ This method checks if the block core's health
 has been reduced to zero before fracturing the core.
 """
 func fracture_all(other_body, cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
-	if take_damage(bullet_damage, instakill):
+	if await take_damage(bullet_damage, instakill):
 		_fracture_all(other_body, cuts, min_area, fracture_color, miner)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
@@ -92,16 +91,16 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 func _fracture_all(other_body, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 
-	if !core_destroyed:
+	if !destroyed:
 		GameManager.level_completed()
-		core_destroyed = true
+		destroyed = true
 		_hit_sound_component.set_sound(hit_sound_effect)
 		_hit_sound_component.play_sound()
 		_slowdown_timer.start(0.21)
 		Engine.time_scale = 0.21
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
-		destroyed.emit()
+		onBlockDestroyed.emit()
 
 func _destroy_block_core(source, cuts: int, min_area: float) -> void:
 	visible = false

@@ -110,7 +110,9 @@ func start_tween() -> void:
 	add_tween(tween_values, parallel_animations, tween_time, tween_delay, tween_transition, tween_ease)
 
 func add_tween(values: Dictionary, parallel: bool, seconds: float, delay: float = 0.0, transition: Tween.TransitionType = Tween.TRANS_SINE, easing: Tween.EaseType = Tween.EASE_IN_OUT, entering_animation: bool = false) -> void:
-	if not target: return
+	if not target: 
+		print("No target")
+		return
 
 	var tween: Tween = GameManager.init_tween()
 	tween.set_parallel(parallel)
@@ -175,8 +177,6 @@ func _on_enter() -> void:
 		add_tween(default_values, parallel_animations, enter_time, enter_delay, enter_transition, enter_ease, true)
 
 func _connect_signals() -> void:
-	if target is not Button: return
-	
 	target.mouse_entered.connect(add_tween.bind(
 		tween_values,
 		parallel_animations,

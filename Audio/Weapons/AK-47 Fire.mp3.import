@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dkb267g3dwqp2"
+path="res://.godot/imported/AK-47 Fire.mp3-2e1d57b219352b93e593122693580c93.mp3str"
+
+[deps]
+
+source_file="res://Audio/Weapons/AK-47 Fire.mp3"
+dest_files=["res://.godot/imported/AK-47 Fire.mp3-2e1d57b219352b93e593122693580c93.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

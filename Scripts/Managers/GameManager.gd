@@ -66,13 +66,13 @@ func level_completed() -> void:
 	if player_in_completed_level(): return
 	
 	levels_unlocked += 1
-	previous_levels_unlocked_index = levels_unlocked-1
+	previous_levels_unlocked_index = levels_unlocked - 1
 	game_terminated.emit()
 
 func player_in_completed_level() -> bool:
 	if levels_unlocked < previous_levels_unlocked_index:
 		return true
-	if current_level < previous_levels_unlocked_index: # Means the player is in an already completed level
+	if current_level < previous_levels_unlocked_index - 1: # Means the player is in an already completed level
 		return true
 	return false
 
@@ -138,7 +138,7 @@ func register_unlocked_ability(ability_id: String) -> void:
 ## ___________________________LEVEL SELECTOR FUNCTIONS_____________________________________
 
 func _set_level_index(index: int) -> void:
-	# print("Setting Level Index: {0}".format([index]))
+	print("Setting Level Index: {0}".format([index]))
 	current_level = index
 
 func get_level_index() -> int:
@@ -146,7 +146,7 @@ func get_level_index() -> int:
 
 func select_builder_args(index: int) -> void:
 	current_builder_args = game_levels[index]
-	# print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
+	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
 
 func get_builder_args() -> QuadrantBuilderArgs:
 	return current_builder_args

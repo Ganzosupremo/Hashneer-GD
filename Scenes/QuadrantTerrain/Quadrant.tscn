@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_ltviw"]
 [ext_resource type="Texture2D" uid="uid://cmuco4odvfka8" path="res://icon.svg" id="2_ul1f3"]
-[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturablePolygonHit.wav" id="3_7qa4m"]
+[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="3_7qa4m"]
 [ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_12thv"]
 [ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="4_l7pwh"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_rnr3l"]

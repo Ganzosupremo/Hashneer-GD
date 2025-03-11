@@ -1,28 +1,134 @@
-[gd_scene load_steps=19 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=30 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
+[ext_resource type="Texture2D" uid="uid://cxg11jfx5d6rc" path="res://Textures/BG/BG Hashneer.png" id="1_g16gn"]
 [ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="1_vsk3g"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/player.tscn" id="2_d3k6k"]
+[ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="2_hf3ub"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="2_okdg1"]
+[ext_resource type="Texture2D" uid="uid://dnkikaarda1ys" path="res://Textures/BG/59.png" id="3_4u2vp"]
 [ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="3_7k7v6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_fnuy8"]
+[ext_resource type="Texture2D" uid="uid://dsrmf30uwh3yi" path="res://Textures/BG/61.png" id="4_16xdo"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="4_nhxjq"]
+[ext_resource type="Texture2D" uid="uid://efitljxqurtq" path="res://Textures/BG/63.png" id="5_qwh4i"]
 [ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="5_w0fsn"]
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="6_iea0g"]
+[ext_resource type="Texture2D" uid="uid://br1idrhv3c18d" path="res://Textures/BG/62.png" id="6_wyld8"]
+[ext_resource type="Texture2D" uid="uid://dn3m5f146y7oh" path="res://Textures/BG/65.png" id="7_87hwx"]
+[ext_resource type="Texture2D" uid="uid://bml2cuy7wveqm" path="res://Textures/BG/64.png" id="8_hxp17"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="9_rhv7f"]
 [ext_resource type="PackedScene" uid="uid://bkmy27dnw7m2b" path="res://Scenes/UIComponents/ResponsiveBackground.tscn" id="9_tac73"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="10_k11cv"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="12_e0bhm"]
+[ext_resource type="AudioStream" uid="uid://c4yunj0mkgsxx" path="res://Audio/FracturableTerrain/BlockCoreDestroyed.wav" id="12_h2mkg"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="12_ujcnj"]
+[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="13_b1yvc"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="16_y420x"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ln2a1"]
 
+[sub_resource type="Resource" id="Resource_ynhtl"]
+script = ExtResource("13_b1yvc")
+sound_volume = 1.0
+audio_stream = ExtResource("12_h2mkg")
+sound_pitch = 1.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
-bg_color = Color(0, 0.0627451, 0.129412, 1)
+bg_color = Color(0.35706, 0.702053, 0.999999, 1)
 
 [node name="World" type="Node2D"]
+
+[node name="BGParallax" type="Node2D" parent="."]
+
+[node name="Parallax2D" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D"]
+light_mask = 2
+visibility_layer = 2
+position = Vector2(960, 540)
+texture = ExtResource("1_g16gn")
+
+[node name="Parallax2D2" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(100, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(1, 0.38, 0.92, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1559, 235)
+scale = Vector2(0.461111, 0.242593)
+texture = ExtResource("2_hf3ub")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(0.39, 0.098, 0.91, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(785.55, 749.45)
+scale = Vector2(0.734167, 0.654537)
+texture = ExtResource("3_4u2vp")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(0, 0.172549, 0.360784, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1664, 808)
+scale = Vector2(0.337801, 0.202616)
+texture = ExtResource("4_16xdo")
+
+[node name="Sprite2D4" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(1.05888e-06, 0.298219, 0.590412, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1134, 280)
+scale = Vector2(0.1689, 0.147222)
+texture = ExtResource("5_qwh4i")
+
+[node name="Parallax2D3" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(200, -50)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.207843, 0, 0.364706, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(414, 451)
+scale = Vector2(0.62963, 0.607407)
+texture = ExtResource("6_wyld8")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.121569, 0, 0.215686, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1104, 107)
+scale = Vector2(0.424074, 0.4)
+texture = ExtResource("3_4u2vp")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.0937322, 0.429325, 1, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1357, 984.5)
+scale = Vector2(0.185185, 0.176852)
+texture = ExtResource("7_87hwx")
+
+[node name="Parallax2D4" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(250, 100)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D4"]
+modulate = Color(0.125069, 0.47534, 0.644048, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1591, 579)
+scale = Vector2(0.107407, 0.0944444)
+texture = ExtResource("8_hxp17")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_vsk3g")
@@ -30,12 +136,8 @@ environment = ExtResource("1_vsk3g")
 [node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
 script = ExtResource("1_o08pr")
 quadrants_initial_health = 100.0
-resource_droprate_multiplier = null
-quadrant_size = null
 grid_size = Vector2i(8, 8)
 fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
-block_core_cuts = null
-block_core_min_cut_area = null
 
 [node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
 unique_name_in_owner = true
@@ -43,6 +145,7 @@ show_behind_parent = false
 top_level = true
 position = Vector2(649, -456)
 poly_texture = SubResource("CompressedTexture2D_ln2a1")
+sound_effect_on_destroy = SubResource("Resource_ynhtl")
 s_p_number = 30
 s_a = 400.0
 s_b = 400.0
@@ -103,6 +206,7 @@ one_shot = true
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -100
+visible = false
 
 [node name="Panel" type="Panel" parent="BGLayer"]
 anchors_preset = 15
@@ -272,11 +376,21 @@ size_flags_vertical = 8
 
 [node name="TimeLeftUI" parent="GameUI" instance=ExtResource("9_rhv7f")]
 unique_name_in_owner = true
+offset_top = 8.0
+offset_bottom = 8.0
 
 [node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("16_y420x")]
 visible = false
 size_flags_horizontal = 6
 size_flags_vertical = 6
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-275, -248)
+energy = 0.9
+blend_mode = 1
+range_item_cull_mask = 191
+shadow_item_cull_mask = 190
+height = 0.5
 
 [connection signal="pressed" from="GameUI/TerminateButtonContainer/MarginContainer/TerminateButton" to="GameUI/LevelFinisedUI" method="_on_terminate_button_pressed"]
 

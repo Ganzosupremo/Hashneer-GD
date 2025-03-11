@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dd74dfmgbb8bs"
-path="res://.godot/imported/FractureBodyHitSound.wav-59c4bacd18ea1a3761d387149fc26ddd.sample"
+path="res://.godot/imported/FractureBodyHitSound.wav-c89c0cd865f4ad9b4466f98970a67408.sample"
 
 [deps]
 
-source_file="res://Audio/FractureBodyHitSound.wav"
-dest_files=["res://.godot/imported/FractureBodyHitSound.wav-59c4bacd18ea1a3761d387149fc26ddd.sample"]
+source_file="res://Audio/FracturableTerrain/FractureBodyHitSound.wav"
+dest_files=["res://.godot/imported/FractureBodyHitSound.wav-c89c0cd865f4ad9b4466f98970a67408.sample"]
 
 [params]
 

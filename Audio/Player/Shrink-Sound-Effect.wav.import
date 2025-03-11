@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cmek8vf55vh73"
-path="res://.godot/imported/Shrink-Sound-Effect.wav-b5927a22ae6b97d398d6d7797e6594b7.sample"
+path="res://.godot/imported/Shrink-Sound-Effect.wav-53df106f6d2c8c99d9288ed402dbf909.sample"
 
 [deps]
 
-source_file="res://Audio/Shrink-Sound-Effect.wav"
-dest_files=["res://.godot/imported/Shrink-Sound-Effect.wav-b5927a22ae6b97d398d6d7797e6594b7.sample"]
+source_file="res://Audio/Player/Shrink-Sound-Effect.wav"
+dest_files=["res://.godot/imported/Shrink-Sound-Effect.wav-53df106f6d2c8c99d9288ed402dbf909.sample"]
 
 [params]
 

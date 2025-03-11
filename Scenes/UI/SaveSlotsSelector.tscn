@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_c01e8"]
 [ext_resource type="Script" path="res://Scripts/UI/SaveSlotsSelector.gd" id="1_tniih"]
-[ext_resource type="PackedScene" uid="uid://bkmy27dnw7m2b" path="res://Scenes/UIComponents/ResponsiveBackground.tscn" id="3_k6sgb"]
+[ext_resource type="Script" path="res://Scripts/UIComponents/ResponsiveBackground.gd" id="3_o0eee"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_vdhhf"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_vgxsx"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="7_owchr"]
@@ -98,6 +98,7 @@ script = ExtResource("1_tniih")
 environment = SubResource("Environment_4lj34")
 
 [node name="Texture" type="TextureRect" parent="."]
+z_index = -1
 texture_repeat = 2
 layout_mode = 1
 anchors_preset = 15
@@ -105,55 +106,66 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-mouse_filter = 2
+mouse_filter = 0
 theme = ExtResource("1_c01e8")
 texture = SubResource("GradientTexture1D_ibqkb")
 
-[node name="ResponsiveBackground" parent="." instance=ExtResource("3_k6sgb")]
+[node name="ResponsiveBackground" type="Control" parent="."]
 layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("3_o0eee")
 
-[node name="TextureRect" type="TextureRect" parent="ResponsiveBackground/ChildContainer" index="0"]
+[node name="TextureRect" type="TextureRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -853.0
-offset_top = 377.0
-offset_right = 898.0
-offset_bottom = 1003.0
+offset_left = -873.0
+offset_top = 357.0
+offset_right = 878.0
+offset_bottom = 983.0
 texture = SubResource("GradientTexture2D_8p432")
 
-[node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/TextureRect" instance=ExtResource("3_vgxsx")]
-tween_time = 0.85
+[node name="AnimationComponent" parent="ResponsiveBackground/TextureRect" instance=ExtResource("3_vgxsx")]
+enter_animation = true
+tween_time = 0.75
 tween_transition = 6
 tween_ease = 2
-tween_scale = Vector2(1.5, 1)
-tween_position = Vector2(0, 100)
+tween_scale = Vector2(1, 0.6)
+tween_position = Vector2(0, -10)
 tween_size = Vector2(0, 0)
-tween_rotation = 0.0
+tween_rotation = 5.0
 
-[node name="ColorRect" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="1"]
+[node name="ColorRect" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -1520.0
-offset_top = -489.0
-offset_right = -352.0
-offset_bottom = -112.0
+offset_left = -1540.0
+offset_top = -509.0
+offset_right = -372.0
+offset_bottom = -132.0
 color = Color(0, 0.0823529, 0.247059, 1)
 
-[node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect" instance=ExtResource("3_vgxsx")]
+[node name="AnimationComponent" parent="ResponsiveBackground/ColorRect" instance=ExtResource("3_vgxsx")]
+enter_animation = true
 tween_time = 0.5
-tween_transition = 1
+tween_transition = 8
 tween_ease = 2
 tween_scale = Vector2(0.8, 0.6)
 tween_position = Vector2(50, 0)
 tween_size = Vector2(0, 0)
 
-[node name="ColorRect2" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="2"]
+[node name="ColorRect2" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = 469.0
-offset_top = -449.0
-offset_right = 1026.0
-offset_bottom = 89.0
+offset_left = 449.0
+offset_top = -469.0
+offset_right = 1006.0
+offset_bottom = 69.0
 color = Color(0.0392157, 0.447059, 0.862745, 1)
 
-[node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect2" instance=ExtResource("3_vgxsx")]
+[node name="AnimationComponent" parent="ResponsiveBackground/ColorRect2" instance=ExtResource("3_vgxsx")]
 tween_time = 0.4
 tween_transition = 5
 tween_ease = 2
@@ -162,22 +174,38 @@ tween_position = Vector2(0, 0)
 tween_size = Vector2(0, 0)
 tween_rotation = 360.0
 
-[node name="ColorRect3" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="3"]
+[node name="ColorRect3" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -131.0
-offset_top = -443.0
-offset_right = 426.0
-offset_bottom = 95.0
+offset_left = -151.0
+offset_top = -463.0
+offset_right = 406.0
+offset_bottom = 75.0
 color = Color(0.00784314, 0.266667, 0.533333, 1)
 
-[node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect3" instance=ExtResource("3_vgxsx")]
+[node name="AnimationComponent" parent="ResponsiveBackground/ColorRect3" instance=ExtResource("3_vgxsx")]
 tween_time = 0.4
-tween_transition = 5
+tween_transition = 4
 tween_ease = 2
 tween_scale = Vector2(0.6, 0.6)
 tween_position = Vector2(0, 0)
 tween_size = Vector2(0, 0)
 tween_rotation = 360.0
+
+[node name="ChildContainer" type="Control" parent="ResponsiveBackground"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -286,8 +314,7 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 mouse_filter = 2
 
+[connection signal="item_rect_changed" from="ResponsiveBackground" to="ResponsiveBackground" method="_on_item_rect_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton" to="." method="_on_slot_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton2" to="." method="_on_slot_button_2_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton3" to="." method="_on_slot_button_3_pressed"]
-
-[editable path="ResponsiveBackground"]
