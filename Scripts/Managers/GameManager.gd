@@ -28,7 +28,20 @@ var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
 var unlocked_weapons: Dictionary = {}
-var upgraded_stats: Dictionary = {}
+var upgraded_stats: Dictionary = {
+	"Speed": {
+		"value": 0.0,
+		"stat_type": 0
+	},
+	"Health": {
+		"value": 0.0,
+		"stat_type": 0
+	},
+	"Damage": {
+		"value" : 0.0,
+		"stat_type": 0
+	}
+}
 var unlocked_abilities: Dictionary = {}
 
 var loaded: bool = false
@@ -94,21 +107,32 @@ func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYP
 	upgraded_stats[stat_name] = {"value": value, "stat_type": stat_type}
 	match stat_type:
 		SkillNode.STAT_TYPE.SPEED:
-			#upgraded_stats[stat_name] = value
-			player_details.speed += value
+			upgraded_stats[stat_name].value += value
+			#player_details.speed += value
 		SkillNode.STAT_TYPE.HEALTH:
-			#upgraded_stats[stat_name] = value
-			player_details.max_health += value
+			upgraded_stats[stat_name].value += value
+			#player_details.max_health += value
 		SkillNode.STAT_TYPE.DAMAGE:
-			#upgraded_stats[stat_name] = value
-			player_details.damage_multiplier += value
+			upgraded_stats[stat_name].value += value
+			#player_details.damage_multiplier += value
 		_:
 			return
 			# printerr("NO STAT FOUND FOR {0}".format([stat_name]))
 
+func get_upgraded_stat(stat_type: SkillNode.STAT_TYPE = SkillNode.STAT_TYPE.NONE) -> Dictionary:
+	if upgraded_stats.size() == 0: return {
+		"value": 0.0,
+		"stat_type": 0
+	}
+	if upgraded_stats.has(Utils.player_stat_type_to_string(stat_type)):
+		return upgraded_stats[Utils.player_stat_type_to_string(stat_type)]
+	return {
+		"value": 0.0,
+		"stat_type": 0
+	}
+
 func register_unlocked_ability(ability_id: String) -> void:
 	if unlocked_abilities.has(ability_id): return
-	
 	unlocked_abilities[ability_id] = true
 
 ## ___________________________LEVEL SELECTOR FUNCTIONS_____________________________________

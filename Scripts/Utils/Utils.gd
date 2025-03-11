@@ -82,6 +82,23 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 		return weapon_names_to_string[weapon_name]
 	return "Unknown Weapon"
 
+## The GameManager saves the upgrade data in the [param GameManager.upgraded_stats] dictionary based on the [param SkillNode.stat_type] variable.
+## This function converts the [param SkillNode.stat_type] to a string for getting the correct stat's value from the dictionary.
+## To avoid typos when trying to recover a stat's value from the dictionay, this function should be used.
+## Just the player stats are saved in the dictionary. 
+## The weapon and ability upgrades are saved in the [param GameManager.unlocked_weapons] and [param GameManager.unlocked_abilities] dictionaries.
+static func player_stat_type_to_string(stat_type: SkillNode.STAT_TYPE) -> String:
+	var saved_names: Dictionary = {
+		SkillNode.STAT_TYPE.HEALTH: "Health",
+		SkillNode.STAT_TYPE.SPEED: "Speed",
+		SkillNode.STAT_TYPE.DAMAGE: "Damage",
+	}
+
+	if saved_names.has(stat_type):
+		return saved_names[stat_type]
+	return "Unknown Stat"
+
+
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():
 		if enum_type[key] == _enum:
