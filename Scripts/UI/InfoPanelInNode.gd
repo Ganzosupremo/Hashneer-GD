@@ -21,23 +21,23 @@ class_name SkillInfoPanelInNode extends Control
 @onready var animation_component: AnimationComponentUI = $AnimationComponent
 @onready var price_background: PanelContainer = $PanelContainer/VBoxContainer/PriceBackground
 
+## There's no need for this bool, but save the state just in case
 var use_btc_icon: bool = false
 
 func _ready() -> void:
 	visible = false
 
 func activate_panel(title: String, description: String, cost: int, use_bitcoin: bool, is_maxed_out: bool = false) -> void:
-	change_labels(title, description, cost, is_maxed_out)
-	_set_cost_icon(use_bitcoin)
+	change_labels(title, description, cost, use_bitcoin, is_maxed_out)
 	visible = true
-	animation_component.start_tween()
+	#animation_component.start_tween()
 
 func deactivate_panel() -> void:
 	price_background.remove_theme_stylebox_override("panel")
 	visible = false
 
 func _set_cost_icon(use_bitcoin: bool) -> void:
-	use_btc_icon = use_bitcoin
+	_set_use_btc_icon(use_bitcoin)
 	if use_bitcoin:
 		btc_texture.visible = true
 		fiat_texture.visible = false
@@ -45,18 +45,20 @@ func _set_cost_icon(use_bitcoin: bool) -> void:
 		fiat_texture.visible = true
 		btc_texture.visible = false
 
-func change_labels(title: String, description: String, cost: int, is_maxed_out: bool = false) -> void:
+func change_labels(title: String, description: String, cost: int, use_bitcoin: bool = false, is_maxed_out: bool = false) -> void:
+	_set_use_btc_icon(use_bitcoin)
 	skill_title.text = title
 	if description.is_empty():
 		skill_description.hide()
 	else:
 		skill_description.text = description
 	
-	update_cost_label(cost, is_maxed_out)
+	_set_cost_icon(use_bitcoin)
+	update_cost_label(cost, use_bitcoin, is_maxed_out)
 
-func update_cost_label(cost: int, is_maxed_out: bool = false) -> void:
-	_change_price_background(use_btc_icon, cost, is_maxed_out)
-	
+func update_cost_label(cost: int, use_bitcoin: bool = false, is_maxed_out: bool = false) -> void:
+	_set_use_btc_icon(use_bitcoin)
+	_change_price_background(use_bitcoin, cost, is_maxed_out)
 	skill_cost.text = "WELL DONE!" if is_maxed_out else Utils.format_currency(cost, true)
 
 func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool = false) -> void:
@@ -70,6 +72,9 @@ func _change_price_background(use_bitcoin: bool, cost: float, is_maxed_out: bool
 		price_background.add_theme_stylebox_override("panel", cannot_afford_upgrade_style)
 	else:
 		price_background.add_theme_stylebox_override("panel", can_afford_upgrade_style)
+
+func _set_use_btc_icon(value: bool) -> void:
+	use_btc_icon = value
 
 func _get_currency_balance(use_bitcoin) -> float:
 	return BitcoinWallet.get_bitcoin_balance() if use_bitcoin else BitcoinWallet.get_fiat_balance()

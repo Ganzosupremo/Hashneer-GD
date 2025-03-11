@@ -75,6 +75,7 @@ func set_bitcoins_spent(value: float) -> void:
 	coins_spent += value
 
 func get_block_by_id(id: int) -> BitcoinBlock:
+	if chain.size() == 0: return null
 	return chain[id]
 
 func get_latest_block() -> BitcoinBlock:

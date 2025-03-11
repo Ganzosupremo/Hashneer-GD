@@ -118,7 +118,7 @@ func add_tween(values: Dictionary, parallel: bool, seconds: float, delay: float 
 	
 	for property in properties:
 		if property is not String:
-			# print_debug("{0}, is not a string.".format([property]))
+			print_debug("{0}, is not a string.".format([property]))
 			continue
 		tween.tween_property(target, property, values[property], seconds).set_trans(transition).set_ease(easing)
 	await GameManager.init_timer(delay).timeout
@@ -175,7 +175,7 @@ func _on_enter() -> void:
 		add_tween(default_values, parallel_animations, enter_time, enter_delay, enter_transition, enter_ease, true)
 
 func _connect_signals() -> void:
-	if target == null: return
+	if target is not Button: return
 	
 	target.mouse_entered.connect(add_tween.bind(
 		tween_values,
@@ -197,27 +197,6 @@ func _connect_signals() -> void:
 		)
 	)
 	
-	target.focus_entered.connect(add_tween.bind(
-		tween_values,
-		parallel_animations,
-		tween_time,
-		tween_delay,
-		tween_transition,
-		tween_ease,
-		)
-	)
-
-	target.focus_exited.connect(add_tween.bind(
-		default_values,
-		parallel_animations,
-		tween_time,
-		tween_delay,
-		tween_transition,
-		tween_ease,
-		)
-	)
-
-
 	if !wait_for: return
 	
 	wait_for.entered.connect(add_tween.bind(
