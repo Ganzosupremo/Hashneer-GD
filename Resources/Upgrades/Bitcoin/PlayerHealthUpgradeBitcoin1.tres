@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillNodeData" load_steps=2 format=3 uid="uid://cv5phm62w12fs"]
 
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_82lh6"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_82lh6"]
 
 [resource]
 resource_name = "HealthB1SkillNodeData"

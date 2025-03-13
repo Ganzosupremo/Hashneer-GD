@@ -1,6 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5kjj1t5jwafd"]
+[gd_scene load_steps=3 format=3 uid="uid://b5kjj1t5jwafd"]
 
 [ext_resource type="Script" path="res://Scripts/Managers/MusicManager.gd" id="1_n1744"]
+[ext_resource type="AudioBusLayout" uid="uid://1ibwcs1mu46p" path="res://Resources/MainAudioBus.tres" id="2_lvydt"]
 
 [node name="MusicManager" type="Node2D"]
 script = ExtResource("1_n1744")
+main_game_mixer = ExtResource("2_lvydt")
+music_volume = 0.25
+
+[node name="FirstAudioStream" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
+[node name="SecondAudioStream" type="AudioStreamPlayer" parent="."]
+bus = &"Music"

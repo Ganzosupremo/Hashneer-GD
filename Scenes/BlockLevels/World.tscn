@@ -1,8 +1,8 @@
 [gd_scene load_steps=30 format=3 uid="uid://bocdjbhql8qcn"]
 
-[ext_resource type="Script" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
+[ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
 [ext_resource type="Texture2D" uid="uid://cxg11jfx5d6rc" path="res://Textures/BG/BG Hashneer.png" id="1_g16gn"]
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
+[ext_resource type="Script" uid="uid://d2veqt7wkxl4y" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="1_o08pr"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="1_vsk3g"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="2_d3k6k"]
 [ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="2_hf3ub"]
@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="12_e0bhm"]
 [ext_resource type="AudioStream" uid="uid://c4yunj0mkgsxx" path="res://Audio/FracturableTerrain/BlockCoreDestroyed.wav" id="12_h2mkg"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="12_ujcnj"]
-[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="13_b1yvc"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="13_b1yvc"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="16_y420x"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ln2a1"]
@@ -389,6 +389,8 @@ blend_mode = 1
 range_item_cull_mask = 191
 shadow_item_cull_mask = 190
 height = 0.5
+
+[node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
 
 [connection signal="pressed" from="GameUI/TerminateButtonContainer/MarginContainer/TerminateButton" to="GameUI/LevelFinisedUI" method="_on_terminate_button_pressed"]
 

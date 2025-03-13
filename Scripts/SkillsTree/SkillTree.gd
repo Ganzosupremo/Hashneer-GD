@@ -2,6 +2,7 @@ class_name SkillTreeManager extends Control
 
 @export var skill_nodes: Array = []
 @export var player_details: PlayerDetails = PlayerDetails.new()
+@export var music_details: MusicDetails
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 @onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/LevelsSelector.tscn")
@@ -12,6 +13,7 @@ class_name SkillTreeManager extends Control
 var _use_btc_as_currency: bool = false
 
 func _ready() -> void:
+	MusicManager.change_music_clip(music_details)
 	skill_nodes = _get_skill_nodes()
 	
 	var id: int = 0

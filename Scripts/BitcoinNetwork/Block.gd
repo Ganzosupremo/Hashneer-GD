@@ -6,7 +6,7 @@ class_name BitcoinBlock extends Resource
 @export var data: String = "BLOCK TEMPLATE"
 @export var previous_hash: String = ""
 @export var block_hash: String = ""
-@export var reward: float = 0.0
+@export var block_subsidy: float = 0.0
 @export var mined: bool = false
 
 func _init(_height: int = 0, _timestamp: String = "", _data: String = ""):
@@ -26,4 +26,4 @@ func calculate_block_hash() -> String:
 	return res.hex_encode()
 	
 func _to_string() -> String:
-	return "Height-%d" % height + "\n\nTimestamp-%s" % timestamp + "\n\nHash-%s" % block_hash + "\n\nPrevious Hash-%s" % previous_hash + "\n\nData-%s" % data + "\n\nBlock Subsidy-%.2f" % reward
+	return "Height-%d" % height + "\n\nTimestamp-%s" % timestamp + "\n\nHash-%s" % block_hash + "\n\nPrevious Hash-%s" % previous_hash + "\n\nData-%s" % data + "\n\nBlock Subsidy-%.2f" % block_subsidy

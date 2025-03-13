@@ -113,7 +113,7 @@ func _init_builder() -> void:
 	block_core_min_cut_area = builder_data.block_core_cut_min_area
 	
 	quadrants_initial_health = builder_data.initial_health
-	resource_droprate_multiplier = builder_data.drop_rate_multiplier
+	resource_droprate_multiplier = builder_data.fiat_drop_rate_factor
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -146,9 +146,10 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	if _fracture_disabled: return
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	
-	var fiat_gained_on_collision: float = 5000.0 * builder_args.drop_rate_multiplier
+	
+	other_body.random_drops.spawn_drops(2)
+	var fiat_gained_on_collision: float = FED.get_fiat_subsidy() * builder_args.fiat_drop_rate_factor
 	quadrant_hitted.emit(fiat_gained_on_collision)
-	BitcoinWallet.add_fiat(fiat_gained_on_collision)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)

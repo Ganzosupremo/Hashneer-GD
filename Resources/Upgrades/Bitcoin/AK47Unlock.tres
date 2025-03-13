@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillNodeData" load_steps=4 format=3 uid="uid://bidjra86l58ip"]
 
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jpyj5"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jpyj5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_hq1eh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wmu8x"]

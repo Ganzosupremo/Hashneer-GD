@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b2ia750xiv8cj"
+path="res://.godot/imported/Sonata No. 11 III .mp3-8245d9e1f72defc260f82639799cf105.mp3str"
+
+[deps]
+
+source_file="res://Audio/Music/Sonata No. 11 III .mp3"
+dest_files=["res://.godot/imported/Sonata No. 11 III .mp3-8245d9e1f72defc260f82639799cf105.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4

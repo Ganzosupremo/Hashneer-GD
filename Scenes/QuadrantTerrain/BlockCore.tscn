@@ -1,11 +1,16 @@
-[gd_scene load_steps=23 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=31 format=3 uid="uid://dqo2lrxl5di8o"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
+[ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
-[ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
+[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
 [ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/FracturableBodies/chunck_blue.png" id="5_erve3"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="5_tatvt"]
+[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_7drh7"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_pmhie"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wf5i4"]
+[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_wf5i4"]
+[ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_ehrd3"]
 
 [sub_resource type="Resource" id="Resource_hf0pe"]
 metadata/__load_path__ = "res://Textures/Black Image.png"
@@ -26,7 +31,7 @@ colors = PackedColorArray(1, 0.202102, 0.135005, 1, 0.931946, 0.530337, 0, 1, 0.
 gradient = SubResource("Gradient_si13x")
 
 [sub_resource type="Curve" id="Curve_m7672"]
-max_value = 100.0
+_limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
 point_count = 2
 
@@ -57,6 +62,7 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 2.0
 emission_ring_radius = 2.0
 emission_ring_inner_radius = 1.5
+emission_ring_cone_angle = 90.0
 angle_min = 180.0
 angle_max = 360.0
 angle_curve = SubResource("CurveTexture_qkmet")
@@ -106,6 +112,24 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_oy3r4")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Resource" id="Resource_7drh7"]
+script = ExtResource("8_pmhie")
+drop_path = "uid://bjdc26h1h0pfv"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_ehrd3"]
+script = ExtResource("9_wf5i4")
+possible_drops = Array[ExtResource("8_pmhie")]([SubResource("Resource_7drh7")])
+guaranteed_drops = 1
+combined_odds = false
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="Resource" id="Resource_08pad"]
+script = ExtResource("11_ehrd3")
+name = &"PickupsHolder"
+metadata/_custom_type_script = "uid://gm1tcxr1506r"
 
 [node name="BlockCore" type="StaticBody2D"]
 modulate = Color(1, 1, 1.5, 1)
@@ -167,18 +191,18 @@ texture = ExtResource("5_tatvt")
 emitting = false
 amount = 50
 sub_emitter = NodePath("ExplosionEnd")
-process_material = SubResource("ParticleProcessMaterial_epx75")
 lifetime = 7.0
 randomness = 0.5
 visibility_rect = Rect2(-110.353, -119.791, 231.584, 221.743)
+process_material = SubResource("ParticleProcessMaterial_epx75")
 
 [node name="ExplosionEnd" type="GPUParticles2D" parent="BlockCoreParticles"]
 emitting = false
 amount = 50
-process_material = SubResource("ParticleProcessMaterial_epx75")
 explosiveness = 1.0
 randomness = 0.5
 visibility_rect = Rect2(-2.92889, -2.92596, 5.7912, 4642.98)
+process_material = SubResource("ParticleProcessMaterial_epx75")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 light_mask = 128
@@ -196,5 +220,19 @@ shadow_filter_smooth = 5.0
 shadow_item_cull_mask = 48
 texture = SubResource("GradientTexture2D_4tnpi")
 texture_scale = 15.0
+
+[node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+script = ExtResource("7_7drh7")
+drops_table = SubResource("Resource_ehrd3")
+scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
+metadata/_custom_type_script = "uid://b8fqt8af86l80"
+
+[node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
+script = ExtResource("10_wf5i4")
+force = 10000.0
+direction = Vector2(1, 0.5)
+angle_spread = 90.0
+spawn_group = SubResource("Resource_08pad")
+metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
 
 [connection signal="timeout" from="SlowDownTimer" to="." method="_on_slow_down_timer_timeout"]

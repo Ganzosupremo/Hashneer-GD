@@ -16,7 +16,7 @@ const implements = [
 ]
 
 func _ready() -> void:
-	BitcoinNetwork.reward_issued.connect(on_reward_issued)
+	BitcoinNetwork.coin_subsidy_issued.connect(on_reward_issued)
 	#request.request_completed.connect(on_request_completed)
 	#request.request(API_REQUEST)
 	await request.request_completed

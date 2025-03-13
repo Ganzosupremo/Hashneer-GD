@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://beswcfw4ytxol"]
+
+[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="1_52gt5"]
+[ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="2_5gwqa"]
+[ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_0nwdx"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5gwqa"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0nwdx"]
+radius = 28.0
+
+[node name="BTCPickup" type="RigidBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_5gwqa")
+
+[node name="BitcoinPixelArt" type="Sprite2D" parent="."]
+texture = ExtResource("1_52gt5")
+
+[node name="Pickup2D" type="Area2D" parent="." node_paths=PackedStringArray("root")]
+script = ExtResource("2_5gwqa")
+items_drop_bus = ExtResource("3_0nwdx")
+root = NodePath("..")
+resource_count = 50000
+pickup_resource_file = "uid://cfuqgqfvq0ydj"
+metadata/_custom_type_script = "uid://cswsevnw7pekp"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup2D"]
+shape = SubResource("CircleShape2D_0nwdx")

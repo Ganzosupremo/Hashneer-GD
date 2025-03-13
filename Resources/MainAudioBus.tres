@@ -14,7 +14,7 @@ threshold = -15.0
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
 resource_name = "Compressor"
-threshold = -20.0
+threshold = -21.0
 attack_us = 50.0
 sidechain = &"SFX"
 
@@ -24,7 +24,7 @@ bus/1/name = &"SFX"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = -4.76812
+bus/1/volume_db = -5.04224
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
 bus/1/effect/0/enabled = true
@@ -34,7 +34,7 @@ bus/2/name = &"Music"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
-bus/2/volume_db = -15.0025
-bus/2/send = &"SFX"
+bus/2/volume_db = -30.1465
+bus/2/send = &"Master"
 bus/2/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
 bus/2/effect/0/enabled = true

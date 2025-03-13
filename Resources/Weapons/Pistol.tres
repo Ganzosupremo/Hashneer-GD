@@ -3,17 +3,15 @@
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_j36t6"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_4wys5"]
-[ext_resource type="Script" path="res://Scripts/Resources/WeaponDetails.gd" id="3_c4yb8"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_c4yb8"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="3_o651b"]
-[ext_resource type="Script" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="5_4vek8"]
+[ext_resource type="Script" uid="uid://cx75gxr4fjdc1" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="5_4vek8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_avrey"]
 atlas = ExtResource("3_o651b")
 region = Rect2(0, 0, 123, 127)
 
 [sub_resource type="Curve" id="Curve_f1m5t"]
-min_value = -360.0
-max_value = 360.0
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
 point_count = 2
 
@@ -29,7 +27,6 @@ colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 
 gradient = SubResource("Gradient_ntw6v")
 
 [sub_resource type="Curve" id="Curve_oqk8h"]
-max_value = 100.0
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
 point_count = 2
 

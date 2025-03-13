@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ItemDropsBus" load_steps=2 format=3 uid="uid://cqiq36am0bvm5"]
+
+[ext_resource type="Script" uid="uid://deyti3och2qku" path="res://addons/item_drops/item_drops_bus.gd" id="1_4xabq"]
+
+[resource]
+script = ExtResource("1_4xabq")
+metadata/_custom_type_script = "uid://deyti3och2qku"

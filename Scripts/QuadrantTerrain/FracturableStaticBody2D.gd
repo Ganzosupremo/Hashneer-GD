@@ -10,7 +10,7 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var health: HealthComponent = %Health
 @onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
 @onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
-
+@onready var random_drops: RandomDrops = $RandomDrops
 
 @export_group("General")
 ## If true, the body will be initialized with its shape when placed in level

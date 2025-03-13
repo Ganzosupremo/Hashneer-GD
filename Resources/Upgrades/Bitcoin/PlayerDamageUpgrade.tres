@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillNodeData" load_steps=4 format=3 uid="uid://1kqapcb8f2vj"]
 
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jyv82"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_jyv82"]
 [ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="2_n31ef"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ruefw"]

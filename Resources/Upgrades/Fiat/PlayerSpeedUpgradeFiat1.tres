@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillNodeData" load_steps=2 format=3 uid="uid://vynimae5q6bh"]
 
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_kfevs"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_kfevs"]
 
 [resource]
 resource_name = "SpeedF1SkillNodeData"

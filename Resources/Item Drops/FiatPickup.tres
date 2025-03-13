@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CurrencyPickupResource" load_steps=2 format=3 uid="uid://dbm7dlkhl0o1y"]
+
+[ext_resource type="Script" uid="uid://b55jdk3nyw100" path="res://Scripts/Resources/CurrencyPickupResource.gd" id="1_tga1x"]
+
+[resource]
+script = ExtResource("1_tga1x")
+display_name = "Fiat Pickup"
+amount = 0.0
+currency_type = 1
+metadata/_custom_type_script = "uid://b55jdk3nyw100"

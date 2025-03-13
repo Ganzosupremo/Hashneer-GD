@@ -70,4 +70,4 @@ func issue_fiat_money() -> void:
 
 func get_fiat_subsidy() -> float:
 	var rand = randf_range(1000.0, 5000.0)
-	return rand * pow(10, builder_args.drop_rate_multiplier)
+	return rand * pow(10, builder_args.fiat_drop_rate_factor)

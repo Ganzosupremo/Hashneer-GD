@@ -35,7 +35,7 @@ func init_builder_args() -> void:
 	
 	self.builder_args.quadrant_texture = self.colpol_texture
 	self.builder_args.initial_health = self.quadrants_initial_health
-	self.builder_args.drop_rate_multiplier = self.drop_rate_multiplier
+	self.builder_args.fiat_drop_rate_factor = self.drop_rate_multiplier
 	self.builder_args.hit_sound = self.hit_sound_effect
 	
 	self.builder_args.block_core_cuts_delaunay = cuts

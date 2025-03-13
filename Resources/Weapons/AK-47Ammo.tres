@@ -1,11 +1,9 @@
 [gd_resource type="Resource" script_class="AmmoDetails" load_steps=16 format=3 uid="uid://cttyumyw2eyyf"]
 
-[ext_resource type="Script" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="1_jlqm5"]
-[ext_resource type="Script" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
+[ext_resource type="Script" uid="uid://cx75gxr4fjdc1" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="1_jlqm5"]
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
 
 [sub_resource type="Curve" id="Curve_7rtf8"]
-min_value = -360.0
-max_value = 360.0
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
 point_count = 2
 
@@ -21,7 +19,6 @@ colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 
 gradient = SubResource("Gradient_kg27v")
 
 [sub_resource type="Curve" id="Curve_5sjrm"]
-max_value = 100.0
 _data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
@@ -51,6 +48,7 @@ emission_ring_axis = Vector3(0, 0, 1)
 emission_ring_height = 2.0
 emission_ring_radius = 1.0
 emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
 direction = Vector3(0, 0, 0)
 spread = 90.0
 initial_velocity_min = 40.0

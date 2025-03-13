@@ -1,11 +1,16 @@
-[gd_scene load_steps=10 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=18 format=3 uid="uid://bg51o3dcb5mrm"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
-[ext_resource type="Script" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
+[ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
+[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
 [ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="2_rdcfh"]
-[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_0mtpy"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_0mtpy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="3_yxxnb"]
 [ext_resource type="AudioStream" uid="uid://b23scsgtlm1ea" path="res://Audio/FracturableTerrain/FracturableBodyDestroyed.wav" id="4_j1b78"]
+[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_78gmd"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_ildng"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wqqyk"]
+[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
+[ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_r1qd5"]
 
 [sub_resource type="Resource" id="Resource_0ewf5"]
 script = ExtResource("3_0mtpy")
@@ -22,6 +27,24 @@ sound_pitch = 1.0
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qpjim"]
 closed = false
 cull_mode = 2
+
+[sub_resource type="Resource" id="Resource_w65oi"]
+script = ExtResource("8_ildng")
+drop_path = "uid://bjdc26h1h0pfv"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_hxyl1"]
+script = ExtResource("9_wqqyk")
+possible_drops = Array[ExtResource("8_ildng")]([SubResource("Resource_w65oi")])
+guaranteed_drops = 5
+combined_odds = false
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="Resource" id="Resource_ildng"]
+script = ExtResource("11_r1qd5")
+name = &"PickupsHolder"
+metadata/_custom_type_script = "uid://gm1tcxr1506r"
 
 [node name="FracturableStaticBody2D" type="StaticBody2D"]
 light_mask = 2
@@ -65,3 +88,16 @@ visibility_layer = 2
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_qpjim")
 occluder_light_mask = 2
+
+[node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+script = ExtResource("7_78gmd")
+drops_table = SubResource("Resource_hxyl1")
+scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
+metadata/_custom_type_script = "uid://b8fqt8af86l80"
+
+[node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
+script = ExtResource("10_78gmd")
+force = 0.0
+direction = Vector2(0.5, -0.25)
+spawn_group = SubResource("Resource_ildng")
+metadata/_custom_type_script = "uid://cttuwmb0e0k2k"

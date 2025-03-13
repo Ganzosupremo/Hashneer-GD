@@ -4,8 +4,11 @@ extends Control
 @onready var start_game: TweenableButton = %StartGame
 @onready var quit_game: TweenableButton = %QuitGame
 
+@export var main_menu_music: MusicDetails
+
 func _ready() -> void:
 	start_game.grab_focus()
+	MusicManager.change_music_clip(main_menu_music, 2.5)
 
 func _on_button_pressed() -> void:
 	await start_game.sound_effect_component_ui.play_sound()

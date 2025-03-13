@@ -1,7 +1,7 @@
 extends Node2D
 class_name Timechain
 
-signal reward_issued(btc_reward: float)
+signal coin_subsidy_issued(btc_reward: float)
 signal block_found(block: BitcoinBlock)
 signal halving_occurred(new_subsidy: float)
 
@@ -13,7 +13,7 @@ const TOTAL_BLOCKS: int = 105
 var bitcoins_in_circulation: float = 0.0
 var halving_interval: int = 21
 var height: int = 0
-var current_reward: float = 0.0
+var current_block_subsidy: float = 0.0
 var coins_lost: float = 0.0
 var coins_spent: float = 0.0
 var chain: Array = []
@@ -58,8 +58,8 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 	
 	_add_block_to_chain(block)
 	
-	block.reward = _get_block_subsidy()
-	_issue_block_reward(miner, block.reward)
+	block.block_subsidy = calculate_block_subsidy()
+	_issue_block_reward(miner, block.block_subsidy)
 	#print_debug("Block found")
 	block_found.emit(block)
 	
@@ -121,40 +121,43 @@ func _should_stop_mining(new_block: BitcoinBlock) -> bool:
 func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 	chain.append(new_block)
 
-"""Issues the block reward to the miner that mined the block, i.e the player or the ai."""
-func _issue_block_reward(miner: String, reward: float) -> void:
+"""Issues the block subsidy to the miner that mined the block, i.e the player or the ai."""
+func _issue_block_reward(miner: String, subsidy: float) -> void:
 	if miner == "Player" or miner == "player":
-		reward_issued.emit(reward)
+		coin_subsidy_issued.emit(subsidy)
 	elif miner == "AI":
-		coins_lost += reward
-		#print("Reward issued to the AI")
+		coins_lost += subsidy
 
-func _get_block_subsidy() -> float:
+func calculate_block_subsidy() -> float:
 	var halvings: int = height / halving_interval
 	if (halvings > 5):
 		return 0.0
 	
 	var subsidy = 500 * COIN
-	var previous_subsidy: float = subsidy
+	var previous_subsidy: float = current_block_subsidy
 	
 	subsidy >>= halvings
 	bitcoins_in_circulation += subsidy
+	current_block_subsidy = subsidy
 
 	if subsidy != previous_subsidy:
 		halving_occurred.emit(subsidy)
 	
 	if _exceeds_coin_limit_cap():
-		#print("Exceeds limit cap")
 		return 0.0
 	return subsidy
 
+func get_block_subsidy() -> float:
+	return current_block_subsidy
+
+
 """Returns true if the coins in circulation are more than the TOTAL_COINS"""
 func _exceeds_coin_limit_cap() -> bool:
-	if bitcoins_in_circulation >= TOTAL_COINS:
+	if get_total_bitcoins_in_circulation() >= TOTAL_COINS:
 		return true
 	return false
 
-
+"""Called when a halving occurs"""
 func _on_halving_ocurred(_new_subsidy: float) -> void:
 	total_deflation += deflation_rate
 
@@ -167,7 +170,7 @@ func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"chain": chain,
 		"height": height,
-		"current_reward": current_reward,
+		"current_block_subsidy": current_block_subsidy,
 		"coins_lost": coins_lost,
 		"coins_spent": coins_spent
 	}
@@ -185,10 +188,10 @@ func load_data():
 	
 	chain = saved_chain.duplicate(true)
 	height = data["height"]
-	current_reward = data["current_reward"]
+	current_block_subsidy = data["current_block_subsidy"]
 	coins_lost = data["coins_lost"]
 	coins_spent = data["coins_spent"]
-	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
+	get_total_bitcoins_in_circulation()
 	loaded = true
 
 
