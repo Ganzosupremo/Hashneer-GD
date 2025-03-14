@@ -125,7 +125,7 @@ path_to_scene_path = Array[StringName]([&"type", &"file_path"])
 metadata/_custom_type_script = "uid://bf4gc2pn1fbeu"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_spxdj"]
-radius = 26.0768
+radius = 42.0119
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 light_mask = 16
@@ -198,6 +198,10 @@ max_health = 100.0
 [node name="SoundEffectComponent" parent="." instance=ExtResource("10_4cnpp")]
 bus = &"SFX"
 
+[node name="PickupsSFXs" parent="." instance=ExtResource("10_4cnpp")]
+max_polyphony = 21
+bus = &"SFX"
+
 [node name="PointLight2D" type="PointLight2D" parent="."]
 light_mask = 16
 visibility_layer = 16
@@ -219,11 +223,12 @@ occluder_light_mask = 16
 collision_layer = 128
 collision_mask = 544
 monitorable = false
+audio_bus_name = &"SFX"
 script = ExtResource("13_0u84n")
 actor = NodePath("..")
 inventory_node = NodePath("../CurrencyInventory")
 access = SubResource("Resource_6tu5v")
-sound_player = NodePath("../SoundEffectComponent")
+sound_player = NodePath("../PickupsSFXs")
 metadata/_custom_type_script = "uid://b542eoymso6xc"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupsCollector2D"]

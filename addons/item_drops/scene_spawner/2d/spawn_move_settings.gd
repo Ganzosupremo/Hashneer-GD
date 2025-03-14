@@ -8,3 +8,8 @@ extends Resource
 
 ## The duration for how long the move lasts
 @export var move_duration : float = 0.15
+
+## If true, the movement of the object will be tweened
+@export var tween_movement: bool = false
+
+@export var tween_settings: SpawnMoveTweenSettings

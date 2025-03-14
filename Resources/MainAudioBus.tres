@@ -1,10 +1,17 @@
 [gd_resource type="AudioBusLayout" load_steps=4 format=3 uid="uid://1ibwcs1mu46p"]
 
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
+resource_name = "Compressor"
+threshold = -21.0
+attack_us = 50.0
+sidechain = &"SFX"
+
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_0w2f5"]
 resource_name = "Reverb"
-room_size = 0.2
+room_size = 0.25
 damping = 0.35
-spread = 0.52
+spread = 0.5
+hipass = 0.1
 dry = 0.8
 wet = 0.2
 
@@ -12,29 +19,23 @@ wet = 0.2
 resource_name = "Compressor"
 threshold = -15.0
 
-[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
-resource_name = "Compressor"
-threshold = -21.0
-attack_us = 50.0
-sidechain = &"SFX"
-
 [resource]
 bus/0/volume_db = 0.00282288
-bus/1/name = &"SFX"
+bus/1/name = &"Music"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = -5.04224
+bus/1/volume_db = -15.1981
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
+bus/1/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
 bus/1/effect/0/enabled = true
-bus/1/effect/1/effect = SubResource("AudioEffectCompressor_fvo30")
-bus/1/effect/1/enabled = true
-bus/2/name = &"Music"
+bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
-bus/2/volume_db = -30.1465
+bus/2/volume_db = -0.128275
 bus/2/send = &"Master"
-bus/2/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
+bus/2/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
 bus/2/effect/0/enabled = true
+bus/2/effect/1/effect = SubResource("AudioEffectCompressor_fvo30")
+bus/2/effect/1/enabled = true

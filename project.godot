@@ -163,6 +163,10 @@ Test_input={
 2d_physics/layer_9="BlockCore"
 2d_physics/layer_10="PickUps"
 
+[physics]
+
+2d/default_gravity_vector=Vector2(0, 0)
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0

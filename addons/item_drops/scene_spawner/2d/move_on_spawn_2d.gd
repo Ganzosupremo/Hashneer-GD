@@ -46,18 +46,18 @@ class MoveOnSpawn:
 	
 	var node_to_move: Node2D
 	var settings: SpawnMoveSettings
-	var move_direction := Vector2.ZERO
-	var remove_on_stop := true
+	var move_direction: Vector2 = Vector2.ZERO
+	var remove_on_stop: bool = false
 	
-	var moving := false:
+	var moving: bool = false:
 		set(value):
 			moving = value
 			# Placeholder for potential collision disabling logic
 			# set_deferred("collision_shape.disabled", moving)
 	
-	var time_since_launch := 0.0
-	var start_pos := Vector2.ZERO
-	var _last_sample := 0.0
+	var time_since_launch: float = 0.0
+	var start_pos: Vector2 = Vector2.ZERO
+	var _last_sample: float= 0.0
 	
 	## Initializes the component with the node to move, movement settings, and direction.
 	func _init(p_node_to_move: Node2D, p_settings: SpawnMoveSettings, p_direction: Vector2) -> void:
@@ -66,6 +66,7 @@ class MoveOnSpawn:
 		settings = p_settings
 		move_direction = p_direction
 		moving = true
+		print_debug("MoveOnSpawn initialized")
 	
 	func _physics_process(delta: float) -> void:
 		if not moving:
@@ -74,11 +75,18 @@ class MoveOnSpawn:
 		time_since_launch += delta
 		
 		# Calculate progress along the movement duration
-		var time_progress := clampf(time_since_launch / settings.move_duration, 0.0, 1.0)
+		var time_progress: float = clampf(time_since_launch / settings.move_duration, 0.0, 1.0)
 		
 		# Sample the movement curve and update position
 		var current_sample := settings.distance_time_curve.sample(time_progress)
-		node_to_move.position += (current_sample - _last_sample) * move_direction
+
+		if settings.tween_movement:
+			print("Tweening")
+			var tween: Tween = GameManager.init_tween()
+			tween.tween_property(node_to_move, "position", (current_sample - _last_sample) * move_direction, settings.move_duration) .from(
+				start_pos).set_trans(settings.tween_settings.tween_transition).set_ease(settings.tween_settings.tween_ease)
+		else:
+			node_to_move.position += (current_sample - _last_sample) * move_direction
 		_last_sample = current_sample
 		
 		# Stop moving and clean up when duration is reached

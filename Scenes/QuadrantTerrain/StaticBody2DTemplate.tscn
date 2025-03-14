@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=27 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
@@ -10,7 +10,11 @@
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_ildng"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wqqyk"]
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
+[ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="10_idcnk"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_r1qd5"]
+[ext_resource type="Script" uid="uid://c30maogjyvnk7" path="res://addons/item_drops/scene_spawner/2d/move_on_spawn_2d.gd" id="12_ildng"]
+[ext_resource type="Script" uid="uid://d22dbw3gfgeev" path="res://addons/item_drops/scene_spawner/2d/spawn_move_settings.gd" id="13_wqqyk"]
+[ext_resource type="Script" uid="uid://bphy5tk010p50" path="res://addons/item_drops/scene_spawner/2d/tween_settings.gd" id="14_r1qd5"]
 
 [sub_resource type="Resource" id="Resource_0ewf5"]
 script = ExtResource("3_0mtpy")
@@ -45,6 +49,31 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 script = ExtResource("11_r1qd5")
 name = &"PickupsHolder"
 metadata/_custom_type_script = "uid://gm1tcxr1506r"
+
+[sub_resource type="Resource" id="Resource_qplid"]
+script = ExtResource("11_r1qd5")
+name = &"PickupsHolder"
+metadata/_custom_type_script = "uid://gm1tcxr1506r"
+
+[sub_resource type="Curve" id="Curve_idcnk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_x7mq3"]
+script = ExtResource("14_r1qd5")
+tween_transition = 3
+tween_ease = 2
+
+[sub_resource type="Resource" id="Resource_r1qd5"]
+script = ExtResource("13_wqqyk")
+distance_time_curve = SubResource("Curve_idcnk")
+move_duration = 1.0
+tween_movement = true
+tween_settings = SubResource("Resource_x7mq3")
+metadata/_custom_type_script = "uid://d22dbw3gfgeev"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r1qd5"]
+size = Vector2(111, 104)
 
 [node name="FracturableStaticBody2D" type="StaticBody2D"]
 light_mask = 2
@@ -92,12 +121,28 @@ occluder_light_mask = 2
 [node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
 script = ExtResource("7_78gmd")
 drops_table = SubResource("Resource_hxyl1")
-scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
+scene_spawner = NodePath("../ShapeEdgeSceneSpawner2D")
 metadata/_custom_type_script = "uid://b8fqt8af86l80"
 
 [node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
+visible = false
 script = ExtResource("10_78gmd")
-force = 0.0
+force = 1500.0
 direction = Vector2(0.5, -0.25)
 spawn_group = SubResource("Resource_ildng")
 metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
+
+[node name="ShapeEdgeSceneSpawner2D" type="Node2D" parent="." node_paths=PackedStringArray("spawn_shape")]
+script = ExtResource("10_idcnk")
+spawn_shape = NodePath("../CollisionShape2D")
+spawn_group = SubResource("Resource_qplid")
+metadata/_custom_type_script = "uid://bcjmdqied76to"
+
+[node name="MoveOnSpawn" type="Node2D" parent="ShapeEdgeSceneSpawner2D" node_paths=PackedStringArray("spawner")]
+script = ExtResource("12_ildng")
+spawner = NodePath("../../LaunchForceSceneSpawner2D")
+settings = SubResource("Resource_r1qd5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_r1qd5")
+disabled = true

@@ -28,13 +28,13 @@ func _ready() -> void:
 
 ## Handles pickup detection when an area enters the trigger.
 func _on_area_entered(area: Area2D) -> void:
-	var pickup := find_pickup(area)
+	var pickup: Pickup2D = find_pickup(area)
 	if pickup:
 		try_pick_up(pickup)
 
 ## Handles pickup detection when a body enters the trigger.
 func _on_body_entered(body: Node2D) -> void:
-	var pickup := find_pickup(body)
+	var pickup: Pickup2D = find_pickup(body)
 	if pickup:
 		try_pick_up(pickup)
 
@@ -50,15 +50,19 @@ func find_pickup(root_node: Node2D) -> Pickup2D:
 ## Attempts to collect a pickup and add its resource to the inventory.
 ## Returns true if the pickup was successfully collected, false otherwise.
 func try_pick_up(pickup: Pickup2D) -> bool:
-	var resource := pickup.get_pickup_resource()
+	var resource: Resource = pickup.get_pickup_resource()
 	if inventory == null: 
 		inventory = locate_inventory() # Ensure inventory is found
 		if inventory == null: return false
-		
+
+	if resource is CurrencyPickupResource:
+		if resource.currency_type == CurrencyPickupResource.CURRENCY_TYPE.FIAT:
+			pickup.resource_count = FED.get_fiat_subsidy() * GameManager.get_builder_args().fiat_drop_rate_factor
+
 	var results = inventory.call(access.method_add, resource, pickup.resource_count)
 	
 	if _was_add_to_inventory_successful(results):
-		var data := pickup.take(self)
+		var data: PickupEvent = await pickup.take(self)
 		if not data:  # Pickup might be delayed or unavailable
 			return false
 		

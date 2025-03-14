@@ -41,8 +41,8 @@ func _on_subsidy_issued(subsidy: float) -> void:
 func open_ui(title: String) -> void:
 	title_label.text = title
 	
-	btc_gained_label.text = Utils.format_currency(btc_gained_this_time)
-	fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far)
+	btc_gained_label.text = Utils.format_currency(btc_gained_this_time, true)
+	fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far, true)
 	save()
 	_open()
 
@@ -60,19 +60,14 @@ func save():
 	PersistenceDataManager.save_game()
 
 func _on_item_picked(event : PickupEvent) -> void:
-	print("Item picked up: {0}".format([event.pickup]))
 	var pickup: Resource = event.pickup.get_pickup_resource()
 	if pickup is CurrencyPickupResource:
-		print_debug("Pick up is CurrencyPickupResource")
 		match pickup.currency_type:
 			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
-				var amount = pickup.amount
-				pickup.amount = FED.get_fiat_subsidy()
-				fiat_gained_so_far += pickup.amount
-				print("Fiat added for UI: ", fiat_gained_so_far)
+				fiat_gained_so_far += event.pickup.resource_count
 			CurrencyPickupResource.CURRENCY_TYPE.BTC:
-				pickup.amount = BitcoinNetwork.calculate_block_subsidy()
-				btc_gained_this_time += pickup.amount
+				event.pickup.resource_count = BitcoinNetwork.get_block_subsidy()
+				btc_gained_this_time += event.pickup.resource_count
 				print("bitcoin added for UI: ")
 			CurrencyPickupResource.CURRENCY_TYPE.NONE:
 				pass

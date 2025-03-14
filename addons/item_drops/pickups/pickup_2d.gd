@@ -16,7 +16,7 @@ signal picked_up(data: PickupEvent)
 @export var root: Node
 
 ## How many of the pickup's resource is represented by this node.
-@export var resource_count: int = 1
+@export var resource_count: float = 1
 
 ## File path to the resource file for the pickup item.
 @export_file("*.tres", "*.res") var pickup_resource_file: String
@@ -51,6 +51,13 @@ func take(taker: PickupsCollector2D) -> PickupEvent:
 	items_drop_bus.item_picked.emit(event)
 	
 	if root != null && free_on_pickup:
+		var current_position: Vector2 = root.global_position
+		var tween: Tween = GameManager.init_tween()
+		tween.tween_property(root, "global_position", taker.global_position, 0.5).from(
+			current_position).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+
+		await tween.finished
+
 		root.queue_free()
 	else:
 		set.call_deferred("monitorable", false)

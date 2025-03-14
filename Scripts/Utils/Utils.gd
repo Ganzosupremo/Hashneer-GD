@@ -105,12 +105,12 @@ static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 			return key
 	return "Unknown Enum"
 
-static func format_currency(amount: int, use_short_format: bool = false) -> String:
+static func format_currency(amount: float, use_short_format: bool = false) -> String:
 	if use_short_format:
 		return format_short_currency(amount)
 	return format_full_currency(amount)
 
-static func format_full_currency(amount: int) -> String:
+static func format_full_currency(amount: float) -> String:
 	var str_amount = str(amount)
 	var formatted = ""
 	var count = 0
@@ -124,8 +124,8 @@ static func format_full_currency(amount: int) -> String:
 	
 	return formatted
 
-static func format_short_currency(amount: int) -> String:
-	if amount < 1000:
+static func format_short_currency(amount: float) -> String:
+	if amount < 1000.0:
 		return format_full_currency(amount)
 	
 	var suffixes: Array = ["K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D", "UN", "DD", "TD", "QD", "QQD", "SD", "SSD", "OD", "ND"]

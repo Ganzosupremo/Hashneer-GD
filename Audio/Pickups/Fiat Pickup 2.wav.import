@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://ckf47jfqc70r8"
+path="res://.godot/imported/Fiat Pickup 2.wav-7e95240a01f5ae486503d4919cd5b2b1.sample"
+
+[deps]
+
+source_file="res://Audio/Pickups/Fiat Pickup 2.wav"
+dest_files=["res://.godot/imported/Fiat Pickup 2.wav-7e95240a01f5ae486503d4919cd5b2b1.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

@@ -22,7 +22,6 @@ texture = ExtResource("1_52gt5")
 script = ExtResource("2_5gwqa")
 items_drop_bus = ExtResource("3_0nwdx")
 root = NodePath("..")
-resource_count = 50000
 pickup_resource_file = "uid://cfuqgqfvq0ydj"
 metadata/_custom_type_script = "uid://cswsevnw7pekp"
 

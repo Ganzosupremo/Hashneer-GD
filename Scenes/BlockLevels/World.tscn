@@ -384,7 +384,7 @@ size_flags_vertical = 6
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 position = Vector2(-275, -248)
-energy = 0.9
+energy = 0.69
 blend_mode = 1
 range_item_cull_mask = 191
 shadow_item_cull_mask = 190

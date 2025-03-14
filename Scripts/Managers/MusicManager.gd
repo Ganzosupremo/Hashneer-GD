@@ -13,12 +13,12 @@ var is_music_clip1_playing: bool = true
 var delta_time: float = 0.0
 @export_range(0.0, 1.0, 0.05) var music_volume: float = .5:
 	get:
-		return _volume
+		return _music_volume
 	set(value):
-		_volume = value
+		_music_volume = value
 		set_music_volume(value)
 	
-var _volume: float = 0.5
+var _music_volume: float = 0.5
 
 func _ready() -> void:
 	music_clip_changed.connect(_on_music_clip_changed)
@@ -61,13 +61,13 @@ func fade_music(music_clip: AudioStream, volume_clip_linear: float,time_to_fade:
 		first_audio_stream.stop()
 
 func set_music_volume(volume_linear: float) -> void:
-	_volume = volume_linear
-	if _volume == 0.0:
-		AudioServer.set_bus_volume_db(2, -80)
+	_music_volume = volume_linear
+	if _music_volume == 0.0:
+		AudioServer.set_bus_volume_db(1, -80)
 	else:
-		AudioServer.set_bus_volume_db(2, mlinear_to_db(_volume))
+		AudioServer.set_bus_volume_db(1, mlinear_to_db(_music_volume))
 	
-	music_volume_changed.emit(mlinear_to_db(_volume))
+	music_volume_changed.emit(mlinear_to_db(_music_volume))
 
 func set_sfx_volume(volume_linear: float) -> void:
 	if volume_linear == 0:
