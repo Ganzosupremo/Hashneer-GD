@@ -1,13 +1,13 @@
 [gd_scene load_steps=20 format=3 uid="uid://cuc6kdwjoycnp"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_c01e8"]
-[ext_resource type="Script" path="res://Scripts/UI/SaveSlotsSelector.gd" id="1_tniih"]
-[ext_resource type="Script" path="res://Scripts/UIComponents/ResponsiveBackground.gd" id="3_o0eee"]
+[ext_resource type="Script" uid="uid://dsq2187bsmne0" path="res://Scripts/UI/SaveSlotsSelector.gd" id="1_tniih"]
+[ext_resource type="Script" uid="uid://dlncxpn0crmx6" path="res://Scripts/UIComponents/ResponsiveBackground.gd" id="3_o0eee"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_vdhhf"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_vgxsx"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="7_owchr"]
 [ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="8_wwymj"]
-[ext_resource type="Shader" path="res://Shaders/RippleButtonShader.gdshader" id="9_3vs7s"]
+[ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="9_3vs7s"]
 
 [sub_resource type="Environment" id="Environment_4lj34"]
 background_mode = 3
@@ -80,7 +80,7 @@ shader_parameter/margin = Vector2(0, 0)
 shader = ExtResource("9_3vs7s")
 shader_parameter/circle_center = Vector2(-0.495, 0)
 shader_parameter/time = 0.0
-shader_parameter/size = Vector2(500, 600)
+shader_parameter/size = Vector2(300, 600)
 shader_parameter/color = Color(0, 0.0941176, 0.270588, 1)
 shader_parameter/margin = Vector2(0, 0)
 
@@ -91,6 +91,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 8
 mouse_filter = 2
 script = ExtResource("1_tniih")
 
@@ -117,6 +118,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -576.0
+offset_bottom = -324.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
@@ -124,10 +129,10 @@ script = ExtResource("3_o0eee")
 
 [node name="TextureRect" type="TextureRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -873.0
-offset_top = 357.0
-offset_right = 878.0
-offset_bottom = 983.0
+offset_left = 28.0
+offset_top = 580.0
+offset_right = 1122.0
+offset_bottom = 755.0
 texture = SubResource("GradientTexture2D_8p432")
 
 [node name="AnimationComponent" parent="ResponsiveBackground/TextureRect" instance=ExtResource("3_vgxsx")]
@@ -142,10 +147,10 @@ tween_rotation = 5.0
 
 [node name="ColorRect" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -1540.0
-offset_top = -509.0
-offset_right = -372.0
-offset_bottom = -132.0
+offset_left = -289.0
+offset_top = 37.0
+offset_right = 182.0
+offset_bottom = 269.0
 color = Color(0, 0.0823529, 0.247059, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ColorRect" instance=ExtResource("3_vgxsx")]
@@ -159,10 +164,10 @@ tween_size = Vector2(0, 0)
 
 [node name="ColorRect2" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = 449.0
-offset_top = -469.0
-offset_right = 1006.0
-offset_bottom = 69.0
+offset_left = 759.0
+offset_top = 76.0
+offset_right = 1051.0
+offset_bottom = 343.0
 color = Color(0.0392157, 0.447059, 0.862745, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ColorRect2" instance=ExtResource("3_vgxsx")]
@@ -176,10 +181,10 @@ tween_rotation = 360.0
 
 [node name="ColorRect3" type="ColorRect" parent="ResponsiveBackground"]
 layout_mode = 0
-offset_left = -151.0
-offset_top = -463.0
-offset_right = 406.0
-offset_bottom = 75.0
+offset_left = 426.0
+offset_top = 76.0
+offset_right = 720.0
+offset_bottom = 367.0
 color = Color(0.00784314, 0.266667, 0.533333, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ColorRect3" instance=ExtResource("3_vgxsx")]
@@ -212,46 +217,54 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -334.0
+offset_top = -14.0
+offset_right = 334.0
+offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("1_c01e8")
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_bottom = 47
 metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 mouse_filter = 2
 theme = ExtResource("1_c01e8")
-metadata/_edit_lock_ = true
+theme_override_constants/separation = 2
 
 [node name="AnimatedLabel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_vdhhf")]
 layout_mode = 2
+size_flags_horizontal = 4
 theme = ExtResource("1_c01e8")
 theme_type_variation = &"HeaderMedium"
 text = "Choose a Slu... I Mean Slot"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1800, 600)
 layout_mode = 2
-size_flags_vertical = 6
+size_flags_horizontal = 4
+size_flags_vertical = 3
 mouse_filter = 2
 theme = ExtResource("1_c01e8")
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="VSeparator4" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_c01e8")
 
 [node name="SlotButton" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("7_owchr")]
-custom_minimum_size = Vector2(500, 100)
+custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
 theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 180
+theme_override_font_sizes/font_size = 100
 theme_override_styles/focus = SubResource("StyleBoxFlat_w8ivb")
 theme_override_styles/hover = SubResource("StyleBoxFlat_ax33d")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_mm1yn")
@@ -265,15 +278,17 @@ material = SubResource("ShaderMaterial_iy8hc")
 layout_mode = 1
 
 [node name="VSeparator" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="SlotButton2" parent="MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("7_owchr")]
-custom_minimum_size = Vector2(500, 100)
+custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
 theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 180
+theme_override_font_sizes/font_size = 100
 text = "Save Slot 2"
 autowrap_mode = 3
 tween_time = 0.3
@@ -286,15 +301,17 @@ material = SubResource("ShaderMaterial_ktxsb")
 layout_mode = 1
 
 [node name="VSeparator2" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
+size_flags_vertical = 4
 
 [node name="SlotButton3" parent="MarginContainer/VBoxContainer/HBoxContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("7_owchr")]
-custom_minimum_size = Vector2(500, 100)
+custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 size_flags_horizontal = 1
 size_flags_vertical = 1
 theme_type_variation = &"FlatButton"
-theme_override_font_sizes/font_size = 180
+theme_override_font_sizes/font_size = 100
 text = "Save Slot 0"
 autowrap_mode = 3
 tween_time = 0.3
@@ -307,12 +324,9 @@ material = SubResource("ShaderMaterial_ostk3")
 layout_mode = 1
 
 [node name="VSeparator3" type="VSeparator" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 400)
 layout_mode = 2
-
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 100)
-layout_mode = 2
-mouse_filter = 2
+size_flags_vertical = 4
 
 [connection signal="item_rect_changed" from="ResponsiveBackground" to="ResponsiveBackground" method="_on_item_rect_changed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/SlotButton" to="." method="_on_slot_button_pressed"]

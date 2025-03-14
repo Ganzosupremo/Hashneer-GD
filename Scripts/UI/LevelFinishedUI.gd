@@ -16,7 +16,8 @@ func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
 	# GameManager.current_quadrant_builder.quadrant_hitted.connect(_on_quadrant_hitted)
 	event_bus.item_picked.connect(_on_item_picked)
-	GameManager.current_block_core.onBlockDestroyed.connect(_on_core_destroyed)
+	# event_bus.item_after_picked.connect(_on_item_after_picked)
+	# GameManager.current_block_core.onBlockDestroyed.connect(_on_core_destroyed)
 	BitcoinNetwork.coin_subsidy_issued.connect(_on_subsidy_issued)
 	hide()
 
@@ -52,7 +53,6 @@ func _open() -> void:
 	btc_gained_label.animate_label(0.15)
 	fiat_gained_label.animate_label(0.15)
 	
-
 func _on_menu_button_pressed() -> void:
 	SceneManager.switch_scene_with_packed(skill_tree_scene)
 
@@ -68,8 +68,34 @@ func _on_item_picked(event : PickupEvent) -> void:
 			CurrencyPickupResource.CURRENCY_TYPE.BTC:
 				event.pickup.resource_count = BitcoinNetwork.get_block_subsidy()
 				btc_gained_this_time += event.pickup.resource_count
-				print("bitcoin added for UI: ")
+				print_debug("Level completed")
+				GameManager.level_completed()
+				var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
+				if GameManager.player_in_completed_level():
+					open_ui(Constants.ERROR_500)
+				elif block.miner == "Player":
+					open_ui(Constants.ERROR_200)
+				else:
+					open_ui(Constants.ERROR_401)
 			CurrencyPickupResource.CURRENCY_TYPE.NONE:
+				pass
+
+func _on_item_after_picked(event: PickupEvent) -> void:
+	print("item after picked")
+	if event.pickup.resource_loaded is CurrencyPickupResource:
+		var resource: CurrencyPickupResource = event.pickup.resource_loaded
+		match resource.currency_type:
+			CurrencyPickupResource.CURRENCY_TYPE.BTC:
+				print_debug("Level completed")
+				GameManager.level_completed()
+				var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
+				if GameManager.player_in_completed_level():
+					open_ui(Constants.ERROR_500)
+				elif block.miner == "Player":
+					open_ui(Constants.ERROR_200)
+				else:
+					open_ui(Constants.ERROR_401)
+			_:
 				pass
 
 func _on_terminate_button_pressed() -> void:

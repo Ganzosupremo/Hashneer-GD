@@ -48,7 +48,7 @@ This method checks if the block core's health
 has been reduced to zero before fracturing the core.
 """
 func fracture_all(other_body, cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
-	if await take_damage(bullet_damage, instakill):
+	if take_damage(bullet_damage, instakill):
 		_fracture_all(other_body, cuts, min_area, fracture_color, miner)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
@@ -88,18 +88,18 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_cur_fracture_color = color
 		_shatter_visualizer.self_modulate = _cur_fracture_color
 
-func _fracture_all(other_body, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
+func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 
 	if !destroyed:
-		GameManager.level_completed()
 		destroyed = true
 		_hit_sound_component.set_sound(hit_sound_effect)
 		_hit_sound_component.play_sound()
-		_slowdown_timer.start(0.21)
-		Engine.time_scale = 0.21
+
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
+		random_drops.spawn_drops(1)
+		other_body.queue_free()
 		onBlockDestroyed.emit()
 
 func _destroy_block_core(source, cuts: int, min_area: float) -> void:

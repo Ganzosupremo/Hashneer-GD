@@ -35,7 +35,7 @@ signal picked_up(data: PickupEvent)
 var resource_loaded: Resource
 
 func _ready() -> void:
-	if validate(): resource_loaded = get_pickup_resource()
+	if !validate(): resource_loaded = get_pickup_resource()
 	
 	if pickup_delay > 0.0:
 		set_deferred("monitorable", false)  # Disable detection
@@ -55,14 +55,34 @@ func take(taker: PickupsCollector2D) -> PickupEvent:
 		var tween: Tween = GameManager.init_tween()
 		tween.tween_property(root, "global_position", taker.global_position, 0.5).from(
 			current_position).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-
 		await tween.finished
-
-		root.queue_free()
+		after_take(event)
 	else:
 		set.call_deferred("monitorable", false)
 	
 	return event
+
+func after_take(event: PickupEvent) -> void:
+	if resource_loaded is CurrencyPickupResource:
+		match resource_loaded.currency_type:
+			CurrencyPickupResource.CURRENCY_TYPE.BTC:
+				var timer: SceneTreeTimer = GameManager.init_timer(0.21)
+				timer.timeout.connect(_on_timer_timeout)
+				timer.one_shot = true
+				Engine.time_scale = 0.21
+				root.queue_free()
+			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
+				root.queue_free()
+			CurrencyPickupResource.CURRENCY_TYPE.NONE:
+				root.queue_free()
+			_:
+				root.queue_free()
+	else:
+		root.queue_free()
+
+
+func _on_timer_timeout() -> void:
+	Engine.time_scale = 1.0
 
 ## Loads and returns the pickup’s associated resource.
 func get_pickup_resource() -> Resource:

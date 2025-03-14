@@ -1,11 +1,11 @@
 [gd_scene load_steps=16 format=3 uid="uid://brtsijxypeeo5"]
 
-[ext_resource type="Script" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
+[ext_resource type="Script" uid="uid://bqel0jwld7ui" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_qlfbf"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="2_pyfpb"]
 [ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="2_qnmrt"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_ky1qw"]
-[ext_resource type="Shader" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
+[ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
 [ext_resource type="StyleBox" uid="uid://covkr80eb2vbo" path="res://Themes/ButtonStyleNormalTransparent.tres" id="7_rneym"]
 [ext_resource type="StyleBox" uid="uid://r51i185bk2ep" path="res://Themes/ButtonStyleFocusTrasparent.tres" id="7_vamfy"]
 [ext_resource type="StyleBox" uid="uid://dafa7dfm1icn5" path="res://Themes/ButtonStyleDisabledTransparent.tres" id="8_giehr"]
@@ -21,7 +21,7 @@ shader_parameter/polar_coordinates = true
 shader_parameter/polar_center = Vector2(0.5, 0.5)
 shader_parameter/polar_zoom = 1.0
 shader_parameter/polar_repeat = 4.0
-shader_parameter/spin_rotation = null
+shader_parameter/spin_rotation = 0.0
 shader_parameter/spin_speed = 10.0
 shader_parameter/offset = Vector2(0, 0)
 shader_parameter/colour_1 = Color(0, 0.0705882, 0.2, 1)
@@ -62,7 +62,7 @@ scene_to_load = ExtResource("2_qnmrt")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_xhjs5")
-custom_minimum_size = Vector2(650, 400)
+custom_minimum_size = Vector2(650, 350)
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -79,7 +79,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1xux2")
 layout_mode = 2
 size_flags_vertical = 4
 theme = ExtResource("1_qlfbf")
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="VBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]

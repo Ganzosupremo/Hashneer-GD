@@ -142,12 +142,12 @@ texture = SubResource("GradientTexture1D_tpf7n")
 layout_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="0"]
-custom_minimum_size = Vector2(500, 250)
+custom_minimum_size = Vector2(500, 200)
 layout_mode = 2
-offset_left = -1888.0
-offset_top = -362.0
-offset_right = -541.0
-offset_bottom = -45.0
+offset_left = -1217.0
+offset_top = -263.0
+offset_right = -332.0
+offset_bottom = -63.0
 color = Color(0.0352941, 0.160784, 0.286275, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect" instance=ExtResource("4_5ycdg")]
@@ -161,10 +161,10 @@ tween_rotation = 20.0
 
 [node name="ColorRect2" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="1"]
 layout_mode = 2
-offset_left = 448.0
-offset_top = 20.0
-offset_right = 1658.0
-offset_bottom = 270.0
+offset_left = 415.0
+offset_top = 84.0
+offset_right = 1010.0
+offset_bottom = 250.0
 color = Color(0.0235294, 0.419608, 0.819608, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect2" instance=ExtResource("4_5ycdg")]
@@ -179,10 +179,10 @@ tween_modulate = Color(0.0862745, 0.509804, 0.964706, 1)
 
 [node name="ColorRect3" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="2"]
 layout_mode = 2
-offset_left = -1410.0
-offset_top = 221.0
-offset_right = -269.0
-offset_bottom = 1143.0
+offset_left = -998.0
+offset_top = 158.0
+offset_right = -245.0
+offset_bottom = 542.0
 color = Color(0.0392157, 0.360784, 0.576471, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect3" instance=ExtResource("4_5ycdg")]
@@ -196,10 +196,10 @@ tween_rotation = 0.0
 
 [node name="ColorRect4" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="3"]
 layout_mode = 2
-offset_left = 495.0
-offset_top = -1019.0
-offset_right = 1393.0
-offset_bottom = -186.0
+offset_left = 266.0
+offset_top = -518.0
+offset_right = 892.0
+offset_bottom = -92.0
 color = Color(0.337255, 0.74902, 0.988235, 1)
 
 [node name="AnimationComponent" parent="ResponsiveBackground/ChildContainer/ColorRect4" instance=ExtResource("4_5ycdg")]
@@ -221,7 +221,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme = ExtResource("2_mqeuu")
-theme_override_constants/margin_left = 50
+theme_override_constants/margin_left = 25
 theme_override_constants/margin_bottom = 30
 metadata/_edit_lock_ = true
 
@@ -269,7 +269,7 @@ focus_neighbor_top = NodePath("../QuitGame")
 focus_neighbor_bottom = NodePath("../QuitGame")
 theme_type_variation = &"FlatButton"
 theme_override_constants/outline_size = 40
-theme_override_font_sizes/font_size = 125
+theme_override_font_sizes/font_size = 90
 theme_override_styles/focus = SubResource("StyleBoxFlat_wrspo")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_4eej4")
 theme_override_styles/hover = SubResource("StyleBoxFlat_h6r2e")
@@ -301,7 +301,7 @@ focus_neighbor_top = NodePath("../StartGame")
 focus_neighbor_bottom = NodePath("../StartGame")
 theme_type_variation = &"FlatButton"
 theme_override_constants/outline_size = 40
-theme_override_font_sizes/font_size = 115
+theme_override_font_sizes/font_size = 90
 theme_override_styles/focus = SubResource("StyleBoxFlat_wrspo")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_hro2d")
 theme_override_styles/hover = SubResource("StyleBoxFlat_7tcao")
@@ -321,6 +321,8 @@ metadata/_edit_lock_ = true
 
 [node name="Footer" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_mlo2r")]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
 theme = ExtResource("2_mqeuu")
 theme_type_variation = &"HeaderSmall"
 text = "I Know This Main Menu Sucks, But I Tried My Best"

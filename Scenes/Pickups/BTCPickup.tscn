@@ -1,16 +1,26 @@
-[gd_scene load_steps=6 format=3 uid="uid://beswcfw4ytxol"]
+[gd_scene load_steps=9 format=3 uid="uid://beswcfw4ytxol"]
 
 [ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="1_52gt5"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="2_5gwqa"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_0nwdx"]
+[ext_resource type="AudioStream" uid="uid://cw2qvumok2xtw" path="res://Audio/Pickups/Sats Pickup.wav" id="4_bkyg0"]
+[ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="5_3a5da"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5gwqa"]
 radius = 15.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0nwdx"]
-radius = 28.0
+radius = 30.0
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_3a5da"]
+cull_mode = 1
+polygon = PackedVector2Array(-4, -14, -9, -11, -13, -6, -14, -4, -14, 4, -11, 9, -8, 12, -4, 14, 4, 14, 9, 11, 12, 8, 14, 4, 14, -4, 11, -9, 8, -12, 4, -14)
 
 [node name="BTCPickup" type="RigidBody2D"]
+collision_layer = 512
+collision_mask = 440
+gravity_scale = 0.0
+linear_damp = 5.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_5gwqa")
@@ -19,11 +29,23 @@ shape = SubResource("CircleShape2D_5gwqa")
 texture = ExtResource("1_52gt5")
 
 [node name="Pickup2D" type="Area2D" parent="." node_paths=PackedStringArray("root")]
+collision_layer = 512
+collision_mask = 128
 script = ExtResource("2_5gwqa")
 items_drop_bus = ExtResource("3_0nwdx")
 root = NodePath("..")
 pickup_resource_file = "uid://cfuqgqfvq0ydj"
+sound = ExtResource("4_bkyg0")
 metadata/_custom_type_script = "uid://cswsevnw7pekp"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pickup2D"]
 shape = SubResource("CircleShape2D_0nwdx")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+energy = 0.5
+range_item_cull_mask = 190
+texture = ExtResource("5_3a5da")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_3a5da")
+occluder_light_mask = 188

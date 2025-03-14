@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://b8nhogdn0qra3"]
+[gd_scene load_steps=5 format=3 uid="uid://b8nhogdn0qra3"]
 
-[ext_resource type="Script" path="res://Scripts/Managers/SceneManager.gd" id="1_lmb8g"]
-[ext_resource type="Shader" path="res://Shaders/Screen_transition.gdshader" id="2_eiiig"]
+[ext_resource type="Script" uid="uid://b0xwhxu74725c" path="res://Scripts/Managers/SceneManager.gd" id="1_lmb8g"]
+[ext_resource type="Shader" uid="uid://cakvytrp2fd5m" path="res://Shaders/Screen_transition.gdshader" id="2_eiiig"]
 [ext_resource type="Texture2D" uid="uid://bu8u8b45avoa0" path="res://Textures/UI/SceneManagerBG.png" id="3_so8l5"]
-[ext_resource type="PackedScene" uid="uid://dno64qhlmtfv8" path="res://Scenes/UI/Pause_menu.tscn" id="3_vegva"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_wpjug"]
 shader = ExtResource("2_eiiig")
@@ -44,9 +43,4 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("3_so8l5")
-
-[node name="PauseMenu" parent="UI" instance=ExtResource("3_vegva")]
-unique_name_in_owner = true
-visible = false
-light_mask = 64
-visibility_layer = 64
+expand_mode = 1

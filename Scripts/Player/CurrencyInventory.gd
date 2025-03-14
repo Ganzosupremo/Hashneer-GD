@@ -10,6 +10,8 @@ func add_to_inventory(resource: Resource, amount: float) -> bool:
 			# The BTC is not added here since it's added directly to the wallet by the BitcoinNetwork class
 			CurrencyPickupResource.CURRENCY_TYPE.NONE:
 				return false
+			CurrencyPickupResource.CURRENCY_TYPE.BTC:
+				return true
 			_:
 				return false
 	return false

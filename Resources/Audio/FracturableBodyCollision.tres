@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://tekh6aoc0ka6"]
 
 [ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="1_4rok5"]
-[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_ry1rg"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_ry1rg"]
 
 [resource]
 script = ExtResource("2_ry1rg")

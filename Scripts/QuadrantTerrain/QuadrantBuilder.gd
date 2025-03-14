@@ -148,8 +148,8 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	
 	
 	other_body.random_drops.spawn_drops(2)
-	var fiat_gained_on_collision: float = FED.get_fiat_subsidy() * builder_args.fiat_drop_rate_factor
-	quadrant_hitted.emit(fiat_gained_on_collision)
+	# var fiat_gained_on_collision: float = FED.get_fiat_subsidy() * builder_args.fiat_drop_rate_factor
+	# quadrant_hitted.emit(fiat_gained_on_collision)
 	
 	_fracture_disabled = true
 	set_deferred("_fracture_disabled", false)

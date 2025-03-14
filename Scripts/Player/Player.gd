@@ -35,7 +35,7 @@ func _ready() -> void:
 	player_details = GameManager.player_details.duplicate(true)
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
-	GameManager.current_block_core.onBlockDestroyed.connect(deactivate_player)
+	# GameManager.current_block_core.onBlockDestroyed.connect(deactivate_player)
 	GameManager.game_terminated.connect(deactivate_player)
 	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
