@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=31 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="1_7o24j"]
 [ext_resource type="Texture2D" uid="uid://cxg11jfx5d6rc" path="res://Textures/BG/BG Hashneer.png" id="1_g16gn"]
@@ -34,6 +34,9 @@ script = ExtResource("13_b1yvc")
 sound_volume = 1.0
 audio_stream = ExtResource("12_h2mkg")
 sound_pitch = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gul16"]
+radius = 900.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
 bg_color = Color(0.35706, 0.702053, 0.999999, 1)
@@ -136,6 +139,7 @@ script = ExtResource("1_o08pr")
 quadrants_initial_health = 100.0
 grid_size = Vector2i(8, 8)
 fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
+gravity_strength = 98000.0
 
 [node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("3_7k7v6")]
 unique_name_in_owner = true
@@ -195,12 +199,35 @@ position = Vector2(425, 0)
 [node name="MinerAI" type="Node2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_7o24j")
-time = 122.0
+time = 120.0
 
 [node name="AITimer" type="Timer" parent="MinerAI"]
 unique_name_in_owner = true
 wait_time = 20.0
 one_shot = true
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-275, -248)
+energy = 0.69
+blend_mode = 1
+range_item_cull_mask = 191
+shadow_item_cull_mask = 190
+height = 0.5
+
+[node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
+
+[node name="Center" type="RigidBody2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 0
+mass = 1000.0
+gravity_scale = 0.0
+can_sleep = false
+lock_rotation = true
+freeze = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Center"]
+shape = SubResource("CircleShape2D_gul16")
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -100
@@ -381,16 +408,6 @@ offset_bottom = 8.0
 visible = false
 size_flags_horizontal = 6
 size_flags_vertical = 6
-
-[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-position = Vector2(-275, -248)
-energy = 0.69
-blend_mode = 1
-range_item_cull_mask = 191
-shadow_item_cull_mask = 190
-height = 0.5
-
-[node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
 
 [connection signal="pressed" from="GameUI/TerminateButtonContainer/MarginContainer/TerminateButton" to="GameUI/LevelFinisedUI" method="_on_terminate_button_pressed"]
 

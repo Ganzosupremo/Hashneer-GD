@@ -12,6 +12,8 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
 @onready var random_drops: RandomDrops = $RandomDrops
 
+#region Properties
+
 @export_group("General")
 ## If true, the body will be initialized with its shape when placed in level
 @export var placed_in_level: bool = false
@@ -23,6 +25,7 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @export var hit_sound_effect: SoundEffectDetails
 ## Sound effect to play when the body is destroyed
 @export var sound_effect_on_destroy: SoundEffectDetails
+@export_range(0.0, 100.0, 0.5, "or_greater") var mass: float = 10.0
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
@@ -64,6 +67,7 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_range(0.0, 1.0, 0.05) var min_n3: float = 0
 @export_range(0.0, 1.0, 0.05) var n3 : float = 0
 
+#endregion
 
 var destroyed: bool = false
 
@@ -114,9 +118,6 @@ func create_polygon_shape() -> PackedVector2Array:
 		_:
 			return PackedVector2Array([])
 
-func play_sound_on_hit() -> void:
-	_hit_sound_component.play_sound()
-
 ## Triggers camera shake when body is hit
 ## [param magnitude] The intensity of the camera shake
 func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.Small):
@@ -127,6 +128,7 @@ func _on_zero_health() -> void:
 	destroyed = true
 
 # ______________________Geters and Setters_______________________________________
+#region Getters and Setters
 
 func set_initial_health(initial_health: float) -> void:
 	health.set_max_health(initial_health)
@@ -233,6 +235,7 @@ func get_bounding_square() -> Rect2:
 
 	return Rect2(top_left, Vector2(size, size))
 
+#endregion
 
 ## Applies damage to the fracturable body
 ## [param damage] Amount of damage to apply

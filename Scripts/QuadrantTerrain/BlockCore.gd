@@ -13,10 +13,10 @@ var _cur_fracture_color: Color
 var level_index: int = 0
 
 func _ready() -> void:
+	_slowdown_timer.timeout.connect(_on_slow_down_timer_timeout)
 	GameManager.current_block_core = self
 	_poly_fracture = PolygonFracture.new()
 	_rng.randomize()
-	_hit_sound_component.set_sound(hit_sound_effect)
 	_block_core_particles.emitting = true
 
 	if placed_in_level:
@@ -34,11 +34,6 @@ func _ready() -> void:
 			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Test_input"):
-		recreate_polygon_shape()
-		queue_redraw()
-
 func _draw() -> void:
 	var bounds = get_bounding_square()
 	draw_rect(bounds, Color.GREEN, false)
@@ -47,9 +42,9 @@ func _draw() -> void:
 This method checks if the block core's health 
 has been reduced to zero before fracturing the core.
 """
-func fracture_all(other_body, cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.HONEYDEW, instakill: bool = false, miner: String = "Player") -> void:
+func fracture(cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.WHITE_SMOKE, instakill: bool = false, miner: String = "Player") -> void:
 	if take_damage(bullet_damage, instakill):
-		_fracture_all(other_body, cuts, min_area, fracture_color, miner)
+		_fracture_all(self, cuts, min_area, fracture_color, miner)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
 
@@ -93,14 +88,17 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 
 	if !destroyed:
 		destroyed = true
-		_hit_sound_component.set_sound(hit_sound_effect)
-		_hit_sound_component.play_sound()
+		onBlockDestroyed.emit()
 
+		_slowdown_timer.start(.21)
+		Engine.time_scale = 0.21
+		# var tween: Tween = GameManager.init_tween().set_parallel(true)
+		# tween.tween_property(Engine, "time_scale", 0.21, 0.15).set_ease(Tween.EASE_IN_OUT)
+		
 		_destroy_block_core(other_body, cuts, min_area)
 		_mine_block(miner)
+
 		random_drops.spawn_drops(1)
-		other_body.queue_free()
-		onBlockDestroyed.emit()
 
 func _destroy_block_core(source, cuts: int, min_area: float) -> void:
 	visible = false
@@ -126,7 +124,6 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 		var s : Vector2 = fracture_info.source_global_trans.get_scale()
 		body_instance.setPolygon(fracture_info.centered_shape, s)
 
-
 	body_instance.setColor(_cur_fracture_color)
 	var dir : Vector2 = (fracture_info.spawn_pos - fracture_info.source_global_trans.get_origin()).normalized()
 	body_instance.linear_velocity = dir * _rng.randf_range(200, 400)
@@ -144,8 +141,9 @@ func _mine_block(miner: String = "Player") -> void:
 	BitcoinNetwork.mine_block(miner, block)
 
 func _on_slow_down_timer_timeout() -> void:
+	print_debug("Slow down timer timeout")
 	Engine.time_scale = 1.0
-	hide()
+	call_deferred("queue_free")
 
 func setPolygon(poly: PackedVector2Array):
 	super.setPolygon(poly)

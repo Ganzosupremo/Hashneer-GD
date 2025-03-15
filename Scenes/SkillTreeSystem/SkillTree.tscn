@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=56 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
+[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="15_hsn28"]
 [ext_resource type="Resource" uid="uid://bk3blai1anpdr" path="res://Resources/Upgrades/Fiat/ShotgunUnlock.tres" id="20_cet81"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="21_h6krv"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="22_jhrlo"]
@@ -296,6 +297,7 @@ offset_right = 992.0
 offset_bottom = 572.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_a3dkl")
+skill_tree_event_bus = ExtResource("15_hsn28")
 is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
@@ -321,6 +323,7 @@ offset_bottom = 480.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_5le2m")
+skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../HealthUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
 skillnode_data = ExtResource("7_4c22w")
@@ -344,6 +347,7 @@ offset_right = 1188.0
 offset_bottom = 400.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_kb7ay")
+skill_tree_event_bus = ExtResource("15_hsn28")
 icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
 skillnode_data = ExtResource("8_yacem")
 stat_type = 1
@@ -366,6 +370,7 @@ offset_right = 1109.0
 offset_bottom = 651.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_xduqf")
+skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../DamageUpgradeII"), NodePath("../ShotgunUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
 skillnode_data = ExtResource("6_aog38")
@@ -390,6 +395,7 @@ offset_bottom = 575.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("22_jhrlo")
+skill_tree_event_bus = ExtResource("15_hsn28")
 icon_on_maxed_out = ExtResource("22_jhrlo")
 skillnode_data = ExtResource("20_cet81")
 save_name = "ShotgunUnlock"
@@ -412,6 +418,7 @@ offset_bottom = 719.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_mbr24")
+skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../SniperUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skillnode_data = ExtResource("11_6em56")
@@ -436,6 +443,7 @@ offset_bottom = 805.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("7_076p6")
+skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../AK47Unlock")]
 icon_on_maxed_out = ExtResource("7_076p6")
 skillnode_data = ExtResource("13_a2onp")
@@ -459,6 +467,7 @@ offset_bottom = 885.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_dufvt")
+skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skillnode_data = ExtResource("23_lm8ko")
@@ -482,6 +491,7 @@ offset_bottom = 810.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_anjtt")
+skill_tree_event_bus = ExtResource("15_hsn28")
 icon_on_maxed_out = SubResource("AtlasTexture_mq3cn")
 skillnode_data = ExtResource("29_5uag3")
 save_name = "BlockCoreFinderUnlock"

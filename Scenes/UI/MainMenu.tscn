@@ -140,6 +140,10 @@ texture = SubResource("GradientTexture1D_tpf7n")
 
 [node name="ResponsiveBackground" parent="." instance=ExtResource("3_rj78t")]
 layout_mode = 1
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 1.0
+offset_bottom = -1.0
 
 [node name="ColorRect" type="ColorRect" parent="ResponsiveBackground/ChildContainer" index="0"]
 custom_minimum_size = Vector2(500, 200)

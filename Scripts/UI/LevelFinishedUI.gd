@@ -14,17 +14,15 @@ var btc_gained_this_time: float = 0.0
 
 func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
-	# GameManager.current_quadrant_builder.quadrant_hitted.connect(_on_quadrant_hitted)
+	GameManager.level_completed.connect(_on_level_completed)
 	event_bus.item_picked.connect(_on_item_picked)
-	# event_bus.item_after_picked.connect(_on_item_after_picked)
-	# GameManager.current_block_core.onBlockDestroyed.connect(_on_core_destroyed)
-	BitcoinNetwork.coin_subsidy_issued.connect(_on_subsidy_issued)
+	# BitcoinNetwork.coin_subsidy_issued.connect(_on_subsidy_issued)
 	hide()
 
 func _on_zero_health() -> void:
 	open_ui(Constants.ERROR_404)
 
-func _on_core_destroyed() -> void:
+func _on_level_completed() -> void:
 	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
 	if GameManager.player_in_completed_level():
 		open_ui(Constants.ERROR_500)
@@ -32,9 +30,6 @@ func _on_core_destroyed() -> void:
 		open_ui(Constants.ERROR_200)
 	else:
 		open_ui(Constants.ERROR_401)
-
-func _on_quadrant_hitted(fiat_gained: float) -> void:
-	fiat_gained_so_far += fiat_gained
 
 func _on_subsidy_issued(subsidy: float) -> void:
 	btc_gained_this_time += subsidy
@@ -44,8 +39,8 @@ func open_ui(title: String) -> void:
 	
 	btc_gained_label.text = Utils.format_currency(btc_gained_this_time, true)
 	fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far, true)
-	save()
 	_open()
+	save()
 
 func _open() -> void:
 	show()
@@ -68,36 +63,9 @@ func _on_item_picked(event : PickupEvent) -> void:
 			CurrencyPickupResource.CURRENCY_TYPE.BTC:
 				event.pickup.resource_count = BitcoinNetwork.get_block_subsidy()
 				btc_gained_this_time += event.pickup.resource_count
-				print_debug("Level completed")
-				GameManager.level_completed()
-				var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
-				if GameManager.player_in_completed_level():
-					open_ui(Constants.ERROR_500)
-				elif block.miner == "Player":
-					open_ui(Constants.ERROR_200)
-				else:
-					open_ui(Constants.ERROR_401)
+				GameManager.complete_level()
 			CurrencyPickupResource.CURRENCY_TYPE.NONE:
 				pass
 
-func _on_item_after_picked(event: PickupEvent) -> void:
-	print("item after picked")
-	if event.pickup.resource_loaded is CurrencyPickupResource:
-		var resource: CurrencyPickupResource = event.pickup.resource_loaded
-		match resource.currency_type:
-			CurrencyPickupResource.CURRENCY_TYPE.BTC:
-				print_debug("Level completed")
-				GameManager.level_completed()
-				var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level)
-				if GameManager.player_in_completed_level():
-					open_ui(Constants.ERROR_500)
-				elif block.miner == "Player":
-					open_ui(Constants.ERROR_200)
-				else:
-					open_ui(Constants.ERROR_401)
-			_:
-				pass
-
 func _on_terminate_button_pressed() -> void:
-	GameManager.game_terminated.emit()
 	open_ui(Constants.ERROR_210)

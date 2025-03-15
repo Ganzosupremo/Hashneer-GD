@@ -5,6 +5,12 @@ class_name PlayerController
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
 @export var move_sound_effect: SoundEffectDetails
+@export var mass: float = 5.0
+@export var anti_gravity_thrust: float = 300.0
+
+
+var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
+
 
 @export_category("Abilities")
 @export var abilities: Dictionary = {
@@ -23,7 +29,6 @@ class_name PlayerController
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
-var quadrant_builder: QuadrantBuilder
 var player_details: PlayerDetails
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
@@ -36,7 +41,7 @@ func _ready() -> void:
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
 	# GameManager.current_block_core.onBlockDestroyed.connect(deactivate_player)
-	GameManager.game_terminated.connect(deactivate_player)
+	GameManager.level_completed.connect(deactivate_player)
 	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
 
@@ -50,9 +55,16 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta) -> void:
 	if !can_move: return
+	
+	# Apply gravity force
+	velocity += gravity_force * delta
+
 	move(delta)
 
-## ___________________PUBLIC FUNCTIONS__________________________
+	# Reset gravity force after applying it
+	gravity_force = Vector2.ZERO
+
+#region Public Functions
 
 func set_player() -> void:
 	if !player_details: return
@@ -83,6 +95,19 @@ func unlock_ability(ability_id: String) -> void:
 	# print_debug("Unlocked ability: %s" % ability_id)
 
 
+func apply_central_force(force: Vector2) -> void:
+	# Scale the force for better handling
+	var adjusted_force = force * 0.1  # Scale down to avoid extreme acceleration
+	print("Applying force: ", force)
+	velocity += force
+	move_and_slide()
+
+func apply_gravity(force: Vector2) -> void:
+	print("Applying gravity: ", force)
+	gravity_force = force
+
+#endregion
+
 ## ___________________PRIVATE FUNCTIONS__________________________
 
 func _instantiate_abilities():
@@ -111,16 +136,27 @@ func _apply_stats() -> void:
 
 func move(delta: float) -> void:
 	input = get_input()
+	var movement_velocity := Vector2.ZERO
 
 	if input == Vector2.ZERO:
+		# Handle friction, but only for the player's movement component
+		# This prevents friction from completely stopping gravity effects
 		if velocity.length() > (Constants.Player_Friction * delta):
-			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
-		else: velocity = Vector2.ZERO
+			movement_velocity = velocity.normalized() * max(0, velocity.length() - (Constants.Player_Friction * delta))
 		_sound_effect_component.stop_sound()
 	else:
-		velocity += (input * Constants.Player_Acceleration * delta)
-		velocity = velocity.limit_length(speed)
+		# Apply anti-gravity thrust when space is held
+		if Input.is_action_pressed("thrust"):
+			# Get direction to center and apply thrust in opposite direction
+			var direction_to_center = GameManager.current_quadrant_builder._grid_center - global_position
+			if direction_to_center.length() > 10:
+				movement_velocity -= direction_to_center.normalized() * anti_gravity_thrust * delta
+
+		# Calculate movement velocity based on input
+		movement_velocity = velocity + (input * Constants.Player_Acceleration * delta)
 		_sound_effect_component.play_sound()
+
+	velocity = movement_velocity.limit_length(speed)
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -152,7 +188,8 @@ func on_zero_power() -> void:
 	visible = false
 
 func _on_block_found(_block: BitcoinBlock):
-	deactivate_player()
+	# deactivate_player()
+	pass
 
 ## _________________SETTERS AND GETTERS______________________
 

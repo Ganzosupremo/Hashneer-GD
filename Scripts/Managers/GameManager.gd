@@ -1,10 +1,11 @@
 extends Node2D
 
-signal game_terminated()
+signal level_completed()
 
-@export_category("Player Resource")
+@export_category("Player Parameters")
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
+@export var main_skill_tree_event_bus: SkillTreeEventBus
 
 @export_category("Weapons Dictionary")
 ## This dictionary is used to store all the weapons available in the game.
@@ -55,6 +56,8 @@ const implements = [
 ]
 
 func _ready() -> void:
+	main_skill_tree_event_bus.stat_upgraded.connect(_on_stat_upgraded)
+	
 	player_details.speed = base_stats_dictionary["speed"]
 	player_details.max_health = base_stats_dictionary["health"]
 	player_details.damage_multiplier = base_stats_dictionary["damage_mul"]
@@ -62,12 +65,12 @@ func _ready() -> void:
 
 ## ___________________________PUBLIC FUNCTIONS__________________________________________
 
-func level_completed() -> void:
+func complete_level() -> void:
+	level_completed.emit()
 	if player_in_completed_level(): return
 	
 	levels_unlocked += 1
 	previous_levels_unlocked_index = levels_unlocked - 1
-	game_terminated.emit()
 
 func player_in_completed_level() -> bool:
 	if levels_unlocked < previous_levels_unlocked_index:
@@ -102,6 +105,9 @@ func unlock_weapon(weapon_name: String) -> void:
 		# print("Weapon Unlocked: {0}".format([weapon_name]))
 	# else:
 	# 	printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
+
+func _on_stat_upgraded():
+	pass
 
 func upgrade_stat(stat_name: String, value: float, stat_type: SkillNode.STAT_TYPE) -> void:
 	upgraded_stats[stat_name] = {"value": value, "stat_type": stat_type}

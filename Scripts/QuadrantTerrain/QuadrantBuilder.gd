@@ -2,6 +2,8 @@ class_name QuadrantBuilder extends Node2D
 
 signal quadrant_hitted(fiat_gained: float)
 
+#region Exports
+
 @export_category("Settings")
 @export_group("General")
 @export var quadrants_initial_health: float 
@@ -16,6 +18,16 @@ signal quadrant_hitted(fiat_gained: float)
 @export var block_core_cuts: int = 50
 @export var block_core_min_cut_area: float = 100.0
 
+@export_group("Gravity Settings")
+## Whether to enable gravity towards the center of the grid.
+@export var enable_center_gravity: bool = true
+## This will pull all objects affected by gravity towards the center of the grid.
+@export_range(0.001, 1.0,  0.01,"or_greater") var gravity_strength: float = 500.0
+## The falloff of the gravity force.
+@export_range(0.1, 2.0, 0.1, "or_greater") var gravity_falloff: float = 2.0  # 2.0 = inverse square law
+
+#endregion
+
 @onready var player: PlayerController = %Player
 @onready var block_nodes: Node2D = %Quadrants
 @onready var staticbody_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
@@ -28,19 +40,76 @@ signal quadrant_hitted(fiat_gained: float)
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
 @onready var map_boundaries: StaticBody2D = %MapBoundaries
+@onready var center: RigidBody2D = %Center
 
 
 var polygon_fracture: PolygonFracture
-var _fracture_disabled:bool = false
+var _fracture_disabled: bool = false
 var _cur_fracture_color: Color = fracture_body_color
 var builder_args: QuadrantBuilderArgs
 var _map_bounds: Rect2
+var _grid_center: Vector2
+
+
+#region Private Methods
 
 func _ready() -> void:
 	_calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
 	_init_builder()
+
+func _physics_process(delta: float) -> void:
+	if not enable_center_gravity: return
+
+	## TODO - Fix gravity calculation
+	if player and is_instance_valid(player):
+		var gravity_force = _calculate_gravity_force(player.global_position)
+		player.apply_gravity(gravity_force)
+
+func _calculate_gravity_force(target_position: Vector2) -> Vector2:
+	var direction = (center.global_position - target_position).normalized()
+	var distance = target_position.distance_to(center.global_position)
+	var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
+
+	return direction * force_magnitude
+
+
+func _apply_gravity_to_objects(body1: Node2D, body2: Node2D, delta: float) -> void:
+	var force_magnitude = pow(body2.global_position.distance_to(body1.global_position), gravity_falloff)
+	
+	var force = (body2.global_position\
+	 - body1.global_position).normalized()\
+	  * gravity_strength * body1.mass * body2.mass\
+	   / force_magnitude
+
+	body1.apply_central_force(force * delta)
+
+func _apply_gravity_to_object(object: Node2D, object2: Node2D, _delta: float) -> void:
+	if not object or not is_instance_valid(object):
+		return
+	
+	var direction: Vector2 = object2.global_position - object.global_position
+	var distance: float = direction.length()
+
+	# Prevent extreme forces when very close to center
+	if distance < 10: return 
+
+	var force_magnitude: float = pow(distance, gravity_falloff)
+	
+	var force = (object2.global_position\
+	 - object.global_position).normalized()\
+	  * gravity_strength * object.mass * object2.mass\
+	   / force_magnitude
+	
+	# Debug the calculation components
+	print("Distance: ", distance, " Force magnitude: ", force_magnitude)
+	
+	# Apply gravity differently based on the object's type
+	if object is RigidBody2D:
+		object.apply_central_force(force)
+	elif object is PlayerController:
+		object.apply_central_force(force * _delta)
 
 func _calculate_map_bounds() -> void:
 	var level_width: float = quadrant_size.x * grid_size.x
@@ -53,6 +122,14 @@ func _calculate_map_bounds() -> void:
 
 	_create_boundary_walls()
 
+func _calculate_grid_center() -> void:
+	_grid_center = Vector2(
+		grid_size.x * quadrant_size.x / 2.0,
+		grid_size.y * quadrant_size.y / 2.0
+	)
+	center.global_position = _grid_center
+
+
 func _create_boundary_walls() -> void:
 	# Wall thickness
 	var thickness: float = 75.0
@@ -64,7 +141,7 @@ func _create_boundary_walls() -> void:
 		_map_bounds.position.y + _map_bounds.size.y/2
 	)
 
-	# Calculate adjusted width for top/bottom walls
+	## Calculate adjusted width for top/bottom walls
 	var horizontal_wall_width: float = _map_bounds.size.x * horizontal_offset + thickness * 2
 	
 	var wall_configs: Array = [
@@ -102,6 +179,8 @@ func _create_boundary_walls() -> void:
 		wall.add_child(collision_shape)
 		map_boundaries.add_child(wall)
 
+
+## Initializes the builder with the given arguments.
 func _init_builder() -> void:
 	var builder_data: QuadrantBuilderArgs = GameManager.current_builder_args
 	builder_args = builder_data
@@ -126,8 +205,11 @@ func _init_builder() -> void:
 	block_nodes.modulate = _cur_fracture_color
 	_rigid_bodies_parent.modulate = _cur_fracture_color
 
+	_calculate_grid_center()
 	_set_player_position()
 	_initialize_grid_of_blocks(quadrants_initial_health)
+
+#endregion
 
 ## Handles the fracturing of the source polygon at the given position.
 ## @param source The source polygon to be fractured.
@@ -140,29 +222,29 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
+	print_debug("Damage to deal: " + str(bullet_damage))
 	if !other_body.take_damage(bullet_damage):
 		return
 	
 	if _fracture_disabled: return
-	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
-	
-	
-	other_body.random_drops.spawn_drops(2)
-	# var fiat_gained_on_collision: float = FED.get_fiat_subsidy() * builder_args.fiat_drop_rate_factor
-	# quadrant_hitted.emit(fiat_gained_on_collision)
-	
 	_fracture_disabled = true
+	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
+	other_body.random_drops.spawn_drops(1)
+	
 	set_deferred("_fracture_disabled", false)
 
-"""Fractures the quadrant block core,
-which at the same time will mine a bitcoin block"""
-func fracture_all(other_body: FracturableStaticBody2D, bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
+## Fractures the quadrant block core,
+## which at the same time will mine a bitcoin block.
+## @param bullet_damage The damage to deal to the block core.
+## @param miner The miner that will mine the block.
+## @param instakill Whether the block core should be instakilled.
+func fracture_block_core(bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
 	if _fracture_disabled: return
-	
-	other_body.play_sound_on_hit()
-	block_core.fracture_all(other_body, block_core_cuts, block_core_min_cut_area, bullet_damage, _cur_fracture_color, instakill, miner)
-	
 	_fracture_disabled = true
+	
+	print_debug("Damage to deal: " + str(bullet_damage))
+	block_core.fracture(block_core_cuts, block_core_min_cut_area, bullet_damage, _cur_fracture_color, instakill, miner)
+	
 	set_deferred("_fracture_disabled", false)
 
 func _initialize_grid_of_blocks(initial_health: float) -> void:

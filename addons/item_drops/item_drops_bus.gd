@@ -8,9 +8,6 @@ signal item_dropped(event : SpawnEvent)
 ## pickup scene is removed from the 2D game world
 signal item_picked(event : PickupEvent)
 
-## Emitted when a scene is picked up by another node after the pickup signal
-signal item_after_picked(event : PickupEvent)
-
 ## Emitted when a Gatherable is gathered
 signal gathered(event : GatherEvent)
 

@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://c4t8evy2q7rgi"]
 
 [ext_resource type="AudioStream" uid="uid://dui4tqyl4yygd" path="res://Audio/EnergySwoosh.wav" id="1_l1ai4"]
-[ext_resource type="Script" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_lcwxu"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_lcwxu"]
 
 [resource]
 script = ExtResource("1_lcwxu")

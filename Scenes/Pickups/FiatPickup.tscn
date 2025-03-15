@@ -1,14 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://bjdc26h1h0pfv"]
 
+[ext_resource type="PhysicsMaterial" uid="uid://deqagbq7eod2b" path="res://samples/softbody2d/softbody2d_phys_bouncy.tres" id="1_cuxl8"]
 [ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="1_f7yr1"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="1_ls16r"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_k2hy4"]
 [ext_resource type="AudioStream" uid="uid://ckf47jfqc70r8" path="res://Audio/Pickups/Fiat Pickup 2.wav" id="4_aksnm"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="5_rmixv"]
-
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_aksnm"]
-friction = 0.8
-bounce = 0.4
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1n2o1"]
 radius = 7.28011
@@ -23,8 +20,9 @@ polygon = PackedVector2Array(-1, -7, -5, -3, -5, 5, -1, 8, 2, 8, 5, 4, 5, -3, 2,
 [node name="FiatPickup" type="RigidBody2D"]
 collision_layer = 512
 collision_mask = 440
-physics_material_override = SubResource("PhysicsMaterial_aksnm")
-gravity_scale = 0.0
+physics_material_override = ExtResource("1_cuxl8")
+can_sleep = false
+linear_damp = 5.0
 
 [node name="DollarSign" type="Sprite2D" parent="."]
 texture = ExtResource("1_f7yr1")

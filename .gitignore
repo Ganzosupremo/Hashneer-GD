@@ -9,3 +9,5 @@ export_presets.cfg.import
 /project.godot
 project.godot.import
 MainWorldEnvironment.tres
+/addons/
+/samples/

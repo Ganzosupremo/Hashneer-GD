@@ -1,7 +1,8 @@
-[gd_scene load_steps=20 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=21 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="2_vk5qk"]
+[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="3_1wrq4"]
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="3_2ukmo"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="4_qrgf1"]
 [ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="5_pjvbh"]
@@ -133,6 +134,7 @@ block_core_cut_min_area = 100.0
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")
 player_details = ExtResource("2_vk5qk")
+main_skill_tree_event_bus = ExtResource("3_1wrq4")
 weapon_details_dictionary = {
 "AK47": ExtResource("3_2ukmo"),
 "Pistol": ExtResource("4_qrgf1"),
@@ -140,3 +142,4 @@ weapon_details_dictionary = {
 "Sniper": ExtResource("6_m48lw")
 }
 game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8")])
+base_stats_dictionary = null

@@ -33,7 +33,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
 		call_deferred("destroy")
 	elif body is BlockCore and q_b:
-		q_b.fracture_all(body, damage_to_deal, "Player")
+		q_b.fracture_block_core(damage_to_deal, "Player")
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):

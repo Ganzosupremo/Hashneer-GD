@@ -1,6 +1,7 @@
-[gd_scene load_steps=31 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=32 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="2_ehrd3"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
@@ -139,11 +140,13 @@ visibility_layer = 128
 z_index = -1
 position = Vector2(838, 501)
 collision_layer = 256
-collision_mask = 192
+collision_mask = 752
 script = ExtResource("1_dt8bo")
 placed_in_level = true
 poly_texture = SubResource("Resource_hf0pe")
-hit_sound_effect = ExtResource("3_ar8vc")
+hit_sound_effect = ExtResource("2_ehrd3")
+sound_effect_on_destroy = ExtResource("3_ar8vc")
+mass = 50.0
 polygon_shape = 4
 cir_radius = 150.0
 cir_smoothing = 2
@@ -179,6 +182,8 @@ texture = ExtResource("5_erve3")
 [node name="Center" type="Polygon2D" parent="."]
 
 [node name="SlowDownTimer" type="Timer" parent="."]
+one_shot = true
+ignore_time_scale = true
 
 [node name="ShatterVisualizer" type="Polygon2D" parent="."]
 modulate = Color(1, 0.647059, 0, 1)
@@ -234,5 +239,3 @@ direction = Vector2(1, 0.5)
 angle_spread = 90.0
 spawn_group = SubResource("Resource_08pad")
 metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
-
-[connection signal="timeout" from="SlowDownTimer" to="." method="_on_slow_down_timer_timeout"]

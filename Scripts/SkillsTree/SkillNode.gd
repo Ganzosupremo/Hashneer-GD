@@ -22,6 +22,7 @@ enum FEATURE_TYPE {
 
 @export_category("Settings")
 @export_group("General")
+@export var skill_tree_event_bus: SkillTreeEventBus
 @export var use_bitcoin: bool = false
 @export var is_unlocked: bool = false
 @export var next_tier_nodes: Array[SkillNode]
@@ -63,7 +64,6 @@ enum FEATURE_TYPE {
 
 var is_maxed_out: bool = false
 var node_identifier: int = 0
-var current_upgrade_power: float = 0.0
 var node_state: SkillNodeData.SKILL_NODE_STATUS = SkillNodeData.SKILL_NODE_STATUS.LOCKED
 var SAVE_PATH: String = ""
 
@@ -141,8 +141,8 @@ func _unlock_ability() -> void:
 		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
 
 func _upgrade_stat() -> void:
-	current_upgrade_power = skillnode_data.apply_upgrade()
-	GameManager.upgrade_stat(Utils.player_stat_type_to_string(stat_type), current_upgrade_power, stat_type)
+	var upgrade_power = skillnode_data.apply_upgrade()
+	GameManager.upgrade_stat(Utils.player_stat_type_to_string(stat_type), upgrade_power, stat_type)
 
 func _is_next_tier_node_unlocked() -> bool:
 	for node in next_tier_nodes:
