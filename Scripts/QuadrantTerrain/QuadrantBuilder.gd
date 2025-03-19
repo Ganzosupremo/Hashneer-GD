@@ -242,7 +242,6 @@ func fracture_block_core(bullet_damage: float, miner: String = "Player", instaki
 	if _fracture_disabled: return
 	_fracture_disabled = true
 	
-	print_debug("Damage to deal: " + str(bullet_damage))
 	block_core.fracture(block_core_cuts, block_core_min_cut_area, bullet_damage, _cur_fracture_color, instakill, miner)
 	
 	set_deferred("_fracture_disabled", false)

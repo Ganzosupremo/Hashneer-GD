@@ -11,3 +11,5 @@ project.godot.import
 MainWorldEnvironment.tres
 /addons/
 /samples/
+*.import
+/Textures/*.import

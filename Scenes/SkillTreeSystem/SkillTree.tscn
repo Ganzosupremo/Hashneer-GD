@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=75 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -20,14 +20,23 @@
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
 [ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="15_hsn28"]
+[ext_resource type="Texture2D" uid="uid://cmwev2it4sxt3" path="res://Textures/Player/Abilities/RegenHealthOverTime.png" id="19_pm0d4"]
 [ext_resource type="Resource" uid="uid://bk3blai1anpdr" path="res://Resources/Upgrades/Fiat/ShotgunUnlock.tres" id="20_cet81"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="21_h6krv"]
+[ext_resource type="Texture2D" uid="uid://cta5ueb8nxfcu" path="res://Textures/Player/Abilities/Magnet.png" id="22_5t31m"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="22_jhrlo"]
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
+[ext_resource type="PackedScene" uid="uid://cblr1jidfo5cn" path="res://Scenes/Player/Abilities/RegenHealthOverTime.tscn" id="23_5t31m"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
 [ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Bitcoin/AK47Unlock.tres" id="23_lm8ko"]
+[ext_resource type="PackedScene" uid="uid://bwv6468intk6r" path="res://Scenes/Player/Abilities/Magnet.tscn" id="24_pm0d4"]
+[ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="25_glihh"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="26_kmf73"]
 [ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]
 [ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/BlockCoreFinder.tres" id="29_5uag3"]
+[ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]
+[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="34_oevro"]
+[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="35_k7n60"]
 
 [sub_resource type="Resource" id="Resource_qu23o"]
 script = ExtResource("3_0xv7s")
@@ -104,6 +113,42 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
+[sub_resource type="Resource" id="Resource_glihh"]
+script = ExtResource("25_glihh")
+ability_type = 3
+ability_to_unlock = ExtResource("23_5t31m")
+metadata/_custom_type_script = "uid://ukdtmxps3f8a"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kmf73"]
+load_path = "res://.godot/imported/RegenHealthOverTime.png-bc59a87aeb7b60b1c1bba1ca6395d5eb.ctex"
+
+[sub_resource type="Resource" id="Resource_14fyc"]
+script = ExtResource("26_kmf73")
+feature_type = 2
+upgrade_name = "Slow Gen"
+upgrade_description = "Regenerates 50 HP every 5 seconds."
+skill_image = SubResource("CompressedTexture2D_kmf73")
+upgrade_tier = 3
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+ability_data = SubResource("Resource_glihh")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 500000.0
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 50000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_14fyc"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_xduqf"]
 atlas = ExtResource("4_wkdkc")
 region = Rect2(128, 0, 32, 32)
@@ -121,6 +166,39 @@ shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8k647"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="Resource" id="Resource_pm0d4"]
+script = ExtResource("25_glihh")
+ability_type = 2
+ability_to_unlock = ExtResource("24_pm0d4")
+metadata/_custom_type_script = "uid://ukdtmxps3f8a"
+
+[sub_resource type="Resource" id="Resource_hobie"]
+script = ExtResource("26_kmf73")
+feature_type = 2
+upgrade_name = "Slow Gen"
+upgrade_description = "Regenerates 50 HP every 5 seconds."
+skill_image = ExtResource("19_pm0d4")
+upgrade_tier = 3
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+ability_data = SubResource("Resource_pm0d4")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 500000.0
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 50000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oevro"]
 shader = ExtResource("8_co7u8")
 shader_parameter/circle_center = Vector2(-0.35, 0)
 shader_parameter/time = 0.0
@@ -161,6 +239,39 @@ atlas = ExtResource("23_gapw6")
 region = Rect2(0, 0, 32, 17)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_uh0ok"]
+shader = ExtResource("8_co7u8")
+shader_parameter/circle_center = Vector2(-0.35, 0)
+shader_parameter/time = 0.0
+shader_parameter/size = Vector2(64, 64)
+shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
+shader_parameter/margin = Vector2(0, 0)
+
+[sub_resource type="Resource" id="Resource_r00sj"]
+script = ExtResource("34_oevro")
+weapon_type = 4
+weapon_to_unlock = ExtResource("35_k7n60")
+metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
+
+[sub_resource type="Resource" id="Resource_g7g25"]
+script = ExtResource("26_kmf73")
+feature_type = 1
+upgrade_name = "Meet the deadliest Twins"
+upgrade_description = "I gotta stop with  goofy ass names..."
+skill_image = ExtResource("33_14fyc")
+upgrade_tier = 0
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+weapon_data = SubResource("Resource_r00sj")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 0.0
+upgrade_cost_base = 750000.0
+upgrade_cost_multiplier = 0.0
+upgrade_cost_base_btc = 25000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_k7n60"]
 shader = ExtResource("8_co7u8")
 shader_parameter/circle_center = Vector2(-0.35, 0)
 shader_parameter/time = 0.0
@@ -302,7 +413,6 @@ is_unlocked = true
 next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
 skillnode_data = ExtResource("6_26cjf")
-stat_type = 1
 save_name = "PlayerHealthUpgradeFiatT1"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeI" instance=ExtResource("7_hhrbb")]
@@ -316,10 +426,10 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 1025.0
-offset_top = 416.0
-offset_right = 1089.0
-offset_bottom = 480.0
+offset_left = 1061.0
+offset_top = 364.0
+offset_right = 1147.0
+offset_bottom = 450.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_5le2m")
@@ -327,34 +437,56 @@ skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../HealthUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
 skillnode_data = ExtResource("7_4c22w")
-stat_type = 3
 save_name = "PlayerDamageUpgradeFiatT1"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeI" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_xfjlr")
 layout_mode = 1
 
-[node name="HealthUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="HealthUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 1124.0
-offset_top = 336.0
-offset_right = 1188.0
-offset_bottom = 400.0
+offset_left = 1061.0
+offset_top = 128.0
+offset_right = 1147.0
+offset_bottom = 214.0
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_kb7ay")
 skill_tree_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../RegenHealthOverTime")]
 icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
 skillnode_data = ExtResource("8_yacem")
-stat_type = 1
 save_name = "PlayerHealthUpgradeBitcoinT2"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/HealthUpgradeII" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_ta8n5")
+layout_mode = 1
+
+[node name="RegenHealthOverTime" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1059.0
+offset_top = -51.0
+offset_right = 1145.0
+offset_bottom = 35.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("19_pm0d4")
+skill_tree_event_bus = ExtResource("15_hsn28")
+icon_on_maxed_out = ExtResource("19_pm0d4")
+skillnode_data = SubResource("Resource_14fyc")
+save_name = "RegenHealthOverTimeUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/RegenHealthOverTime" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_14fyc")
 layout_mode = 1
 
 [node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -374,34 +506,57 @@ skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../DamageUpgradeII"), NodePath("../ShotgunUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
 skillnode_data = ExtResource("6_aog38")
-stat_type = 2
 save_name = "PlayerSpeedUpgradeFiatT1"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/SpeedUpgradeI" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_5vqad")
 layout_mode = 1
 
-[node name="ShotgunUnlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="ShotgunUnlock" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 anchors_preset = 0
 anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 1163.0
-offset_top = 511.0
-offset_right = 1227.0
-offset_bottom = 575.0
+offset_left = 1233.0
+offset_top = 455.0
+offset_right = 1319.0
+offset_bottom = 541.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = ExtResource("22_jhrlo")
 skill_tree_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../MagnetAbility")]
 icon_on_maxed_out = ExtResource("22_jhrlo")
 skillnode_data = ExtResource("20_cet81")
 save_name = "ShotgunUnlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/ShotgunUnlock" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_8k647")
+layout_mode = 1
+
+[node name="MagnetAbility" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1426.0
+offset_top = 336.0
+offset_right = 1512.0
+offset_bottom = 422.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("22_5t31m")
+skill_tree_event_bus = ExtResource("15_hsn28")
+icon_on_maxed_out = ExtResource("22_5t31m")
+skillnode_data = SubResource("Resource_hobie")
+save_name = "MagnetUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/MagnetAbility" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_oevro")
 layout_mode = 1
 
 [node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
@@ -422,7 +577,6 @@ skill_tree_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../SniperUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skillnode_data = ExtResource("11_6em56")
-stat_type = 3
 save_name = "PlayerDamageUpgradeBitcoinT2"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/DamageUpgradeII" instance=ExtResource("7_hhrbb")]
@@ -460,21 +614,44 @@ anchor_left = 0.0
 anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 1468.0
-offset_top = 821.0
-offset_right = 1532.0
-offset_bottom = 885.0
+offset_left = 1496.0
+offset_top = 834.0
+offset_right = 1582.0
+offset_bottom = 920.0
 tooltip_text = "CLICK MEEEE!!!!"
 mouse_default_cursor_shape = 2
 icon = SubResource("AtlasTexture_dufvt")
 skill_tree_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
+next_tier_nodes = [NodePath("../BlockCoreFinderUnlock"), NodePath("../MiniUzisUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skillnode_data = ExtResource("23_lm8ko")
 save_name = "AK47Unlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/AK47Unlock" instance=ExtResource("7_hhrbb")]
 material = SubResource("ShaderMaterial_uh0ok")
+layout_mode = 1
+
+[node name="MiniUzisUnlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+layout_mode = 2
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 1710.0
+offset_top = 1021.0
+offset_right = 1796.0
+offset_bottom = 1107.0
+tooltip_text = "CLICK MEEEE!!!!"
+mouse_default_cursor_shape = 2
+icon = ExtResource("33_14fyc")
+skill_tree_event_bus = ExtResource("15_hsn28")
+icon_on_maxed_out = ExtResource("33_14fyc")
+skillnode_data = SubResource("Resource_g7g25")
+save_name = "MiniUzisUnlock"
+
+[node name="RippleComponentUI" parent="UpgradesHolder/MiniUzisUnlock" instance=ExtResource("7_hhrbb")]
+material = SubResource("ShaderMaterial_k7n60")
 layout_mode = 1
 
 [node name="BlockCoreFinderUnlock" parent="UpgradesHolder" instance=ExtResource("2_riue2")]

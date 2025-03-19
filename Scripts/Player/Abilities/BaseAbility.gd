@@ -12,7 +12,8 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if !active: return
-	ability_cooldown -= delta
+	current_cooldown -= delta
+	activate()
 
 ## This method is the entry point for the ability activation.
 func activate() -> void:
@@ -21,7 +22,7 @@ func activate() -> void:
 		_reset_cooldown_timer()
 
 func is_ability_ready() -> bool:
-	return active and ability_cooldown <= 0.0
+	return get_active_state() and current_cooldown <= 0.0
 
 func enable() -> void:
 	show()
@@ -37,7 +38,7 @@ func _on_activate() -> void:
 	pass
 
 func _reset_cooldown_timer() -> void:
-	ability_cooldown = current_cooldown
+	current_cooldown = ability_cooldown
 
 func get_active_state() -> bool:
 	return active

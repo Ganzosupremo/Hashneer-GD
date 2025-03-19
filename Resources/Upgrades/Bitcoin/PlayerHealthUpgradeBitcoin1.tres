@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SkillNodeData" load_steps=2 format=3 uid="uid://cv5phm62w12fs"]
 
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_82lh6"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="1_82lh6"]
 
 [resource]
 resource_name = "HealthB1SkillNodeData"
@@ -10,15 +10,12 @@ upgrade_name = "A half heart"
 upgrade_description = "Increase health by 300 HP."
 upgrade_tier = 2
 is_upgrade = true
-status = 0
 is_percentage = false
-weapon_to_unlock = 0
-ability_to_unlock_id = ""
+stat_type = 1
 upgrade_base_power = 300.0
 upgrade_power_multiplier = 1.0
 upgrade_cost_base = 100000.0
 upgrade_cost_multiplier = 1.35
 upgrade_cost_base_btc = 22500.0
 upgrade_cost_multiplier_btc = 1.25
-upgrade_max_level = 21
-upgrade_level = 0
+upgrade_max_level = 20

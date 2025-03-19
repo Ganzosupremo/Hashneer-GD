@@ -90,7 +90,8 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		destroyed = true
 		onBlockDestroyed.emit()
 
-		_slowdown_timer.start(.21)
+		_slowdown_timer.start(1.0)
+		_block_core_particles.emitting = false
 		Engine.time_scale = 0.21
 		# var tween: Tween = GameManager.init_tween().set_parallel(true)
 		# tween.tween_property(Engine, "time_scale", 0.21, 0.15).set_ease(Tween.EASE_IN_OUT)
@@ -143,7 +144,10 @@ func _mine_block(miner: String = "Player") -> void:
 func _on_slow_down_timer_timeout() -> void:
 	print_debug("Slow down timer timeout")
 	Engine.time_scale = 1.0
-	call_deferred("queue_free")
+	hide()
+	
+	var arr: PackedVector2Array = PackedVector2Array([])
+	setPolygon(arr)
 
 func setPolygon(poly: PackedVector2Array):
 	super.setPolygon(poly)

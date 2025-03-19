@@ -22,7 +22,7 @@ static func build_res_from_dictionary(data: Dictionary, type: Resource) -> Resou
 	return res
 
 static func dict_to_resource(dict : Dictionary, target_resource : Resource, debug: bool = false) -> Resource:
-	var res = target_resource
+	var res = target_resource.new()
 	for i in range(dict.size()):
 		var key = dict.keys()[i]
 		var value = dict.values()[i]
@@ -52,6 +52,7 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 		Constants.WeaponNames.SHOTGUN: "Shotgun",
 		Constants.WeaponNames.RIFLE: "Rifle",
 		Constants.WeaponNames.SNIPER: "Sniper",
+		Constants.WeaponNames.MINI_UZI: "Mini-Uzi",
 		Constants.WeaponNames.AK47: "AK47",
 		Constants.WeaponNames.MACHINE_GUN: "Machine Gun",
 		Constants.WeaponNames.ROCKET_LAUNCHER: "Rocket Launcher",
@@ -82,16 +83,32 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 		return weapon_names_to_string[weapon_name]
 	return "Unknown Weapon"
 
-## The GameManager saves the upgrade data in the [param GameManager.upgraded_stats] dictionary based on the [param SkillNode.stat_type] variable.
-## This function converts the [param SkillNode.stat_type] to a string for getting the correct stat's value from the dictionary.
+static func ability_name_to_string(ability_name: Constants.AbilityNames) -> String:
+	var ability_names_to_string = {
+		Constants.AbilityNames.BLOCK_CORE_FINDER: "Block Core Finder",
+		Constants.AbilityNames.MAGNET: "Magnet",
+		Constants.AbilityNames.REGEN_HEALTH_OVER_TIME: "Regenerate Health Over Time",
+		# Constants.AbilityNames.HOVER: "Hover",
+		# Constants.AbilityNames.INVISIBILITY: "Invisibility",
+		# Constants.AbilityNames.SPRINT: "Sprint",
+		# Constants.AbilityNames.TELEPORT: "Teleport",
+		# Constants.AbilityNames.WALL_JUMP: "Wall Jump"
+	}
+	
+	if ability_names_to_string.has(ability_name):
+		return ability_names_to_string[ability_name]
+	return "Unknown Ability"
+
+## The PlayerStatsManager saves the upgrade data in the [param PlayerStatsManager.upgraded_stats] dictionary based on the [param SkillNodeData.stat_type] variable.
+## This function converts the [param SkillNodeData.stat_type] to a string for getting the correct stat's value from the dictionary.
 ## To avoid typos when trying to recover a stat's value from the dictionay, this function should be used.
 ## Just the player stats are saved in the dictionary. 
-## The weapon and ability upgrades are saved in the [param GameManager.unlocked_weapons] and [param GameManager.unlocked_abilities] dictionaries.
-static func player_stat_type_to_string(stat_type: SkillNode.STAT_TYPE) -> String:
+## The weapon and ability upgrades are saved in the [param PlayerStatsManager.unlocked_weapons] and [param PlayerStatsManager.unlocked_abilities] dictionaries.
+static func player_stat_type_to_string(stat_type: SkillNodeData.StatType) -> String:
 	var saved_names: Dictionary = {
-		SkillNode.STAT_TYPE.HEALTH: "Health",
-		SkillNode.STAT_TYPE.SPEED: "Speed",
-		SkillNode.STAT_TYPE.DAMAGE: "Damage",
+		SkillNodeData.StatType.HEALTH: "Health",
+		SkillNodeData.StatType.SPEED: "Speed",
+		SkillNodeData.StatType.DAMAGE: "Damage",
 	}
 
 	if saved_names.has(stat_type):

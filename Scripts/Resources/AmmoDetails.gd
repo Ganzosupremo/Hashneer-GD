@@ -35,6 +35,9 @@ class_name AmmoDetails
 ## Particle lifetime randomness ratio, escales the lifetime of it's original value
 @export_range(0.0, 1.0) var lifetime_randomness = 0.25
 
+## The damage dealt by the bullet multiplied by the damage multiplier
+var bullet_damage_multiplied: float = 0.0
+
 func _init(_damage = 25.0, _speed = 1000.0) -> void:
 	bullet_damage = _damage
 	bullet_speed = _speed

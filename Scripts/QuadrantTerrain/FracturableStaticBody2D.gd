@@ -175,7 +175,9 @@ func set_texture(texture_info: Dictionary) -> void:
 func setPolygon(poly : PackedVector2Array) -> void:
 	_polygon2d.set_polygon(poly)
 	_col_polygon2d.set_polygon(poly)
-	poly.append(poly[0])
+	if !poly.is_empty():
+		poly.append(poly[0])
+	
 	_line2d.points = poly
 	light_occluder_2d.occluder.polygon = poly
 

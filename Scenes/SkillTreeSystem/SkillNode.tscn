@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="2_e6wyl"]
-[ext_resource type="Script" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
+[ext_resource type="Script" uid="uid://b73fftsidofgy" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_7srpc"]
@@ -128,6 +128,7 @@ unique_name_in_owner = true
 width = 35.0
 
 [node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
+visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5

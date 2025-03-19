@@ -1,6 +1,7 @@
 extends CharacterBody2D
 class_name PlayerController
 
+@export var player_details: PlayerDetails
 @export var speed: float = 200.0
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
@@ -8,14 +9,13 @@ class_name PlayerController
 @export var mass: float = 5.0
 @export var anti_gravity_thrust: float = 300.0
 
-
 var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
 
 
-@export_category("Abilities")
-@export var abilities: Dictionary = {
-	"block_core_finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
-}
+# @export_category("Abilities")
+# @export var abilities: Dictionary = {
+# 	"block_core_finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
+# }
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
@@ -29,18 +29,15 @@ var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
-var player_details: PlayerDetails
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
-var _loaded_abilities: Dictionary = {}
+# var _loaded_abilities: Dictionary = {}
 
 
 func _ready() -> void:
 	GameManager.player = self
-	player_details = GameManager.player_details.duplicate(true)
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
-	# GameManager.current_block_core.onBlockDestroyed.connect(deactivate_player)
 	GameManager.level_completed.connect(deactivate_player)
 	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
@@ -68,7 +65,7 @@ func _physics_process(delta) -> void:
 
 func set_player() -> void:
 	if !player_details: return
-	_instantiate_abilities()
+	# _instantiate_abilities()
 	_unlock_saved_abilities()
 	_apply_stats()
 
@@ -86,43 +83,46 @@ func set_weapon() -> void:
 func deactivate_player() -> void:
 	can_move = false
 
-func unlock_ability(ability_id: String) -> void:
-	if !_loaded_abilities.has(ability_id):
-		# print_debug("Ability with ID %s not found in player." % ability_id)		
-		return
+# func unlock_ability(ability_id: String) -> void:
+# 	if !_loaded_abilities.has(ability_id):
+# 		# print_debug("Ability with ID %s not found in player." % ability_id)		
+# 		return
 	
-	_loaded_abilities[ability_id].enable()
-	# print_debug("Unlocked ability: %s" % ability_id)
+# 	_loaded_abilities[ability_id].enable()
+# 	# print_debug("Unlocked ability: %s" % ability_id)
 
 
 func apply_central_force(force: Vector2) -> void:
 	# Scale the force for better handling
-	var adjusted_force = force * 0.1  # Scale down to avoid extreme acceleration
-	print("Applying force: ", force)
+	# var adjusted_force = force * 0.1  # Scale down to avoid extreme acceleration
+	# print("Applying force: ", force)
 	velocity += force
 	move_and_slide()
 
 func apply_gravity(force: Vector2) -> void:
-	print("Applying gravity: ", force)
+	# print("Applying gravity: ", force)
 	gravity_force = force
 
 #endregion
 
 ## ___________________PRIVATE FUNCTIONS__________________________
 
-func _instantiate_abilities():
-	for ability in abilities:
-		var ability_instance: BaseAbility = abilities[ability].instantiate()
-		if ability_instance is not BaseAbility: return
+# func _instantiate_abilities():
+# 	for ability in abilities:
+# 		var ability_instance: BaseAbility = abilities[ability].instantiate()
+# 		if ability_instance is not BaseAbility: return
 
-		ability_instance.disable()
+# 		ability_instance.disable()
 
-		_loaded_abilities[ability] = ability_instance
-		add_child(ability_instance)
+# 		_loaded_abilities[ability] = ability_instance
+# 		add_child(ability_instance)
 
 func _unlock_saved_abilities() -> void:
-	for ability_id in GameManager.unlocked_abilities.keys():
-		unlock_ability(ability_id)
+	for ability_id in PlayerStatsManager.get_unlocked_abilities().keys():
+		var ability: BaseAbility = PlayerStatsManager.get_unlocked_ability(ability_id).instantiate()
+		add_child(ability)
+		ability.enable()
+
 
 func _apply_stats() -> void:
 	var stats_array = player_details.apply_stats()
@@ -168,7 +168,7 @@ func switch_weapon() -> void:
 
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
-		fire_weapon.emit_signal("fire_weapon", true, fired_previous_frame, damage_multiplier)
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, damage_multiplier)
 		fired_previous_frame = true
 	else:
 		fired_previous_frame = false

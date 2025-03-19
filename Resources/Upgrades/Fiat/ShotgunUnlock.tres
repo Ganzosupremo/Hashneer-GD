@@ -1,20 +1,27 @@
-[gd_resource type="Resource" script_class="SkillNodeData" load_steps=3 format=3 uid="uid://bk3blai1anpdr"]
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=6 format=3 uid="uid://bk3blai1anpdr"]
 
-[ext_resource type="Script" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_wobxv"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="1_t2p5j"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_tp3pd"]
+[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="3_lbbeg"]
+[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="4_k5oqn"]
+
+[sub_resource type="Resource" id="Resource_fcvnp"]
+script = ExtResource("3_lbbeg")
+weapon_type = 2
+weapon_to_unlock = ExtResource("4_k5oqn")
+metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
 
 [resource]
-script = ExtResource("1_wobxv")
+script = ExtResource("1_t2p5j")
 feature_type = 1
 upgrade_name = "Just a shotgun"
 upgrade_description = "Unlocks a powerful shotgun"
 skill_image = ExtResource("2_tp3pd")
 upgrade_tier = 0
 is_upgrade = false
-status = 0
 is_percentage = false
-weapon_to_unlock = 2
-ability_to_unlock_id = ""
+stat_type = 0
+weapon_data = SubResource("Resource_fcvnp")
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 0.0
 upgrade_cost_base = 150000.0
@@ -22,4 +29,3 @@ upgrade_cost_multiplier = 1.0
 upgrade_cost_base_btc = 100000.0
 upgrade_cost_multiplier_btc = 1.0
 upgrade_max_level = 1
-upgrade_level = 0

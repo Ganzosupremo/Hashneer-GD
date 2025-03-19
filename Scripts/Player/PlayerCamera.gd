@@ -1,7 +1,5 @@
 class_name AdvanceCamera extends Camera2D
 
-@export var magnitude: Constants.ShakeMagnitude
-
 ## Movement to side to side
 var amplitude: float
 ## Duration of movement
@@ -23,13 +21,16 @@ var twenn: Tween
 var tween_trans: Tween.TransitionType
 var current_magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.None
 var shake_points: Array[Vector2]
+var player: PlayerController
+var magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.None
 
 func _ready() -> void:
+	player = get_parent()
 	shake_timer = Timer.new()
 	shake_timer.autostart = false
 	shake_timer.one_shot = true
 	add_child(shake_timer)
-	#global_position = _get_center_viewport()
+	self.global_position = player.global_position
 
 
 func shake(_amplitude: float = 3.0, _frequency: float = 5.0, _duration: float = 0.5, _axis_ratio: float = 0.0, _armonic_ratio: Array[int] = [1,1], _phase_offset_degrees: int  = 90, _samples: int = 10, _tween_trans: Tween.TransitionType = Tween.TransitionType.TRANS_SPRING) -> void:
@@ -114,5 +115,5 @@ func _get_current_duration() -> float:
 	return shake_timer.wait_time - shake_timer.time_left
 
 func _get_center_viewport() -> Vector2:
-	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	var viewport_size: Vector2 = player.get_viewport().get_visible_rect().size
 	return viewport_size / 2.0

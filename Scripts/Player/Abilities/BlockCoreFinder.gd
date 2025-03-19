@@ -1,27 +1,16 @@
 class_name BlockCoreFinder extends BaseAbility
 
 @onready var arrow: Sprite2D = $Arrow
-@onready var timer: Timer = $Timer
-
 
 var target_core: BlockCore
-var orbit_angle: float = 0.0
-var orbit_radius: float = 50.0
-var orbit_speed: float = 2.0
 
 func _ready() -> void:
 	super._ready()
-	timer.wait_time = ability_cooldown
-	timer.timeout.connect(activate)
-	timer.start()
 	GameManager.current_block_core.onBlockDestroyed.connect(_on_block_found)
 	set_target_core(GameManager.current_block_core)
 
-func _process(_delta):
-	super._process(_delta)
-
 func _on_activate() -> void:
-	if target_core == null: return
+	if target_core == null: set_target_core(GameManager.current_block_core)
 
 	var target_position = target_core.global_position
 	var direction = target_position - global_position
@@ -38,7 +27,6 @@ func _on_activate() -> void:
 
 func _on_block_found() -> void:
 	active = false
-	timer.stop()
 
 func set_target_core(core: BlockCore):
 	target_core = core

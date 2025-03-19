@@ -24,6 +24,6 @@ func get_total_inflation() -> float:
 	return total_inflation
 
 func get_fiat_subsidy() -> float:
-	var subsidy: float = randf_range(1000.0, 10000.0) * GameManager.get_builder_args().fiat_drop_rate_factor
+	var subsidy: float = randf_range(100.0, 1000.0) * GameManager.get_builder_args().fiat_drop_rate_factor
 	fiat_currency_in_circulation += subsidy
 	return subsidy

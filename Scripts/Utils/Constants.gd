@@ -37,6 +37,7 @@ enum WeaponNames {
 	PISTOL,
 	SHOTGUN,
 	RIFLE,
+	MINI_UZI,
 	SNIPER,
 	AK47,
 	MACHINE_GUN,
@@ -75,4 +76,11 @@ enum WeaponNames {
 	MORTAR,
 	LANDMINE,
 	CLAYMORE 
+}
+
+enum AbilityNames {
+	NONE,
+	BLOCK_CORE_FINDER,
+	MAGNET,
+	REGEN_HEALTH_OVER_TIME,
 }

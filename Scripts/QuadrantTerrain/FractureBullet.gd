@@ -24,8 +24,7 @@ func _ready() -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if state.get_contact_count() <= 0: return
-	
-	var damage_to_deal = ammo_details.bullet_damage * GameManager.player_details.damage_multiplier
+	var damage_to_deal = ammo_details.bullet_damage_multiplied
 
 	var body = state.get_contact_collider_object(0)
 	if body is FracturableStaticBody2D and body is not BlockCore and q_b:

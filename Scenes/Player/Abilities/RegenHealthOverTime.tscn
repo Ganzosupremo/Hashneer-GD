@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cblr1jidfo5cn"]
+
+[ext_resource type="Script" uid="uid://vt2ujwj1v12r" path="res://Scripts/Player/Abilities/RegenHealthOverTime.gd" id="1_3yv35"]
+
+[node name="RegenHealthOverTime" type="Node2D"]
+script = ExtResource("1_3yv35")
+regen_rate = 50.0
+ability_name = "Regen Health Over Time"
+ability_description = "Regenerates health over a specified amount of time"
+ability_cooldown = 5.0

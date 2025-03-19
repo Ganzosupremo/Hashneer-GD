@@ -1,15 +1,5 @@
 class_name SkillNode extends Button
 
-## The type of stat to upgrade.
-enum STAT_TYPE {
-	## Default state.
-	NONE = 0,
-	## Upgrades the player's health.
-	HEALTH = 1,
-	## Upgrades the player's speed.
-	SPEED = 2,
-	## Upgrades the player's damage multiplier.
-	DAMAGE = 3}
 enum FEATURE_TYPE {
 	## Default state.
 	NONE,
@@ -46,10 +36,8 @@ enum FEATURE_TYPE {
 
 @export_group("Skill Node Data Settings")
 @export var skillnode_data : SkillNodeData
-## If the data is an upgrade and not an unlock, this needs to be specified.
-@export var dstat_to_upgrade: PlayerStat
 ## The type of stat to upgrade.
-@export var stat_type: STAT_TYPE
+# @export var stat_type: STAT_TYPE
 
 @export_group("Save Settings")
 ## A save name for the skillnode_data resource.
@@ -64,7 +52,7 @@ enum FEATURE_TYPE {
 
 var is_maxed_out: bool = false
 var node_identifier: int = 0
-var node_state: SkillNodeData.SKILL_NODE_STATUS = SkillNodeData.SKILL_NODE_STATUS.LOCKED
+var node_state: SkillNodeData.DataStatus = SkillNodeData.DataStatus.LOCKED
 var SAVE_PATH: String = ""
 
 const implements = [
@@ -84,7 +72,7 @@ func _ready() -> void:
 	else:
 		lock()
 	
-	set_currecy_icon(use_bitcoin)
+	set_currency_icon(use_bitcoin)
 
 # ___________________ PUBLIC FUNCTIONS ________________________
 
@@ -94,6 +82,7 @@ func lock() -> void:
 	is_unlocked = false
 	_update_skill_status_label("LOCKED", disabled_label_settings, is_maxed_out)
 	_set_modulate_color(Color.GRAY)
+	_update_node_line_points()
 
 func unlock() -> void:
 	show()
@@ -101,8 +90,9 @@ func unlock() -> void:
 	is_unlocked = true
 	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings, is_maxed_out)
 	_set_modulate_color(Color.WHITE)
+	_update_node_line_points()
 
-func is_skill_unlocked() -> bool:
+func is_node_unlocked() -> bool:
 	return is_unlocked
 
 func set_node_identifier(id: int = 0) -> void:
@@ -128,25 +118,20 @@ func _unlock_or_upgrade() -> void:
 			print_debug("Define a feature type...")
 
 func _unlock_weapon() -> void:
-	GameManager.unlock_weapon(Utils.weapon_name_to_string(skillnode_data.weapon_to_unlock))
-	#print("SkillNode: Unlocked new weapon-{0}".format([skillnode_data.weapon_to_unlock]))
+	skill_tree_event_bus.unlock_weapon(Utils.weapon_name_to_string(
+		skillnode_data.weapon_data.weapon_type), skillnode_data.weapon_data.weapon_to_unlock)
 
 func _unlock_ability() -> void:
-	if skillnode_data.ability_to_unlock_id == "":
-		# print_debug("No ability_id set in skillnode_data.")
-		return
-	
-	GameManager.register_unlocked_ability(skillnode_data.ability_to_unlock_id)
-		# Implement the logic to unlock the ability
-		#print("Unlocked new ability: {0}".format(skillnode_data.ability_to_unlock))
+	skill_tree_event_bus.unlock_ability(Utils.ability_name_to_string(
+		skillnode_data.ability_data.ability_type
+		), skillnode_data.ability_data.ability_to_unlock)
 
 func _upgrade_stat() -> void:
-	var upgrade_power = skillnode_data.apply_upgrade()
-	GameManager.upgrade_stat(Utils.player_stat_type_to_string(stat_type), upgrade_power, stat_type)
+	skill_tree_event_bus.upgrade_stat(Utils.player_stat_type_to_string(skillnode_data.stat_type), skillnode_data.get_current_power(), skillnode_data.is_percentage)
 
 func _is_next_tier_node_unlocked() -> bool:
 	for node in next_tier_nodes:
-		return node.is_skill_unlocked()
+		return node.is_node_unlocked()
 	
 	return false
 
@@ -165,16 +150,32 @@ func _update_skill_status_label(new_text, label_settings: LabelSettings = null, 
 			skill_label_status.label_settings = label_settings
 		_update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), maxed_out)
 
-func _hide_next_node_line() -> void:
-	if next_tier_nodes.size() <= 0: return
-	
-	await get_tree().process_frame
-	
+func _update_node_line_points() -> void:
+	# Clear the current points on the line.
+	skill_line.clear_points()
+
+	# Calculate the center of this node.
+	var self_center: Vector2 = global_position + get_global_rect().size / 2
+	var any_visible: bool = false
+
 	for node in next_tier_nodes:
-		if _is_next_tier_node_unlocked():
-			node.skill_line.show()
-		else:
-			node.skill_line.hide()
+		if node.is_node_unlocked():
+			any_visible = true
+			# Calculate the center of the next tier node.
+			var next_node_center: Vector2 = node.global_position + node.get_global_rect().size / 2
+
+			# Convert the global positions to local positions relative to the Line2D node.
+			var self_center_local: Vector2 = skill_line.to_local(self_center)
+			var next_node_center_local: Vector2 = skill_line.to_local(next_node_center)
+
+			# Add the points to the line.
+			skill_line.add_point(self_center_local)
+			skill_line.add_point(next_node_center_local)
+	
+	if !any_visible:
+		skill_line.hide()
+	skill_line.show()
+
 
 func _update_info_panel(cost: float, maxed_out: bool = false) -> void:
 	skill_info_panel.update_cost_label(int(cost), maxed_out)
@@ -205,10 +206,10 @@ func _set_line_points() -> void:
 
 func set_use_btc_as_currency(new_value: bool) -> void:
 	use_bitcoin = new_value
-	set_currecy_icon(use_bitcoin)
+	set_currency_icon(use_bitcoin)
 	skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
 
-func set_currecy_icon(btc_icon: bool) -> void:
+func set_currency_icon(btc_icon: bool) -> void:
 	currency_icon.texture = bitcoin_icon if btc_icon else dollar_icon
 
 # _______________________SIGNALS__________________________________

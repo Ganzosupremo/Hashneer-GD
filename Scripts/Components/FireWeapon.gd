@@ -50,7 +50,8 @@ func weapon_fire(damage_multiplier: float) -> void:
 
 func fire_ammo(damage_multiplier: float) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	ammo.bullet_damage *= damage_multiplier
+	var total_damage: float = ammo.bullet_damage * damage_multiplier
+	ammo.bullet_damage_multiplied = total_damage
 	fire_ammo_async(ammo)
 
 # Allows to fire many bullets at once

@@ -35,6 +35,7 @@ SaveSystem="*res://addons/save_system/save_system.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 GameManager="*res://Scenes/Manager/GameManager.tscn"
 SceneManager="*res://Scenes/Manager/SceneManager.tscn"
+PlayerStatsManager="*res://Scenes/Manager/PlayerStatsManager.tscn"
 Interface="*res://Scripts/Utils/Interface.gd"
 MusicManager="*res://Scenes/Manager/MusicManager.tscn"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
@@ -61,11 +62,11 @@ enabled=PackedStringArray("res://addons/item_drops/plugin.cfg", "res://addons/sa
 
 folder_colors={
 "res://Audio/": "red",
-"res://Resources/": "green",
+"res://Resources/": "yellow",
 "res://Scenes/": "purple",
 "res://Scripts/": "teal",
 "res://Shaders/": "gray",
-"res://Textures/": "pink"
+"res://Textures/": "orange"
 }
 
 [filesystem]

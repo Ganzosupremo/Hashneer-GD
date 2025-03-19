@@ -3,7 +3,19 @@ class_name SkillNodeData extends Resource
 signal next_tier_unlocked()
 signal upgrade_maxed()
 
-enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
+enum DataStatus {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
+
+## The type of stat to upgrade.
+enum StatType {
+	## Default state.
+	NONE = 0,
+	## Upgrades the player's health.
+	HEALTH = 1,
+	## Upgrades the player's speed.
+	SPEED = 2,
+	## Upgrades the player's damage multiplier.
+	DAMAGE = 3}
+
 
 @export_category("Upgrade Basic Parameters")
 ## Defines if this node should unlock a new weapon, player ability or simply upgrade a player stat.
@@ -14,15 +26,15 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 @export var upgrade_tier: int = 0
 ## Defines the type of skill this is. True will just upgrade an ability/skill. False to unlock an entire new skill/ability
 @export var is_upgrade: bool = false
-#@export var i_unlocked: bool = false
-## 
-@export var status: SKILL_NODE_STATUS = SKILL_NODE_STATUS.LOCKED
 ## Defines if the upgrade should be in percentage increase or flat increase.
 @export var is_percentage: bool = false
+@export var stat_type: StatType = StatType.NONE
 
-@export_category("Features Unlock Settings")
-@export var weapon_to_unlock: Constants.WeaponNames = Constants.WeaponNames.NONE
-@export var ability_to_unlock_id: String
+@export_category("Weapon Unlock Settings")
+@export var weapon_data: SkillNodeWeaponData
+
+@export_category("Ability Unlock Settings")
+@export var ability_data: SkillNodeAbilityData
 
 @export_category("Upgrade Power")
 ## The starting increase of this upgrade.
@@ -45,27 +57,22 @@ enum SKILL_NODE_STATUS {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 @export var upgrade_max_level : int = 10
 
 var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
-@export var upgrade_level: int = 0:
+var upgrade_level: int = 0:
 	set(value):
 		upgrade_level = value
 		check_next_tier_unlock()
 		check_upgrade_maxed_out()
 
 var _id: int = 0
-var current_power: float = 0.0
+var status: DataStatus = DataStatus.LOCKED
 
-# ___________________MAIN FUNCTIONS______________________
-
-func apply_upgrade() -> float:
-	current_power = get_upgrade_power()
-	return current_power
+#region Main
 
 func buy_upgrade(in_bitcoin: bool = false) -> bool:
 	if upgrade_level >= upgrade_max_level: return false
 	
 	var success: bool = _buy_with_bitcoin() if in_bitcoin else _buy_with_fiat()
 	if success:
-		apply_upgrade()
 		check_next_tier_unlock()
 		check_upgrade_maxed_out()
 	return success
@@ -94,17 +101,9 @@ func buy_max(in_bitcoin: bool = false) -> void:
 	if upgrade_level >= upgrade_max_level: return
 	
 	if in_bitcoin:
-		if BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin)):
-			apply_upgrade()
-			return
-		else:
-			# print("Not enough Bitcoin balance: {0}".format([BitcoinWallet.get_bitcoin_balance()]))
-			return
+		BitcoinWallet.spend_bitcoin(_buy_max(in_bitcoin))
 	else:
-		if BitcoinWallet.spend_fiat(_buy_max(in_bitcoin)):
-			apply_upgrade()
-		else:
-			return
+		BitcoinWallet.spend_fiat(_buy_max(in_bitcoin))
 			# print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 
 func _buy_max(in_bitcoin: bool = false) -> float:
@@ -123,8 +122,9 @@ func _buy_max(in_bitcoin: bool = false) -> float:
 	check_upgrade_maxed_out()
 	return upgrade_cost() * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
 
+#endregion
 
-# _________________________COST FUNCTIONS______________________
+#region Cost
 
 func upgrade_cost(use_bitcoin: bool = false) -> float:
 	return _upgrade_cost_btc() if use_bitcoin else _upgrade_cost_fiat()
@@ -143,12 +143,14 @@ func upgrade_cost_string() -> String:
 func upgrade_cost_btc_string() -> String:
 	return str(_upgrade_cost_btc())
 
-# _____________________POWER FUNCTIONS______________________
+#endregion
 
-func get_upgrade_power() -> float:
+#region Power
+func get_current_power() -> float:
 	return upgrade_base_power * pow(upgrade_power_multiplier, upgrade_level)
+#endregion
 
-# _____________________OTHER FUNCTIONS_____________________________
+#region Other
 
 func _log(value: float, base: float) -> float:
 	return 2.302585 / log(base) * (log(value) / log(10))
@@ -156,21 +158,23 @@ func _log(value: float, base: float) -> float:
 
 func check_upgrade_maxed_out() -> bool:
 	if upgrade_level == upgrade_max_level:
-		if status != SKILL_NODE_STATUS.MAXED_OUT:
+		if status != DataStatus.MAXED_OUT:
 			# print_debug("Upgrade maxed out, should become gold now...")
 			upgrade_maxed.emit()
-		status = SKILL_NODE_STATUS.MAXED_OUT
+		status = DataStatus.MAXED_OUT
 		return true
 	return false
 
 func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
-		if status != SKILL_NODE_STATUS.UNLOCKED:
+		if status != DataStatus.UNLOCKED:
 			# print_debug("Next tier node should unlock now...")
 			next_tier_unlocked.emit()
-		status = SKILL_NODE_STATUS.UNLOCKED
+		status = DataStatus.UNLOCKED
 		return true
 	return false
 
 func _to_string() -> String:
 	return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost() + "\nBitcoin Cost: %s"%upgrade_cost()
+
+#endregion

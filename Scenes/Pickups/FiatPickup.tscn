@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="1_f7yr1"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="1_ls16r"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_k2hy4"]
-[ext_resource type="AudioStream" uid="uid://ckf47jfqc70r8" path="res://Audio/Pickups/Fiat Pickup 2.wav" id="4_aksnm"]
+[ext_resource type="AudioStream" uid="uid://cjekq0w84bbdd" path="res://Audio/Pickups/BitcoinPickup.wav" id="5_cuxl8"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="5_rmixv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1n2o1"]
@@ -38,7 +38,7 @@ script = ExtResource("1_ls16r")
 items_drop_bus = ExtResource("3_k2hy4")
 root = NodePath("..")
 pickup_resource_file = "uid://dbm7dlkhl0o1y"
-sound = ExtResource("4_aksnm")
+sound = ExtResource("5_cuxl8")
 pickup_delay = 0.1
 metadata/_custom_type_script = "uid://cswsevnw7pekp"
 

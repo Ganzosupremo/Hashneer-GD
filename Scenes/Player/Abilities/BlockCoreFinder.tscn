@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://di5istg4hebxi"]
 
-[ext_resource type="Script" path="res://Scripts/Player/Abilities/BlockCoreFinder.gd" id="1_d5phx"]
+[ext_resource type="Script" uid="uid://coy27mrtijs03" path="res://Scripts/Player/Abilities/BlockCoreFinder.gd" id="1_d5phx"]
 [ext_resource type="Texture2D" uid="uid://c3y7klnb0biui" path="res://Textures/Player/Abilities/Arrow.png" id="2_o1dvu"]
 
 [node name="BlockCoreFinder" type="Node2D"]
@@ -11,5 +11,3 @@ ability_cooldown = 1.0
 [node name="Arrow" type="Sprite2D" parent="."]
 texture = ExtResource("2_o1dvu")
 offset = Vector2(15, 0)
-
-[node name="Timer" type="Timer" parent="."]

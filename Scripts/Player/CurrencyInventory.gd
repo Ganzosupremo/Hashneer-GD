@@ -1,7 +1,6 @@
 class_name CurrencyInventory extends Node2D
 
 func add_to_inventory(resource: Resource, amount: float) -> bool:
-	print("Adding resource {0} to inventory: {1}".format([resource.display_name, amount]))
 	if resource is CurrencyPickupResource:
 		match resource.currency_type:
 			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
