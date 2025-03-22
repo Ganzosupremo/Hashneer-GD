@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://c2hb4iulgyrsa"]
+[gd_scene load_steps=6 format=3 uid="uid://c2hb4iulgyrsa"]
 
-[ext_resource type="Script" path="res://Scripts/UI/Settings.gd" id="1_0t1x7"]
+[ext_resource type="Script" uid="uid://bnehavawdhvp4" path="res://Scripts/UI/Settings.gd" id="1_0t1x7"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_i76vb"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="2_6s6fx"]
-[ext_resource type="Texture2D" uid="uid://dghmigof504jv" path="res://Textures/UI/play_icon.png" id="4_q4irc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvi8v"]
 bg_color = Color(0, 0, 0, 0.209)
@@ -76,11 +75,6 @@ theme_override_constants/separation = 15
 layout_mode = 2
 theme_override_font_sizes/font_size = 156
 text = "Settings"
-horizontal_alignment = 1
-vertical_alignment = 1
-visible_characters = -1
-visible_ratio = 1.0
-animate_on_ready = true
 
 [node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -106,8 +100,6 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Resolution"
-visible_characters = -1
-visible_ratio = 1.0
 
 [node name="Resolutions" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont"]
 unique_name_in_owner = true
@@ -130,9 +122,6 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "V-Sync"
-visible_characters = -1
-visible_ratio = 1.0
-animate_on_ready = true
 
 [node name="Vsync" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont"]
 unique_name_in_owner = true
@@ -156,9 +145,6 @@ alignment = 1
 layout_mode = 2
 theme_override_font_sizes/font_size = 100
 text = "Fullscreen"
-visible_characters = -1
-visible_ratio = 1.0
-animate_on_ready = true
 
 [node name="Fullscreen" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont"]
 unique_name_in_owner = true
@@ -169,7 +155,6 @@ size_flags_vertical = 4
 theme = ExtResource("1_i76vb")
 theme_override_font_sizes/font_size = 45
 button_pressed = true
-icon = ExtResource("4_q4irc")
 alignment = 1
 icon_alignment = 1
 expand_icon = true

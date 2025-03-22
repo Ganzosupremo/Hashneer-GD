@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=38 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" uid="uid://bea44as0v1pbg" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="3_vql12"]
@@ -11,10 +11,14 @@
 [ext_resource type="PackedScene" uid="uid://t3kn17jmsmy1" path="res://Scenes/Components/ActiveWeaponComponent.tscn" id="6_ltgru"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
 [ext_resource type="PackedScene" uid="uid://tgo2cl26po3f" path="res://Scenes/Components/HealthComponent.tscn" id="7_fkivy"]
+[ext_resource type="Texture2D" uid="uid://c2pi5423pix4b" path="res://Textures/Player/HasheneerPlayerNormalMapBody.png" id="8_w71ue"]
+[ext_resource type="Texture2D" uid="uid://c26mrbug7eklq" path="res://Textures/Player/HasheneerPlayerNormalMapWeapon.png" id="9_1e6p3"]
+[ext_resource type="Texture2D" uid="uid://c4tmk82lj3a0m" path="res://Textures/Player/HasheneerPlayerWeapon.png" id="9_yb677"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="10_4cnpp"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="11_k55ag"]
 [ext_resource type="Script" uid="uid://b542eoymso6xc" path="res://addons/item_drops/pickups/pickups_collector_2d.gd" id="13_0u84n"]
 [ext_resource type="Script" uid="uid://bf4gc2pn1fbeu" path="res://addons/item_drops/settings/inventory_access_settings.gd" id="14_esmjy"]
+[ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="15_0objx"]
 [ext_resource type="Script" uid="uid://gld0xbjaoymd" path="res://Scripts/Player/CurrencyInventory.gd" id="15_esmjy"]
 
 [sub_resource type="Resource" id="Resource_bx6ih"]
@@ -26,13 +30,17 @@ sound_pitch = 1.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q7bwj"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_0objx"]
 atlas = ExtResource("4_wp2gx")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qqwr2"]
-atlas = ExtResource("4_wp2gx")
-region = Rect2(37, 10, 32, 12)
+[sub_resource type="CanvasTexture" id="CanvasTexture_1e6p3"]
+diffuse_texture = SubResource("AtlasTexture_0objx")
+normal_texture = ExtResource("8_w71ue")
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_yb677"]
+diffuse_texture = ExtResource("9_yb677")
+normal_texture = ExtResource("9_1e6p3")
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ipfrm"]
 cull_mode = 1
@@ -103,15 +111,6 @@ turbulence_noise_speed = Vector3(2, 2, 0)
 turbulence_noise_speed_random = 0.44
 turbulence_influence_max = 0.209
 
-[sub_resource type="Gradient" id="Gradient_1gaxp"]
-offsets = PackedFloat32Array(0, 0.6917)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bmrle"]
-gradient = SubResource("Gradient_1gaxp")
-fill = 1
-fill_from = Vector2(0.5, 0.5)
-
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_5vc63"]
 cull_mode = 1
 polygon = PackedVector2Array(-2, -15, -9, -12, -14, -6, -15, 3, -12, 9, -6, 14, 1, 15, 10, 12, 14, 7, 14, -4, 12, -9, 8, -13, 3, -15)
@@ -143,18 +142,18 @@ move_sound_effect = SubResource("Resource_bx6ih")
 shape = SubResource("CircleShape2D_1sxoh")
 
 [node name="Body" type="Sprite2D" parent="."]
-modulate = Color(0.89359, 0.59756, 1.15514e-06, 1)
+modulate = Color(1, 0.647059, 0, 1)
 light_mask = 16
-visibility_layer = 16
-texture = SubResource("AtlasTexture_q7bwj")
+visibility_layer = 17
+texture = SubResource("CanvasTexture_1e6p3")
 
 [node name="RotationContainer" type="Node2D" parent="."]
 
 [node name="WeaponSprite" type="Sprite2D" parent="RotationContainer" groups=["Player"]]
-modulate = Color(0.497441, 0.647927, 0.600023, 1)
+modulate = Color(0.752941, 0.752941, 0.752941, 1)
 light_mask = 16
-visibility_layer = 16
-texture = SubResource("AtlasTexture_qqwr2")
+visibility_layer = 17
+texture = SubResource("CanvasTexture_yb677")
 offset = Vector2(10.25, 0)
 
 [node name="BulletFirePosition" type="Marker2D" parent="RotationContainer" groups=["Player"]]
@@ -211,18 +210,18 @@ bus = &"SFX"
 light_mask = 16
 visibility_layer = 16
 energy = 1.25
-range_item_cull_mask = 178
+range_item_cull_mask = 162
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 5.0
 shadow_item_cull_mask = 162
-texture = SubResource("GradientTexture2D_bmrle")
+texture = ExtResource("15_0objx")
 texture_scale = 7.0
-height = 50.0
+height = 100.0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_5vc63")
-occluder_light_mask = 16
+occluder_light_mask = 162
 
 [node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node", "sound_player")]
 collision_layer = 128

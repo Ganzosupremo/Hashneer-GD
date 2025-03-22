@@ -71,7 +71,7 @@ func _ready() -> void:
 		unlock()
 	else:
 		lock()
-	
+	_update_node_line_points()
 	set_currency_icon(use_bitcoin)
 
 # ___________________ PUBLIC FUNCTIONS ________________________
@@ -262,7 +262,8 @@ func save_data() -> void:
 func _build_save_dictionary() -> Dictionary:
 	return {
 		"upgrade_level": skillnode_data.upgrade_level,
-		"node_state": skillnode_data.status
+		"node_state": skillnode_data.status,
+		"is_unlocked": is_unlocked
 	}
 
 func load_data() -> void:
@@ -280,4 +281,5 @@ func load_data() -> void:
 	if is_this_skill_maxed_out():
 		_on_upgrade_maxed()
 	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), enabled_label_settings, is_maxed_out)
+	_update_node_line_points()
 	

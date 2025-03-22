@@ -1,96 +1,53 @@
-[gd_scene load_steps=15 format=3 uid="uid://j8t0bm46hh8i"]
+[gd_scene load_steps=13 format=3 uid="uid://j8t0bm46hh8i"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1jdpd"]
-[ext_resource type="Script" path="res://Scripts/UI/InfoPanelInNode.gd" id="1_l5tw6"]
+[ext_resource type="Script" uid="uid://c7ropuxmhnlc" path="res://Scripts/UI/InfoPanelInNode.gd" id="1_l5tw6"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="2_8hfgg"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_amp5s"]
 [ext_resource type="PackedScene" uid="uid://cdj2nrqs4irp1" path="res://Scenes/SkillTreeSystem/FiatCurrencyAnimated.tscn" id="4_8ndmn"]
 [ext_resource type="PackedScene" uid="uid://267b2pka2dbq" path="res://Scenes/SkillTreeSystem/BTCCurrencyAnimated.tscn" id="4_lx4gd"]
-[ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="5_xcdjt"]
+[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/UIBackground.png" id="6_b053c"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bbgx6"]
-bg_color = Color(0, 1, 0, 0.3)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-corner_detail = 1
-shadow_color = Color(0.012, 0.325, 0.643, 0.2)
-shadow_size = 5
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7xk8s"]
+texture = ExtResource("6_b053c")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 14.0
+texture_margin_bottom = 31.0
+modulate_color = Color(0, 1, 0, 0.45098)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ol8qd"]
-bg_color = Color(1, 0, 0, 0.309)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-corner_detail = 1
-shadow_color = Color(1, 0, 0, 0.2)
-shadow_size = 5
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rxnmk"]
+texture = ExtResource("6_b053c")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 14.0
+texture_margin_bottom = 31.0
+modulate_color = Color(1, 0, 0, 0.45098)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x7yi7"]
-bg_color = Color(1, 0.843, 0, 0.572)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 15
-corner_radius_top_right = 15
-corner_radius_bottom_right = 15
-corner_radius_bottom_left = 15
-corner_detail = 1
-shadow_color = Color(1, 0.843, 0, 0.1)
-shadow_size = 5
-
-[sub_resource type="LabelSettings" id="LabelSettings_n8bxh"]
-font = ExtResource("2_8hfgg")
-font_size = 38
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.554)
-shadow_offset = Vector2(3, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cm8gx"]
+texture = ExtResource("6_b053c")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 14.0
+texture_margin_bottom = 31.0
+modulate_color = Color(1, 0.843137, 0, 0.45098)
 
 [sub_resource type="LabelSettings" id="LabelSettings_chi6b"]
 font = ExtResource("2_8hfgg")
-font_size = 18
+font_size = 22
 outline_size = 3
 outline_color = Color(0, 0, 0, 1)
 shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.554)
 shadow_offset = Vector2(3, 3)
 
-[sub_resource type="LabelSettings" id="LabelSettings_sv8do"]
-font = ExtResource("2_8hfgg")
-font_size = 32
-outline_size = 7
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 5
-shadow_color = Color(0, 0, 0, 0.497)
-shadow_offset = Vector2(3, 3)
-
-[sub_resource type="LabelSettings" id="LabelSettings_mpxf4"]
-font = ExtResource("2_8hfgg")
-font_size = 40
-outline_size = 3
-outline_color = Color(0, 0, 0, 1)
-shadow_size = 3
-shadow_color = Color(0, 0, 0, 0.554)
-shadow_offset = Vector2(3, 3)
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b053c"]
+texture = ExtResource("6_b053c")
+texture_margin_left = 13.0
+texture_margin_top = 13.0
+texture_margin_right = 14.0
+texture_margin_bottom = 34.0
+modulate_color = Color(0, 0.113725, 0.239216, 1)
 
 [node name="SkillInfoPanel" type="Control"]
 layout_mode = 3
@@ -103,10 +60,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_1jdpd")
 script = ExtResource("1_l5tw6")
-can_afford_upgrade_style = SubResource("StyleBoxFlat_bbgx6")
-cannot_afford_upgrade_style = SubResource("StyleBoxFlat_ol8qd")
-max_ugraded_style = SubResource("StyleBoxFlat_x7yi7")
-normal_font = SubResource("LabelSettings_n8bxh")
+can_afford_upgrade_style = SubResource("StyleBoxTexture_7xk8s")
+cannot_afford_upgrade_style = SubResource("StyleBoxTexture_rxnmk")
+max_ugraded_style = SubResource("StyleBoxTexture_cm8gx")
 maxed_out_font = SubResource("LabelSettings_chi6b")
 
 [node name="AnimationComponent" parent="." instance=ExtResource("3_amp5s")]
@@ -134,6 +90,8 @@ offset_top = -150.0
 offset_right = 150.0
 grow_horizontal = 2
 grow_vertical = 0
+theme = ExtResource("1_1jdpd")
+theme_type_variation = &"SkillNodeInfoPanelBackground"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 custom_minimum_size = Vector2(150, 100)
@@ -147,8 +105,8 @@ alignment = 1
 custom_minimum_size = Vector2(150, 25)
 layout_mode = 2
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"HeaderSmall"
 text = "Skill Title"
-label_settings = SubResource("LabelSettings_sv8do")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -158,13 +116,14 @@ uppercase = true
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"SkillNodeInfoPanelSeparator"
 
 [node name="SkillDescription" type="Label" parent="PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"NormalText"
 text = "Skill Description.."
-label_settings = ExtResource("5_xcdjt")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
@@ -172,12 +131,14 @@ autowrap_mode = 3
 [node name="HSeparator2" type="HSeparator" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"SkillNodeInfoPanelSeparator"
 
 [node name="PriceBackground" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_vertical = 6
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"SkillNodeInfoPanelBackground"
+theme_override_styles/panel = SubResource("StyleBoxTexture_b053c")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/PriceBackground"]
 layout_mode = 2
@@ -199,7 +160,7 @@ stretch_mode = 4
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 theme = ExtResource("1_1jdpd")
+theme_type_variation = &"NormalText"
 text = "5K"
-label_settings = SubResource("LabelSettings_mpxf4")
 horizontal_alignment = 1
 vertical_alignment = 1

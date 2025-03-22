@@ -72,6 +72,8 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 var destroyed: bool = false
 
 func _ready() -> void:
+	print("Normal: ", _polygon2d.texture.normal_texture)
+	print("Diffuse: ", _polygon2d.texture.diffuse_texture)
 	health.zero_health.connect(_on_zero_health)
 	
 	_rng.randomize()
@@ -118,11 +120,6 @@ func create_polygon_shape() -> PackedVector2Array:
 		_:
 			return PackedVector2Array([])
 
-## Triggers camera shake when body is hit
-## [param magnitude] The intensity of the camera shake
-func shake_camera_on_collision(magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.Small):
-	GameManager.player.get_player_camera().shake_with_preset(magnitude)
-
 func _on_zero_health() -> void:
 	await _hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
 	destroyed = true
@@ -149,15 +146,20 @@ func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_in
 ## [param initial_health] Starting health value
 ## [param texture] Texture to apply to the body
 ## [param sound_details] Sound effect details for hit reactions
-func setFractureBody(initial_health: float, texture: Texture2D, sound_details: SoundEffectDetails) -> void:
+func setFractureBody(initial_health: float, texture: Texture2D, sound_details: SoundEffectDetails, normal_texture: Texture2D = null) -> void:
 	await GameManager.get_tree().process_frame
 	
-	set_texture_with_texture(texture)
+	set_texture_with_texture(texture, normal_texture)
 	set_hit_sound_effect(sound_details)
 	set_initial_health(initial_health)
 
-func set_texture_with_texture(new_texture: Texture2D) -> void:
-	_polygon2d.texture = new_texture
+func set_texture_with_texture(new_texture: Texture2D, normal_texture: Texture2D = null) -> void:
+	if normal_texture != null:
+		_polygon2d.texture = CanvasTexture.new()
+		_polygon2d.texture.diffuse_texture = new_texture
+		_polygon2d.texture.normal_texture = normal_texture
+	else:
+		_polygon2d.texture = new_texture
 
 func set_hit_sound_effect(sound: SoundEffectDetails, save_it: bool = false) -> void:
 	if save_it:
@@ -191,7 +193,12 @@ func getPolygon() -> PackedVector2Array:
 	return _polygon2d.get_polygon()
 
 func getTextureInfo() -> Dictionary:
-	return {"texture" : _polygon2d.texture, "rot" : _polygon2d.texture_rotation, "offset" : _polygon2d.texture_offset, "scale" : _polygon2d.texture_scale}
+	var normal_texture: Texture2D
+	if _polygon2d.texture is CanvasTexture:
+		normal_texture = _polygon2d.texture.normal_texture
+	else:
+		normal_texture = null
+	return {"texture" : _polygon2d.texture, "normal_texture": normal_texture, "rot" : _polygon2d.texture_rotation, "offset" : _polygon2d.texture_offset, "scale" : _polygon2d.texture_scale}
 
 func get_texture_info() -> Dictionary:
 	return getTextureInfo()

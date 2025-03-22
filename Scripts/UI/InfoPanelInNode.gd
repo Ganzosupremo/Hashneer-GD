@@ -2,11 +2,11 @@ class_name SkillInfoPanelInNode extends Control
 
 @export_category("Price Background Styles")
 ## Used when the player can afford the upgrade.
-@export var can_afford_upgrade_style: StyleBoxFlat
+@export var can_afford_upgrade_style: StyleBoxTexture
 ## Used when the player cannot afford the upgrade.
-@export var cannot_afford_upgrade_style: StyleBoxFlat
+@export var cannot_afford_upgrade_style: StyleBoxTexture
 ## Used when the upgrade has benn maxed out.
-@export var max_ugraded_style: StyleBoxFlat
+@export var max_ugraded_style: StyleBoxTexture
 
 @export_group("Label Settings")
 @export var normal_font: LabelSettings

@@ -149,6 +149,9 @@ func _on_slow_down_timer_timeout() -> void:
 	var arr: PackedVector2Array = PackedVector2Array([])
 	setPolygon(arr)
 
+func getTextureInfo() -> Dictionary:
+	return {"texture" : _polygon2d.texture, "rot" : _polygon2d.texture_rotation, "offset" : _polygon2d.texture_offset, "scale" : _polygon2d.texture_scale}
+
 func setPolygon(poly: PackedVector2Array):
 	super.setPolygon(poly)
 	_line2d.points = poly

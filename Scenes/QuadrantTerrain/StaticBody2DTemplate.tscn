@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=24 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
@@ -7,7 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="3_yxxnb"]
 [ext_resource type="AudioStream" uid="uid://b23scsgtlm1ea" path="res://Audio/FracturableTerrain/FracturableBodyDestroyed.wav" id="4_j1b78"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_78gmd"]
+[ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="7_idcnk"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_ildng"]
+[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="8_r1qd5"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wqqyk"]
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
 [ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="10_idcnk"]
@@ -24,6 +26,10 @@ script = ExtResource("3_0mtpy")
 sound_volume = 1.0
 audio_stream = ExtResource("4_j1b78")
 sound_pitch = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_ildng"]
+diffuse_texture = ExtResource("7_idcnk")
+normal_texture = ExtResource("8_r1qd5")
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qpjim"]
 closed = false
@@ -85,6 +91,8 @@ visibility_layer = 2
 light_mask = 2
 visibility_layer = 2
 texture_repeat = 3
+texture = SubResource("CanvasTexture_ildng")
+uv = PackedVector2Array(0, 0, 0, 32, 32, 32, 32, 0)
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
 light_mask = 2

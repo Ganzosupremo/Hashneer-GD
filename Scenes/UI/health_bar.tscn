@@ -1,10 +1,10 @@
 [gd_scene load_steps=10 format=3 uid="uid://c5hp70ml1r2a4"]
 
-[ext_resource type="Script" path="res://Scripts/UI/HealthBar.gd" id="1_hkah6"]
+[ext_resource type="Script" uid="uid://bch2k7mq75e5r" path="res://Scripts/UI/HealthBar.gd" id="1_hkah6"]
 [ext_resource type="Texture2D" uid="uid://ba5kow1u7lg3n" path="res://Textures/UI/HealthBarTexture.png" id="2_bvk6a"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_byxxf"]
-[ext_resource type="Shader" path="res://Shaders/LiquidProgressBar.gdshader" id="4_1b1hd"]
-[ext_resource type="Shader" path="res://Shaders/LiquidFillSphere.gdshader" id="6_p77wj"]
+[ext_resource type="Shader" uid="uid://b2vhh7u3p18f" path="res://Shaders/LiquidProgressBar.gdshader" id="4_1b1hd"]
+[ext_resource type="Shader" uid="uid://ognqkrfycusw" path="res://Shaders/LiquidFillSphere.gdshader" id="6_p77wj"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gioec"]
 shader = ExtResource("6_p77wj")
@@ -17,8 +17,8 @@ shader_parameter/innerRingGlowColour = Color(1, 0.917647, 0, 1)
 shader_parameter/fillcolour = Color(1, 1, 1, 1)
 shader_parameter/ringWidth = 0.15
 shader_parameter/innerCircleRadiusOffset = 0.0
-shader_parameter/fill_per = 1.0
-shader_parameter/resolution = 64.0
+shader_parameter/fill_per = 0.488
+shader_parameter/resolution = 32.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o05bc"]
 shader = ExtResource("4_1b1hd")

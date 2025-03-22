@@ -40,8 +40,6 @@ signal quadrant_hitted(fiat_gained: float)
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
 @onready var map_boundaries: StaticBody2D = %MapBoundaries
-@onready var center: RigidBody2D = %Center
-
 
 var polygon_fracture: PolygonFracture
 var _fracture_disabled: bool = false
@@ -68,8 +66,8 @@ func _physics_process(delta: float) -> void:
 		player.apply_gravity(gravity_force)
 
 func _calculate_gravity_force(target_position: Vector2) -> Vector2:
-	var direction = (center.global_position - target_position).normalized()
-	var distance = target_position.distance_to(center.global_position)
+	var direction = (_grid_center - target_position).normalized()
+	var distance = target_position.distance_to(_grid_center)
 	var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
 
 	return direction * force_magnitude
@@ -127,8 +125,6 @@ func _calculate_grid_center() -> void:
 		grid_size.x * quadrant_size.x / 2.0,
 		grid_size.y * quadrant_size.y / 2.0
 	)
-	center.global_position = _grid_center
-
 
 func _create_boundary_walls() -> void:
 	# Wall thickness
@@ -254,7 +250,7 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
 			block.placed_in_level = true
 			block.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound)
+			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
 	_initialize_block_core()
 
 func _set_player_position() -> void:

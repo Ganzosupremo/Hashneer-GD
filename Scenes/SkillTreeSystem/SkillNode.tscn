@@ -1,9 +1,9 @@
-[gd_scene load_steps=16 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=15 format=3 uid="uid://dekniu7v110w4"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
-[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/Currencies/Bitcoin_logo.png" id="2_e6wyl"]
+[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="2_e6wyl"]
 [ext_resource type="Script" uid="uid://b73fftsidofgy" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
-[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/Currencies/DollarSign.png" id="5_dcm06"]
+[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_7srpc"]
 [ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/UI/MouseEntered.tres" id="6_p5k7w"]
@@ -32,19 +32,6 @@ shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.145098)
 shadow_offset = Vector2(2.5, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5ykbn"]
-bg_color = Color(0, 0.098, 0.2, 0.777)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.0728426, 0.0728427, 0.0728426, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 1
-
 [node name="SkillNode" type="Button" groups=["PersistentNodes"]]
 light_mask = 64
 visibility_layer = 64
@@ -54,17 +41,17 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -35.0
-offset_top = -35.0
-offset_right = 93.0
-offset_bottom = 93.0
+offset_left = -576.0
+offset_top = -324.0
+offset_right = -448.0
+offset_bottom = -196.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(8, 8)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_0662n")
-icon = ExtResource("2_e6wyl")
+theme_type_variation = &"SkillNode"
 autowrap_mode = 3
 icon_alignment = 1
 expand_icon = true
@@ -97,8 +84,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -19.0
-offset_bottom = 1.0
+offset_top = -32.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -110,14 +96,15 @@ theme_override_constants/margin_bottom = 3
 
 [node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 theme = ExtResource("1_0662n")
-theme_override_styles/panel = SubResource("StyleBoxFlat_5ykbn")
+theme_type_variation = &"SkillNodeLabelBackground"
 
 [node name="SkillLabel" type="Label" parent="MarginContainer/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_0662n")
-theme_type_variation = &"TooltipLabel"
+theme_type_variation = &"SkillNodeLabel"
 text = "LOCKED"
 horizontal_alignment = 1
 vertical_alignment = 1
@@ -125,10 +112,11 @@ uppercase = true
 
 [node name="SkillBranch" parent="." instance=ExtResource("5_ed0gt")]
 unique_name_in_owner = true
+show_behind_parent = true
+top_level = true
 width = 35.0
 
 [node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
-visible = false
 z_index = 2
 layout_mode = 1
 anchors_preset = 5

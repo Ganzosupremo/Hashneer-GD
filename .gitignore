@@ -4,8 +4,6 @@
 .vscode/
 export_presets.cfg
 export_presets.cfg.import
-*.gd.uid
-*gdshader.uid
 /project.godot
 project.godot.import
 MainWorldEnvironment.tres

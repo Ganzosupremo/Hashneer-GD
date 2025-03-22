@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://brtsijxypeeo5"]
+[gd_scene load_steps=11 format=3 uid="uid://brtsijxypeeo5"]
 
 [ext_resource type="Script" uid="uid://bqel0jwld7ui" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_qlfbf"]
@@ -6,10 +6,6 @@
 [ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="2_qnmrt"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_ky1qw"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
-[ext_resource type="StyleBox" uid="uid://covkr80eb2vbo" path="res://Themes/ButtonStyleNormalTransparent.tres" id="7_rneym"]
-[ext_resource type="StyleBox" uid="uid://r51i185bk2ep" path="res://Themes/ButtonStyleFocusTrasparent.tres" id="7_vamfy"]
-[ext_resource type="StyleBox" uid="uid://dafa7dfm1icn5" path="res://Themes/ButtonStyleDisabledTransparent.tres" id="8_giehr"]
-[ext_resource type="StyleBox" uid="uid://dalninsfjjge1" path="res://Themes/ButtonStyleHoverTransparent.tres" id="9_270mv"]
 [ext_resource type="StyleBox" uid="uid://5fc84nioxg3c" path="res://Themes/ButtonStylePressedTransparent.tres" id="10_v6iyg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyj3q"]
@@ -32,20 +28,6 @@ shader_parameter/spin_amount = 0.12
 shader_parameter/pixel_filter = 700.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xux2"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tm5wq"]
-bg_color = Color(0, 0.071, 0.2, 0.694)
-border_width_left = 4
-border_width_top = 4
-border_width_right = 4
-border_width_bottom = 4
-border_color = Color(0.0156863, 0.4, 0.784314, 1)
-border_blend = true
-corner_radius_top_left = 20
-corner_radius_top_right = 20
-corner_radius_bottom_right = 20
-corner_radius_bottom_left = 20
-corner_detail = 1
 
 [node name="LevelSelectorNew" type="Panel"]
 anchors_preset = 15
@@ -82,30 +64,20 @@ theme = ExtResource("1_qlfbf")
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="VBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 8
-size_flags_vertical = 3
-alignment = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_qlfbf")
 theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 200
 
-[node name="ExitButton" parent="PanelContainer/VBoxContainer/VBoxContainer/MarginContainer" instance=ExtResource("2_pyfpb")]
+[node name="ExitButton" parent="PanelContainer/VBoxContainer/MarginContainer2" instance=ExtResource("2_pyfpb")]
 custom_minimum_size = Vector2(75, 50)
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../../../LevelFeaturesContainer/NextLevelBoxContainer/NextLevelButton")
+focus_neighbor_bottom = NodePath("../../LevelFeaturesContainer/NextLevelBoxContainer/NextLevelButton")
+theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
-theme_override_styles/focus = ExtResource("7_vamfy")
-theme_override_styles/disabled = ExtResource("8_giehr")
-theme_override_styles/hover = ExtResource("9_270mv")
-theme_override_styles/pressed = ExtResource("10_v6iyg")
-theme_override_styles/normal = ExtResource("7_rneym")
 text = "X"
 autowrap_mode = 3
 
@@ -126,17 +98,14 @@ alignment = 1
 unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
-focus_neighbor_top = NodePath("../../../VBoxContainer/MarginContainer/ExitButton")
+focus_neighbor_top = NodePath("../../../MarginContainer/ExitButton")
 focus_neighbor_right = NodePath("../../NextLevelBoxContainer/NextLevelButton")
-focus_neighbor_bottom = NodePath("../../../VBoxContainer2/MarginContainer/EnterGame")
+focus_neighbor_bottom = NodePath("../../../MarginContainer/EnterGame")
 focus_next = NodePath("../../NextLevelBoxContainer/NextLevelButton")
-focus_previous = NodePath("../../../VBoxContainer/MarginContainer/ExitButton")
+focus_previous = NodePath("../../../MarginContainer/ExitButton")
+theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
-theme_override_styles/focus = ExtResource("7_vamfy")
-theme_override_styles/disabled = ExtResource("8_giehr")
-theme_override_styles/hover = ExtResource("9_270mv")
 theme_override_styles/pressed = ExtResource("10_v6iyg")
-theme_override_styles/normal = ExtResource("7_rneym")
 text = "<"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/LevelFeaturesContainer"]
@@ -151,7 +120,7 @@ theme_override_constants/margin_right = 150
 custom_minimum_size = Vector2(500, 250)
 layout_mode = 2
 theme = ExtResource("1_qlfbf")
-theme_override_styles/panel = SubResource("StyleBoxFlat_tm5wq")
+theme_type_variation = &"LevelSelectorPanel"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/VBoxContainer/LevelFeaturesContainer/MarginContainer/PanelContainer"]
 layout_mode = 2
@@ -212,44 +181,31 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 focus_neighbor_left = NodePath("../../PreviousLevelBoxContainer/PreviousLevelButton")
-focus_neighbor_top = NodePath("../../../VBoxContainer/MarginContainer/ExitButton")
-focus_neighbor_bottom = NodePath("../../../VBoxContainer2/MarginContainer/EnterGame")
-focus_next = NodePath("../../../VBoxContainer2/MarginContainer/EnterGame")
+focus_neighbor_top = NodePath("../../../MarginContainer/ExitButton")
+focus_neighbor_bottom = NodePath("../../../MarginContainer/EnterGame")
+focus_next = NodePath("../../../MarginContainer/EnterGame")
 focus_previous = NodePath("../../PreviousLevelBoxContainer/PreviousLevelButton")
+theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
-theme_override_styles/focus = ExtResource("7_vamfy")
-theme_override_styles/disabled = ExtResource("8_giehr")
-theme_override_styles/hover = ExtResource("9_270mv")
-theme_override_styles/pressed = ExtResource("10_v6iyg")
-theme_override_styles/normal = ExtResource("7_rneym")
 text = ">"
 tween_size = Vector2(0, 0)
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-alignment = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer/VBoxContainer2"]
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_qlfbf")
 theme_override_constants/margin_bottom = 20
 
-[node name="EnterGame" parent="PanelContainer/VBoxContainer/VBoxContainer2/MarginContainer" instance=ExtResource("2_pyfpb")]
+[node name="EnterGame" parent="PanelContainer/VBoxContainer/MarginContainer" instance=ExtResource("2_pyfpb")]
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
-focus_neighbor_top = NodePath("../../../LevelFeaturesContainer/NextLevelBoxContainer/NextLevelButton")
+focus_neighbor_top = NodePath("../../LevelFeaturesContainer/NextLevelBoxContainer/NextLevelButton")
+theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 40
-theme_override_styles/focus = ExtResource("7_vamfy")
-theme_override_styles/disabled = ExtResource("8_giehr")
-theme_override_styles/hover = ExtResource("9_270mv")
-theme_override_styles/pressed = ExtResource("10_v6iyg")
-theme_override_styles/normal = ExtResource("7_rneym")
 text = "Enter Game"
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/VBoxContainer/MarginContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer2/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/LevelFeaturesContainer/PreviousLevelBoxContainer/PreviousLevelButton" to="." method="_on_previous_level_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/LevelFeaturesContainer/NextLevelBoxContainer/NextLevelButton" to="." method="_on_next_level_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/VBoxContainer2/MarginContainer/EnterGame" to="." method="_on_enter_game_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/MarginContainer/EnterGame" to="." method="_on_enter_game_pressed"]

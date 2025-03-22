@@ -5,7 +5,6 @@ class_name SkillTreeManager extends Control
 @export var music_details: MusicDetails
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-@onready var LEVELS_SELECTOR: PackedScene = preload("res://Scenes/UI/LevelsSelector.tscn")
 @onready var quit_game: TweenableButton = $FrontLayer/ButtonContainer/QuitGame
 @onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
 @onready var level_selector_new: LevelSelectorMenu = $FrontLayer/LevelSelectorNew

@@ -77,6 +77,10 @@ import/blender/enabled=false
 
 PersistentNodes="To this group belongs all the nodes that will save some variable to the disk"
 
+[gui]
+
+theme/custom="uid://dylriqvd0gggf"
+
 [input]
 
 Move_left={

@@ -5,6 +5,7 @@ class_name QuadrantBuilderArgs
 @export var quadrant_size: int = 200
 @export var grid_size: Vector2 = Vector2(6, 6)
 @export var quadrant_texture: Texture2D
+@export var normal_texture: Texture2D
 @export var hit_sound: SoundEffectDetails
 
 @export var initial_health: float = 50.0

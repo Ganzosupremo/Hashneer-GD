@@ -1,13 +1,14 @@
-[gd_scene load_steps=32 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=34 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="2_ehrd3"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
-[ext_resource type="Texture2D" uid="uid://nn54q1sory33" path="res://Textures/FracturableBodies/chunck_blue.png" id="5_erve3"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="5_tatvt"]
+[ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="6_08pad"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_7drh7"]
+[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="7_j7cbf"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_pmhie"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wf5i4"]
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_wf5i4"]
@@ -15,6 +16,10 @@
 
 [sub_resource type="Resource" id="Resource_hf0pe"]
 metadata/__load_path__ = "res://Textures/Black Image.png"
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_hq16b"]
+diffuse_texture = ExtResource("6_08pad")
+normal_texture = ExtResource("7_j7cbf")
 
 [sub_resource type="Curve" id="Curve_v7xtn"]
 _data = [Vector2(0, 1), 0.0, -0.572136, 0, 1, Vector2(0.587771, 0.663715), -0.977458, -0.977458, 0, 0, Vector2(1, 0), -1.61006, 0.0, 1, 0]
@@ -173,9 +178,9 @@ bus = &"SFX"
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-modulate = Color(1, 1, 1.5, 1)
+modulate = Color(0.557321, 0.728003, 0.985251, 1)
 texture_repeat = 3
-texture = ExtResource("5_erve3")
+texture = SubResource("CanvasTexture_hq16b")
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
 
