@@ -11,7 +11,7 @@ const TOTAL_COINS: float = 2_100_000.0
 const TOTAL_BLOCKS: int = 105
 
 var bitcoins_in_circulation: float = 0.0
-var halving_interval: int = 21
+var halving_interval: int = 2
 var height: int = 0
 var current_block_subsidy: float = 0.0
 var coins_lost: float = 0.0

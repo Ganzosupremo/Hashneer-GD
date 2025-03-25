@@ -72,8 +72,6 @@ enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 var destroyed: bool = false
 
 func _ready() -> void:
-	print("Normal: ", _polygon2d.texture.normal_texture)
-	print("Diffuse: ", _polygon2d.texture.diffuse_texture)
 	health.zero_health.connect(_on_zero_health)
 	
 	_rng.randomize()

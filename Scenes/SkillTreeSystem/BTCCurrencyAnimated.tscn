@@ -92,6 +92,7 @@ offset_right = 16.0
 offset_bottom = 16.0
 grow_horizontal = 2
 grow_vertical = 2
+pivot_offset = Vector2(16, 16)
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = SubResource("AtlasTexture_ihyud")

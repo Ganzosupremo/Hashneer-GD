@@ -92,11 +92,11 @@ colors = PackedColorArray(0.044306, 0.40851, 0.366935, 1, 0.281376, 0.561392, 0.
 
 [resource]
 script = ExtResource("1_h4fyi")
-min_lifetime = 1.0
+min_lifetime = 4.0
 max_lifetime = 8.0
-bullet_damage = 100.0
+bullet_damage = 250.0
 bullet_speed = 1000.0
-size = 12
+size = 10
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.0

@@ -15,6 +15,7 @@
 script = ExtResource("3_juhrs")
 music_clip = ExtResource("2_q6ayx")
 volume_linear = 1.0
+has_playlist = false
 
 [sub_resource type="Environment" id="Environment_kv8h2"]
 background_mode = 3
@@ -231,6 +232,7 @@ metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 4
 mouse_filter = 2
 theme_override_constants/separation = 90
 alignment = 1
@@ -238,8 +240,6 @@ metadata/_edit_lock_ = true
 
 [node name="Title" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_mlo2r")]
 layout_mode = 2
-size_flags_vertical = 1
-theme = ExtResource("2_mqeuu")
 theme_type_variation = &"HeaderLarge"
 text = "HASHENEER"
 horizontal_alignment = 0
@@ -327,7 +327,6 @@ metadata/_edit_lock_ = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
-theme = ExtResource("2_mqeuu")
 theme_type_variation = &"HeaderSmall"
 text = "I Know This Main Menu Sucks, But I Tried My Best"
 horizontal_alignment = 0

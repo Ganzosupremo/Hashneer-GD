@@ -6,6 +6,7 @@ signal quadrant_hitted(fiat_gained: float)
 
 @export_category("Settings")
 @export_group("General")
+@export var music: MusicDetails
 @export var quadrants_initial_health: float 
 @export var resource_droprate_multiplier: float = 1.5
 
@@ -55,6 +56,7 @@ func _ready() -> void:
 	_calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
+	MusicManager.change_music_clip(music)
 	_init_builder()
 
 func _physics_process(delta: float) -> void:

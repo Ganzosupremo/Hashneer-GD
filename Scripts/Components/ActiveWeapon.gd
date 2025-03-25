@@ -10,7 +10,7 @@ var _weapons_list: Array = []
 
 func set_weapon(weapon: WeaponDetails) -> void:
 	_current_weapon = weapon
-	_sound_component.set_sound(_current_weapon.fire_sound)
+	_sound_component.set_sound(weapon.fire_sound)
 	add_weapon_to_list(weapon)
 	weapon_setted.emit(weapon)
 

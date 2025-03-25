@@ -1,12 +1,15 @@
-[gd_scene load_steps=75 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=79 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
 [ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="3_0xv7s"]
 [ext_resource type="PackedScene" uid="uid://brtsijxypeeo5" path="res://Scenes/UI/LevelSelectorNew.tscn" id="3_23vid"]
+[ext_resource type="AudioStream" uid="uid://dmgy8fmg28t7k" path="res://Audio/Music/Cello Suite 1 in G - Prelude.mp3" id="3_r00sj"]
+[ext_resource type="AudioStream" uid="uid://bnplrlx3ejx04" path="res://Audio/Music/Préludes, Opus 28.mp3" id="4_g7g25"]
 [ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_wkdkc"]
 [ext_resource type="Script" uid="uid://l3j7jfe1glvs" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
+[ext_resource type="AudioStream" uid="uid://bml2j0kemm8fg" path="res://Audio/Music/Egmont Overture.mp3" id="5_oc2wu"]
 [ext_resource type="Shader" uid="uid://b0ab6xn647225" path="res://Shaders/Stars.gdshader" id="6_6waxn"]
 [ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
 [ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Fiat/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
@@ -38,10 +41,19 @@
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="34_oevro"]
 [ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="35_k7n60"]
 
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
+shuffle = true
+stream_count = 4
+stream_0 = ExtResource("2_madtc")
+stream_1 = ExtResource("3_r00sj")
+stream_2 = ExtResource("4_g7g25")
+stream_3 = ExtResource("5_oc2wu")
+
 [sub_resource type="Resource" id="Resource_qu23o"]
 script = ExtResource("3_0xv7s")
-music_clip = ExtResource("2_madtc")
 volume_linear = 0.5
+has_playlist = true
+playlist = SubResource("AudioStreamPlaylist_xfqgc")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_3r1bx"]
 shader = ExtResource("6_6waxn")
@@ -135,7 +147,7 @@ stat_type = 0
 ability_data = SubResource("Resource_glihh")
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 1.0
-upgrade_cost_base = 500000.0
+upgrade_cost_base = 650000.0
 upgrade_cost_multiplier = 1.0
 upgrade_cost_base_btc = 50000.0
 upgrade_cost_multiplier_btc = 1.0
@@ -192,9 +204,9 @@ stat_type = 0
 ability_data = SubResource("Resource_pm0d4")
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 1.0
-upgrade_cost_base = 500000.0
+upgrade_cost_base = 300000.0
 upgrade_cost_multiplier = 1.0
-upgrade_cost_base_btc = 50000.0
+upgrade_cost_base_btc = 35000.0
 upgrade_cost_multiplier_btc = 1.0
 upgrade_max_level = 1
 
@@ -265,9 +277,9 @@ stat_type = 0
 weapon_data = SubResource("Resource_r00sj")
 upgrade_base_power = 0.0
 upgrade_power_multiplier = 0.0
-upgrade_cost_base = 750000.0
+upgrade_cost_base = 625000.0
 upgrade_cost_multiplier = 0.0
-upgrade_cost_base_btc = 25000.0
+upgrade_cost_base_btc = 50000.0
 upgrade_cost_multiplier_btc = 1.0
 upgrade_max_level = 1
 
@@ -325,22 +337,19 @@ anchors_preset = 0
 anchor_right = 0.0
 grow_horizontal = 1
 
-[node name="ButtonContainer" type="HFlowContainer" parent="FrontLayer"]
+[node name="ButtonContainer" type="HBoxContainer" parent="FrontLayer"]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -98.0
-offset_bottom = -10.0
+offset_top = -87.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
-size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("7_c7c56")
-theme_override_constants/h_separation = 1550
+theme_override_constants/separation = 760
 alignment = 1
-last_wrap_alignment = 2
-reverse_fill = true
 
 [node name="QuitGame" parent="FrontLayer/ButtonContainer" instance=ExtResource("21_h6krv")]
 custom_minimum_size = Vector2(140, 40)

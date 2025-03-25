@@ -12,7 +12,7 @@ min_lifetime = 2.0
 max_lifetime = 4.0
 bullet_damage = 75.0
 bullet_speed = 1000.0
-size = 5
+size = 6
 bullets_per_shoot_min = 2
 bullets_per_shoot_max = 2
 bullet_spawn_interval_min = 0.031
@@ -33,7 +33,7 @@ metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [resource]
 script = ExtResource("1_vm5p3")
-weapon_name = "Twins"
+weapon_name = "Uzi-Twins"
 weapon_texture = ExtResource("5_2begr")
 fire_sound = SubResource("Resource_7st6t")
 weapon_damage_multiplier = 1.0

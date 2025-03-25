@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://gfx6r6lnobro"]
+[gd_scene load_steps=4 format=3 uid="uid://gfx6r6lnobro"]
 
-[ext_resource type="Script" path="res://Scripts/UIComponents/AnimatedLabel.gd" id="1_f5fo1"]
+[ext_resource type="Script" uid="uid://bwldcso6bcn0s" path="res://Scripts/UIComponents/AnimatedLabel.gd" id="1_f5fo1"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_fn3qi"]
 [ext_resource type="PackedScene" uid="uid://dsvkitr76krfk" path="res://Scenes/Components/AnimateTextComponent.tscn" id="1_ve10u"]
 
 [node name="AnimatedLabel" type="Label"]
@@ -15,6 +16,7 @@ offset_right = 341.0
 offset_bottom = 140.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_fn3qi")
 text = "Animated Label"
 horizontal_alignment = 1
 vertical_alignment = 1

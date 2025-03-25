@@ -12,6 +12,7 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition
 @onready var _fire_cooldown_timer: Timer = %FireCooldownTimer
+@onready var sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 
 
 var fire_rate_cooldown_timer: float = 0.0
@@ -36,7 +37,7 @@ func on_fire_weapon(_has_fired:bool, _fired_previous_frame: bool, damage_multipl
 func weapon_fire(damage_multiplier: float) -> void:
 	if ready_to_fire():
 		current_weapon = active_weapon_component.get_current_weapon()
-		active_weapon_component.play_sound_on_fire()
+		sound_effect_component.set_sound(current_weapon.fire_sound)
 		_fire_effect_particles.global_position = shoot_effect_position.global_position
 		_fire_effect_particles.restart()
 		
@@ -63,9 +64,8 @@ func fire_ammo_async(ammo: AmmoDetails):
 	
 	if bullets_per_shoot > 1:
 		spawn_interval = randf_range(ammo.bullet_spawn_interval_min, ammo.bullet_spawn_interval_max)
-	else:
-		spawn_interval = 0.0
 	
+	sound_effect_component.play_sound()
 	while ammo_counter < bullets_per_shoot:
 		ammo_counter += 1
 		var bullet: FractureBullet = bullet_scene.instantiate()
@@ -73,7 +73,7 @@ func fire_ammo_async(ammo: AmmoDetails):
 		owner.owner.add_child(bullet)
 		if not bullet: 
 			return
-			
+		
 		var spread_angle = randf_range(-current_weapon.spread_min, current_weapon.spread_max)
 
 		var initial_vector: Vector2 = get_global_mouse_position() - bullet_spawn_position.global_position
@@ -85,6 +85,8 @@ func fire_ammo_async(ammo: AmmoDetails):
 		
 		_fire_cooldown_timer.start(spawn_interval)
 		await _fire_cooldown_timer.timeout
+
+	
 
 
 func ready_to_fire() -> bool:

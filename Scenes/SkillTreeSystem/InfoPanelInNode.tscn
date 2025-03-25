@@ -2,8 +2,8 @@
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1jdpd"]
 [ext_resource type="Script" uid="uid://c7ropuxmhnlc" path="res://Scripts/UI/InfoPanelInNode.gd" id="1_l5tw6"]
-[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="2_8hfgg"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_amp5s"]
+[ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="4_7xk8s"]
 [ext_resource type="PackedScene" uid="uid://cdj2nrqs4irp1" path="res://Scenes/SkillTreeSystem/FiatCurrencyAnimated.tscn" id="4_8ndmn"]
 [ext_resource type="PackedScene" uid="uid://267b2pka2dbq" path="res://Scenes/SkillTreeSystem/BTCCurrencyAnimated.tscn" id="4_lx4gd"]
 [ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/UIBackground.png" id="6_b053c"]
@@ -33,11 +33,11 @@ texture_margin_bottom = 31.0
 modulate_color = Color(1, 0.843137, 0, 0.45098)
 
 [sub_resource type="LabelSettings" id="LabelSettings_chi6b"]
-font = ExtResource("2_8hfgg")
-font_size = 22
-outline_size = 3
+font = ExtResource("4_7xk8s")
+font_size = 20
+outline_size = 8
 outline_color = Color(0, 0, 0, 1)
-shadow_size = 3
+shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.554)
 shadow_offset = Vector2(3, 3)
 
@@ -142,6 +142,8 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_b053c")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/PriceBackground"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 alignment = 1
 
 [node name="FiatTexture" parent="PanelContainer/VBoxContainer/PriceBackground/HBoxContainer" instance=ExtResource("4_8ndmn")]
@@ -152,7 +154,6 @@ stretch_mode = 4
 
 [node name="BTCTexture" parent="PanelContainer/VBoxContainer/PriceBackground/HBoxContainer" instance=ExtResource("4_lx4gd")]
 layout_mode = 2
-size_flags_vertical = 1
 expand_mode = 1
 stretch_mode = 4
 

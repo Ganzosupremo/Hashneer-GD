@@ -9,7 +9,7 @@
 [ext_resource type="StyleBox" uid="uid://5fc84nioxg3c" path="res://Themes/ButtonStylePressedTransparent.tres" id="10_v6iyg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hyj3q"]
-bg_color = Color(0, 0.094, 0.271, 0.345)
+bg_color = Color(0, 0.0941176, 0.270588, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xhjs5"]
 shader = ExtResource("4_l8bnr")

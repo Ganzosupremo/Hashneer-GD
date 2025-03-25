@@ -6,13 +6,17 @@ signal visibility_state_changed(visible: bool)
 @onready var vsync: CheckButton = %Vsync
 @onready var fullscreen: CheckBox = %Fullscreen
 
+@onready var master_slider: HSlider = %MasterSlider
+@onready var music_slider: HSlider = %MusicSlider
+@onready var sfx_slider: HSlider = %SFXSlider
+
 var v_mode: DisplayServer.VSyncMode = DisplayServer.VSYNC_ENABLED
 
 func _ready() -> void:
 	# Populate resolutions
 	var available_resolutions = [
-		Vector2(800, 600),
 		Vector2(1024, 768),
+		Vector2(1152, 648),
 		Vector2(1280, 720),
 		Vector2(1920, 1080),
 		Vector2(2560, 1440),
@@ -40,10 +44,14 @@ func _ready() -> void:
 	vsync.toggled.connect(_on_vsync_toggled)
 	fullscreen.toggled.connect(_on_fullscreen_toggled)
 
+	master_slider.value = MusicManager.master_volume
+	music_slider.value = MusicManager.music_volume
+	sfx_slider.value = MusicManager.sfx_volume
+
+
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		toggle_visibility()
-
 
 func toggle_visibility() -> void:
 	if visible:
@@ -76,4 +84,16 @@ func _on_fullscreen_toggled(button_pressed: bool) -> void:
 	if button_pressed:
 		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN)
 	else:
-		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
+		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_MAXIMIZED)
+
+
+func _on_sfx_slider_value_changed(value: float) -> void:
+	MusicManager.set_sfx_volume(value)
+
+
+func _on_music_slider_value_changed(value: float) -> void:
+	MusicManager.set_music_volume(value)
+
+
+func _on_master_slider_value_changed(value: float) -> void:
+	MusicManager.set_master_volume(value)

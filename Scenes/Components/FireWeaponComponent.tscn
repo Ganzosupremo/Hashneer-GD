@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c34f41tllr1ql"]
 
-[ext_resource type="Script" path="res://Scripts/Components/FireWeapon.gd" id="1_4f7da"]
+[ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="1_4f7da"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="2_7aix1"]
 
 [node name="FireWeapon" type="Node2D"]

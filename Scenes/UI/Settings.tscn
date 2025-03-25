@@ -1,27 +1,36 @@
-[gd_scene load_steps=6 format=3 uid="uid://c2hb4iulgyrsa"]
+[gd_scene load_steps=9 format=3 uid="uid://c2hb4iulgyrsa"]
 
 [ext_resource type="Script" uid="uid://bnehavawdhvp4" path="res://Scripts/UI/Settings.gd" id="1_0t1x7"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_i76vb"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="2_6s6fx"]
+[ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="3_sc1bs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvi8v"]
-bg_color = Color(0, 0, 0, 0.209)
+bg_color = Color(0, 0, 0, 0)
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ast0f"]
-bg_color = Color(0, 0.094, 0.271, 0.392)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-corner_detail = 1
-shadow_color = Color(0.016, 0.4, 0.784, 0.7)
-shadow_size = 7
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfiyb"]
+texture = ExtResource("3_sc1bs")
+texture_margin_left = 13.0
+texture_margin_top = 12.0
+texture_margin_right = 13.0
+texture_margin_bottom = 12.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+modulate_color = Color(0, 0.113725, 0.239216, 1)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sc1bs"]
+load_path = "res://.godot/imported/SkillNodeButtonTexture.png-ddb104609768de77de7b9f5786543078.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kg15k"]
+texture = SubResource("CompressedTexture2D_sc1bs")
+texture_margin_left = 13.0
+texture_margin_top = 12.0
+texture_margin_right = 13.0
+texture_margin_bottom = 12.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+modulate_color = Color(0, 0.113725, 0.239216, 1)
 
 [node name="Settings" type="Control"]
 layout_mode = 3
@@ -43,22 +52,32 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_i76vb")
 theme_override_styles/panel = SubResource("StyleBoxFlat_pvi8v")
+metadata/_edit_lock_ = true
 
-[node name="Panel" type="PanelContainer" parent="."]
+[node name="TabContainer" type="TabContainer" parent="."]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 407.0
-offset_top = 142.0
-offset_right = -309.0
-offset_bottom = -160.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -225.0
+offset_right = 400.0
+offset_bottom = 225.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_i76vb")
-theme_override_styles/panel = SubResource("StyleBoxFlat_ast0f")
+tab_alignment = 1
+current_tab = 0
+drag_to_rearrange_enabled = true
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+[node name="Video" type="PanelContainer" parent="TabContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Video"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
 theme_override_constants/margin_left = 20
@@ -66,44 +85,41 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Video/MarginContainer"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
 theme_override_constants/separation = 15
 
-[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_override_font_sizes/font_size = 156
-text = "Settings"
-
-[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
 
-[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme = ExtResource("1_i76vb")
+theme_override_styles/panel = SubResource("StyleBoxTexture_hfiyb")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
+theme_override_constants/separation = 30
 alignment = 1
 
-[node name="ResolutionCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="ResolutionCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_i76vb")
 alignment = 1
 
-[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont" instance=ExtResource("2_6s6fx")]
+[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont" instance=ExtResource("2_6s6fx")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 100
+theme_type_variation = &"HeaderSmall"
 text = "Resolution"
 
-[node name="Resolutions" type="OptionButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont"]
+[node name="Resolutions" type="OptionButton" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 70)
+custom_minimum_size = Vector2(200, 25)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -111,50 +127,146 @@ theme = ExtResource("1_i76vb")
 theme_override_font_sizes/font_size = 45
 alignment = 1
 
-[node name="VSyncCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="VSyncCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_i76vb")
 alignment = 1
 
-[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont" instance=ExtResource("2_6s6fx")]
+[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont" instance=ExtResource("2_6s6fx")]
 layout_mode = 2
-theme_override_font_sizes/font_size = 100
+theme_type_variation = &"HeaderSmall"
 text = "V-Sync"
 
-[node name="Vsync" type="CheckButton" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont"]
+[node name="Vsync" type="CheckButton" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 50)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-theme_override_font_sizes/font_size = 45
-text = "Enabled"
-alignment = 1
-
-[node name="FullscreenCont" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_i76vb")
 alignment = 1
 
-[node name="AnimatedLabel" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont" instance=ExtResource("2_6s6fx")]
+[node name="FullscreenCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 100
+size_flags_vertical = 4
+theme = ExtResource("1_i76vb")
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
 text = "Fullscreen"
 
-[node name="Fullscreen" type="CheckBox" parent="Panel/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont"]
+[node name="Fullscreen" type="CheckBox" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_i76vb")
-theme_override_font_sizes/font_size = 45
 button_pressed = true
 alignment = 1
 icon_alignment = 1
 expand_icon = true
+
+[node name="HSeparator2" type="HSeparator" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+
+[node name="Audio" type="PanelContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+metadata/_tab_index = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Audio"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Audio/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_override_constants/separation = 15
+
+[node name="HSeparator" type="HSeparator" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+
+[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_i76vb")
+theme_override_styles/panel = SubResource("StyleBoxTexture_kg15k")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="MasterAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Master Volume"
+
+[node name="MasterSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="MusicAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Music Volume"
+
+[node name="MusicSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="SfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 75
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "SFX Volume"
+
+[node name="SFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="HSeparator2" type="HSeparator" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+
+[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio/SFXSlider" to="." method="_on_sfx_slider_value_changed"]

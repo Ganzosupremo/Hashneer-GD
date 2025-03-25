@@ -57,7 +57,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_vnajj")
 theme_type_variation = &"NormalText"
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
 text = "50K"
 vertical_alignment = 1
 
@@ -85,6 +85,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("2_vnajj")
 theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 25
 text = "150K"
 vertical_alignment = 1
 
@@ -96,24 +97,35 @@ size_flags_vertical = 4
 theme = ExtResource("2_vnajj")
 theme_type_variation = &"CurrencyUIBackground"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer/ChangeCurrency"]
+[node name="MarginContainer" type="HBoxContainer" parent="PanelContainer/HBoxContainer/ChangeCurrency"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
 theme = ExtResource("2_vnajj")
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+
+[node name="Fiat" type="TextureRect" parent="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+texture = ExtResource("4_v63w0")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="UseBTCButton" type="CheckButton" parent="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 0
+size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("2_vnajj")
 theme_override_font_sizes/font_size = 30
-text = "Use BTC?"
 flat = true
+
+[node name="BTC" type="TextureRect" parent="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer"]
+custom_minimum_size = Vector2(28, 28)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("3_xvf2x")
+expand_mode = 1
+stretch_mode = 5
 
 [connection signal="toggled" from="PanelContainer/HBoxContainer/ChangeCurrency/MarginContainer/UseBTCButton" to="." method="_on_use_btc_button_toggled"]

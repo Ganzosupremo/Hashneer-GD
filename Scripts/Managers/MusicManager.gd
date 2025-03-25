@@ -1,6 +1,5 @@
 extends Node2D
 
-signal music_volume_changed(volume_db: float)
 signal music_clip_changed(music: MusicDetails, time_to_fade: float)
 
 @onready var first_audio_stream: AudioStreamPlayer = $FirstAudioStream
@@ -16,9 +15,20 @@ var delta_time: float = 0.0
 		return _music_volume
 	set(value):
 		_music_volume = value
-		set_music_volume(value)
-	
+@export_range(0.0, 1.0, 0.05) var master_volume: float = .5:
+	get:
+		return _master_volume
+	set(value):
+		_master_volume = value
+@export_range(0.0, 1.0, 0.05) var sfx_volume: float = .5:
+	get:
+		return _sfx_volume
+	set(value):
+		_sfx_volume = value
+
 var _music_volume: float = 0.5
+var _sfx_volume: float = 0.5
+var _master_volume: float = 0.5
 
 func _ready() -> void:
 	music_clip_changed.connect(_on_music_clip_changed)
@@ -33,7 +43,9 @@ func _on_music_clip_changed(clip: MusicDetails, time_to_fade: float) -> void:
 	
 	current_music_clip = clip.music_clip
 	is_music_clip1_playing = !is_music_clip1_playing
-	await fade_music(clip.music_clip, clip.volume_linear, time_to_fade)
+	
+	var to_play: AudioStream = clip.music_clip if !clip.has_playlist else clip.playlist
+	await fade_music(to_play, clip.volume_linear, time_to_fade)
 
 func fade_music(music_clip: AudioStream, volume_clip_linear: float,time_to_fade: float) -> void:
 	var time_elapsed: float = 0.0
@@ -60,17 +72,23 @@ func fade_music(music_clip: AudioStream, volume_clip_linear: float,time_to_fade:
 			await get_tree().process_frame
 		first_audio_stream.stop()
 
+func set_master_volume(volume_linear: float) -> void:
+	_master_volume = volume_linear
+	if volume_linear == 0.0:
+		AudioServer.set_bus_volume_db(0, -80.0)
+	else:
+		AudioServer.set_bus_volume_db(0, mlinear_to_db(volume_linear))
+
 func set_music_volume(volume_linear: float) -> void:
 	_music_volume = volume_linear
 	if _music_volume == 0.0:
 		AudioServer.set_bus_volume_db(1, -80)
 	else:
 		AudioServer.set_bus_volume_db(1, mlinear_to_db(_music_volume))
-	
-	music_volume_changed.emit(mlinear_to_db(_music_volume))
 
 func set_sfx_volume(volume_linear: float) -> void:
-	if volume_linear == 0:
+	_sfx_volume = volume_linear
+	if volume_linear == 0.0:
 		AudioServer.set_bus_volume_db(2, -80)
 	else:
 		AudioServer.set_bus_volume_db(2, mlinear_to_db(volume_linear))
@@ -79,10 +97,4 @@ func change_music_clip(music: MusicDetails, time_to_fade: float = 2.2) -> void:
 	music_clip_changed.emit(music, time_to_fade)
 
 func mlinear_to_db(value: float) -> float:
-	var linear_scale_range: float = 20.0
-	var v: float = 20.0 * log(value) / log(10)
-	var uv: float = linear_to_db(value)
-	print("volume with Godot function ", uv)
-	print("volume with own function", v)
-	
-	return v
+	return linear_to_db(value)

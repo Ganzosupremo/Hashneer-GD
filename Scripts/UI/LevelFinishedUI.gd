@@ -16,7 +16,6 @@ func _ready() -> void:
 	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
 	GameManager.level_completed.connect(_on_level_completed)
 	event_bus.item_picked.connect(_on_item_picked)
-	# BitcoinNetwork.coin_subsidy_issued.connect(_on_subsidy_issued)
 	hide()
 
 func _on_zero_health() -> void:
@@ -38,7 +37,12 @@ func open_ui(title: String) -> void:
 	title_label.text = title
 	
 	btc_gained_label.text = Utils.format_currency(btc_gained_this_time, true)
-	fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far, true)
+
+
+	if FED.authorize_transaction(fiat_gained_so_far):
+		fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far, true)
+	else:
+		fiat_gained_label.text = "Transaction Denied"
 	_open()
 	save()
 

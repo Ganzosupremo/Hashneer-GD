@@ -92,9 +92,9 @@ colors = PackedColorArray(0.991592, 0.615962, 0.524339, 1, 0.897717, 0.560379, 0
 
 [resource]
 script = ExtResource("1_n11uh")
-min_lifetime = 1.0
-max_lifetime = 3.0
-bullet_damage = 50.0
+min_lifetime = 3.0
+max_lifetime = 6.0
+bullet_damage = 100.0
 bullet_speed = 1000.0
 size = 8
 bullets_per_shoot_min = 1
@@ -104,7 +104,7 @@ bullet_spawn_interval_max = 0.0
 trail_gradient = SubResource("Gradient_jbavf")
 trail_length = 11
 trail_width = 12.0
-emits_trail_particles = true
+emits_trail_particles = false
 particle_trail_details = SubResource("Resource_6ng1l")
 randomness = 0.5
 lifetime_randomness = 0.25

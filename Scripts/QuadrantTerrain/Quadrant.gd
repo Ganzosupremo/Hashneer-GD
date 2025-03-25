@@ -64,10 +64,3 @@ func take_damage(damage_taken: float, instakill: bool = false) -> bool:
 	can_carve = false
 	is_carved = false
 	return false
-
-func issue_fiat_money() -> void:
-	BitcoinWallet.add_fiat(get_fiat_subsidy())
-
-func get_fiat_subsidy() -> float:
-	var rand = randf_range(1000.0, 5000.0)
-	return rand * pow(10, builder_args.fiat_drop_rate_factor)
