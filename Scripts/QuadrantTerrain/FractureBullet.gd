@@ -34,6 +34,10 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	elif body is BlockCore and q_b:
 		q_b.fracture_block_core(damage_to_deal, "Player")
 		call_deferred("destroy")
+	elif body is BaseEnemy:
+		var force: Vector2 = (body.global_position - global_position).normalized() * 25000
+		body.call_deferred("damage", Vector2(damage_to_deal * 1.1, damage_to_deal), global_position, force, 0.2, self, modulate)
+		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
 	launch_velocity = vel.length()
@@ -42,7 +46,7 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	self.ammo_details = ammo_data
 	self.q_b = quadrant_builder
 	
-	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 2))
+	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)
 	global_position = pos
 	_timer.start(lifetime)

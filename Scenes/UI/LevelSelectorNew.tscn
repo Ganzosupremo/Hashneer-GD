@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bqel0jwld7ui" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_qlfbf"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="2_pyfpb"]
-[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="2_qnmrt"]
+[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/GameModes/MiningGameMode.tscn" id="2_qnmrt"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_ky1qw"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
 [ext_resource type="StyleBox" uid="uid://5fc84nioxg3c" path="res://Themes/ButtonStylePressedTransparent.tres" id="10_v6iyg"]

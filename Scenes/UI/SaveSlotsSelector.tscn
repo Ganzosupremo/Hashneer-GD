@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_vdhhf"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_vgxsx"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="7_owchr"]
-[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="8_wwymj"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/UIComponents/RippleComponentUI.tscn" id="8_wwymj"]
 [ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="9_3vs7s"]
 
 [sub_resource type="Environment" id="Environment_4lj34"]

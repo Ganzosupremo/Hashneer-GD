@@ -10,8 +10,7 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="Curve" id="Curve_hicef"]
-min_value = -360.0
-max_value = 360.0
+_limits = [-360.0, 360.0, 0.0, 1.0]
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
 point_count = 2
 
@@ -28,7 +27,7 @@ width = 100
 use_hdr = true
 
 [sub_resource type="Curve" id="Curve_pv24v"]
-max_value = 100.0
+_limits = [0.0, 100.0, 0.0, 1.0]
 _data = [Vector2(0, 0), 0.0, 140.0, 0, 0, Vector2(0.70202, 61.0526), 0.0, 0.0, 0, 0, Vector2(0.989899, 100), 0.0, 0.0, 0, 0]
 point_count = 3
 
@@ -44,28 +43,28 @@ curve = SubResource("Curve_spt06")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rftkk"]
 lifetime_randomness = 0.5
+particle_flag_disable_z = true
 emission_shape = 1
 emission_sphere_radius = 25.0
-particle_flag_disable_z = true
+angle_min = 100.0
+angle_max = 720.0
 direction = Vector3(1, 1, 0)
 spread = 180.0
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = 400.0
 initial_velocity_max = 1000.0
 angular_velocity_min = 50.0
 angular_velocity_max = 720.0
 angular_velocity_curve = SubResource("CurveTexture_0xtcu")
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 0, 0)
 damping_min = 100.0
 damping_max = 300.0
 damping_curve = SubResource("CurveTexture_h4b55")
-angle_min = 100.0
-angle_max = 720.0
 scale_min = 0.15
 scale_max = 0.6
 scale_curve = SubResource("CurveTexture_kjbes")
 color_ramp = SubResource("GradientTexture1D_y234r")
+anim_speed_min = 1.0
+anim_speed_max = 2.0
 turbulence_enabled = true
 turbulence_noise_strength = 3.34
 turbulence_noise_scale = 10.0
@@ -74,8 +73,6 @@ turbulence_noise_speed_random = 1.0
 turbulence_influence_max = 0.31
 turbulence_initial_displacement_min = 1.0
 turbulence_initial_displacement_max = 5.0
-anim_speed_min = 1.0
-anim_speed_max = 2.0
 
 [sub_resource type="Animation" id="Animation_gjgap"]
 length = 0.001
@@ -124,24 +121,24 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ifsb4"]
 _data = {
-"RESET": SubResource("Animation_gjgap"),
-"default": SubResource("Animation_83wg1")
+&"RESET": SubResource("Animation_gjgap"),
+&"default": SubResource("Animation_83wg1")
 }
 
 [node name="ExplosionHitEffect" type="GPUParticles2D"]
 material = SubResource("CanvasItemMaterial_pvwpc")
 emitting = false
 amount = 32
-process_material = SubResource("ParticleProcessMaterial_rftkk")
 texture = ExtResource("1_8o1vk")
 lifetime = 0.3
 one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 visibility_rect = Rect2(-1504.24, -1393.17, 2986.19, 3038.75)
+process_material = SubResource("ParticleProcessMaterial_rftkk")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "default"
 libraries = {
-"": SubResource("AnimationLibrary_ifsb4")
+&"": SubResource("AnimationLibrary_ifsb4")
 }
+autoplay = "default"

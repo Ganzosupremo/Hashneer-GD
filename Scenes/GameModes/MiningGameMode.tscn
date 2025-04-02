@@ -1,0 +1,477 @@
+[gd_scene load_steps=49 format=3 uid="uid://bocdjbhql8qcn"]
+
+[ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="1_eny06"]
+[ext_resource type="Texture2D" uid="uid://dnkikaarda1ys" path="res://Textures/BG/59.png" id="2_uw255"]
+[ext_resource type="Texture2D" uid="uid://dsrmf30uwh3yi" path="res://Textures/BG/61.png" id="3_ln1n0"]
+[ext_resource type="Texture2D" uid="uid://efitljxqurtq" path="res://Textures/BG/63.png" id="4_bruy0"]
+[ext_resource type="Texture2D" uid="uid://br1idrhv3c18d" path="res://Textures/BG/62.png" id="5_loxqr"]
+[ext_resource type="Texture2D" uid="uid://dn3m5f146y7oh" path="res://Textures/BG/65.png" id="6_b2lec"]
+[ext_resource type="Texture2D" uid="uid://bml2cuy7wveqm" path="res://Textures/BG/64.png" id="7_8wdnv"]
+[ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="8_f83gl"]
+[ext_resource type="Texture2D" uid="uid://cj3404vefme5r" path="res://Textures/Misc/Rombo.png" id="9_yuwqb"]
+[ext_resource type="Script" uid="uid://c7wtbkd6e6xjc" path="res://Scripts/Components/SpriteRotatorComponent.gd" id="10_ud3x8"]
+[ext_resource type="Script" uid="uid://d2veqt7wkxl4y" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="11_lf7vs"]
+[ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="12_cvs73"]
+[ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="13_wefku"]
+[ext_resource type="AudioStream" uid="uid://k8fk8ts4qpd4" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="14_pf3dr"]
+[ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="15_1cro5"]
+[ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="16_86g1h"]
+[ext_resource type="AudioStream" uid="uid://c4yunj0mkgsxx" path="res://Audio/FracturableTerrain/BlockCoreDestroyed.wav" id="17_1gtfo"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="18_hf832"]
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="19_i1wc4"]
+[ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="20_2lbus"]
+[ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="21_4y4n7"]
+[ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="22_8xmqo"]
+[ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="23_44xgw"]
+[ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="24_thavx"]
+[ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="25_0mtbo"]
+[ext_resource type="Shader" uid="uid://br8d0l18imino" path="res://Shaders/MainGameBG.gdshader" id="26_2lin2"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="27_kmimo"]
+[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="28_d88vn"]
+[ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="29_gc5eq"]
+[ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="30_ixfvk"]
+[ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="31_5ogkh"]
+[ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="32_uj0eh"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_p55td"]
+radius = 1500.0
+
+[sub_resource type="Curve" id="Curve_v8agn"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ao83a"]
+curve = SubResource("Curve_v8agn")
+
+[sub_resource type="Curve" id="Curve_ao83a"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_fcpu0"]
+curve = SubResource("Curve_ao83a")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_se4h2"]
+lifetime_randomness = 0.3
+particle_flag_rotate_y = true
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 900.0
+emission_ring_inner_radius = 500.0
+emission_ring_cone_angle = 90.0
+angle_min = 1.07288e-05
+angle_max = 360.0
+direction = Vector3(0, 0, 0)
+initial_velocity_max = 100.0
+angular_velocity_min = -200.0
+angular_velocity_max = -50.0
+orbit_velocity_min = -0.00999991
+orbit_velocity_max = 9.49949e-08
+radial_velocity_min = -650.0
+radial_velocity_max = -250.0
+radial_velocity_curve = SubResource("CurveTexture_ao83a")
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 8.67
+linear_accel_max = 30.67
+damping_min = 2.0
+damping_max = 10.0
+scale_min = 0.2
+scale_max = 3.0
+scale_curve = SubResource("CurveTexture_fcpu0")
+hue_variation_min = -0.1
+hue_variation_max = 0.15
+turbulence_enabled = true
+turbulence_noise_strength = 3.0
+turbulence_influence_max = 0.25
+turbulence_initial_displacement_min = 1.49012e-06
+turbulence_initial_displacement_max = 7.5
+sub_emitter_mode = 2
+sub_emitter_amount_at_end = 4
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_v8agn"]
+shuffle = true
+stream_count = 3
+stream_0 = ExtResource("12_cvs73")
+stream_1 = ExtResource("13_wefku")
+stream_2 = ExtResource("14_pf3dr")
+
+[sub_resource type="Resource" id="Resource_ao83a"]
+script = ExtResource("15_1cro5")
+volume_linear = 0.5
+has_playlist = true
+playlist = SubResource("AudioStreamPlaylist_v8agn")
+metadata/_custom_type_script = "uid://so4m0io4gjtt"
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ln2a1"]
+
+[sub_resource type="Resource" id="Resource_ynhtl"]
+script = ExtResource("18_hf832")
+sound_volume = 1.0
+audio_stream = ExtResource("17_1gtfo")
+sound_pitch = 1.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7rsq"]
+size = Vector2(20279, 350)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p55td"]
+size = Vector2(20285, 350)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbyyp"]
+size = Vector2(350, 20340)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6x43y"]
+size = Vector2(294, 20341)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
+shader = ExtResource("26_2lin2")
+shader_parameter/iResolution = Vector2(1920, 1080)
+shader_parameter/Scroll = -0.013
+shader_parameter/Depth = 0.25
+shader_parameter/Rotation = -0.7854
+shader_parameter/Contrast = 0.295
+shader_parameter/NoiseSpeed = 0.08
+shader_parameter/PatternScale = 12.595
+shader_parameter/BackgroundColor = Color(0.25866, 0.298355, 0.653644, 1)
+shader_parameter/ForegroundColor = Color(0.105073, 1.92523e-07, 0.600586, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
+bg_color = Color(0.35706, 0.702053, 0.999999, 1)
+
+[node name="MiningGameMode" type="Node2D"]
+
+[node name="BGParallax" type="Node2D" parent="."]
+
+[node name="Parallax2D2" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(100, 0)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(1, 0.38, 0.92, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1559, 235)
+scale = Vector2(0.461111, 0.242593)
+texture = ExtResource("1_eny06")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(0.39, 0.098, 0.91, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(785.55, 749.45)
+scale = Vector2(0.734167, 0.654537)
+texture = ExtResource("2_uw255")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(0, 0.172549, 0.360784, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1664, 808)
+scale = Vector2(0.337801, 0.202616)
+texture = ExtResource("3_ln1n0")
+
+[node name="Sprite2D4" type="Sprite2D" parent="BGParallax/Parallax2D2"]
+modulate = Color(1.05888e-06, 0.298219, 0.590412, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1134, 280)
+scale = Vector2(0.1689, 0.147222)
+texture = ExtResource("4_bruy0")
+
+[node name="Parallax2D3" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(200, -50)
+repeat_times = 5
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.207843, 0, 0.364706, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(414, 451)
+scale = Vector2(0.62963, 0.607407)
+texture = ExtResource("5_loxqr")
+
+[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.121569, 0, 0.215686, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1104, 107)
+scale = Vector2(0.424074, 0.4)
+texture = ExtResource("2_uw255")
+
+[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D3"]
+modulate = Color(0.0937322, 0.429325, 1, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1357, 984.5)
+scale = Vector2(0.185185, 0.176852)
+texture = ExtResource("6_b2lec")
+
+[node name="Parallax2D4" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(1920, 1080)
+autoscroll = Vector2(250, 100)
+repeat_times = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D4"]
+modulate = Color(0.125069, 0.47534, 0.644048, 1)
+light_mask = 2
+visibility_layer = 2
+position = Vector2(1591, 579)
+scale = Vector2(0.107407, 0.0944444)
+texture = ExtResource("7_8wdnv")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("8_f83gl")
+
+[node name="Center" type="Area2D" parent="." groups=["GravitySource"]]
+unique_name_in_owner = true
+position = Vector2(626, 280)
+collision_layer = 16
+collision_mask = 241
+gravity_space_override = 3
+gravity_point = true
+gravity_point_unit_distance = 1024.0
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+
+[node name="Rombo" type="Sprite2D" parent="Center"]
+self_modulate = Color(1, 1, 2.5, 1)
+scale = Vector2(7, 7)
+texture = ExtResource("9_yuwqb")
+script = ExtResource("10_ud3x8")
+rotation_speed = 0.5
+rotation_direction = -1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Center"]
+shape = SubResource("CircleShape2D_p55td")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Center"]
+self_modulate = Color(1, 1, 2.5, 1)
+amount = 200
+texture = ExtResource("9_yuwqb")
+lifetime = 5.0
+visibility_rect = Rect2(-400, -400, 800, 800)
+process_material = SubResource("ParticleProcessMaterial_se4h2")
+
+[node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
+script = ExtResource("11_lf7vs")
+music = SubResource("Resource_ao83a")
+grid_size = Vector2i(8, 8)
+fracture_body_color = Color(0.814176, 0.400977, 0.315342, 1)
+
+[node name="BlockCore" parent="QuadrantBuilder" instance=ExtResource("16_86g1h")]
+unique_name_in_owner = true
+show_behind_parent = false
+top_level = true
+position = Vector2(624, 394)
+poly_texture = SubResource("CompressedTexture2D_ln2a1")
+sound_effect_on_destroy = SubResource("Resource_ynhtl")
+s_p_number = 30
+s_a = 400.0
+s_b = 400.0
+s_start_angle_deg = 0.0
+min_m = 20.0
+m = 30.0
+min_n1 = 0.4
+min_n2 = 0.4
+n2 = 0.45
+min_n3 = 0.4
+n3 = 0.45
+
+[node name="MapBoundaries" type="StaticBody2D" parent="QuadrantBuilder"]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 497
+
+[node name="Bottom" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
+position = Vector2(31.5, 10000)
+shape = SubResource("RectangleShape2D_u7rsq")
+
+[node name="Up" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
+position = Vector2(27.5, -10000)
+shape = SubResource("RectangleShape2D_p55td")
+
+[node name="Right" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
+position = Vector2(10003, 4)
+shape = SubResource("RectangleShape2D_qbyyp")
+
+[node name="Left" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
+position = Vector2(-9972, -0.5)
+shape = SubResource("RectangleShape2D_6x43y")
+
+[node name="Player" parent="." instance=ExtResource("19_i1wc4")]
+unique_name_in_owner = true
+
+[node name="RigidBodiesParent" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Pool_FractureBullets" parent="." instance=ExtResource("20_2lbus")]
+max_amount = 10
+instantiate_new_on_empty = true
+
+[node name="PoolFractureCutVisualizer" parent="." instance=ExtResource("20_2lbus")]
+instance_template = ExtResource("21_4y4n7")
+instantiate_new_on_empty = true
+keep_instances_in_tree = true
+
+[node name="PoolFractureShards" parent="." instance=ExtResource("20_2lbus")]
+instance_template = ExtResource("22_8xmqo")
+instantiate_new_on_empty = true
+keep_instances_in_tree = true
+
+[node name="Pool_FractureBodies" parent="." instance=ExtResource("20_2lbus")]
+instance_template = ExtResource("23_44xgw")
+max_amount = 200
+instantiate_new_on_empty = true
+
+[node name="Quadrants" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(425, 0)
+
+[node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("24_thavx")]
+zoom = Vector2(1.75, 1.75)
+limit_left = -10000
+limit_top = -10000
+limit_right = 10000
+limit_bottom = 10000
+limit_smoothed = true
+position_smoothing_speed = 15.0
+rotation_smoothing_speed = 4.0
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+target = NodePath("../Player")
+smooth_speed = 5.0
+
+[node name="MinerAI" type="Node2D" parent="."]
+unique_name_in_owner = true
+script = ExtResource("25_0mtbo")
+time = 120.0
+
+[node name="AITimer" type="Timer" parent="MinerAI"]
+unique_name_in_owner = true
+wait_time = 20.0
+one_shot = true
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+position = Vector2(-275, -248)
+energy = 0.69
+blend_mode = 1
+range_item_cull_mask = 191
+shadow_item_cull_mask = 190
+height = 0.5
+
+[node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="Panel" type="Panel" parent="BGLayer"]
+material = SubResource("ShaderMaterial_7kvq1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_i7u0u")
+
+[node name="GameUI" type="CanvasLayer" parent="."]
+
+[node name="TerminateButtonContainer" type="Control" parent="GameUI"]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/TerminateButtonContainer"]
+custom_minimum_size = Vector2(200, 100)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -200.0
+offset_top = -153.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = ExtResource("27_kmimo")
+
+[node name="TerminateButton" parent="GameUI/TerminateButtonContainer/MarginContainer" instance=ExtResource("28_d88vn")]
+custom_minimum_size = Vector2(175, 70)
+layout_mode = 2
+theme_type_variation = &"ThirtiaryButton"
+text = "Terminate Session"
+autowrap_mode = 3
+tween_time = 0.5
+tween_transition = 3
+tween_position = Vector2(-20, 0)
+enter_time = 0.6
+enter_transition = 10
+
+[node name="HealthUI" type="Control" parent="GameUI"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/HealthUI"]
+custom_minimum_size = Vector2(160, 210)
+layout_mode = 1
+offset_right = 165.0
+offset_bottom = 215.0
+theme = ExtResource("27_kmimo")
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="HealthBar" parent="GameUI/HealthUI/MarginContainer" instance=ExtResource("29_gc5eq")]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="WeaponUI" type="Control" parent="GameUI"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="GameUI/WeaponUI"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_vertical = 0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+theme = ExtResource("27_kmimo")
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_bottom = 15
+
+[node name="WeaponUI" parent="GameUI/WeaponUI/Margin" instance=ExtResource("30_ixfvk")]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="TimeLeftUI" parent="GameUI" instance=ExtResource("31_5ogkh")]
+unique_name_in_owner = true
+offset_top = 8.0
+offset_bottom = 8.0
+
+[node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("32_uj0eh")]
+visible = false
+size_flags_horizontal = 6
+size_flags_vertical = 6
+
+[connection signal="body_entered" from="Center" to="Player" method="_on_center_body_entered"]
+[connection signal="pressed" from="GameUI/TerminateButtonContainer/MarginContainer/TerminateButton" to="GameUI/LevelFinisedUI" method="_on_terminate_button_pressed"]

@@ -26,15 +26,30 @@ func heal(amount_to_heal: float) -> void:
 func take_damage(damage: float) -> void:
 	current_health -= damage
 	_update_health()
-	
+	print_debug("Current Health: ", current_health)
 	if current_health <= 0.0:
-		emit_signal("zero_health")
+		zero_health.emit()
+
+func set_current_health(_health: float) -> void:
+	current_health = _health
+	_update_health()
+	print_debug("Current Health: ", current_health)
+	if current_health <= 0.0:
+		zero_health.emit()
 
 func get_current_health() -> float:
 	return current_health
 
 func get_max_health() -> float:
 	return max_health
+
+func get_health_percentage() -> float:
+	if current_health == 0.0:
+		return 0.0
+	return current_health / max_health
+
+func is_dead() -> bool:
+	return current_health <= 0.0
 
 func _update_health() -> void:
 	emit_signal("update_health", current_health, max_health)

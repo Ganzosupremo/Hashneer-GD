@@ -19,6 +19,7 @@ var player: PlayerController = null
 var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
+var player_camera: AdvanceCamera
 
 var loaded: bool = false
 
@@ -50,6 +51,9 @@ func init_tween() -> Tween:
 
 func init_timer(delay: float) -> SceneTreeTimer:
 	return get_tree().create_timer(delay)
+
+func shake_camera(amplitude: float, frequency: float, duration: float, axis_ratio: float, armonic_ratio: Array[int], phase_offset_degrees: int, samples: int, tween_trans: Tween.TransitionType) -> void:
+	player_camera.shake(amplitude, frequency, duration, axis_ratio, armonic_ratio, phase_offset_degrees, samples, tween_trans)
 
 #endregion
 

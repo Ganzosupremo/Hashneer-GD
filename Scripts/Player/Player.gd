@@ -31,10 +31,13 @@ var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
+var gravity_sources: Array = []
+
 # var _loaded_abilities: Dictionary = {}
 
 
 func _ready() -> void:
+	gravity_sources.clear()
 	GameManager.player = self
 	_health.zero_health.connect(on_zero_power)
 	BitcoinNetwork.block_found.connect(_on_block_found)
@@ -52,13 +55,10 @@ func _process(_delta: float) -> void:
 
 func _physics_process(delta) -> void:
 	if !can_move: return
-	
-	# Apply gravity force
+
 	velocity += gravity_force * delta
-
 	move(delta)
-
-	# Reset gravity force after applying it
+	
 	gravity_force = Vector2.ZERO
 
 #region Public Functions
@@ -83,46 +83,17 @@ func set_weapon() -> void:
 func deactivate_player() -> void:
 	can_move = false
 
-# func unlock_ability(ability_id: String) -> void:
-# 	if !_loaded_abilities.has(ability_id):
-# 		# print_debug("Ability with ID %s not found in player." % ability_id)		
-# 		return
-	
-# 	_loaded_abilities[ability_id].enable()
-# 	# print_debug("Unlocked ability: %s" % ability_id)
-
-
-func apply_central_force(force: Vector2) -> void:
-	# Scale the force for better handling
-	# var adjusted_force = force * 0.1  # Scale down to avoid extreme acceleration
-	# print("Applying force: ", force)
-	velocity += force
-	move_and_slide()
-
 func apply_gravity(force: Vector2) -> void:
 	# print("Applying gravity: ", force)
 	gravity_force = force
 
 #endregion
 
-## ___________________PRIVATE FUNCTIONS__________________________
-
-# func _instantiate_abilities():
-# 	for ability in abilities:
-# 		var ability_instance: BaseAbility = abilities[ability].instantiate()
-# 		if ability_instance is not BaseAbility: return
-
-# 		ability_instance.disable()
-
-# 		_loaded_abilities[ability] = ability_instance
-# 		add_child(ability_instance)
-
 func _unlock_saved_abilities() -> void:
 	for ability_id in PlayerStatsManager.get_unlocked_abilities().keys():
 		var ability: BaseAbility = PlayerStatsManager.get_unlocked_ability(ability_id).instantiate()
 		add_child(ability)
 		ability.enable()
-
 
 func _apply_stats() -> void:
 	var stats_array = player_details.apply_stats()
@@ -133,30 +104,23 @@ func _apply_stats() -> void:
 
 
 ## ___________________INPUT FUNCTIONS__________________________
-
 func move(delta: float) -> void:
 	input = get_input()
-	var movement_velocity := Vector2.ZERO
+
+	var total_gravity = calculate_total_gravity()
 
 	if input == Vector2.ZERO:
-		# Handle friction, but only for the player's movement component
-		# This prevents friction from completely stopping gravity effects
+		velocity += total_gravity * delta
 		if velocity.length() > (Constants.Player_Friction * delta):
-			movement_velocity = velocity.normalized() * max(0, velocity.length() - (Constants.Player_Friction * delta))
-		_sound_effect_component.stop_sound()
+			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
+		else:
+			velocity = Vector2.ZERO
+			_sound_effect_component.stop_sound()
 	else:
-		# Apply anti-gravity thrust when space is held
-		if Input.is_action_pressed("thrust"):
-			# Get direction to center and apply thrust in opposite direction
-			var direction_to_center = GameManager.current_quadrant_builder._grid_center - global_position
-			if direction_to_center.length() > 10:
-				movement_velocity -= direction_to_center.normalized() * anti_gravity_thrust * delta
-
 		# Calculate movement velocity based on input
-		movement_velocity = velocity + (input * Constants.Player_Acceleration * delta)
+		velocity += (input * Constants.Player_Acceleration * delta)
+		velocity = velocity.limit_length(Constants.Player_Max_Speed)
 		_sound_effect_component.play_sound()
-
-	velocity = movement_velocity.limit_length(speed)
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -207,9 +171,35 @@ func get_player_camera() -> AdvanceCamera:
 
 func get_input() -> Vector2:
 	var local: Vector2 = Vector2.ZERO
-	local.x = Input.get_axis("Move_left", "Move_right")
-	local.y = Input.get_axis("Move_up","Move_down")
+	local.x = int(Input.get_axis("Move_left", "Move_right"))
+	local.y = int(Input.get_axis("Move_up","Move_down"))
 	return local.normalized()
+
+func calculate_total_gravity() -> Vector2:
+		var total: Vector2 = Vector2.ZERO
+		for source in gravity_sources:
+			var direction = source.global_position - global_position
+			var distance = direction.length()
+			
+			# Prevent extreme gravity at close range
+			var min_effective_distance = 50.0  # Minimum distance for gravity calculations
+			var max_strength = 1500.0  # Absolute maximum gravity force
+			
+			# Smooth distance calculation with lower bound
+			var effective_distance = max(distance, min_effective_distance)
+			
+			# Modified gravity calculation with cubic falloff
+			var strength = source.gravity * pow(
+				source.gravity_point_unit_distance / effective_distance, 
+				1.5  # Reduced from quadratic (2) to 1.5 for smoother transition
+			)
+			
+			# Apply absolute maximum cap
+			strength = min(strength, max_strength)
+			
+			total += direction.normalized() * strength
+			print_debug("Gravity source: ", source.name, " Strength: ", strength, " Distance: ", distance)
+		return total
 
 
 func get_active_weapon_node() -> ActiveWeaponComponent:
@@ -222,3 +212,12 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
 		weapons_array.append(weapon_to_add)
 		active_weapon._weapons_list = weapons_array
+
+func _on_pickups_collector_area_entered(area: Area2D) -> void:
+	if area.is_in_group("GravitySource"):
+		print("Gravity source entered: ", area.name)
+		gravity_sources.append(area)
+
+
+func _on_pickups_collector_area_exited(area: Area2D) -> void:
+	gravity_sources.erase(area)

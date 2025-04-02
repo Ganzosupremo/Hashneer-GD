@@ -29,7 +29,7 @@ class_name FracturableStaticBody2D extends StaticBody2D
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
-@export var polygon_shape: PolygonShape
+@export var polygon_shape: Constants.PolygonShape
 
 @export_group("Circular Shape", "cir_")
 @export var cir_radius: float = 0.0
@@ -105,15 +105,15 @@ func recreate_polygon_shape() -> void:
 ## Creates a polygon shape based on the selected shape type and parameters
 func create_polygon_shape() -> PackedVector2Array:
 	match polygon_shape:
-		PolygonShape.Circular:
+		Constants.PolygonShape.Circular:
 			return PolygonLib.createCirclePolygon(cir_radius, cir_smoothing)
-		PolygonShape.Rectangular:
+		Constants.PolygonShape.Rectangular:
 			return PolygonLib.createRectanglePolygon(rectangle_size, rectangle_local_center)
-		PolygonShape.Beam:
+		Constants.PolygonShape.Beam:
 			return PolygonLib.createBeamPolygon(beam_dir, beam_distance, beam_start_width, beam_end_width, beam_start_point_local)
-		PolygonShape.SuperEllipse:
+		Constants.PolygonShape.SuperEllipse:
 			return PolygonLib.createSuperEllipsePolygon(s_p_number, s_a, s_b, e_n, s_start_angle_deg, s_max_angle_deg)
-		PolygonShape.SuperShape:
+		Constants.PolygonShape.SuperShape:
 			return PolygonLib.createSupershape2DPolygon(s_p_number, s_a, s_b, _rng.randf_range(min_m, m), _rng.randf_range(min_n1, n1), _rng.randf_range(min_n2, n2), _rng.randf_range(min_n3, n3), s_start_angle_deg, s_max_angle_deg)
 		_:
 			return PackedVector2Array([])

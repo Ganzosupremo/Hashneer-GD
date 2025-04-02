@@ -10,7 +10,7 @@ signal ability_unlocked(event: SkillTreeEventBus.SkillTreeAbilityEvent)
 @export var weapon_details_dictionary: Dictionary = {}
 ## Base stats for the player.
 var base_stats: Dictionary = {
-	"Speed": 200.0,
+	"Speed": 150.0,
 	"Health": 300.0,
 	"Damage": 1.0
 }

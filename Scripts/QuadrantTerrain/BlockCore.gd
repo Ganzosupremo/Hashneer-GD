@@ -35,8 +35,9 @@ func _ready() -> void:
 			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
 func _draw() -> void:
-	var bounds = get_bounding_square()
-	draw_rect(bounds, Color.GREEN, false)
+	if OS.is_debug_build():
+		var bounds = get_bounding_square()
+		draw_rect(bounds, Color.GREEN, false)
 
 """
 This method checks if the block core's health 

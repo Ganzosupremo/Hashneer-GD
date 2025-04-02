@@ -1,0 +1,242 @@
+[gd_scene load_steps=11 format=3 uid="uid://d1ck5inf3bdcq"]
+
+[ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
+[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_p6c21"]
+[ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="3_srcxp"]
+[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="4_2a3kf"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_m1s7c"]
+diffuse_texture = ExtResource("3_srcxp")
+normal_texture = ExtResource("4_2a3kf")
+texture_repeat = 2
+
+[sub_resource type="Animation" id="Animation_p6c21"]
+resource_name = "invincible-hit-flash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, -0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0.5, 0.5), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(0.836007, 0.836006, 7.70092e-07, 1), Color(0.740646, 0.622345, 1.92523e-07, 1), Color(0.760784, 0.658824, 0, 0.54902), Color(1, 0.647059, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_srcxp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_2a3kf"]
+resource_name = "hit-flash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.6, 1.6), Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.23, 0.4),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_m1s7c"]
+resource_name = "heal"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.6, 1.6), Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.23, 0.4),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2a3kf"]
+_data = {
+&"RESET": SubResource("Animation_srcxp"),
+&"heal": SubResource("Animation_m1s7c"),
+&"hit-flash": SubResource("Animation_2a3kf"),
+&"invincible-hit-flash": SubResource("Animation_p6c21")
+}
+
+[node name="EnemyBase" type="RigidBody2D"]
+collision_layer = 32
+collision_mask = 248
+can_sleep = false
+contact_monitor = true
+max_contacts_reported = 12
+script = ExtResource("1_iiq2q")
+color_default = Color(0.080692, 0.323612, 1, 1)
+knockback_resistance_base = 0.5
+fractures = 3
+collision_damage = Vector2(10, 20)
+collision_knockback_force = 15000.0
+collision_knockback_time = 0.3
+keep_distance_range = Vector2(10, 10)
+regeneration_color = Color(1.51612e-06, 0.653202, 5.77569e-07, 1)
+polygon_shape = 1
+cir_radius = 24.0
+cir_smoothing = 4
+rectangle_size = Vector2(50, 50)
+
+[node name="HealthComponent" type="Node2D" parent="."]
+script = ExtResource("2_p6c21")
+max_health = 1000.0
+metadata/_custom_type_script = "uid://clbr10soo6aow"
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="DropPoly" type="Polygon2D" parent="."]
+scale = Vector2(1.5, 1.5)
+color = Color(1, 1, 1, 0.45098)
+
+[node name="OriginPoly" type="Polygon2D" parent="."]
+scale = Vector2(1.05, 1.05)
+color = Color(0.396078, 0.396078, 0.396078, 0.588235)
+
+[node name="FlashPoly" type="Polygon2D" parent="."]
+visible = false
+
+[node name="Shape3D" type="Node2D" parent="."]
+position = Vector2(-1, 0)
+
+[node name="Polygon2D" type="Polygon2D" parent="Shape3D"]
+texture = SubResource("CanvasTexture_m1s7c")
+
+[node name="Line2D" type="Line2D" parent="Shape3D"]
+width = 4.0
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+antialiased = true
+
+[node name="TargetPositionTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="InvincibleTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_2a3kf")
+}
+
+[connection signal="timeout" from="TargetPositionTimer" to="." method="_on_TargetPosTimer_timeout"]

@@ -16,7 +16,7 @@
 [ext_resource type="Resource" uid="uid://cd4d7vwiv68a7" path="res://Resources/Upgrades/Fiat/PlayerDamageUpgradeFiat1.tres" id="7_4c22w"]
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="7_076p6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
-[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="7_hhrbb"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/UIComponents/RippleComponentUI.tscn" id="7_hhrbb"]
 [ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="8_co7u8"]
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]

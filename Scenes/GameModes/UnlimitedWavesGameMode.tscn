@@ -1,0 +1,165 @@
+[gd_scene load_steps=23 format=3 uid="uid://cfs468tglaels"]
+
+[ext_resource type="Script" uid="uid://b3d0y4my45j6p" path="res://Scripts/SurvivalGameMode.gd" id="1_3aspk"]
+[ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
+[ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
+[ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="2_5761m"]
+[ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="3_mw6vm"]
+[ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
+[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="7_3aspk"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="8_tscnx"]
+[ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="9_s8cxh"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="10_3aspk"]
+[ext_resource type="PackedScene" uid="uid://3wd536t1tgdx" path="res://Scenes/QuadrantTerrain/PoolFractureCutVisualizer.tscn" id="10_ri3l1"]
+[ext_resource type="PackedScene" uid="uid://d074pyn2g110d" path="res://Scenes/QuadrantTerrain/PoolFractureShards.tscn" id="11_rxwaq"]
+[ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_tscnx"]
+
+[sub_resource type="Resource" id="Resource_rxwaq"]
+script = ExtResource("7_3aspk")
+drop_path = "uid://d1ck5inf3bdcq"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_ri3l1"]
+script = ExtResource("8_tscnx")
+possible_drops = Array[ExtResource("7_3aspk")]([SubResource("Resource_rxwaq")])
+guaranteed_drops = 1
+combined_odds = false
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="Resource" id="Resource_s8cxh"]
+script = ExtResource("11_tscnx")
+name = &"Enemies"
+metadata/_custom_type_script = "uid://gm1tcxr1506r"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3aspk"]
+size = Vector2(469, 333)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_s8cxh"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ri3l1"]
+normal = Vector2(-1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rxwaq"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_gaytf"]
+
+[node name="SurvivalGameMode" type="Node2D"]
+script = ExtResource("1_3aspk")
+
+[node name="Player" parent="." instance=ExtResource("1_73um3")]
+unique_name_in_owner = true
+position = Vector2(197, 244)
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HealthUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/HealthUI"]
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="HealthUI" parent="UI/HealthUI/MarginContainer" instance=ExtResource("2_5761m")]
+layout_mode = 2
+
+[node name="WeaponUI" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="UI/WeaponUI"]
+layout_mode = 0
+offset_right = 20.0
+offset_bottom = 20.0
+
+[node name="WeaponUI" parent="UI/WeaponUI/MarginContainer" instance=ExtResource("3_mw6vm")]
+layout_mode = 2
+
+[node name="LevelCompletedUI" parent="UI" instance=ExtResource("1_87mxq")]
+visible = false
+
+[node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
+position = Vector2(575, 325)
+zoom = Vector2(1, 1)
+smooth_speed = 1.5
+max_distance = 75.0
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="Ground" type="TileMapLayer" parent="World"]
+
+[node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+visible = false
+script = ExtResource("6_l3lx7")
+drops_table = SubResource("Resource_ri3l1")
+scene_spawner = NodePath("../ShapeEdgeSceneSpawner2D")
+metadata/_custom_type_script = "uid://b8fqt8af86l80"
+
+[node name="PoolFractureCutVisualizer" parent="." instance=ExtResource("10_ri3l1")]
+
+[node name="PoolFractureShards" parent="." instance=ExtResource("11_rxwaq")]
+
+[node name="ShapeEdgeSceneSpawner2D" type="Node2D" parent="." node_paths=PackedStringArray("spawn_shape")]
+script = ExtResource("9_s8cxh")
+spawn_shape = NodePath("../Spawner/CollisionShape2D")
+spawn_group = SubResource("Resource_s8cxh")
+metadata/_custom_type_script = "uid://bcjmdqied76to"
+
+[node name="EnemiesHolder" type="Node2D" parent="." groups=["Enemies"]]
+
+[node name="Circle" parent="EnemiesHolder" instance=ExtResource("10_3aspk")]
+position = Vector2(262, 371)
+invincible_time = 0.1
+color_default = Color(0.855258, 0.70627, 0.627998, 1)
+collision_knockback_force = 25000.0
+polygon_shape = 0
+cir_radius = 100.0
+cir_smoothing = 16
+
+[node name="YellowCircle" parent="EnemiesHolder" instance=ExtResource("10_3aspk")]
+position = Vector2(776, 239)
+color_default = Color(1, 1, 0, 1)
+shape_area_percent = 0.1
+fractures = 10
+collision_knockback_force = 25000.0
+polygon_shape = 0
+cir_radius = 100.0
+cir_smoothing = 16
+
+[node name="Spawner" type="StaticBody2D" parent="."]
+collision_layer = 0
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Spawner"]
+position = Vector2(574, 323)
+shape = SubResource("RectangleShape2D_3aspk")
+disabled = true
+
+[node name="WorldBounds" type="StaticBody2D" parent="."]
+collision_layer = 8
+collision_mask = 1008
+
+[node name="Top" type="CollisionShape2D" parent="WorldBounds"]
+shape = SubResource("WorldBoundaryShape2D_s8cxh")
+
+[node name="Right" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(1151, 1)
+shape = SubResource("WorldBoundaryShape2D_ri3l1")
+
+[node name="Left" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(0, 649)
+shape = SubResource("WorldBoundaryShape2D_rxwaq")
+
+[node name="Bottom" type="CollisionShape2D" parent="WorldBounds"]
+position = Vector2(1151, 649)
+shape = SubResource("WorldBoundaryShape2D_gaytf")

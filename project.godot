@@ -46,7 +46,7 @@ EffectsManager="res://Scripts/Managers/EffectsManager.gd"
 [display]
 
 window/size/always_on_top=true
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=3
 

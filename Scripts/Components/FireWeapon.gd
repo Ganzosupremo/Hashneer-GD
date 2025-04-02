@@ -41,8 +41,8 @@ func weapon_fire(damage_multiplier: float) -> void:
 		_fire_effect_particles.global_position = shoot_effect_position.global_position
 		_fire_effect_particles.restart()
 		
-		if player_camera:
-			player_camera.shake(current_weapon.amplitude,\
+		if GameManager.player_camera:
+			GameManager.shake_camera(current_weapon.amplitude,\
 			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio,\
 			current_weapon.armonic_ration, current_weapon.phase_offset, current_weapon.samples, current_weapon.shake_trans)
 		

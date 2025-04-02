@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=39 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" uid="uid://bea44as0v1pbg" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="3_vql12"]
@@ -127,6 +127,9 @@ metadata/_custom_type_script = "uid://bf4gc2pn1fbeu"
 [sub_resource type="CircleShape2D" id="CircleShape2D_spxdj"]
 radius = 20.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_1e6p3"]
+radius = 93.59
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 light_mask = 16
 visibility_layer = 16
@@ -170,7 +173,13 @@ occluder_light_mask = 16
 
 [node name="AdvancedCamera" parent="." instance=ExtResource("5_ynixv")]
 unique_name_in_owner = true
-zoom = Vector2(2.35, 2.35)
+visible = false
+enabled = false
+zoom = Vector2(2.25, 2.25)
+limit_left = -10000
+limit_top = -10000
+limit_right = 10000
+limit_bottom = 10000
 limit_smoothed = true
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
@@ -225,7 +234,7 @@ occluder_light_mask = 162
 
 [node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node", "sound_player")]
 collision_layer = 128
-collision_mask = 544
+collision_mask = 560
 gravity_point = true
 gravity_point_unit_distance = 30.0
 gravity = 200.0
@@ -242,3 +251,16 @@ shape = SubResource("CircleShape2D_spxdj")
 
 [node name="CurrencyInventory" type="Node2D" parent="."]
 script = ExtResource("15_esmjy")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+collision_layer = 128
+collision_mask = 312
+audio_bus_name = &"SFX"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_1e6p3")
+debug_color = Color(0.654197, 0.242455, 0.055619, 0.42)
+
+[connection signal="area_entered" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_entered"]
+[connection signal="area_exited" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_exited"]

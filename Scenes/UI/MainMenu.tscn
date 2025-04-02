@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bkmy27dnw7m2b" path="res://Scenes/UIComponents/ResponsiveBackground.tscn" id="3_rj78t"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="4_5ycdg"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="5_3o1w0"]
-[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/Components/RippleComponentUI.tscn" id="6_udh87"]
+[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/UIComponents/RippleComponentUI.tscn" id="6_udh87"]
 [ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="7_a0eer"]
 
 [sub_resource type="Resource" id="Resource_tpqx3"]

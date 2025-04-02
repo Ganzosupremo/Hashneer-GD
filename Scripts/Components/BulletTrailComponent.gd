@@ -19,7 +19,6 @@ func _process(_delta: float) -> void:
 		add_point(point)
 
 func enable_trail():
-	clear()
 	show()
 
 func disable_trail():

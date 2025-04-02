@@ -15,7 +15,6 @@ atlas = ExtResource("3_7t0sr")
 region = Rect2(0, 0, 32, 17)
 
 [node name="WeaponUI" type="Control"]
-custom_minimum_size = Vector2(300, 200)
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
@@ -29,15 +28,16 @@ layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -193.0
+offset_top = -150.0
 offset_right = 300.0
+offset_bottom = -21.0
 grow_vertical = 0
 theme = ExtResource("1_85mv8")
 theme_override_constants/separation = 5
 
 [node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
 clip_contents = true
-custom_minimum_size = Vector2(300, 150)
+custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
