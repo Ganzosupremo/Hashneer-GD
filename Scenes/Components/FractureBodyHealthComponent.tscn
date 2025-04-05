@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dt4kv727aad0l"]
+
+[ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="1_85tcj"]
+
+[node name="FractureBodyHealthComponent" type="Node2D"]
+script = ExtResource("1_85tcj")

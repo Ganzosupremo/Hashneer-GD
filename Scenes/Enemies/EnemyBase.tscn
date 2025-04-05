@@ -1,54 +1,45 @@
-[gd_scene load_steps=11 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=27 format=3 uid="uid://d1ck5inf3bdcq"]
 
 [ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
-[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_p6c21"]
+[ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
+[ext_resource type="AudioStream" uid="uid://dxye7xd8fofkc" path="res://Audio/Enemies/EnemyHurt.wav" id="2_tgb06"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_fj512"]
+[ext_resource type="Script" uid="uid://dsjqejcixdgmm" path="res://Scripts/Components/SoundEffectComponent.gd" id="3_m1s7c"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="3_srcxp"]
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="4_2a3kf"]
+[ext_resource type="AudioStream" uid="uid://bc5twmq0amhlt" path="res://Audio/Enemies/EnemyDead.wav" id="4_fj512"]
+[ext_resource type="AudioStream" uid="uid://bbbjxgmvr5uxf" path="res://Audio/Enemies/EnemyHeal.wav" id="5_uhgc7"]
+[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="11_imyi4"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="12_5jwg1"]
+[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="13_imyi4"]
+[ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="14_5jwg1"]
+
+[sub_resource type="Resource" id="Resource_uhgc7"]
+script = ExtResource("3_fj512")
+sound_volume = 0.0
+audio_stream = ExtResource("2_tgb06")
+sound_pitch = 1.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="Resource" id="Resource_4ni7a"]
+script = ExtResource("3_fj512")
+sound_volume = 0.0
+audio_stream = ExtResource("4_fj512")
+sound_pitch = 1.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="Resource" id="Resource_lv37s"]
+script = ExtResource("3_fj512")
+sound_volume = 0.0
+audio_stream = ExtResource("5_uhgc7")
+sound_pitch = 1.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_m1s7c"]
 diffuse_texture = ExtResource("3_srcxp")
 normal_texture = ExtResource("4_2a3kf")
 texture_repeat = 2
-
-[sub_resource type="Animation" id="Animation_p6c21"]
-resource_name = "invincible-hit-flash"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FlashPoly:visible")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.35),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Shape3D:scale")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
-"transitions": PackedFloat32Array(1, 1, -2, -2, -0.5),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0.5, 0.5), Vector2(1.1, 1.1), Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("FlashPoly:color")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
-"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
-"update": 0,
-"values": [Color(1, 1, 0, 1), Color(0.836007, 0.836006, 7.70092e-07, 1), Color(0.740646, 0.622345, 1.92523e-07, 1), Color(0.760784, 0.658824, 0, 0.54902), Color(1, 0.647059, 0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_srcxp"]
 length = 0.001
@@ -87,46 +78,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_2a3kf"]
-resource_name = "hit-flash"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FlashPoly:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.4),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Shape3D:scale")
-tracks/1/interp = 2
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
-"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.6, 1.6), Vector2(0.9, 0.9), Vector2(1, 1)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("FlashPoly:color")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.23, 0.4),
-"transitions": PackedFloat32Array(1, 1, 0.5),
-"update": 0,
-"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_m1s7c"]
@@ -169,6 +120,86 @@ tracks/2/keys = {
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_2a3kf"]
+resource_name = "hit-flash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.6, 1.6), Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.23, 0.4),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_p6c21"]
+resource_name = "invincible-hit-flash"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.35),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, -0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0.5, 0.5), Vector2(1.1, 1.1), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Color(1, 1, 0, 1), Color(0.836007, 0.836006, 7.70092e-07, 1), Color(0.740646, 0.622345, 1.92523e-07, 1), Color(0.760784, 0.658824, 0, 0.54902), Color(1, 0.647059, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2a3kf"]
 _data = {
 &"RESET": SubResource("Animation_srcxp"),
@@ -177,30 +208,63 @@ _data = {
 &"invincible-hit-flash": SubResource("Animation_p6c21")
 }
 
+[sub_resource type="Resource" id="Resource_t8mk1"]
+script = ExtResource("11_imyi4")
+drop_path = "uid://bjdc26h1h0pfv"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_bo7sv"]
+script = ExtResource("12_5jwg1")
+possible_drops = Array[ExtResource("11_imyi4")]([SubResource("Resource_t8mk1")])
+guaranteed_drops = 1
+combined_odds = false
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="Resource" id="Resource_sja6u"]
+script = ExtResource("14_5jwg1")
+name = &"Pickups"
+metadata/_custom_type_script = "uid://gm1tcxr1506r"
+
 [node name="EnemyBase" type="RigidBody2D"]
+light_mask = 8
+visibility_layer = 8
 collision_layer = 32
-collision_mask = 248
+collision_mask = 80
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 12
 script = ExtResource("1_iiq2q")
-color_default = Color(0.080692, 0.323612, 1, 1)
-knockback_resistance_base = 0.5
-fractures = 3
-collision_damage = Vector2(10, 20)
-collision_knockback_force = 15000.0
-collision_knockback_time = 0.3
-keep_distance_range = Vector2(10, 10)
-regeneration_color = Color(1.51612e-06, 0.653202, 5.77569e-07, 1)
-polygon_shape = 1
-cir_radius = 24.0
-cir_smoothing = 4
-rectangle_size = Vector2(50, 50)
+invincible_time = 0.1
+fractures = 21
+fracture_force = 500.0
+find_new_target_pos_tolerance = 20.0
+target_reached_tolerance = 50.0
+target_pos_interval_range = Vector2(10, 20)
+keep_distance_range = Vector2(1.5, 1.5)
+rotate_towards_velocity = true
+max_speed = 75.0
+accel = 800.0
+sound_on_hurt = SubResource("Resource_uhgc7")
+sound_on_dead = SubResource("Resource_4ni7a")
+sound_on_heal = SubResource("Resource_lv37s")
+cir_radius = 75.0
+cir_smoothing = 8
 
-[node name="HealthComponent" type="Node2D" parent="."]
-script = ExtResource("2_p6c21")
-max_health = 1000.0
-metadata/_custom_type_script = "uid://clbr10soo6aow"
+[node name="FractureBodyHealthComponent" type="Node2D" parent="."]
+script = ExtResource("2_m1s7c")
+advanced_regeneration = true
+regeneration_interval_range = Vector2(2, 3)
+regeneration_start_threshold = 0.3
+regeneration_amount = 25.0
+regeneration_color = Color(0.756863, 0.682353, 0, 1)
+heal_treshold = 0.9
+metadata/_custom_type_script = "uid://byctsght1ktgt"
+
+[node name="SoundEffectComponent" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
+script = ExtResource("3_m1s7c")
+metadata/_custom_type_script = "uid://dsjqejcixdgmm"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
@@ -230,6 +294,7 @@ antialiased = true
 
 [node name="TargetPositionTimer" type="Timer" parent="."]
 one_shot = true
+autostart = true
 
 [node name="InvincibleTimer" type="Timer" parent="."]
 one_shot = true
@@ -239,4 +304,21 @@ libraries = {
 &"": SubResource("AnimationLibrary_2a3kf")
 }
 
+[node name="OffScreenNotifier" type="VisibleOnScreenNotifier2D" parent="."]
+
+[node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+script = ExtResource("10_obdxo")
+drops_table = SubResource("Resource_bo7sv")
+scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
+metadata/_custom_type_script = "uid://b8fqt8af86l80"
+
+[node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
+script = ExtResource("13_imyi4")
+force = 30000.0
+direction = Vector2(1, 0)
+angle_spread = 90.0
+spawn_group = SubResource("Resource_sja6u")
+metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
+
 [connection signal="timeout" from="TargetPositionTimer" to="." method="_on_TargetPosTimer_timeout"]
+[connection signal="screen_exited" from="OffScreenNotifier" to="." method="_on_off_screen_notifier_screen_exited"]

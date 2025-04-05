@@ -36,7 +36,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		call_deferred("destroy")
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * 25000
-		body.call_deferred("damage", Vector2(damage_to_deal * 1.1, damage_to_deal), global_position, force, 0.2, self, modulate)
+		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.2, self, modulate)
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
@@ -56,7 +56,7 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	linear_velocity = launch_vector
 
 
-func despawn(ref) -> void:
+func despawn(_ref: Node2D) -> void:
 	global_rotation = 0.0
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0

@@ -1,14 +1,11 @@
-[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://1ibwcs1mu46p"]
+[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://1ibwcs1mu46p"]
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
 resource_name = "Compressor"
 threshold = -21.0
-attack_us = 50.0
+attack_us = 300.0
+release_ms = 300.0
 sidechain = &"SFX"
-
-[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_fvo30"]
-resource_name = "Compressor"
-threshold = -15.0
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_0w2f5"]
 resource_name = "Reverb"
@@ -16,12 +13,27 @@ room_size = 0.25
 damping = 0.35
 spread = 0.5
 hipass = 0.1
-dry = 0.8
-wet = 0.2
+dry = 0.6
+wet = 0.4
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_mpw00"]
 resource_name = "Compressor"
 threshold = -15.0
+
+[sub_resource type="AudioEffectReverb" id="AudioEffectReverb_mpw00"]
+resource_name = "Reverb"
+room_size = 0.2
+damping = 0.3
+spread = 0.6
+hipass = 0.1
+dry = 0.3
+wet = 0.6
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_h1jut"]
+resource_name = "Compressor"
+threshold = -25.0
+attack_us = 300.0
+release_ms = 300.0
 
 [resource]
 bus/0/volume_db = 0.00282288
@@ -33,8 +45,6 @@ bus/1/volume_db = -15.1981
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
 bus/1/effect/0/enabled = true
-bus/1/effect/1/effect = SubResource("AudioEffectCompressor_fvo30")
-bus/1/effect/1/enabled = true
 bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false
@@ -45,3 +55,13 @@ bus/2/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
 bus/2/effect/0/enabled = true
 bus/2/effect/1/effect = SubResource("AudioEffectCompressor_mpw00")
 bus/2/effect/1/enabled = true
+bus/3/name = &"Weapons"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = -0.130497
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectReverb_mpw00")
+bus/3/effect/0/enabled = true
+bus/3/effect/1/effect = SubResource("AudioEffectCompressor_h1jut")
+bus/3/effect/1/enabled = true

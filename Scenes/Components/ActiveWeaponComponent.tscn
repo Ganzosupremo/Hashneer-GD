@@ -7,3 +7,4 @@
 script = ExtResource("1_w2omr")
 
 [node name="ActiveWeaponSoundComponent" parent="." instance=ExtResource("2_3v4mt")]
+bus = &"Weapons"

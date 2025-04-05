@@ -57,7 +57,7 @@ func try_pick_up(pickup: Pickup2D) -> bool:
 
 	if resource is CurrencyPickupResource:
 		if resource.currency_type == CurrencyPickupResource.CURRENCY_TYPE.FIAT:
-			pickup.resource_count = FED.get_fiat_subsidy() * GameManager.get_builder_args().fiat_drop_rate_factor
+			pickup.resource_count = FED.get_fiat_subsidy()
 
 	var results = inventory.call(access.method_add, resource, pickup.resource_count)
 	

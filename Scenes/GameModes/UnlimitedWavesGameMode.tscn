@@ -1,13 +1,15 @@
-[gd_scene load_steps=23 format=3 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=25 format=3 uid="uid://cfs468tglaels"]
 
 [ext_resource type="Script" uid="uid://b3d0y4my45j6p" path="res://Scripts/SurvivalGameMode.gd" id="1_3aspk"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="2_5761m"]
+[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="3_gaytf"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="3_mw6vm"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="7_3aspk"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_4pl34"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="8_tscnx"]
 [ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="9_s8cxh"]
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="10_3aspk"]
@@ -34,7 +36,7 @@ name = &"Enemies"
 metadata/_custom_type_script = "uid://gm1tcxr1506r"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3aspk"]
-size = Vector2(469, 333)
+size = Vector2(113, 108.5)
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_s8cxh"]
 normal = Vector2(0, 1)
@@ -53,6 +55,7 @@ script = ExtResource("1_3aspk")
 [node name="Player" parent="." instance=ExtResource("1_73um3")]
 unique_name_in_owner = true
 position = Vector2(197, 244)
+initial_weapon = ExtResource("3_gaytf")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
@@ -88,9 +91,30 @@ layout_mode = 2
 [node name="LevelCompletedUI" parent="UI" instance=ExtResource("1_87mxq")]
 visible = false
 
-[node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
+[node name="Control" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="Label" type="Label" parent="UI/Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -249.0
+offset_top = 20.0
+offset_right = -15.0
+offset_bottom = 49.0
+grow_horizontal = 0
+theme = ExtResource("7_4pl34")
+theme_type_variation = &"NormalText"
+text = "Enemies Killed: 0"
+
+[node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_5761m")]
 position = Vector2(575, 325)
 zoom = Vector2(1, 1)
+target = NodePath("../Player")
 smooth_speed = 1.5
 max_distance = 75.0
 
@@ -99,7 +123,6 @@ max_distance = 75.0
 [node name="Ground" type="TileMapLayer" parent="World"]
 
 [node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
-visible = false
 script = ExtResource("6_l3lx7")
 drops_table = SubResource("Resource_ri3l1")
 scene_spawner = NodePath("../ShapeEdgeSceneSpawner2D")
@@ -108,10 +131,13 @@ metadata/_custom_type_script = "uid://b8fqt8af86l80"
 [node name="PoolFractureCutVisualizer" parent="." instance=ExtResource("10_ri3l1")]
 
 [node name="PoolFractureShards" parent="." instance=ExtResource("11_rxwaq")]
+max_amount = 1000
+instantiate_new_on_empty = true
 
 [node name="ShapeEdgeSceneSpawner2D" type="Node2D" parent="." node_paths=PackedStringArray("spawn_shape")]
 script = ExtResource("9_s8cxh")
 spawn_shape = NodePath("../Spawner/CollisionShape2D")
+edge_point_offset = 4
 spawn_group = SubResource("Resource_s8cxh")
 metadata/_custom_type_script = "uid://bcjmdqied76to"
 
@@ -119,29 +145,34 @@ metadata/_custom_type_script = "uid://bcjmdqied76to"
 
 [node name="Circle" parent="EnemiesHolder" instance=ExtResource("10_3aspk")]
 position = Vector2(262, 371)
-invincible_time = 0.1
 color_default = Color(0.855258, 0.70627, 0.627998, 1)
+fractures = 150
 collision_knockback_force = 25000.0
-polygon_shape = 0
+find_new_target_pos_tolerance = 50.0
+target_reached_tolerance = 10.0
+target_pos_interval_range = Vector2(0.5, 1.5)
+keep_distance_range = Vector2(0, 0)
 cir_radius = 100.0
-cir_smoothing = 16
 
 [node name="YellowCircle" parent="EnemiesHolder" instance=ExtResource("10_3aspk")]
 position = Vector2(776, 239)
 color_default = Color(1, 1, 0, 1)
 shape_area_percent = 0.1
-fractures = 10
+fractures = 100
 collision_knockback_force = 25000.0
-polygon_shape = 0
+find_new_target_pos_tolerance = 50.0
+target_reached_tolerance = 10.0
+target_pos_interval_range = Vector2(0.5, 1.5)
+keep_distance_range = Vector2(0, 0)
 cir_radius = 100.0
 cir_smoothing = 16
 
 [node name="Spawner" type="StaticBody2D" parent="."]
+position = Vector2(689, 411)
 collision_layer = 0
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Spawner"]
-position = Vector2(574, 323)
 shape = SubResource("RectangleShape2D_3aspk")
 disabled = true
 
@@ -163,3 +194,5 @@ shape = SubResource("WorldBoundaryShape2D_rxwaq")
 [node name="Bottom" type="CollisionShape2D" parent="WorldBounds"]
 position = Vector2(1151, 649)
 shape = SubResource("WorldBoundaryShape2D_gaytf")
+
+[node name="PickupsHolder" type="Node2D" parent="." groups=["Pickups"]]

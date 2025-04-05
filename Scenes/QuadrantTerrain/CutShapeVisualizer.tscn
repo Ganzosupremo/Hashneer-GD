@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ckhd13abglk4l"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/CutShapeVisualizer.gd" id="1_pmyhj"]
+[ext_resource type="Script" uid="uid://oc85iu4p7tcq" path="res://addons/polygon_fracture/CutShapeVisualizer.gd" id="1_pmyhj"]
 
 [node name="Polygon2D" type="Polygon2D"]
 script = ExtResource("1_pmyhj")
