@@ -26,9 +26,11 @@ class_name BaseEnemy extends RigidBody2D
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-signal Died(ref, pos: Vector2)
-signal Damaged(enemy: Node2D, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
-signal Fractured(enemy: Node2D, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
+signal Died(ref: BaseEnemy, pos: Vector2)
+signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
+signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
+signal Freed(ref: BaseEnemy)
+
 
 @export_category("General")
 @export var advanced_regeneration: bool = false
@@ -296,7 +298,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
 #	spawnShapeVisualizer(point, 0.0, cut_shape, damage_color, 1.0)
-	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 200, 50, fractures)
+	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
 	
 	var p : float = cut_shape_area / cur_area
 	for fracture in fracture_info.fractures:
@@ -471,7 +473,7 @@ func setNewTargetPos() -> void:
 	var viewport_rect : Rect2 = get_viewport_rect()
 	var screen_width : float = viewport_rect.size.x
 	var screen_height : float = viewport_rect.size.y
-	var offset: float = 200.0
+	var offset: float = 500.0
 	
 	_rng.randomize()
 	# Define possible target positions at screen edges
@@ -580,5 +582,6 @@ func on_regeneration_timer_timeout() -> void:
 
 
 func _on_off_screen_notifier_screen_exited() -> void:
+	Freed.emit(self)
 	await GameManager.init_timer(.8).timeout
 	queue_free()

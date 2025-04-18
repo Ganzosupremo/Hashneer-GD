@@ -30,12 +30,12 @@ sound_pitch = 1.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0objx"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_1e6p3"]
 atlas = ExtResource("4_wp2gx")
 region = Rect2(0, 0, 32, 32)
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_1e6p3"]
-diffuse_texture = SubResource("AtlasTexture_0objx")
+[sub_resource type="CanvasTexture" id="CanvasTexture_8cj01"]
+diffuse_texture = SubResource("AtlasTexture_1e6p3")
 normal_texture = ExtResource("8_w71ue")
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_yb677"]
@@ -128,13 +128,13 @@ metadata/_custom_type_script = "uid://bf4gc2pn1fbeu"
 radius = 20.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1e6p3"]
-radius = 93.59
+radius = 95.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 light_mask = 16
 visibility_layer = 16
 collision_layer = 128
-collision_mask = 313
+collision_mask = 1305
 script = ExtResource("1_ha4ea")
 player_details = ExtResource("6_6tu5v")
 initial_weapon = ExtResource("6_vaewd")
@@ -148,7 +148,7 @@ shape = SubResource("CircleShape2D_1sxoh")
 modulate = Color(1, 0.647059, 0, 1)
 light_mask = 16
 visibility_layer = 17
-texture = SubResource("CanvasTexture_1e6p3")
+texture = SubResource("CanvasTexture_8cj01")
 
 [node name="RotationContainer" type="Node2D" parent="."]
 
@@ -161,7 +161,7 @@ offset = Vector2(10.25, 0)
 
 [node name="BulletFirePosition" type="Marker2D" parent="RotationContainer" groups=["Player"]]
 unique_name_in_owner = true
-position = Vector2(29, 0)
+position = Vector2(30, 0)
 
 [node name="ShootEffectPosition" type="Marker2D" parent="RotationContainer/BulletFirePosition"]
 unique_name_in_owner = true
@@ -219,22 +219,25 @@ bus = &"SFX"
 light_mask = 16
 visibility_layer = 16
 energy = 1.25
-range_item_cull_mask = 162
+range_item_cull_mask = 191
 shadow_enabled = true
 shadow_filter = 1
 shadow_filter_smooth = 5.0
-shadow_item_cull_mask = 162
+shadow_item_cull_mask = 174
 texture = ExtResource("15_0objx")
-texture_scale = 7.0
-height = 100.0
+texture_scale = 3.0
+height = 50.0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_5vc63")
-occluder_light_mask = 162
+occluder_light_mask = 170
+
+[node name="CurrencyInventory" type="Node2D" parent="."]
+script = ExtResource("15_esmjy")
 
 [node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node", "sound_player")]
 collision_layer = 128
-collision_mask = 560
+collision_mask = 528
 gravity_point = true
 gravity_point_unit_distance = 30.0
 gravity = 200.0
@@ -249,13 +252,9 @@ metadata/_custom_type_script = "uid://b542eoymso6xc"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupsCollector2D"]
 shape = SubResource("CircleShape2D_spxdj")
 
-[node name="CurrencyInventory" type="Node2D" parent="."]
-script = ExtResource("15_esmjy")
-
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 collision_layer = 128
-collision_mask = 312
+collision_mask = 280
 audio_bus_name = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

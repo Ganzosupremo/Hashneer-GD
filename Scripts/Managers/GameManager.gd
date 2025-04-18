@@ -8,13 +8,13 @@ signal level_completed()
 @export var main_skill_tree_event_bus: SkillTreeEventBus
 
 @export_category("Levels")
-@export var game_levels: Array[QuadrantBuilderArgs]
+@export var game_levels: Array[LevelBuilderArgs]
 
 var levels_unlocked: int = 1
 var previous_levels_unlocked_index: int = 0
 var current_level: int = 0
 
-var current_builder_args: QuadrantBuilderArgs = null
+var current_builder_args: LevelBuilderArgs = null
 var player: PlayerController = null
 var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
@@ -139,7 +139,7 @@ func select_builder_args(index: int) -> void:
 	current_builder_args = game_levels[index]
 	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
 
-func get_builder_args() -> QuadrantBuilderArgs:
+func get_builder_args() -> LevelBuilderArgs:
 	return current_builder_args
 #endregion
 

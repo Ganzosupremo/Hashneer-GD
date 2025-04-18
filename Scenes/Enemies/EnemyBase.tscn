@@ -1,14 +1,14 @@
-[gd_scene load_steps=27 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=28 format=3 uid="uid://d1ck5inf3bdcq"]
 
 [ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
 [ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
 [ext_resource type="AudioStream" uid="uid://dxye7xd8fofkc" path="res://Audio/Enemies/EnemyHurt.wav" id="2_tgb06"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_fj512"]
 [ext_resource type="Script" uid="uid://dsjqejcixdgmm" path="res://Scripts/Components/SoundEffectComponent.gd" id="3_m1s7c"]
-[ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="3_srcxp"]
-[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="4_2a3kf"]
 [ext_resource type="AudioStream" uid="uid://bc5twmq0amhlt" path="res://Audio/Enemies/EnemyDead.wav" id="4_fj512"]
 [ext_resource type="AudioStream" uid="uid://bbbjxgmvr5uxf" path="res://Audio/Enemies/EnemyHeal.wav" id="5_uhgc7"]
+[ext_resource type="Texture2D" uid="uid://cwtw4gx8qcy3w" path="res://Textures/Enemies/Grass.png" id="8_5jwg1"]
+[ext_resource type="Texture2D" uid="uid://bhoj5ykjs0ahw" path="res://Textures/FracturableBodies/BlockCoreTextureNormal.png" id="9_5jwg1"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="11_imyi4"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="12_5jwg1"]
@@ -36,10 +36,14 @@ audio_stream = ExtResource("5_uhgc7")
 sound_pitch = 1.0
 metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
-[sub_resource type="CanvasTexture" id="CanvasTexture_m1s7c"]
-diffuse_texture = ExtResource("3_srcxp")
-normal_texture = ExtResource("4_2a3kf")
-texture_repeat = 2
+[sub_resource type="AtlasTexture" id="AtlasTexture_t8mk1"]
+atlas = ExtResource("8_5jwg1")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_t8mk1"]
+diffuse_texture = SubResource("AtlasTexture_t8mk1")
+normal_texture = ExtResource("9_5jwg1")
+texture_repeat = 3
 
 [sub_resource type="Animation" id="Animation_srcxp"]
 length = 0.001
@@ -227,6 +231,7 @@ name = &"Pickups"
 metadata/_custom_type_script = "uid://gm1tcxr1506r"
 
 [node name="EnemyBase" type="RigidBody2D"]
+modulate = Color(1.2, 1.2, 1.2, 1)
 light_mask = 8
 visibility_layer = 8
 collision_layer = 32
@@ -236,8 +241,7 @@ contact_monitor = true
 max_contacts_reported = 12
 script = ExtResource("1_iiq2q")
 invincible_time = 0.1
-fractures = 21
-fracture_force = 500.0
+shape_area_percent = 0.3
 find_new_target_pos_tolerance = 20.0
 target_reached_tolerance = 50.0
 target_pos_interval_range = Vector2(10, 20)
@@ -248,7 +252,7 @@ accel = 800.0
 sound_on_hurt = SubResource("Resource_uhgc7")
 sound_on_dead = SubResource("Resource_4ni7a")
 sound_on_heal = SubResource("Resource_lv37s")
-cir_radius = 75.0
+cir_radius = 30.0
 cir_smoothing = 8
 
 [node name="FractureBodyHealthComponent" type="Node2D" parent="."]
@@ -267,6 +271,8 @@ script = ExtResource("3_m1s7c")
 metadata/_custom_type_script = "uid://dsjqejcixdgmm"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+light_mask = 8
+visibility_layer = 8
 
 [node name="DropPoly" type="Polygon2D" parent="."]
 scale = Vector2(1.5, 1.5)
@@ -280,12 +286,18 @@ color = Color(0.396078, 0.396078, 0.396078, 0.588235)
 visible = false
 
 [node name="Shape3D" type="Node2D" parent="."]
+light_mask = 8
+visibility_layer = 8
 position = Vector2(-1, 0)
 
 [node name="Polygon2D" type="Polygon2D" parent="Shape3D"]
-texture = SubResource("CanvasTexture_m1s7c")
+light_mask = 8
+visibility_layer = 8
+texture = SubResource("CanvasTexture_t8mk1")
 
 [node name="Line2D" type="Line2D" parent="Shape3D"]
+light_mask = 8
+visibility_layer = 8
 width = 4.0
 joint_mode = 2
 begin_cap_mode = 2

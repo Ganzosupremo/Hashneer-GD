@@ -1,18 +1,19 @@
-[gd_scene load_steps=8 format=3 uid="uid://bjsnsabkmnmts"]
+[gd_scene load_steps=7 format=3 uid="uid://bjsnsabkmnmts"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_85mv8"]
 [ext_resource type="Script" uid="uid://c0bno15bnax2n" path="res://Scripts/UI/weapon_ui.gd" id="1_yet40"]
-[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="3_7t0sr"]
 [ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="3_bwso0"]
-[ext_resource type="Texture2D" uid="uid://dm4bb3u4rw6uq" path="res://Textures/UI/WeaponUIBackground.png" id="3_w784i"]
+[ext_resource type="Texture2D" uid="uid://cv2oe3wf86pff" path="res://Textures/UI/Panels/PanelBackground.png" id="3_w784i"]
+[ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_w784i"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l5p5u"]
 texture = ExtResource("3_w784i")
-region_rect = Rect2(0, 31, 128, 65)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g78ha"]
-atlas = ExtResource("3_7t0sr")
-region = Rect2(0, 0, 32, 17)
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
 [node name="WeaponUI" type="Control"]
 layout_mode = 3
@@ -47,15 +48,16 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_l5p5u")
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
 layout_mode = 2
 theme = ExtResource("1_85mv8")
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 25
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 25
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
 [node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 40)
 layout_mode = 2
-texture = SubResource("AtlasTexture_g78ha")
+texture = ExtResource("4_w784i")
 expand_mode = 1
 stretch_mode = 5
 

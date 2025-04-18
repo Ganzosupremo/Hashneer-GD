@@ -30,10 +30,11 @@ func _ready() -> void:
 func activate_panel(title: String, description: String, cost: int, use_bitcoin: bool, is_maxed_out: bool = false) -> void:
 	change_labels(title, description, cost, use_bitcoin, is_maxed_out)
 	visible = true
-	#animation_component.start_tween()
+	animation_component.start_tween()
 
 func deactivate_panel() -> void:
 	price_background.remove_theme_stylebox_override("panel")
+	animation_component.reset()
 	visible = false
 
 func _set_cost_icon(use_bitcoin: bool) -> void:

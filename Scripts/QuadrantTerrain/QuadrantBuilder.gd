@@ -32,7 +32,7 @@ signal quadrant_hitted(fiat_gained: float)
 var polygon_fracture: PolygonFracture
 var _fracture_disabled: bool = false
 var _cur_fracture_color: Color = fracture_body_color
-var builder_args: QuadrantBuilderArgs
+var builder_args: LevelBuilderArgs
 var _map_bounds: Rect2
 var _grid_center: Vector2
 
@@ -48,7 +48,7 @@ func _ready() -> void:
 
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
-	var builder_data: QuadrantBuilderArgs = GameManager.current_builder_args
+	var builder_data: LevelBuilderArgs = GameManager.current_builder_args
 	builder_args = builder_data
 	
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)

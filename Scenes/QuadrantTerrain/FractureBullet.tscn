@@ -18,6 +18,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [node name="FractureBullet" type="RigidBody2D"]
+modulate = Color(1.5, 1.5, 1.5, 1)
 light_mask = 32
 visibility_layer = 32
 collision_layer = 64
@@ -39,6 +40,7 @@ light_mask = 0
 visibility_layer = 32
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color(1.5, 1.5, 1.5, 1)
 light_mask = 32
 visibility_layer = 32
 
@@ -59,13 +61,18 @@ visible = false
 top_level = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 32
+visibility_layer = 32
 occluder = SubResource("OccluderPolygon2D_drv38")
 occluder_light_mask = 32
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+light_mask = 32
+visibility_layer = 32
 energy = 0.9
+range_item_cull_mask = 190
 shadow_enabled = true
-shadow_item_cull_mask = 162
+shadow_item_cull_mask = 190
 texture = SubResource("GradientTexture2D_v6nxv")
 texture_scale = 2.0
 

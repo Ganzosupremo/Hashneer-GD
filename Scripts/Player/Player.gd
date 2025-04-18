@@ -33,14 +33,10 @@ var damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
 
-# var _loaded_abilities: Dictionary = {}
-
-
 func _ready() -> void:
 	gravity_sources.clear()
 	GameManager.player = self
 	_health.zero_health.connect(on_zero_power)
-	BitcoinNetwork.block_found.connect(_on_block_found)
 	GameManager.level_completed.connect(deactivate_player)
 	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
@@ -86,6 +82,9 @@ func deactivate_player() -> void:
 func apply_gravity(force: Vector2) -> void:
 	# print("Applying gravity: ", force)
 	gravity_force = force
+
+func damage(_damage: float) -> void:
+	get_health_node().take_damage(_damage)
 
 #endregion
 
@@ -150,10 +149,6 @@ func on_zero_power() -> void:
 	
 	await tween.finished
 	visible = false
-
-func _on_block_found(_block: BitcoinBlock):
-	# deactivate_player()
-	pass
 
 ## _________________SETTERS AND GETTERS______________________
 

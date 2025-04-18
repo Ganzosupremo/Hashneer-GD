@@ -106,17 +106,20 @@ func _ready() -> void:
 	call_deferred("_setup")
 
 ## Alternative method for starting a tween, uses the values for the hover animation
-func start_tween() -> void:
-	add_tween(tween_values, parallel_animations, tween_time, tween_delay, tween_transition, tween_ease)
+func start_tween(enter: bool = true) -> void:
+	if enter:
+		add_tween(enter_animation_values, parallel_animations, enter_time, enter_delay, IMMEDIATE_TRANSITION, enter_ease)
+	else:
+		add_tween(tween_values, parallel_animations, tween_time, tween_delay, tween_transition, tween_ease)
 
 func add_tween(values: Dictionary, parallel: bool, seconds: float, delay: float = 0.0, transition: Tween.TransitionType = Tween.TRANS_SINE, easing: Tween.EaseType = Tween.EASE_IN_OUT, entering_animation: bool = false) -> void:
 	if not target: 
-		print("No target")
+		push_warning("No target. Returning")
 		return
 
 	var tween: Tween = GameManager.init_tween()
 	tween.set_parallel(parallel)
-	tween.pause()
+	# tween.pause()
 	
 	for property in properties:
 		if property is not String:

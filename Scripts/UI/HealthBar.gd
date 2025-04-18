@@ -1,5 +1,5 @@
 extends Control
-class_name HealthBar
+class_name SphereHealthBar
 
 @onready var text : Label = %Text
 @onready var sphere_health: ColorRect = %SphereHealth

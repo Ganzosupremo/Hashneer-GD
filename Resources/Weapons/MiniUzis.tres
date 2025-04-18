@@ -1,10 +1,12 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=8 format=3 uid="uid://dm5wtcvtcwc3r"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=9 format=3 uid="uid://dm5wtcvtcwc3r"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_juh0y"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_vm5p3"]
 [ext_resource type="AudioStream" uid="uid://bhkgu53rk0sek" path="res://Audio/Weapons/MP7Fire 1.wav" id="2_78qb0"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_yolsm"]
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="5_2begr"]
+
+[sub_resource type="Gradient" id="Gradient_juh0y"]
 
 [sub_resource type="Resource" id="Resource_77dlb"]
 script = ExtResource("1_juh0y")
@@ -17,8 +19,11 @@ bullets_per_shoot_min = 2
 bullets_per_shoot_max = 2
 bullet_spawn_interval_min = 0.031
 bullet_spawn_interval_max = 0.06
+trail_gradient = SubResource("Gradient_juh0y")
 trail_length = 20
 trail_width = 20.0
+fracture_damage = Vector2(30, 30)
+fracture_force = 20000.0
 emits_trail_particles = true
 randomness = 0.5
 lifetime_randomness = 0.25

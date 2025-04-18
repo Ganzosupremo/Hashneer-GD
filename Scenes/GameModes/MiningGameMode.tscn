@@ -240,7 +240,7 @@ self_modulate = Color(1, 1, 2.5, 1)
 scale = Vector2(7, 7)
 texture = ExtResource("9_yuwqb")
 script = ExtResource("10_ud3x8")
-rotation_speed = 0.5
+rotation_speed = 0.69
 rotation_direction = -1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Center"]
@@ -302,6 +302,7 @@ shape = SubResource("RectangleShape2D_6x43y")
 
 [node name="Player" parent="." instance=ExtResource("19_i1wc4")]
 unique_name_in_owner = true
+position = Vector2(299, 293)
 
 [node name="RigidBodiesParent" type="Node2D" parent="."]
 unique_name_in_owner = true
@@ -403,7 +404,7 @@ grow_vertical = 0
 theme = ExtResource("27_kmimo")
 
 [node name="TerminateButton" parent="GameUI/TerminateButtonContainer/MarginContainer" instance=ExtResource("28_d88vn")]
-custom_minimum_size = Vector2(175, 70)
+custom_minimum_size = Vector2(220, 70)
 layout_mode = 2
 theme_type_variation = &"ThirtiaryButton"
 text = "Terminate Session"

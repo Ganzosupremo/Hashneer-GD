@@ -19,12 +19,13 @@ polygon = PackedVector2Array(-1, -7, -5, -3, -5, 5, -1, 8, 2, 8, 5, 4, 5, -3, 2,
 
 [node name="FiatPickup" type="RigidBody2D"]
 collision_layer = 512
-collision_mask = 440
+collision_mask = 1432
 physics_material_override = ExtResource("1_cuxl8")
 can_sleep = false
 linear_damp = 5.0
 
 [node name="DollarSign" type="Sprite2D" parent="."]
+modulate = Color(1.1, 1.1, 1.1, 1)
 texture = ExtResource("1_f7yr1")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

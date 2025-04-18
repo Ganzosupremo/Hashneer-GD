@@ -8,7 +8,7 @@ var current_health: float= 0.0
 var initial_health: float = 0.0
 
 var default_quadrant_polygon: PackedVector2Array = []
-var builder_args: QuadrantBuilderArgs
+var builder_args: LevelBuilderArgs
 var damage_to_deal: float = 25.0
 
 

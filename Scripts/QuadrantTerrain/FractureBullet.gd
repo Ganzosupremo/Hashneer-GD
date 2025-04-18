@@ -35,8 +35,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		q_b.fracture_block_core(damage_to_deal, "Player")
 		call_deferred("destroy")
 	elif body is BaseEnemy:
-		var force: Vector2 = (body.global_position - global_position).normalized() * 25000
-		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.2, self, modulate)
+		var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
+		body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.2, self, modulate)
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):

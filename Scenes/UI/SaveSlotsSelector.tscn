@@ -238,7 +238,6 @@ theme_override_constants/separation = 2
 [node name="AnimatedLabel" parent="MarginContainer/VBoxContainer" instance=ExtResource("3_vdhhf")]
 layout_mode = 2
 size_flags_horizontal = 4
-theme = ExtResource("1_c01e8")
 theme_type_variation = &"HeaderMedium"
 text = "Choose a Slu... I Mean Slot"
 

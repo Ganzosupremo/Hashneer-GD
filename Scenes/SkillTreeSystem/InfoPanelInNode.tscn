@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://j8t0bm46hh8i"]
+[gd_scene load_steps=12 format=3 uid="uid://j8t0bm46hh8i"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_1jdpd"]
 [ext_resource type="Script" uid="uid://c7ropuxmhnlc" path="res://Scripts/UI/InfoPanelInNode.gd" id="1_l5tw6"]
@@ -6,7 +6,7 @@
 [ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="4_7xk8s"]
 [ext_resource type="PackedScene" uid="uid://cdj2nrqs4irp1" path="res://Scenes/SkillTreeSystem/FiatCurrencyAnimated.tscn" id="4_8ndmn"]
 [ext_resource type="PackedScene" uid="uid://267b2pka2dbq" path="res://Scenes/SkillTreeSystem/BTCCurrencyAnimated.tscn" id="4_lx4gd"]
-[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/UIBackground.png" id="6_b053c"]
+[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/Panels/UIBackground.png" id="6_b053c"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7xk8s"]
 texture = ExtResource("6_b053c")
@@ -41,14 +41,6 @@ shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.554)
 shadow_offset = Vector2(3, 3)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b053c"]
-texture = ExtResource("6_b053c")
-texture_margin_left = 13.0
-texture_margin_top = 13.0
-texture_margin_right = 14.0
-texture_margin_bottom = 34.0
-modulate_color = Color(0, 0.113725, 0.239216, 1)
-
 [node name="SkillInfoPanel" type="Control"]
 layout_mode = 3
 anchors_preset = 8
@@ -66,16 +58,13 @@ max_ugraded_style = SubResource("StyleBoxTexture_cm8gx")
 maxed_out_font = SubResource("LabelSettings_chi6b")
 
 [node name="AnimationComponent" parent="." instance=ExtResource("3_amp5s")]
-tween_time = 0.5
-tween_transition = 8
-tween_ease = 1
-enter_time = 0.4
-enter_transition = 11
-enter_ease = 1
-enter_scale = Vector2(0, 0)
-enter_position = Vector2(20, 10)
+enter_animation = true
+enter_time = 0.1
+enter_transition = 2
+enter_ease = 3
+enter_delay = 0.1
 enter_size = Vector2(0, 0)
-enter_rotation = -90.0
+enter_rotation = 360.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(300, 150)
@@ -138,7 +127,6 @@ layout_mode = 2
 size_flags_vertical = 6
 theme = ExtResource("1_1jdpd")
 theme_type_variation = &"SkillNodeInfoPanelBackground"
-theme_override_styles/panel = SubResource("StyleBoxTexture_b053c")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/PriceBackground"]
 layout_mode = 2

@@ -7,7 +7,7 @@ class_name SkillTreeManager extends Control
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 @onready var quit_game: TweenableButton = $FrontLayer/ButtonContainer/QuitGame
 @onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
-@onready var level_selector_new: LevelSelectorMenu = $FrontLayer/LevelSelectorNew
+@onready var level_selector_new: LevelSelectorMenu = $LevelSelectorNew
 
 var _use_btc_as_currency: bool = false
 

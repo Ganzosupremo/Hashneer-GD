@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://44b3lqo4rfge"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_4d2yb"]
-[ext_resource type="Script" path="res://Scripts/UIComponents/TweenableButton.gd" id="2_511jm"]
+[ext_resource type="Script" uid="uid://ctvu46denkvdo" path="res://Scripts/UIComponents/TweenableButton.gd" id="2_511jm"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="3_cawim"]
 [ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/UI/MouseEntered.tres" id="3_mfelr"]
 [ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/UI/MouseDown.tres" id="4_car5k"]

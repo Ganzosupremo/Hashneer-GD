@@ -1,12 +1,13 @@
-[gd_resource type="Theme" load_steps=121 format=3 uid="uid://dylriqvd0gggf"]
+[gd_resource type="Theme" load_steps=125 format=3 uid="uid://dylriqvd0gggf"]
 
 [ext_resource type="Texture2D" uid="uid://101fmkixv4ld" path="res://Textures/UI/CurrencyUI/CurrencyUIBackground.png" id="2_khk1g"]
 [ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="4_2qa8s"]
-[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/UIBackground.png" id="5_k0jwi"]
-[ext_resource type="Texture2D" uid="uid://dd0v6225odnlo" path="res://Textures/UI/Buttons/SkillNodeLabelBackground.png" id="5_kwc32"]
+[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/Panels/UIBackground.png" id="4_sb2cu"]
 [ext_resource type="Texture2D" uid="uid://vn0pfisbqui4" path="res://Textures/UI/Buttons/MainButtonsHasheneer.png" id="5_sb2cu"]
+[ext_resource type="Texture2D" uid="uid://bv18rvqwyfmr0" path="res://Textures/UI/Buttons/SkillNodeTexture_v2.png" id="6_k0jwi"]
 [ext_resource type="Texture2D" uid="uid://sos620ijd2ti" path="res://Textures/UI/Slider_Hashneer_Button.png" id="6_x3w2l"]
 [ext_resource type="Texture2D" uid="uid://btn3wnvkrmck" path="res://Textures/UI/Slider_Hashneer.png" id="7_uhm5d"]
+[ext_resource type="Texture2D" uid="uid://dcvqxv14ofaqb" path="res://Textures/UI/Panels/HasheneerUIBanner.png" id="8_k0jwi"]
 [ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="8_sb2cu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvgii"]
@@ -167,7 +168,7 @@ corner_radius_bottom_left = 4
 corner_detail = 6
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ck1rn"]
-texture = ExtResource("5_k0jwi")
+texture = ExtResource("4_sb2cu")
 texture_margin_left = 14.0
 texture_margin_top = 14.0
 texture_margin_right = 14.0
@@ -335,13 +336,27 @@ shadow_color = Color(0.016, 0.4, 0.784, 0.7)
 shadow_size = 7
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rh1ak"]
-texture = ExtResource("5_k0jwi")
+texture = ExtResource("4_sb2cu")
 texture_margin_left = 13.0
 texture_margin_top = 12.0
 texture_margin_right = 13.0
 texture_margin_bottom = 41.0
 region_rect = Rect2(0, 0, 128, 128)
 modulate_color = Color(0, 0.207843, 0.4, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sb2cu"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k0jwi"]
+bg_color = Color(1, 0.843137, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hormw"]
 load_path = "res://.godot/imported/MainButtonsHasheneer.png-c64c342a12958b1c95b49f1a2b3d4654.ctex"
@@ -405,75 +420,56 @@ texture_margin_right = 12.0
 texture_margin_bottom = 22.0
 region_rect = Rect2(0, 0, 116, 76)
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hw1yg"]
-load_path = "res://.godot/imported/SkillNodeButtonTexture.png-ddb104609768de77de7b9f5786543078.ctex"
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_136xd"]
-texture = SubResource("CompressedTexture2D_hw1yg")
-texture_margin_left = 14.0
-texture_margin_top = 13.9039
-texture_margin_right = 14.0
-texture_margin_bottom = 13.0
-region_rect = Rect2(0, 0, 128, 128)
-modulate_color = Color(1, 0.843137, 0, 1)
+texture = ExtResource("6_k0jwi")
+region_rect = Rect2(0, 0, 30, 30)
+modulate_color = Color(1, 0.843137, 0, 0.313726)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2qa8s"]
-texture = ExtResource("4_2qa8s")
-texture_margin_left = 14.0
-texture_margin_top = 13.9039
-texture_margin_right = 14.0
-texture_margin_bottom = 13.0
-region_rect = Rect2(0, 0, 128, 128)
+texture = ExtResource("6_k0jwi")
+region_rect = Rect2(0, 0, 30, 30)
 modulate_color = Color(0, 0.207843, 0.4, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khk1g"]
-texture = ExtResource("4_2qa8s")
-texture_margin_left = 14.0
-texture_margin_top = 13.0
-texture_margin_right = 14.0
-texture_margin_bottom = 13.0
-region_rect = Rect2(0, 0, 128, 128)
+texture = ExtResource("6_k0jwi")
+region_rect = Rect2(0, 0, 30, 30)
 modulate_color = Color(0, 0.207843, 0.4, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kwc32"]
-texture = ExtResource("4_2qa8s")
-texture_margin_left = 13.0349
-texture_margin_top = 13.0
-texture_margin_right = 14.0
-texture_margin_bottom = 12.0
-region_rect = Rect2(0, 0, 128, 128)
+texture = ExtResource("6_k0jwi")
+region_rect = Rect2(0, 0, 30, 30)
 modulate_color = Color(0, 0.207843, 0.4, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sb2cu"]
-texture = ExtResource("4_2qa8s")
-texture_margin_left = 13.0349
-texture_margin_top = 13.9039
-texture_margin_right = 12.4556
-texture_margin_bottom = 13.0
-region_rect = Rect2(0, 0, 128, 128)
-modulate_color = Color(0, 0.113725, 0.239216, 1)
+texture = ExtResource("6_k0jwi")
+region_rect = Rect2(0, 0, 30, 30)
+modulate_color = Color(0.0414063, 0.117517, 0.199156, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k7ub7"]
-texture = ExtResource("4_2qa8s")
+texture = ExtResource("4_sb2cu")
 texture_margin_left = 13.0
 texture_margin_top = 13.0
 texture_margin_right = 14.0
-texture_margin_bottom = 12.0
-modulate_color = Color(0, 0.207843, 0.4, 1)
+texture_margin_bottom = 34.0
+modulate_color = Color(0, 0.113725, 0.239216, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_kwc32"]
 color = Color(0.2, 0.207843, 0.2, 1)
 thickness = 4
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k0jwi"]
-texture = ExtResource("5_kwc32")
-texture_margin_left = 7.0
-texture_margin_top = 6.0
-texture_margin_right = 7.0
-texture_margin_bottom = 6.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-region_rect = Rect2(0, 38, 128, 52)
+texture = ExtResource("8_k0jwi")
+texture_margin_left = 11.0
+texture_margin_right = 11.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jg3c8"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jo25s"]
+bg_color = Color(0.0117647, 0.32549, 0.643137, 0.270588)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
 
 [sub_resource type="Image" id="Image_k0jwi"]
 data = {
@@ -651,11 +647,10 @@ region = Rect2(518, 21, 116, 86)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j032u"]
 texture = SubResource("AtlasTexture_sb2cu")
-texture_margin_left = 12.0
-texture_margin_top = 13.0
-texture_margin_right = 8.0
-texture_margin_bottom = 30.0
-region_rect = Rect2(0, -2, 116, 88)
+texture_margin_left = 32.0
+texture_margin_top = 11.0
+texture_margin_right = 32.0
+texture_margin_bottom = 34.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ck1rn"]
 atlas = ExtResource("5_sb2cu")
@@ -789,6 +784,10 @@ OptionButton/styles/normal = SubResource("StyleBoxTexture_v2df5")
 OptionButton/styles/pressed = SubResource("StyleBoxTexture_8xyf7")
 Panel/styles/panel = SubResource("StyleBoxFlat_0jsv5")
 PanelContainer/styles/panel = SubResource("StyleBoxTexture_rh1ak")
+ProgressBar/constants/outline_size = 10
+ProgressBar/font_sizes/font_size = 25
+ProgressBar/styles/background = SubResource("StyleBoxFlat_sb2cu")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_k0jwi")
 SecondaryButton/base_type = &"Button"
 SecondaryButton/styles/disabled = SubResource("StyleBoxTexture_45nau")
 SecondaryButton/styles/focus = SubResource("StyleBoxTexture_y8anf")
@@ -807,9 +806,12 @@ SkillNodeInfoPanelBackground/styles/panel = SubResource("StyleBoxTexture_k7ub7")
 SkillNodeInfoPanelSeparator/base_type = &"HSeparator"
 SkillNodeInfoPanelSeparator/styles/separator = SubResource("StyleBoxLine_kwc32")
 SkillNodeLabel/base_type = &"Label"
-SkillNodeLabel/font_sizes/font_size = 18
+SkillNodeLabel/font_sizes/font_size = 26
 SkillNodeLabelBackground/base_type = &"PanelContainer"
 SkillNodeLabelBackground/styles/panel = SubResource("StyleBoxTexture_k0jwi")
+SkillNodeProgressBar/base_type = &"ProgressBar"
+SkillNodeProgressBar/styles/background = SubResource("StyleBoxEmpty_jg3c8")
+SkillNodeProgressBar/styles/fill = SubResource("StyleBoxFlat_jo25s")
 TabContainer/colors/drop_mark_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 TabContainer/colors/font_hovered_color = Color(0.95, 0.95, 0.95, 1)

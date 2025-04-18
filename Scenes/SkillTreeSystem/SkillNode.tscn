@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=25 format=3 uid="uid://dekniu7v110w4"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="2_e6wyl"]
@@ -11,7 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://j8t0bm46hh8i" path="res://Scenes/SkillTreeSystem/InfoPanelInNode.tscn" id="8_l6k4y"]
 [ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/UI/MouseUp.tres" id="8_mtps6"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="9_2p7q1"]
+[ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="9_r0iul"]
+[ext_resource type="Texture2D" uid="uid://bcecq34k7a1vh" path="res://Textures/UI/Panels/Banner4.png" id="10_7k3qe"]
 [ext_resource type="PackedScene" uid="uid://h856dh64su3t" path="res://Scenes/UIComponents/SoundEffectComponentUI.tscn" id="10_fwr42"]
+[ext_resource type="Texture2D" uid="uid://b1mr8dt0dy0tw" path="res://Textures/UI/Buttons/SkillNodeBarTextureBG.png" id="12_3osas"]
+[ext_resource type="Texture2D" uid="uid://by8v51mabxol5" path="res://Textures/UI/Buttons/SkillNodeBarTextureFrame.png" id="13_nincy"]
+[ext_resource type="Texture2D" uid="uid://c4iby7swmesyj" path="res://Textures/UI/Buttons/BarSkillNodeFill.png" id="14_7p437"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_lqf14"]
 font = ExtResource("6_7srpc")
@@ -32,19 +37,55 @@ shadow_size = 3
 shadow_color = Color(0, 0, 0, 0.145098)
 shadow_offset = Vector2(2.5, 1)
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7k3qe"]
+texture = ExtResource("10_7k3qe")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+modulate_color = Color(0, 1, 0, 0.45098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oorjg"]
+texture = ExtResource("10_7k3qe")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+modulate_color = Color(1, 0, 0, 0.45098)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3osas"]
+texture = ExtResource("10_7k3qe")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+modulate_color = Color(1, 0.843137, 0, 0.45098)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7k3qe"]
+atlas = ExtResource("9_r0iul")
+region = Rect2(67, 2, 27, 27)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mu70c"]
+texture = ExtResource("10_7k3qe")
+texture_margin_left = 5.0
+texture_margin_top = 5.0
+texture_margin_right = 5.0
+texture_margin_bottom = 5.0
+modulate_color = Color(0, 0.0862745, 0.188235, 1)
+
 [node name="SkillNode" type="Button" groups=["PersistentNodes"]]
 light_mask = 64
 visibility_layer = 64
-custom_minimum_size = Vector2(86, 86)
+custom_minimum_size = Vector2(330, 330)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -576.0
-offset_top = -324.0
-offset_right = -448.0
-offset_bottom = -196.0
+offset_left = -169.0
+offset_top = -165.0
+offset_right = 161.0
+offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(8, 8)
@@ -60,49 +101,140 @@ enabled_label_settings = SubResource("LabelSettings_lqf14")
 disabled_label_settings = SubResource("LabelSettings_wgeri")
 bitcoin_icon = ExtResource("2_e6wyl")
 dollar_icon = ExtResource("5_dcm06")
+can_afford_style = SubResource("StyleBoxTexture_7k3qe")
+cannot_afford_style = SubResource("StyleBoxTexture_oorjg")
+max_upgraded_style = SubResource("StyleBoxTexture_3osas")
 on_mouse_entered_effect = ExtResource("6_p5k7w")
 on_mouse_down_effect = ExtResource("7_sbxpv")
 on_mouse_up_effect = ExtResource("8_mtps6")
 
+[node name="SkillNodeInfo" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0662n")
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SkillNodeInfo"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Title" type="Label" parent="SkillNodeInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"NormalText"
+text = "Title"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="SkillNodeTexture" type="TextureRect" parent="SkillNodeInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = SubResource("AtlasTexture_7k3qe")
+stretch_mode = 5
+
+[node name="Desc" type="Label" parent="SkillNodeInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"SkillNodeLabel"
+text = "Description	"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CostBackground" type="PanelContainer" parent="SkillNodeInfo/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_type_variation = &"SkillNodeInfoPanelBackground"
+theme_override_styles/panel = SubResource("StyleBoxTexture_mu70c")
+
+[node name="Cost" type="Label" parent="SkillNodeInfo/VBoxContainer/CostBackground"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(240, 15)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"SkillNodeLabel"
+text = "Cost"
+horizontal_alignment = 1
+
 [node name="CurrencyIcon" type="TextureRect" parent="."]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(96, 96)
 layout_mode = 1
-anchors_preset = 1
+anchors_preset = 3
 anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -34.0
-offset_top = 3.0
-offset_right = 30.0
-offset_bottom = 67.0
-grow_horizontal = 0
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_e6wyl")
-
-[node name="MarginContainer" type="MarginContainer" parent="."]
-layout_mode = 1
-anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -32.0
-grow_horizontal = 2
+offset_left = -58.0
+offset_top = -55.0
+offset_right = 38.0
+offset_bottom = 41.0
+grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_e6wyl")
+
+[node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
+visible = false
+z_index = 2
+layout_mode = 1
+anchors_preset = 5
+anchor_top = 0.0
+anchor_bottom = 0.0
+offset_top = -90.0
+offset_bottom = -90.0
+grow_vertical = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -90.0
+offset_bottom = -10.0
+grow_horizontal = 2
 mouse_filter = 2
 theme = ExtResource("1_0662n")
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_right = 30
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+[node name="LevelProgressBar" type="TextureProgressBar" parent="MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(270, 60)
 layout_mode = 2
-size_flags_vertical = 4
+size_flags_horizontal = 4
 theme = ExtResource("1_0662n")
-theme_type_variation = &"SkillNodeLabelBackground"
+max_value = 20.0
+value = 8.0
+fill_mode = 8
+nine_patch_stretch = true
+texture_under = ExtResource("12_3osas")
+texture_over = ExtResource("13_nincy")
+texture_progress = ExtResource("14_7p437")
+texture_progress_offset = Vector2(0.2, -0.22)
 
-[node name="SkillLabel" type="Label" parent="MarginContainer/PanelContainer"]
+[node name="SkillLabel" type="Label" parent="MarginContainer/LevelProgressBar"]
 unique_name_in_owner = true
 layout_mode = 2
+offset_left = 11.0
+offset_top = 17.0
+offset_right = 259.0
+offset_bottom = 42.0
 theme = ExtResource("1_0662n")
 theme_type_variation = &"SkillNodeLabel"
 text = "LOCKED"
@@ -116,19 +248,7 @@ show_behind_parent = true
 top_level = true
 width = 35.0
 
-[node name="SkillInfoPanel" parent="." instance=ExtResource("8_l6k4y")]
-visible = false
-z_index = 2
-layout_mode = 1
-anchors_preset = 5
-anchor_top = 0.0
-anchor_bottom = 0.0
-offset_top = -90.0
-offset_bottom = -90.0
-grow_vertical = 1
-
 [node name="AnimationComponent" parent="." instance=ExtResource("9_2p7q1")]
-enter_animation = true
 tween_time = 0.25
 tween_transition = 10
 tween_ease = 2

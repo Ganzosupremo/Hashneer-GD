@@ -281,7 +281,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_cyqrj")
 theme_override_styles/normal = SubResource("StyleBoxFlat_mi68g")
 text = "Start Game"
 alignment = 0
-enter_delay = 0.5
+enter_delay = 5.0
 pivot_below = true
 x_max = 7.0
 r_max = 1.0
@@ -296,7 +296,7 @@ material = SubResource("ShaderMaterial_5y1js")
 layout_mode = 1
 metadata/_edit_lock_ = true
 
-[node name="QuitGame" parent="MarginContainer/VBoxContainer/ButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("5_3o1w0")]
+[node name="QuitGame" parent="MarginContainer/VBoxContainer/ButtonContainer" instance=ExtResource("5_3o1w0")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(250, 50)
 layout_mode = 2
@@ -313,8 +313,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_gqvfn")
 theme_override_styles/normal = SubResource("StyleBoxFlat_emfc2")
 text = "Quit Game"
 alignment = 0
-wait_for = NodePath("../StartGame")
-wait_for_is_child = true
+enter_delay = 5.5
 shake_transition = 1
 metadata/_edit_lock_ = true
 

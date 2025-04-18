@@ -16,7 +16,7 @@ class_name LevelSelectorButton extends TweenableButton
 @export var cuts: int = 100
 @export var min_area: float = 100.0
 
-var builder_args: QuadrantBuilderArgs
+var builder_args: LevelBuilderArgs
 # This index is set on the Level Selector Scene
 var level_index: int = 0
 
@@ -28,7 +28,7 @@ func _ready() -> void:
 	self.mouse_entered.connect(_on_mouse_entered)
 
 func init_builder_args() -> void:
-	builder_args = QuadrantBuilderArgs.new()
+	builder_args = LevelBuilderArgs.new()
 	self.builder_args.level_index = self.level_index
 	self.builder_args.quadrant_size = self.quadrant_size
 	self.builder_args.grid_size = self.grid_size

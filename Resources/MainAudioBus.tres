@@ -1,11 +1,20 @@
-[gd_resource type="AudioBusLayout" load_steps=6 format=3 uid="uid://1ibwcs1mu46p"]
+[gd_resource type="AudioBusLayout" load_steps=7 format=3 uid="uid://1ibwcs1mu46p"]
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
 resource_name = "Compressor"
 threshold = -21.0
+gain = 2.0
 attack_us = 300.0
 release_ms = 300.0
+mix = 0.6
 sidechain = &"SFX"
+
+[sub_resource type="AudioEffectEQ" id="AudioEffectEQ_mpw00"]
+resource_name = "EQ"
+band_db/320_hz = -10.0
+band_db/1000_hz = -15.0
+band_db/3200_hz = -30.0
+band_db/10000_hz = -30.0
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_0w2f5"]
 resource_name = "Reverb"
@@ -45,6 +54,8 @@ bus/1/volume_db = -15.1981
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
 bus/1/effect/0/enabled = true
+bus/1/effect/1/effect = SubResource("AudioEffectEQ_mpw00")
+bus/1/effect/1/enabled = true
 bus/2/name = &"SFX"
 bus/2/solo = false
 bus/2/mute = false

@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv36oct4uiv5w"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_glr62"]
+
+[node name="SquareBoss" instance=ExtResource("1_glr62")]
+mass = 10.0
+advanced_regeneration = true
+invincible_time = 0.5
+color_default = Color(0.965179, 0.0726337, 0.403013, 1)
+knockback_resistance_base = 2.0
+shape_area_percent = 0.1
+fractures = 15
+collision_knockback_time = 0.05
+find_new_target_pos_tolerance = 30.0
+target_reached_tolerance = 30.0
+target_pos_interval_range = Vector2(5, 10)
+keep_distance_range = Vector2(1, 1)
+max_speed = 50.0
+accel = 1000.0
+polygon_shape = 1
+cir_radius = 0.0
+cir_smoothing = 0
+rectangle_size = Vector2(100, 100)
