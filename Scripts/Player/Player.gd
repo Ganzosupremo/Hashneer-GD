@@ -1,6 +1,10 @@
 extends CharacterBody2D
 class_name PlayerController
 
+@export_category("Events")
+@export var main_event_bus: MainEventBus
+
+@export_category("Parameters")
 @export var player_details: PlayerDetails
 @export var speed: float = 200.0
 @export var initial_weapon: WeaponDetails
@@ -37,7 +41,7 @@ func _ready() -> void:
 	gravity_sources.clear()
 	GameManager.player = self
 	_health.zero_health.connect(on_zero_power)
-	GameManager.level_completed.connect(deactivate_player)
+	main_event_bus.level_completed.connect(deactivate_player)
 	_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
 
@@ -76,7 +80,7 @@ func set_weapon() -> void:
 	for weapon in weapons_array:
 		active_weapon.add_weapon_to_list(weapon)
 
-func deactivate_player() -> void:
+func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	can_move = false
 
 func apply_gravity(force: Vector2) -> void:

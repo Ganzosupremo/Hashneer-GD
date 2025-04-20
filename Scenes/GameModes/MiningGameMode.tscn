@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=50 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="1_eny06"]
 [ext_resource type="Texture2D" uid="uid://dnkikaarda1ys" path="res://Textures/BG/59.png" id="2_uw255"]
@@ -21,6 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="19_i1wc4"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="20_2lbus"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="21_4y4n7"]
+[ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="21_xxpkq"]
 [ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="22_8xmqo"]
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="23_44xgw"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="24_thavx"]
@@ -111,17 +112,16 @@ sound_volume = 1.0
 audio_stream = ExtResource("17_1gtfo")
 sound_pitch = 1.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_u7rsq"]
-size = Vector2(20279, 350)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xxpkq"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_p55td"]
-size = Vector2(20285, 350)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xy5po"]
+normal = Vector2(0, 1)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qbyyp"]
-size = Vector2(350, 20340)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1noj3"]
+normal = Vector2(-1, 0)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6x43y"]
-size = Vector2(294, 20341)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c7ke4"]
+normal = Vector2(1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
@@ -285,20 +285,20 @@ collision_layer = 8
 collision_mask = 497
 
 [node name="Bottom" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(31.5, 10000)
-shape = SubResource("RectangleShape2D_u7rsq")
+position = Vector2(0, 11500)
+shape = SubResource("WorldBoundaryShape2D_xxpkq")
 
 [node name="Up" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(27.5, -10000)
-shape = SubResource("RectangleShape2D_p55td")
+position = Vector2(0, -11500)
+shape = SubResource("WorldBoundaryShape2D_xy5po")
 
 [node name="Right" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(10003, 4)
-shape = SubResource("RectangleShape2D_qbyyp")
+position = Vector2(13500, 0)
+shape = SubResource("WorldBoundaryShape2D_1noj3")
 
 [node name="Left" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(-9972, -0.5)
-shape = SubResource("RectangleShape2D_6x43y")
+position = Vector2(-13500, 0)
+shape = SubResource("WorldBoundaryShape2D_c7ke4")
 
 [node name="Player" parent="." instance=ExtResource("19_i1wc4")]
 unique_name_in_owner = true
@@ -308,6 +308,7 @@ position = Vector2(299, 293)
 unique_name_in_owner = true
 
 [node name="Pool_FractureBullets" parent="." instance=ExtResource("20_2lbus")]
+instance_template = ExtResource("21_xxpkq")
 max_amount = 10
 instantiate_new_on_empty = true
 
@@ -331,11 +332,12 @@ unique_name_in_owner = true
 position = Vector2(425, 0)
 
 [node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("24_thavx")]
+position = Vector2(302, 296)
 zoom = Vector2(1.75, 1.75)
-limit_left = -10000
-limit_top = -10000
-limit_right = 10000
-limit_bottom = 10000
+limit_left = -13500
+limit_top = -11000
+limit_right = 13500
+limit_bottom = 11000
 limit_smoothed = true
 position_smoothing_speed = 15.0
 rotation_smoothing_speed = 4.0

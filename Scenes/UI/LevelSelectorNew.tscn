@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://brtsijxypeeo5"]
+[gd_scene load_steps=15 format=3 uid="uid://brtsijxypeeo5"]
 
 [ext_resource type="Script" uid="uid://bqel0jwld7ui" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_qlfbf"]
@@ -7,9 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_ky1qw"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
 [ext_resource type="PackedScene" uid="uid://cfs468tglaels" path="res://Scenes/GameModes/UnlimitedWavesGameMode.tscn" id="4_t7qu3"]
-[ext_resource type="Texture2D" uid="uid://bcecq34k7a1vh" path="res://Textures/UI/Panels/Banner4.png" id="5_stq2g"]
-[ext_resource type="Texture2D" uid="uid://dcvqxv14ofaqb" path="res://Textures/UI/Panels/HasheneerUIBanner.png" id="8_stq2g"]
+[ext_resource type="Texture2D" uid="uid://47ms0oefqn5n" path="res://Textures/UI/Panels/PanelBackground_v3.png" id="6_stq2g"]
+[ext_resource type="Texture2D" uid="uid://bf0jne128i4qm" path="res://Textures/UI/Panels/Banner_v6.png" id="7_07y13"]
 [ext_resource type="StyleBox" uid="uid://5fc84nioxg3c" path="res://Themes/ButtonStylePressedTransparent.tres" id="10_v6iyg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_stq2g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_xhjs5"]
 shader = ExtResource("4_l8bnr")
@@ -30,24 +32,30 @@ shader_parameter/pixel_filter = 700.0
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xux2"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_07y13"]
-texture = ExtResource("5_stq2g")
-region_rect = Rect2(0, 0, 15, 15)
-modulate_color = Color(0, 0.176307, 0.348342, 1)
+texture = ExtResource("6_stq2g")
 
 [node name="LevelSelectorNew" type="CanvasLayer"]
 script = ExtResource("1_64jrb")
 scene_to_load = ExtResource("2_qnmrt")
 waves_game_mode = ExtResource("4_t7qu3")
 
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_stq2g")
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
 material = SubResource("ShaderMaterial_xhjs5")
-custom_minimum_size = Vector2(650, 350)
+custom_minimum_size = Vector2(650, 450)
 anchors_preset = 14
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = -280.5
-offset_bottom = 280.5
+offset_top = -200.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qlfbf")
@@ -72,14 +80,14 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_07y13")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = 10
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer"]
 custom_minimum_size = Vector2(150, 75)
 layout_mode = 2
 size_flags_vertical = 4
-texture = ExtResource("8_stq2g")
+texture = ExtResource("7_07y13")
 
 [node name="LevelName" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/TextureRect" instance=ExtResource("3_ky1qw")]
 unique_name_in_owner = true
@@ -87,19 +95,13 @@ layout_mode = 1
 anchors_preset = 14
 anchor_left = 0.0
 anchor_right = 1.0
-offset_left = 0.0
-offset_top = -23.5
-offset_right = 0.0
-offset_bottom = 23.5
+offset_left = 29.0
+offset_top = -23.0
+offset_right = -53.0
+offset_bottom = 24.0
 theme_override_font_sizes/font_size = 49
 text = "Level Name"
-
-[node name="LevelSize" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer" instance=ExtResource("3_ky1qw")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 75)
-layout_mode = 2
-text = "
-"
+horizontal_alignment = 0
 
 [node name="MarginContainer" type="VBoxContainer" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -110,50 +112,50 @@ alignment = 1
 
 [node name="AnimatedLabel" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer" instance=ExtResource("3_ky1qw")]
 layout_mode = 2
-theme_type_variation = &"TooltipLabel"
+theme_type_variation = &"SkillNodeLabel"
 text = "Choose Game Mode:"
 
-[node name="HBoxContainer" type="GridContainer" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer"]
+[node name="HBoxContainer" type="Control" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(335, 90)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-columns = 2
 
 [node name="WavesGameMode" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_pyfpb")]
 custom_minimum_size = Vector2(160, 0)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 4
+anchor_left = 0.0
+anchor_right = 0.0
+offset_left = 0.0
+offset_top = -44.6484
+offset_right = 160.0
+offset_bottom = 44.6484
+grow_horizontal = 1
 focus_neighbor_top = NodePath("../../../../../../../NextLevelButton")
 theme_type_variation = &"MainButton"
 theme_override_font_sizes/font_size = 25
 text = "Unlimited
 Waves"
+enter_animation = false
 
 [node name="MiningGameMode" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_pyfpb")]
 custom_minimum_size = Vector2(160, 0)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = -44.5
+offset_right = 0.0
+offset_bottom = 44.5
+grow_horizontal = 0
 focus_neighbor_top = NodePath("../../../../../../../NextLevelButton")
 theme_type_variation = &"SecondaryButton"
 theme_override_font_sizes/font_size = 25
 text = "Mining
 Mode"
-
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer"]
-custom_minimum_size = Vector2(0, 69)
-layout_mode = 2
-
-[node name="QuadrantsHealth" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer" instance=ExtResource("3_ky1qw")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 39
-text = "Quadrant's Health"
-
-[node name="BlockCoreHealth" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer" instance=ExtResource("3_ky1qw")]
-unique_name_in_owner = true
-visible = false
-layout_mode = 2
-theme_override_font_sizes/font_size = 39
-text = "Block core health"
+enter_animation = false
 
 [node name="ExitButton" parent="." instance=ExtResource("2_pyfpb")]
 custom_minimum_size = Vector2(160, 40)
@@ -173,7 +175,8 @@ theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
 text = "X"
 autowrap_mode = 3
-tween_transition = 1
+enter_animation = false
+tween_time = 0.2
 tween_size = Vector2(0, 0)
 
 [node name="PreviousLevelButton" parent="." instance=ExtResource("2_pyfpb")]
@@ -196,7 +199,7 @@ theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
 theme_override_styles/pressed = ExtResource("10_v6iyg")
 text = "<"
-from_center = false
+enter_animation = false
 tween_time = 0.2
 
 [node name="NextLevelButton" parent="." instance=ExtResource("2_pyfpb")]
@@ -219,9 +222,8 @@ focus_previous = NodePath("../PreviousLevelButton")
 theme_type_variation = &"ThirtiaryButton"
 theme_override_font_sizes/font_size = 50
 text = ">"
-parallel_animations = false
+enter_animation = false
 tween_time = 0.2
-tween_transition = 11
 tween_position = Vector2(20, 0)
 
 [connection signal="pressed" from="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/WavesGameMode" to="." method="_on_waves_game_mode_pressed"]

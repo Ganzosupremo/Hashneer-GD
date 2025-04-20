@@ -98,7 +98,7 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		# tween.tween_property(Engine, "time_scale", 0.21, 0.15).set_ease(Tween.EASE_IN_OUT)
 		
 		_destroy_block_core(other_body, cuts, min_area)
-		_mine_block(miner)
+		# _mine_block(miner)
 
 		random_drops.spawn_drops(1)
 

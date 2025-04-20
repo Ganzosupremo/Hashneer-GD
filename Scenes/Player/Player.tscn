@@ -1,6 +1,7 @@
-[gd_scene load_steps=39 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=40 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" uid="uid://bea44as0v1pbg" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_yb677"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Player/DeadSoundEffect.tres" id="3_vql12"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="4_hiv41"]
 [ext_resource type="AudioStream" uid="uid://b6xtdvlf02gu3" path="res://Audio/Player/Squidward Walking Sound Effect Cutted.wav" id="4_ojon2"]
@@ -136,6 +137,7 @@ visibility_layer = 16
 collision_layer = 128
 collision_mask = 1305
 script = ExtResource("1_ha4ea")
+main_event_bus = ExtResource("2_yb677")
 player_details = ExtResource("6_6tu5v")
 initial_weapon = ExtResource("6_vaewd")
 dead_sound_effect = ExtResource("3_vql12")

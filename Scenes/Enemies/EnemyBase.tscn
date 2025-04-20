@@ -221,7 +221,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 [sub_resource type="Resource" id="Resource_bo7sv"]
 script = ExtResource("12_5jwg1")
 possible_drops = Array[ExtResource("11_imyi4")]([SubResource("Resource_t8mk1")])
-guaranteed_drops = 1
+guaranteed_drops = 0
 combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
@@ -242,7 +242,6 @@ max_contacts_reported = 12
 script = ExtResource("1_iiq2q")
 invincible_time = 0.1
 shape_area_percent = 0.3
-find_new_target_pos_tolerance = 20.0
 target_reached_tolerance = 50.0
 target_pos_interval_range = Vector2(10, 20)
 keep_distance_range = Vector2(1.5, 1.5)

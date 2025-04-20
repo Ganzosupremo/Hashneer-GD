@@ -8,15 +8,17 @@ extends Node2D
 @onready var label: Label = $UI/Control/Label
 @onready var boss_timer: Timer = Timer.new()
 @onready var boss_progress_bar: ProgressBar = $UI/BossTimer/MarginContainer/BossProgressBar
+@onready var level_completed: LevelCompletedUI = $UI/LevelCompletedUI
+@onready var boss_spawner: RandomDrops = $BossSpawner
 
-var time_to_spawn_boss: float = 100.0
+
+var time_to_spawn_boss: float = 60.0
 var time_to_spawn_boss_passed: float = 0.0
 var boss_spawned: bool = false
 
 var kill_count: int = 0
 var spawn_enemies_timer: Timer
-var _spawn_timer_time: float = 0.0
-var _spawn_time: float = 5.0
+var _spawn_time: float = 15.0
 @export var level_args: LevelBuilderArgs
 var spawned_enemies_array: Array = []
 
@@ -71,16 +73,10 @@ func spawnFractureBody(fracture_shard : Dictionary, new_mass : float, color : Co
 
 func on_spawn_enemies_timer_timeout() -> void:
 	spawned_enemies_array.append_array(_spawn_enemies(10))
-	for enemy in spawned_enemies_array:
-		if enemy.is_connected("Damaged", on_enemy_damaged) or \
-			enemy.is_connected("Fractured", on_enemy_fractured) or \
-			enemy.is_connected("Died", on_enemy_died) or \
-			enemy.is_connected("Freed", on_enemy_freed):
-				continue
 
 func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
 	spawnShapeVisualizer(pos, shape, color, fade_speed)
-	GameManager.player.damage(randf_range(enemy.collision_damage.x, enemy.collision_damage.y) * 1.2)
+	GameManager.player.damage(randf_range(enemy.collision_damage.x, enemy.collision_damage.y))
 
 func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass : float, color : Color, fracture_force : float, p : float) -> void:
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
@@ -95,5 +91,9 @@ func on_enemy_freed(ref: BaseEnemy) -> void:
 
 func _on_boss_progress_bar_value_changed(value: float) -> void:
 	if value == boss_progress_bar.max_value:
+		boss_spawner.spawn_drops(10)
 		boss_spawned = true
-		print_debug("Boss spawned")
+		
+
+func _on_exit_button_pressed() -> void:
+	GameManager.emit_level_completed(Constants.ERROR_210)

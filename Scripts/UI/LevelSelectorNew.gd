@@ -4,9 +4,6 @@ class_name LevelSelectorMenu extends CanvasLayer
 @export var waves_game_mode: PackedScene
 
 @onready var level_name: AnimatedLabel = %LevelName
-@onready var level_size: AnimatedLabel = %LevelSize
-@onready var quadrants_health: AnimatedLabel = %QuadrantsHealth
-@onready var block_core_health: AnimatedLabel = %BlockCoreHealth
 
 @onready var previous_level_button: TweenableButton = %PreviousLevelButton
 @onready var next_level_button: TweenableButton = %NextLevelButton
@@ -59,11 +56,6 @@ func _update_level_info() -> void:
 	var level: LevelBuilderArgs = GameManager.game_levels[_current_level_index]
 	
 	level_name.set_text("Level %d" % (level.level_index + 1))
-	level_size.set_text("Map Size: %dx%d" % [level.grid_size.x, level.grid_size.y])
-	quadrants_health.set_text("Block's Health: %d" % level.initial_health)
-	var block_cores_health = level.initial_health * 2.0
-	block_core_health.set_text("Block Core's Health: %d" % block_cores_health)
-
 	_update_button_states()
 
 func _on_enter_game_pressed() -> void:

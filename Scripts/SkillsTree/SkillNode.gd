@@ -51,7 +51,7 @@ enum FEATURE_TYPE {
 
 @onready var skill_line: Line2D = %SkillBranch
 @onready var skill_label_status: Label = %SkillLabel
-@onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
+# @onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
 @onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 @onready var currency_icon: TextureRect = %CurrencyIcon
 @onready var progress_bar: TextureProgressBar = %LevelProgressBar
@@ -163,7 +163,7 @@ func _buy_upgrade() -> bool:
 func _update_skill_status_label(_text: String, maxed_out: bool = false):
 		var new_text = _text if not maxed_out else "Maxed"
 		skill_label_status.text = new_text
-		_update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), maxed_out)
+		# _update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), maxed_out)
 
 func _update_progress_bar(value: float, max_value: float) -> void:
 	progress_bar.max_value = max_value
@@ -195,8 +195,8 @@ func _update_node_line_points() -> void:
 		skill_line.hide()
 	skill_line.show()
 
-func _update_info_panel(_cost: float, maxed_out: bool = false) -> void:
-	skill_info_panel.update_cost_label(int(_cost), maxed_out)
+# func _update_info_panel(_cost: float, maxed_out: bool = false) -> void:
+# 	skill_info_panel.update_cost_label(int(_cost), maxed_out)
 
 func _update_skill_node_info(_title: String, _desc: String, _cost: float) -> void:
 	title.text = _title
@@ -248,7 +248,7 @@ func set_use_btc_as_currency(new_value: bool) -> void:
 	use_bitcoin = new_value
 	set_currency_icon(use_bitcoin)
 	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
+	# skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
 
 func set_currency_icon(btc_icon: bool) -> void:
 	currency_icon.texture = bitcoin_icon if btc_icon else dollar_icon
@@ -258,12 +258,12 @@ func set_currency_icon(btc_icon: bool) -> void:
 #region Signals
 
 func _on_mouse_entered() -> void:
-	skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(use_bitcoin)), use_bitcoin, is_maxed_out)
+	# skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(use_bitcoin)), use_bitcoin, is_maxed_out)
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
-func _on_mouse_exited() -> void:
-	skill_info_panel.deactivate_panel()
+# func _on_mouse_exited() -> void:
+# 	skill_info_panel.deactivate_panel()
 
 func _on_skill_pressed() -> void:
 	if not _buy_upgrade():
@@ -272,7 +272,7 @@ func _on_skill_pressed() -> void:
 	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), is_maxed_out)
 	_update_progress_bar(skillnode_data.upgrade_level, skillnode_data.upgrade_max_level)
 	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	_update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), is_maxed_out)
+	# _update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), is_maxed_out)
 	_unlock_or_upgrade()
 
 func _on_button_down() -> void:

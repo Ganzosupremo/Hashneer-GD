@@ -1,11 +1,11 @@
 extends Node2D
 
-signal level_completed()
-
-@export_category("Player Parameters")
+@export_category("Player")
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
+@export_category("Main Event Buses")
 @export var main_skill_tree_event_bus: SkillTreeEventBus
+@export var main_event_bus: MainEventBus
 
 @export_category("Levels")
 @export var game_levels: Array[LevelBuilderArgs]
@@ -32,12 +32,15 @@ const implements = [
 ]
 
 #region Public API
-func complete_level() -> void:
-	level_completed.emit()
+func complete_level(code: String = "") -> void:
+	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 	if player_in_completed_level(): return
 	
 	levels_unlocked += 1
 	previous_levels_unlocked_index = levels_unlocked - 1
+
+func emit_level_completed(code: String = "") -> void:
+	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 
 func player_in_completed_level() -> bool:
 	if levels_unlocked < previous_levels_unlocked_index:

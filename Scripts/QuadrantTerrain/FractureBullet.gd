@@ -87,7 +87,3 @@ func _on_collision_detection_body_entered(_body: Node2D) -> void:
 
 func set_bullet_trail(length: int, gradient: Gradient):
 	trail.spawn(length, gradient, ammo_details.trail_width)
-
-
-# func set_trail_particles() -> void:
-# 	bullet_trail_particles.set_trail_particles(ammo_details.emits_trail_particles, ammo_details.particle_trail_details)

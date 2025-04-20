@@ -27,12 +27,11 @@ func add_currency_in_circulation(new_coins) -> void:
 func get_currency_in_circulation() -> float:
 	return fiat_currency_in_circulation
 
-
+## Tries to add the amount to the wallet, theres a chance it will be denied
 func authorize_transaction(amount: float) -> bool:
 	fiat_currency_in_circulation += amount
 	var prob: float = _probability_from_amount(amount)
 	if randf() < prob:
-		print("Transaction denied")
 		return false
 	
 	BitcoinWallet.add_fiat(amount)

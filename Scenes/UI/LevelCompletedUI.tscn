@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://dmek3vskirk8m"]
+[gd_scene load_steps=18 format=3 uid="uid://dmek3vskirk8m"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" uid="uid://c4yonen0o5du7" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_67u4f"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="2_re8gt"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="3_fkdm4"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="3_m870y"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="4_ny3yf"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
@@ -60,7 +61,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_dcscb")
-event_bus = ExtResource("2_67u4f")
+item_drop_bus = ExtResource("2_67u4f")
+main_event_bus = ExtResource("3_fkdm4")
 
 [node name="AnimationComponent" parent="." instance=ExtResource("2_re8gt")]
 enter_animation = true

@@ -1,8 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=19 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="2_vk5qk"]
 [ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="3_1wrq4"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="4_4lapq"]
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="5_px33u"]
 [ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="7_dsf0w"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="9_1f4k2"]
@@ -20,6 +21,8 @@ fiat_drop_rate_factor = 1.1
 level_index = 0
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_rmngw"]
 script = ExtResource("7_dsf0w")
@@ -32,6 +35,8 @@ fiat_drop_rate_factor = 1.2
 level_index = 1
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_885h5"]
 script = ExtResource("7_dsf0w")
@@ -45,6 +50,8 @@ fiat_drop_rate_factor = 1.3
 level_index = 2
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_2pchh"]
 script = ExtResource("7_dsf0w")
@@ -57,6 +64,8 @@ fiat_drop_rate_factor = 1.5
 level_index = 3
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_vq5xj"]
 script = ExtResource("7_dsf0w")
@@ -70,6 +79,8 @@ fiat_drop_rate_factor = 1.6
 level_index = 4
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_dxlcl"]
 script = ExtResource("7_dsf0w")
@@ -82,6 +93,8 @@ fiat_drop_rate_factor = 1.7
 level_index = 5
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 50.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_46rwd"]
 script = ExtResource("7_dsf0w")
@@ -95,6 +108,8 @@ fiat_drop_rate_factor = 1.9
 level_index = 6
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_3ywsn"]
 script = ExtResource("7_dsf0w")
@@ -107,6 +122,8 @@ fiat_drop_rate_factor = 2.1
 level_index = 7
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_mcmpw"]
 script = ExtResource("7_dsf0w")
@@ -120,6 +137,8 @@ fiat_drop_rate_factor = 2.3
 level_index = 8
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [sub_resource type="Resource" id="Resource_2sqe8"]
 script = ExtResource("7_dsf0w")
@@ -132,9 +151,12 @@ fiat_drop_rate_factor = 2.5
 level_index = 9
 block_core_cuts_delaunay = 300
 block_core_cut_min_area = 100.0
+spawn_time = 5.0
+spawn_count = 5
 
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")
 player_details = ExtResource("2_vk5qk")
 main_skill_tree_event_bus = ExtResource("3_1wrq4")
+main_event_bus = ExtResource("4_4lapq")
 game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8")])

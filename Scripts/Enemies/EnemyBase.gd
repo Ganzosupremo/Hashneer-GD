@@ -51,6 +51,7 @@ signal Freed(ref: BaseEnemy)
 @export var collision_knockback_time: float = 0.15
 
 @export_category("Targeting")
+@export var target: Node2D = null
 @export var find_new_target_pos_tolerance: float = 50.0
 @export var target_reached_tolerance: float = 10.0
 @export var target_pos_interval_range := Vector2(0.5, 1.5)
@@ -112,7 +113,6 @@ signal Freed(ref: BaseEnemy)
 
 var cur_area : float = 0.0
 var start_area : float = 0.0
-var target = null
 var target_pos := Vector3.ZERO
 var prev_target_pos := Vector2.ZERO
 var knockback_resistance : float = 1.0
@@ -210,50 +210,11 @@ func _processKnockbackTimer(delta : float) -> void:
 		if knockback_timer <= 0.0:
 			knockback_timer = 0.0
 
-# Change later, the enemy will not integrate any forces
-func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+func _physics_process(delta):
 	if isKnockbackActive(): return
-
-
-	if state.get_contact_count() > 0:
-		var collisions : Dictionary = {}
-		#filtering the collisions
-		for i in range(state.get_contact_count()):
-			var id = state.get_contact_collider_id(i)
-			if collisions.has(id):
-				var shape = state.get_contact_collider_shape(i)
-				collisions[id].shapes.append(shape)
-			else:
-				var body = state.get_contact_collider_object(i)
-				var shape = state.get_contact_collider_shape(i)
-				var pos = state.get_contact_collider_position(i)
-				collisions[id] = {"body" : body, "shapes" : [shape], "pos" : pos}
-		
-		
-		# Set target if not set
-		# var count : int = collisions.values().size()
-		# if target == null and count > 0:
-		# 	if count == 1:
-		# 		setTarget(collisions.values()[0].body)
-		# 	else:
-		# 		var rand_index : int = _rng.randi_range(0, count - 1)
-		# 		setTarget(collisions.values()[rand_index].body)
-		
-		
-		for col in collisions.values():
-			if col.body is RigidBody2D:
-				if col.body.has_method("damage"):
-					var force : Vector2 = (col.body.global_position - global_position).normalized() * collision_knockback_force
-					col.body.call_deferred("damage", collision_damage, col.pos, force, collision_knockback_time, self, getCurColor())
-		
+	_handle_screen_wrapping()
 	var input: Vector2 = Vector2.ZERO
-	
-	# if target and is_instance_valid(target): 
-	# 	if find_new_target_pos_tolerance > 0.0:
-	# 		var dis : float = (prev_target_pos - target.global_position).length_squared()
-	# 		if dis > find_new_target_pos_tolerance_sq:
-	# 			setNewTargetPos()
-	
+
 	if target_pos.z == 1.0:
 		var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
 		var target_vec: Vector2 = cur_target_pos - global_position
@@ -264,19 +225,119 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	
 	# Setting velocity towards target
 	if input != Vector2.ZERO:
-		var increase : Vector2 = input * getCurAccel() * state.step
-		state.linear_velocity += increase
-		if state.linear_velocity.length_squared() > getCurMaxSpeedSq():
-			state.linear_velocity = state.linear_velocity.normalized() * getCurMaxSpeed()
+		var increase : Vector2 = input * getCurAccel() * delta
+		linear_velocity += increase
+		if linear_velocity.length_squared() > getCurMaxSpeedSq():
+			linear_velocity = linear_velocity.normalized() * getCurMaxSpeed()
 	else:
-		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * state.step
-		if decrease.length_squared() >= state.linear_velocity.length_squared():
-			state.linear_velocity = Vector2.ZERO
+		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * delta
+		if decrease.length_squared() >= linear_velocity.length_squared():
+			linear_velocity = Vector2.ZERO
 		else:
-			state.linear_velocity -= decrease
+			linear_velocity -= decrease
 	
 	if rotate_towards_velocity:
-		global_rotation = state.linear_velocity.angle()
+		global_rotation = linear_velocity.angle()
+
+# Change later, the enemy will not integrate any forces
+# func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+# 	if isKnockbackActive(): return
+
+
+# 	if state.get_contact_count() > 0:
+# 		var collisions : Dictionary = {}
+# 		#filtering the collisions
+# 		for i in range(state.get_contact_count()):
+# 			var id = state.get_contact_collider_id(i)
+# 			if collisions.has(id):
+# 				var shape = state.get_contact_collider_shape(i)
+# 				collisions[id].shapes.append(shape)
+# 			else:
+# 				var body = state.get_contact_collider_object(i)
+# 				var shape = state.get_contact_collider_shape(i)
+# 				var pos = state.get_contact_collider_position(i)
+# 				collisions[id] = {"body" : body, "shapes" : [shape], "pos" : pos}
+		
+		
+# 		# Set target if not set
+# 		# var count : int = collisions.values().size()
+# 		# if target == null and count > 0:
+# 		# 	if count == 1:
+# 		# 		setTarget(collisions.values()[0].body)
+# 		# 	else:
+# 		# 		var rand_index : int = _rng.randi_range(0, count - 1)
+# 		# 		setTarget(collisions.values()[rand_index].body)
+		
+		
+# 		for col in collisions.values():
+# 			if col.body is RigidBody2D:
+# 				if col.body.has_method("damage"):
+# 					var force : Vector2 = (col.body.global_position - global_position).normalized() * collision_knockback_force
+# 					col.body.call_deferred("damage", collision_damage, col.pos, force, collision_knockback_time, self, getCurColor())
+		
+# 	var input: Vector2 = Vector2.ZERO
+	
+# 	# if find_new_target_pos_tolerance > 0.0:
+# 	# 	var dis : float = (prev_target_pos - Vector2(target_pos.x, target_pos.y)).length_squared()
+# 	# 	if dis > find_new_target_pos_tolerance_sq:
+# 	# 		setNewTargetPos()
+	
+# 	if target_pos.z == 1.0:
+# 		var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
+# 		var target_vec: Vector2 = cur_target_pos - global_position
+# 		var dis : float = target_vec.length_squared()
+		
+# 		if dis > target_reached_tolerance_sq:
+# 			input = target_vec.normalized()
+	
+# 	# Setting velocity towards target
+# 	if input != Vector2.ZERO:
+# 		var increase : Vector2 = input * getCurAccel() * state.step
+# 		state.linear_velocity += increase
+# 		if state.linear_velocity.length_squared() > getCurMaxSpeedSq():
+# 			state.linear_velocity = state.linear_velocity.normalized() * getCurMaxSpeed()
+# 	else:
+# 		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * state.step
+# 		if decrease.length_squared() >= state.linear_velocity.length_squared():
+# 			state.linear_velocity = Vector2.ZERO
+# 		else:
+# 			state.linear_velocity -= decrease
+	
+# 	if rotate_towards_velocity:
+# 		global_rotation = state.linear_velocity.angle()
+# 	_handle_screen_wrapping()
+
+# Handle screen wrapping - when boss goes off one side, it appears on the opposite side
+func _handle_screen_wrapping() -> void:
+	var viewport_rect: Vector2 = get_viewport_rect().size
+	var screen_width : float = viewport_rect.x
+	var screen_height : float = viewport_rect.y
+	var position_changed : bool = false
+	
+	# Get the current position
+	var current_position = global_position
+	
+	# Check horizontal wrapping
+	if current_position.x <= 0:
+		current_position.x = screen_width
+		position_changed = true
+	elif current_position.x >= screen_width:
+		current_position.x = 0
+		position_changed = true
+	
+	# Check vertical wrapping
+	if current_position.y <= 0:
+		current_position.y = screen_height
+		position_changed = true
+	elif current_position.y >= screen_height:
+		current_position.y = 0
+		position_changed = true
+	
+	# Apply position change if needed
+	if position_changed:
+		position = current_position
+
+#region Poly Fracture Functions
 
 func applyColor(color : Color) -> void:
 	_polygon.modulate = color
@@ -350,10 +411,9 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	return {"percent_cut" : percent_cut , "dead" : isDead()}
 
 func kill() -> void:
-	# _sound_effect_component.finished.connect(_on_dead_sound_finished)
-#	SoundServer.play2D("die", global_position, "blob", 1.0, SoundServer.OVERRIDE_BEHAVIOUR.OLDEST, -1)
 	Died.emit(self, global_position)
-	random_drops.spawn_drops(randi_range(1, 4), 1.5)
+	for i in range(5):
+		random_drops.spawn_drops(i)
 	hide()
 	await _sound_effect_component.set_and_play_sound(sound_on_dead)
 	queue_free()
@@ -430,6 +490,8 @@ func restore() -> void:
 			applyColor(color_default)
 		
 	total_frame_heal_amount = 0.0
+
+#endregion
 
 #region Boolean functions
 
@@ -582,6 +644,7 @@ func on_regeneration_timer_timeout() -> void:
 
 
 func _on_off_screen_notifier_screen_exited() -> void:
-	Freed.emit(self)
-	await GameManager.init_timer(.8).timeout
-	queue_free()
+	pass
+	# Freed.emit(self)
+	# await GameManager.init_timer(.8).timeout
+	# queue_free()
