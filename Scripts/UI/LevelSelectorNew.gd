@@ -55,7 +55,7 @@ func _update_level_info() -> void:
 	
 	var level: LevelBuilderArgs = GameManager.game_levels[_current_level_index]
 	
-	level_name.set_text("Level %d" % (level.level_index + 1))
+	level_name.set_text("Level %d" % (level.level_index))
 	_update_button_states()
 
 func _on_enter_game_pressed() -> void:

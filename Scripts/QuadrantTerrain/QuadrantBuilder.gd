@@ -48,7 +48,7 @@ func _ready() -> void:
 
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
-	var builder_data: LevelBuilderArgs = GameManager.current_builder_args
+	var builder_data: LevelBuilderArgs = GameManager.current_level_args
 	builder_args = builder_data
 	
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)

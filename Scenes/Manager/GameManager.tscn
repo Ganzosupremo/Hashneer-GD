@@ -22,7 +22,9 @@ level_index = 0
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 10
+enemy_drops_count = 1
+enemy_damage_multiplier = 1.0
 
 [sub_resource type="Resource" id="Resource_rmngw"]
 script = ExtResource("7_dsf0w")
@@ -36,7 +38,9 @@ level_index = 1
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 15
+enemy_drops_count = 1
+enemy_damage_multiplier = 1.1
 
 [sub_resource type="Resource" id="Resource_885h5"]
 script = ExtResource("7_dsf0w")
@@ -51,7 +55,9 @@ level_index = 2
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 20
+enemy_drops_count = 2
+enemy_damage_multiplier = 1.25
 
 [sub_resource type="Resource" id="Resource_2pchh"]
 script = ExtResource("7_dsf0w")
@@ -65,7 +71,9 @@ level_index = 3
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 25
+enemy_drops_count = 3
+enemy_damage_multiplier = 1.3
 
 [sub_resource type="Resource" id="Resource_vq5xj"]
 script = ExtResource("7_dsf0w")
@@ -80,7 +88,9 @@ level_index = 4
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 4
+enemy_damage_multiplier = 1.4
 
 [sub_resource type="Resource" id="Resource_dxlcl"]
 script = ExtResource("7_dsf0w")
@@ -94,7 +104,9 @@ level_index = 5
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 50.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 5
+enemy_damage_multiplier = 1.5
 
 [sub_resource type="Resource" id="Resource_46rwd"]
 script = ExtResource("7_dsf0w")
@@ -109,7 +121,9 @@ level_index = 6
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 6
+enemy_damage_multiplier = 1.6
 
 [sub_resource type="Resource" id="Resource_3ywsn"]
 script = ExtResource("7_dsf0w")
@@ -123,7 +137,9 @@ level_index = 7
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 7
+enemy_damage_multiplier = 1.7
 
 [sub_resource type="Resource" id="Resource_mcmpw"]
 script = ExtResource("7_dsf0w")
@@ -138,7 +154,9 @@ level_index = 8
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 8
+enemy_damage_multiplier = 2.0
 
 [sub_resource type="Resource" id="Resource_2sqe8"]
 script = ExtResource("7_dsf0w")
@@ -152,7 +170,9 @@ level_index = 9
 block_core_cuts_delaunay = 300
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
-spawn_count = 5
+spawn_count = 30
+enemy_drops_count = 10
+enemy_damage_multiplier = 2.5
 
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")

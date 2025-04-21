@@ -53,7 +53,7 @@ func _on_item_picked(event : PickupEvent) -> void:
 	
 	if pickup is not CurrencyPickupResource: return
 	
-	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.current_level-1)
+	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.get_current_level())
 	match pickup.currency_type:
 		CurrencyPickupResource.CURRENCY_TYPE.FIAT:
 			fiat_gained_so_far += event.pickup.resource_count

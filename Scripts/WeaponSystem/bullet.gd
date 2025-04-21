@@ -46,7 +46,7 @@ func move_ammo(delta: float):
 			#area.mine_core("player", block)
 
 func build_block() -> BitcoinBlock:
-	var ins = BitcoinBlock.new(GameManager.current_builder_args.level_index, Time.get_datetime_string_from_system(false, true), "Block mined by the Player")
+	var ins = BitcoinBlock.new(GameManager.current_level_args.level_index, Time.get_datetime_string_from_system(false, true), "Block mined by the Player")
 	return ins
 
 ## Add the additional damage gained from upgrades to the bullet

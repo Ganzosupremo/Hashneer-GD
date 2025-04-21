@@ -26,7 +26,7 @@ class_name BaseEnemy extends RigidBody2D
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-signal Died(ref: BaseEnemy, pos: Vector2)
+signal Died(ref: BaseEnemy, pos: Vector2, natural_death: bool)
 signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
 signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
 signal Freed(ref: BaseEnemy)
@@ -122,6 +122,8 @@ var total_frame_heal_amount : float = 0.0
 var regeneration_timer : Timer = null
 var regeneration_started : bool = false
 var polygon_restorer : PolygonRestorer = null
+var spawn_timestamp : int = 0
+var drops_count : int = 0
 
 @onready var find_new_target_pos_tolerance_sq : float = find_new_target_pos_tolerance * find_new_target_pos_tolerance
 @onready var target_reached_tolerance_sq : float = target_reached_tolerance * target_reached_tolerance
@@ -145,6 +147,7 @@ var polygon_restorer : PolygonRestorer = null
 
 
 func _ready() -> void:
+	spawn_timestamp = Time.get_ticks_msec()
 	_rng.randomize()
 	
 	var new_polygon : PackedVector2Array = _createPolygonShape()
@@ -239,75 +242,7 @@ func _physics_process(delta):
 	if rotate_towards_velocity:
 		global_rotation = linear_velocity.angle()
 
-# Change later, the enemy will not integrate any forces
-# func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-# 	if isKnockbackActive(): return
-
-
-# 	if state.get_contact_count() > 0:
-# 		var collisions : Dictionary = {}
-# 		#filtering the collisions
-# 		for i in range(state.get_contact_count()):
-# 			var id = state.get_contact_collider_id(i)
-# 			if collisions.has(id):
-# 				var shape = state.get_contact_collider_shape(i)
-# 				collisions[id].shapes.append(shape)
-# 			else:
-# 				var body = state.get_contact_collider_object(i)
-# 				var shape = state.get_contact_collider_shape(i)
-# 				var pos = state.get_contact_collider_position(i)
-# 				collisions[id] = {"body" : body, "shapes" : [shape], "pos" : pos}
-		
-		
-# 		# Set target if not set
-# 		# var count : int = collisions.values().size()
-# 		# if target == null and count > 0:
-# 		# 	if count == 1:
-# 		# 		setTarget(collisions.values()[0].body)
-# 		# 	else:
-# 		# 		var rand_index : int = _rng.randi_range(0, count - 1)
-# 		# 		setTarget(collisions.values()[rand_index].body)
-		
-		
-# 		for col in collisions.values():
-# 			if col.body is RigidBody2D:
-# 				if col.body.has_method("damage"):
-# 					var force : Vector2 = (col.body.global_position - global_position).normalized() * collision_knockback_force
-# 					col.body.call_deferred("damage", collision_damage, col.pos, force, collision_knockback_time, self, getCurColor())
-		
-# 	var input: Vector2 = Vector2.ZERO
-	
-# 	# if find_new_target_pos_tolerance > 0.0:
-# 	# 	var dis : float = (prev_target_pos - Vector2(target_pos.x, target_pos.y)).length_squared()
-# 	# 	if dis > find_new_target_pos_tolerance_sq:
-# 	# 		setNewTargetPos()
-	
-# 	if target_pos.z == 1.0:
-# 		var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
-# 		var target_vec: Vector2 = cur_target_pos - global_position
-# 		var dis : float = target_vec.length_squared()
-		
-# 		if dis > target_reached_tolerance_sq:
-# 			input = target_vec.normalized()
-	
-# 	# Setting velocity towards target
-# 	if input != Vector2.ZERO:
-# 		var increase : Vector2 = input * getCurAccel() * state.step
-# 		state.linear_velocity += increase
-# 		if state.linear_velocity.length_squared() > getCurMaxSpeedSq():
-# 			state.linear_velocity = state.linear_velocity.normalized() * getCurMaxSpeed()
-# 	else:
-# 		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * state.step
-# 		if decrease.length_squared() >= state.linear_velocity.length_squared():
-# 			state.linear_velocity = Vector2.ZERO
-# 		else:
-# 			state.linear_velocity -= decrease
-	
-# 	if rotate_towards_velocity:
-# 		global_rotation = state.linear_velocity.angle()
-# 	_handle_screen_wrapping()
-
-# Handle screen wrapping - when boss goes off one side, it appears on the opposite side
+# Handle screen wrapping - when enemy goes off one side, it appears on the opposite side
 func _handle_screen_wrapping() -> void:
 	var viewport_rect: Vector2 = get_viewport_rect().size
 	var screen_width : float = viewport_rect.x
@@ -355,18 +290,15 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	# setTarget(damage_dealer)
 	
 	var percent_cut : float = 0.0
-	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(damage_to_apply, Vector2(21,72), Vector2.ZERO)
+	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(damage_to_apply, Vector2(53,77), Vector2.ZERO)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
-#	spawnShapeVisualizer(point, 0.0, cut_shape, damage_color, 1.0)
 	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
 	
 	var p : float = cut_shape_area / cur_area
 	for fracture in fracture_info.fractures:
 		for shard in fracture:
 			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
-#			spawnFractureBody(shard, mass * (shard.area / cur_area), p)
-	
 	
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
 		_sound_effect_component.set_and_play_sound(sound_on_dead)
@@ -391,7 +323,6 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			polygon_restorer.addShape(cur_shape.shape, cur_shape.area)
 		setPolygon(cur_shape.shape)
 		
-#		SoundServer.play2D("hurt", global_position, "blob", 1.0, SoundServer.OVERRIDE_BEHAVIOUR.OLDEST, -1)
 		_sound_effect_component.set_and_play_sound(sound_on_hurt)
 		if _rng.randf() > 0.1:
 			apply_central_impulse(knockback_force)
@@ -410,12 +341,13 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			
 	return {"percent_cut" : percent_cut , "dead" : isDead()}
 
-func kill() -> void:
-	Died.emit(self, global_position)
-	for i in range(5):
-		random_drops.spawn_drops(i)
+func kill(natural_death: bool = false) -> void:
+	Died.emit(self, global_position, natural_death)
 	hide()
-	await _sound_effect_component.set_and_play_sound(sound_on_dead)
+	if !natural_death:
+		for i in range(drops_count):
+			random_drops.spawn_drops(1)
+		await _sound_effect_component.set_and_play_sound(sound_on_dead)
 	queue_free()
 
 ## Applies healing to the enemy and manages related visual effects

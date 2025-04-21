@@ -37,6 +37,13 @@ class_name LevelBuilderArgs
 @export var spawn_time: float = 5.0
 ## The amount of enemies to spawn per wave
 @export var spawn_count: int = 5
+## This is used to determine how many drops the enemies will drop
+@export var enemy_drops_count: int = 5
+## This value will exponentially multiply the damage of the enemies
+@export var enemy_damage_multiplier: float = 1.3
+## The drops table used to determine the type of enemies to spawn
+## for each level
+@export var enemies_drop_table: DropsTable
 
 func _init() -> void:
 	quadrant_size = 0

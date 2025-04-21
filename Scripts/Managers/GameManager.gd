@@ -12,9 +12,9 @@ extends Node2D
 
 var levels_unlocked: int = 1
 var previous_levels_unlocked_index: int = 0
-var current_level: int = 0
+var _current_level: int = 0
 
-var current_builder_args: LevelBuilderArgs = null
+var current_level_args: LevelBuilderArgs = null
 var player: PlayerController = null
 var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
@@ -31,12 +31,19 @@ const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
+func _ready() -> void:
+	# Set the level index for each level
+	# This is used to identify the level in the game
+	# and to unlock the next level when the current one is completed
+	for i in range(game_levels.size()):
+		game_levels[i].level_index = i
+
 #region Public API
 func complete_level(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 	if player_in_completed_level(): return
 	
-	levels_unlocked += 1
+	levels_unlocked = clamp(levels_unlocked + 1, 1, game_levels.size())
 	previous_levels_unlocked_index = levels_unlocked - 1
 
 func emit_level_completed(code: String = "") -> void:
@@ -45,7 +52,7 @@ func emit_level_completed(code: String = "") -> void:
 func player_in_completed_level() -> bool:
 	if levels_unlocked < previous_levels_unlocked_index:
 		return true
-	if current_level < previous_levels_unlocked_index - 1: # Means the player is in an already completed level
+	if _current_level < previous_levels_unlocked_index - 1: # Means the player is in an already completed level
 		return true
 	return false
 
@@ -133,17 +140,21 @@ func shake_camera(amplitude: float, frequency: float, duration: float, axis_rati
 #region Level Management
 func _set_level_index(index: int) -> void:
 	print("Setting Level Index: {0}".format([index]))
-	current_level = index
+	_current_level = index
 
 func get_level_index() -> int:
-	return current_level
+	return _current_level
 
 func select_builder_args(index: int) -> void:
-	current_builder_args = game_levels[index]
-	print("Selecting Builder Args: {0}. At index: {1}".format([current_builder_args.debug_name, index]))
+	current_level_args = game_levels[index]
+	print("Selecting Builder Args: {0}. At index: {1}".format([current_level_args.debug_name, index]))
 
-func get_builder_args() -> LevelBuilderArgs:
-	return current_builder_args
+func get_level_args() -> LevelBuilderArgs:
+	return current_level_args
+
+func get_current_level() -> int:
+	return get_level_args().level_index
+
 #endregion
 
 #region Persistence Data System

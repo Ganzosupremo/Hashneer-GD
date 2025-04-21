@@ -42,6 +42,6 @@ func init_builder_args() -> void:
 	self.builder_args.block_core_cut_min_area = min_area
 
 func on_button_pressed() -> void:
-	GameManager.current_builder_args = self.builder_args
-	GameManager.current_level = level_index
+	GameManager.current_level_args = self.builder_args
+	GameManager._current_level = level_index
 	SceneManager.switch_scene_with_packed(levelto_load)

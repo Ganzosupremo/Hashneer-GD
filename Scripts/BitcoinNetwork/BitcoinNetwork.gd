@@ -44,7 +44,6 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 	
 	# Check if mining should be stopped right away
 	if _should_stop_mining(block):
-		#print_debug("Block already mined. H: ", block.height)
 		return
 	
 	if chain.size() == 0:
@@ -54,19 +53,31 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 		block.previous_hash = get_latest_block().block_hash
 	
 	block.mined = true
-	block.miner = miner
 	
 	_add_block_to_chain(block)
 	
-	block.block_subsidy = calculate_block_subsidy()
+	block.block_subsidy = _compute_block_reward()
 	_issue_block_reward(miner, block.block_subsidy)
-	#print_debug("Block found")
 	block_found.emit(block)
 	
 	height += 1
 
 func is_current_level_block(block: BitcoinBlock) -> bool:
-	return block.height == GameManager.current_level
+	return block.height == GameManager._current_level
+
+
+## Checks if a block has already been mined
+## Returns true if the block has already been mined, false otherwise
+## @param block The BitcoinBlock to check
+## @return bool Whether the block has already been mined
+func is_block_already_mined(block: BitcoinBlock) -> bool:
+	if chain.size() == 0: return false
+	if block.mined: return true
+	
+	for b in chain:
+		if b.height == block.height:
+			return true
+	return false
 
 func set_bitcoins_in_circulation(value: float) -> void:
 	bitcoins_in_circulation += value
@@ -75,14 +86,22 @@ func set_bitcoins_spent(value: float) -> void:
 	coins_spent += value
 
 func get_block_by_id(id: int) -> BitcoinBlock:
-	if chain.size() == 0: return create_block("AI")
-	return chain[id]
+	for b in chain:
+		if b.height == id:
+			return b
+	return null
+
+func get_block_by_hash(_hash: String) -> BitcoinBlock:
+	for b in chain:
+		if b.block_hash == _hash:
+			return b
+	return null
 
 func get_latest_block() -> BitcoinBlock:
 	return chain.back()
 
 func create_block(miner: String) -> BitcoinBlock:
-	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s " % height + "Mined by: %s" % miner)
+	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s " % height + "Mined by: %s" % miner, miner)
 
 func get_blockheight() -> int:
 	return height
@@ -97,7 +116,10 @@ func get_total_bitcoins_in_circulation() -> float:
 func get_bitcoins_spent() -> float:
 	return coins_spent
 
-## _______________________INTERNAL FUNCTIONS________________________________
+func get_block_subsidy() -> float:
+	return current_block_subsidy
+
+#region Private API
 
 ## Checks if the new block is valid and hasn't been mined before, returns true if block has
 ## already been mined before, false otherwise
@@ -105,17 +127,11 @@ func _should_stop_mining(new_block: BitcoinBlock) -> bool:
 	# we don't check since it's the genesis block
 	if chain.size() == 1: return false
 	
+	if new_block == null: return true
 	if height > TOTAL_BLOCKS:
 		return true
 	
-	if new_block.mined:
-		return true
-	# Check if the block has already been mined
-	for block in chain:
-		if block.height == new_block.height:
-			return true
-	
-	return false
+	return is_block_already_mined(new_block)
 
 """Adds the block to the chain."""
 func _add_block_to_chain(new_block: BitcoinBlock) -> void:
@@ -128,7 +144,7 @@ func _issue_block_reward(miner: String, subsidy: float) -> void:
 	elif miner == "AI":
 		coins_lost += subsidy
 
-func calculate_block_subsidy() -> float:
+func _compute_block_reward() -> float:
 	var halvings: int = height / halving_interval
 	if (halvings > 5):
 		return 0.0
@@ -147,9 +163,6 @@ func calculate_block_subsidy() -> float:
 		return 0.0
 	return subsidy
 
-func get_block_subsidy() -> float:
-	return current_block_subsidy
-
 
 """Returns true if the coins in circulation are more than the TOTAL_COINS"""
 func _exceeds_coin_limit_cap() -> bool:
@@ -160,6 +173,8 @@ func _exceeds_coin_limit_cap() -> bool:
 """Called when a halving occurs"""
 func _on_halving_ocurred(_new_subsidy: float) -> void:
 	total_deflation += deflation_rate
+
+#endregion
 
 ## __________________________________PERSISTENCE DATA FUNCTIONS______________________________________
 
@@ -193,7 +208,6 @@ func load_data():
 	coins_spent = data["coins_spent"]
 	get_total_bitcoins_in_circulation()
 	loaded = true
-
 
 
 const TEN: String = "The Times: Chancellor on Brink of Second Bailout for Banks."

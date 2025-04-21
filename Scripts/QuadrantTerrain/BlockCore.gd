@@ -136,9 +136,7 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 func _mine_block(miner: String = "Player") -> void:
 	var block: BitcoinBlock = null
 	if GameManager.player_in_completed_level():
-		block = BitcoinNetwork.get_block_by_id(GameManager.current_level)
-	else:
-		block = BitcoinNetwork.create_block(miner)
+		block = BitcoinNetwork.get_block_by_id(GameManager.get_current_level())
 
 	BitcoinNetwork.mine_block(miner, block)
 

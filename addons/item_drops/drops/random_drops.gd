@@ -7,7 +7,7 @@ extends ItemDropsNode
 @export var drops_table : DropsTable
 
 ## Handles placing objects into the game world
-@export var scene_spawner : Node2D
+@export var scene_spawner : SceneSpawner2D
 
 func _ready() -> void:
 	_validate()
