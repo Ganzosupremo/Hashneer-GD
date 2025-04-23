@@ -244,33 +244,46 @@ func _physics_process(delta):
 
 # Handle screen wrapping - when enemy goes off one side, it appears on the opposite side
 func _handle_screen_wrapping() -> void:
-	var viewport_rect: Vector2 = get_viewport_rect().size
-	var screen_width : float = viewport_rect.x
-	var screen_height : float = viewport_rect.y
+	var viewport_rect: Rect2 = get_viewport_rect()
+	var viewport_pos: Vector2 = viewport_rect.position
+	var viewport_size: Vector2 = viewport_rect.size
+	
 	var position_changed : bool = false
 	
-	# Get the current position
+	# Get the current global position
 	var current_position = global_position
 	
+	# Define the boundaries based on the viewport rect
+	var left_bound = viewport_pos.x
+	print_debug("left_bound: ", left_bound)
+	var right_bound = viewport_pos.x + viewport_size.x
+	print_debug("right_bound: ", right_bound)
+	var top_bound = viewport_pos.y
+	print_debug("top_bound: ", top_bound)
+	var bottom_bound = viewport_pos.y + viewport_size.y
+	print_debug("bottom_bound: ", bottom_bound)
+	print_debug("current_position: ", current_position)
+	
 	# Check horizontal wrapping
-	if current_position.x <= 0:
-		current_position.x = screen_width
+	if current_position.x < left_bound:
+		current_position.x = right_bound
 		position_changed = true
-	elif current_position.x >= screen_width:
-		current_position.x = 0
+	elif current_position.x > right_bound:
+		current_position.x = left_bound
 		position_changed = true
 	
 	# Check vertical wrapping
-	if current_position.y <= 0:
-		current_position.y = screen_height
+	if current_position.y < top_bound:
+		current_position.y = bottom_bound
 		position_changed = true
-	elif current_position.y >= screen_height:
-		current_position.y = 0
+	elif current_position.y > bottom_bound:
+		current_position.y = top_bound
 		position_changed = true
 	
 	# Apply position change if needed
+	# Use global_position directly since RigidBody2D's position is relative to parent
 	if position_changed:
-		position = current_position
+		global_position = current_position
 
 #region Poly Fracture Functions
 

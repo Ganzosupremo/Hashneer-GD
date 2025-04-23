@@ -251,7 +251,7 @@ accel = 800.0
 sound_on_hurt = SubResource("Resource_uhgc7")
 sound_on_dead = SubResource("Resource_4ni7a")
 sound_on_heal = SubResource("Resource_lv37s")
-cir_radius = 30.0
+cir_radius = 50.0
 cir_smoothing = 8
 
 [node name="FractureBodyHealthComponent" type="Node2D" parent="."]

@@ -43,7 +43,7 @@ accel = 1000.0
 polygon_shape = 1
 cir_radius = 0.0
 cir_smoothing = 0
-rectangle_size = Vector2(100, 100)
+rectangle_size = Vector2(125, 125)
 
 [node name="RandomDrops" parent="." index="11"]
 drops_table = SubResource("Resource_ug63n")
