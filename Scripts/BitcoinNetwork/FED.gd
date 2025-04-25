@@ -49,8 +49,8 @@ func get_fiat_subsidy() -> float:
 
 func _probability_from_amount(amount: float) -> float:
 	var log_amount = log(amount) / log(10)
-	log_amount = clamp(log_amount, 4.0, 7.0)
-	return (log_amount - 4.0) / 4.0
+	log_amount = clamp(log_amount, 5.0, 7.0)
+	return (log_amount - 5.0) / 5.0
 
 
 func save_data():

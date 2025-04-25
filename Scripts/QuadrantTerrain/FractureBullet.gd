@@ -2,6 +2,7 @@ class_name FractureBullet extends RigidBody2D
 
 signal Despawn(ref)
 
+@export var use_object_pool: bool = false
 @export var radius: float = 50.0
 @export var speed: float = 300.0
 
@@ -20,7 +21,8 @@ var ammo_details: AmmoDetails
 
 func _ready() -> void:
 	# Delete if using the PoolFracturePool
-	Despawn.connect(despawn)
+	if not use_object_pool:
+		Despawn.connect(despawn)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if state.get_contact_count() <= 0: return
@@ -37,6 +39,9 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
 		body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.2, self, modulate)
+		call_deferred("destroy")
+	elif body is PlayerController:
+		body.damage(ammo_details.bullet_damage)
 		call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
@@ -56,13 +61,14 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	linear_velocity = launch_vector
 
 
-func despawn(_ref: Node2D) -> void:
+func despawn(_ref: Node2D = null) -> void:
 	global_rotation = 0.0
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	
 	# Delete if using the PoolFracturePool
-	queue_free()
+	if not use_object_pool:
+		queue_free()
 
 
 func destroy() -> void:

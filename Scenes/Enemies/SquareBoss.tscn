@@ -33,7 +33,7 @@ color_default = Color(0.965179, 0.0726337, 0.403013, 1)
 knockback_resistance_base = 2.0
 shape_area_percent = 0.1
 fractures = 15
-collision_damage = Vector2(75, 150)
+collision_damage = Vector2(4, 8)
 collision_knockback_time = 0.05
 find_new_target_pos_tolerance = 10.0
 target_reached_tolerance = 25.0
@@ -43,7 +43,7 @@ accel = 1000.0
 polygon_shape = 1
 cir_radius = 0.0
 cir_smoothing = 0
-rectangle_size = Vector2(125, 125)
+rectangle_size = Vector2(140, 140)
 
 [node name="RandomDrops" parent="." index="11"]
 drops_table = SubResource("Resource_ug63n")

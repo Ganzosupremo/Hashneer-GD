@@ -20,7 +20,7 @@ class_name LevelBuilderArgs
 ## The drop rate of the fiat resource
 @export var fiat_drop_rate_factor: float = 1.0
 ## The index of the level
-@export var level_index: int = 0
+var level_index: int = 0
 
 @export_category("Block Core Parameters")
 ## The amount of cuts to make in the block core
@@ -32,7 +32,7 @@ class_name LevelBuilderArgs
 ## If the area is too small, the cut will be ignored.
 @export var block_core_cut_min_area: float = 100.0
 
-@export_category("Wave Levels PArameters")
+@export_category("Wave Levels Parameters")
 ## The time between each wave
 @export var spawn_time: float = 5.0
 ## The amount of enemies to spawn per wave
@@ -44,16 +44,13 @@ class_name LevelBuilderArgs
 ## The drops table used to determine the type of enemies to spawn
 ## for each level
 @export var enemies_drop_table: DropsTable
+## The drops table used to determine the boss type
+## for each level
+@export var boss_drop_table: DropsTable
 
 func _init() -> void:
-	quadrant_size = 0
-	grid_size = Vector2.ZERO
-	quadrant_texture = null
-	initial_health = 0.0
-	fiat_drop_rate_factor = 0.0
-	level_index = -1
-	block_core_cuts_delaunay = 100
-	block_core_cut_min_area = 50.0
+	pass
+
 
 func get_initial_quadrant_health() -> float:
 	return initial_health

@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=44 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" uid="uid://bea44as0v1pbg" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_yb677"]
@@ -7,12 +7,12 @@
 [ext_resource type="AudioStream" uid="uid://b6xtdvlf02gu3" path="res://Audio/Player/Squidward Walking Sound Effect Cutted.wav" id="4_ojon2"]
 [ext_resource type="Texture2D" uid="uid://bofairvras8si" path="res://Textures/Player/HasheneerPlayer.png" id="4_wp2gx"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="5_r61be"]
-[ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_ynixv"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="6_6tu5v"]
 [ext_resource type="PackedScene" uid="uid://t3kn17jmsmy1" path="res://Scenes/Components/ActiveWeaponComponent.tscn" id="6_ltgru"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="6_vaewd"]
 [ext_resource type="PackedScene" uid="uid://tgo2cl26po3f" path="res://Scenes/Components/HealthComponent.tscn" id="7_fkivy"]
 [ext_resource type="Texture2D" uid="uid://c2pi5423pix4b" path="res://Textures/Player/HasheneerPlayerNormalMapBody.png" id="8_w71ue"]
+[ext_resource type="AudioStream" uid="uid://cq1x8a86vo63l" path="res://Audio/Player/PlayerHurt.wav" id="8_yb677"]
 [ext_resource type="Texture2D" uid="uid://c26mrbug7eklq" path="res://Textures/Player/HasheneerPlayerNormalMapWeapon.png" id="9_1e6p3"]
 [ext_resource type="Texture2D" uid="uid://c4tmk82lj3a0m" path="res://Textures/Player/HasheneerPlayerWeapon.png" id="9_yb677"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="10_4cnpp"]
@@ -26,7 +26,14 @@
 script = ExtResource("4_hiv41")
 sound_volume = 1.0
 audio_stream = ExtResource("4_ojon2")
-sound_pitch = 1.0
+sound_pitch = 0.69
+
+[sub_resource type="Resource" id="Resource_8cj01"]
+script = ExtResource("4_hiv41")
+sound_volume = 7.0
+audio_stream = ExtResource("8_yb677")
+sound_pitch = 0.69
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
@@ -131,6 +138,67 @@ radius = 20.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_1e6p3"]
 radius = 95.0
 
+[sub_resource type="Animation" id="Animation_yb677"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RotationContainer/WeaponSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_1e6p3"]
+resource_name = "hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Body:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 2, 0.5, 0.5, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.7, 1.7), Vector2(0.8, 0.8), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RotationContainer/WeaponSprite:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 2, 0.5, 0.5, -2),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(1.7, 1.7), Vector2(0.9, 0.9), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yb677"]
+_data = {
+&"RESET": SubResource("Animation_yb677"),
+&"hit-flash": SubResource("Animation_1e6p3")
+}
+
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 light_mask = 16
 visibility_layer = 16
@@ -142,6 +210,11 @@ player_details = ExtResource("6_6tu5v")
 initial_weapon = ExtResource("6_vaewd")
 dead_sound_effect = ExtResource("3_vql12")
 move_sound_effect = SubResource("Resource_bx6ih")
+sound_on_hurt = SubResource("Resource_8cj01")
+
+[node name="EdgePolygon" type="Polygon2D" parent="."]
+scale = Vector2(1.5, 1.5)
+color = Color(0.151712, 0.147321, 6.01634e-08, 0.49)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
 shape = SubResource("CircleShape2D_1sxoh")
@@ -173,24 +246,12 @@ position = Vector2(-2, 0)
 occluder = SubResource("OccluderPolygon2D_ipfrm")
 occluder_light_mask = 16
 
-[node name="AdvancedCamera" parent="." instance=ExtResource("5_ynixv")]
+[node name="FireWeapon" parent="." node_paths=PackedStringArray("active_weapon_component", "_fire_effect_particles") instance=ExtResource("5_r61be")]
 unique_name_in_owner = true
-visible = false
-enabled = false
-zoom = Vector2(2.25, 2.25)
-limit_left = -10000
-limit_top = -10000
-limit_right = 10000
-limit_bottom = 10000
-limit_smoothed = true
-position_smoothing_enabled = true
-position_smoothing_speed = 10.0
-
-[node name="FireWeapon" parent="." node_paths=PackedStringArray("player_camera", "active_weapon_component", "_fire_effect_particles") instance=ExtResource("5_r61be")]
-unique_name_in_owner = true
-player_camera = NodePath("../AdvancedCamera")
+main_event_bus = ExtResource("2_yb677")
 active_weapon_component = NodePath("../ActiveWeapon")
 _fire_effect_particles = NodePath("../ShootEffectParticles")
+use_object_pool = true
 
 [node name="ShootEffectParticles" type="GPUParticles2D" parent="."]
 unique_name_in_owner = true
@@ -210,12 +271,17 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 max_health = 100.0
 
-[node name="SoundEffectComponent" parent="." instance=ExtResource("10_4cnpp")]
-bus = &"SFX"
+[node name="MovementSoundEffectComponent" parent="." instance=ExtResource("10_4cnpp")]
+unique_name_in_owner = true
+bus = &"Player SFX"
+
+[node name="SFXSoundComponent" parent="." instance=ExtResource("10_4cnpp")]
+unique_name_in_owner = true
+bus = &"Player SFX"
 
 [node name="PickupsSFXs" parent="." instance=ExtResource("10_4cnpp")]
 max_polyphony = 21
-bus = &"SFX"
+bus = &"Player SFX"
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 light_mask = 16
@@ -262,6 +328,11 @@ audio_bus_name = &"SFX"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("CircleShape2D_1e6p3")
 debug_color = Color(0.654197, 0.242455, 0.055619, 0.42)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yb677")
+}
 
 [connection signal="area_entered" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_entered"]
 [connection signal="area_exited" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_exited"]

@@ -3,7 +3,6 @@ extends Node2D
 const ENEMY_LIFETIME_SECONDS: float = 60.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
 
-
 @onready var enemies_holder: Node2D = %EnemiesHolder
 @onready var _pool_cut_visualizer: PoolFracture = $PoolFractureCutVisualizer
 @onready var _pool_fracture_shards: PoolFracture = $PoolFractureShards
@@ -11,12 +10,19 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @onready var label: Label = $UI/Control/Label
 @onready var boss_progress_bar: ProgressBar = $UI/BossTimer/MarginContainer/BossProgressBar
 @onready var level_completed: LevelCompletedUI = $UI/LevelCompletedUI
-@onready var boss_spawner: RandomDrops = $BossSpawner
+
 @onready var random_drops_holder: Node2D = $RandomDropsHolder
+@onready var boss_spawner: RandomDrops = $BossSpawner
+@onready var random_drops: RandomDrops = $RandomDropsHolder/RandomDrops
+@onready var random_drops_2: RandomDrops = $RandomDropsHolder/RandomDrops2
+
+@onready var player_bullets_pool: PoolFracture = $PlayerBulletsPool
+@onready var enemy_bullets_pool: PoolFracture = $EnemyBulletsPool
 
 @export var level_args: LevelBuilderArgs
+@export var main_event_bus: MainEventBus
 
-var time_to_spawn_boss: float = 75.0
+var time_to_spawn_boss: float = 60.0
 var time_to_spawn_boss_passed: float = 0.0
 var boss_spawned: bool = false
 
@@ -29,16 +35,29 @@ var _enemies_to_despawn_queue: Array = [] # Queue for enemies pending despawn
 func _ready() -> void:
 	level_args = GameManager.get_level_args()
 	boss_progress_bar.max_value = time_to_spawn_boss
+	boss_progress_bar.value = 0.0
+#region Enemies Timer
 	spawn_enemies_timer = Timer.new()
 	add_child(spawn_enemies_timer)
 	spawn_enemies_timer.wait_time = _spawn_time
 	spawn_enemies_timer.one_shot = false
 	spawn_enemies_timer.timeout.connect(on_spawn_enemies_timer_timeout)
-	_spawned_enemies_array.append_array(_spawn_enemies(20))
+	_spawned_enemies_array.append_array(_spawn_enemies(level_args.spawn_count))
 	spawn_enemies_timer.start()
+#endregion
+	
+	main_event_bus.emit_bullet_pool_setted(
+		{
+			"player_pool": player_bullets_pool,
+			"enemy_pool": enemy_bullets_pool,
+		}
+	)
+	
+	boss_spawner.drops_table = level_args.boss_drop_table
+	random_drops.drops_table = level_args.enemies_drop_table
+	random_drops_2.drops_table = level_args.enemies_drop_table
 
-func _process(delta: float) -> void:
-	_increase_time_to_spawn_boss(delta)
+func _process(_delta: float) -> void:
 	_check_enemy_lifetime()
 	_process_despawn_queue()
 
@@ -72,13 +91,12 @@ func _process_despawn_queue() -> void:
 		var enemy_to_despawn: BaseEnemy = _enemies_to_despawn_queue.pop_front()
 
 		enemy_to_despawn.kill(true)
-		print("Enemy despawned: {0}".format([enemy_to_despawn.name]))
 		despawn_count += 1
 
-func _increase_time_to_spawn_boss(delta: float) -> void:
-	if boss_spawned == false:
-		time_to_spawn_boss_passed += delta
-		boss_progress_bar.value = time_to_spawn_boss_passed
+# func _increase_time_to_spawn_boss(delta: float) -> void:
+# 	if boss_spawned == false:
+# 		time_to_spawn_boss_passed += delta
+# 		boss_progress_bar.value = time_to_spawn_boss_passed
 
 func _spawn_enemies(count: int) -> Array[Node]:
 	var enemies: Array[Node] = []
@@ -102,8 +120,12 @@ func _spawn_enemies(count: int) -> Array[Node]:
 			enemy.Damaged.connect(on_enemy_damaged)
 			enemy.Fractured.connect(on_enemy_fractured)
 			enemy.Died.connect(on_enemy_died)
-			enemy.Freed.connect(on_enemy_freed)
-	
+			# enemy.Freed.connect(on_enemy_freed)
+			main_event_bus.emit_bullet_pool_setted(
+				{
+					"player_pool": player_bullets_pool,
+					"enemy_pool": enemy_bullets_pool,
+				})
 	return enemies
 
 func spawnShapeVisualizer(cut_pos : Vector2, cut_shape : PackedVector2Array, color: Color, fade_speed : float) -> void:
@@ -138,15 +160,15 @@ func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
 	if !natural_death:
 		kill_count += 1
 		label.text = "Enemies Killed: {0}".format([kill_count])
+		boss_progress_bar.value += 1
 
-func on_enemy_freed(ref: BaseEnemy) -> void:
-	_spawned_enemies_array.erase(ref)
+# func on_enemy_freed(ref: BaseEnemy) -> void:
+# 	_spawned_enemies_array.erase(ref)
 
 func _on_boss_progress_bar_value_changed(value: float) -> void:
 	if value == boss_progress_bar.max_value:
-		boss_spawner.spawn_drops(10)
+		boss_spawner.spawn_drops(1)
 		boss_spawned = true
 		
-
 func _on_exit_button_pressed() -> void:
 	GameManager.emit_level_completed(Constants.ERROR_210)

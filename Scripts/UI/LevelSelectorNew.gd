@@ -18,7 +18,6 @@ func open() -> void:
 	_current_level_index = GameManager.levels_unlocked - 1
 	_current_level_index = clampi(_current_level_index, 0, GameManager.game_levels.size() - 1)
 	_update_level_info()
-	_update_button_states()
 	_update_builder_args(_current_level_index)
 	self.show()
 

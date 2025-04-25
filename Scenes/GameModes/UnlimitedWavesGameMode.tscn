@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=46 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="2_obtmh"]
 [ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="3_gaytf"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="5_w6c12"]
 [ext_resource type="PackedScene" uid="uid://xos3xcnwpqn6" path="res://Scenes/UI/WeaponUIWavesGameMode.tscn" id="5_xahjo"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="7_3aspk"]
@@ -17,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://3wd536t1tgdx" path="res://Scenes/QuadrantTerrain/PoolFractureCutVisualizer.tscn" id="10_ri3l1"]
 [ext_resource type="PackedScene" uid="uid://d074pyn2g110d" path="res://Scenes/QuadrantTerrain/PoolFractureShards.tscn" id="11_rxwaq"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_tscnx"]
+[ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="15_w6c12"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="15_xdq2w"]
 [ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="16_w6c12"]
 [ext_resource type="PackedScene" uid="uid://cbugj4k7fmf02" path="res://Scenes/UI/HealthUIWavesGameMode.tscn" id="16_xahjo"]
@@ -36,7 +38,6 @@ quadrant_size = 200
 grid_size = Vector2(6, 6)
 initial_health = 50.0
 fiat_drop_rate_factor = 1.0
-level_index = 0
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 4.0
@@ -191,11 +192,17 @@ drop_path = "uid://dhsf3uibxlt6l"
 odds = 0.5
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
+[sub_resource type="Resource" id="Resource_xdq2w"]
+script = ExtResource("7_3aspk")
+drop_path = "uid://crwlndhaddjpy"
+odds = 0.5
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
 [sub_resource type="Resource" id="Resource_ri3l1"]
 script = ExtResource("8_tscnx")
-possible_drops = Array[ExtResource("7_3aspk")]([SubResource("Resource_rxwaq"), SubResource("Resource_xahjo")])
-guaranteed_drops = 1
-combined_odds = false
+possible_drops = Array[ExtResource("7_3aspk")]([SubResource("Resource_rxwaq"), SubResource("Resource_xahjo"), SubResource("Resource_xdq2w")])
+guaranteed_drops = 2
+combined_odds = true
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_s8cxh"]
@@ -214,9 +221,16 @@ height = 242.0
 z_index = 1
 script = ExtResource("1_b5yyy")
 level_args = SubResource("Resource_b5yyy")
+main_event_bus = ExtResource("5_w6c12")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_b5yyy")
+
+[node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
+position = Vector2(566, 321)
+zoom = Vector2(0.95, 0.95)
+smooth_speed = 2.0
+max_distance = 25.0
 
 [node name="Player" parent="." instance=ExtResource("1_73um3")]
 unique_name_in_owner = true
@@ -224,13 +238,8 @@ modulate = Color(1.2, 1.2, 1.2, 1)
 top_level = true
 z_index = 5
 position = Vector2(302, 218)
+scale = Vector2(1.2, 1.2)
 initial_weapon = ExtResource("3_gaytf")
-
-[node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
-position = Vector2(567, 321)
-zoom = Vector2(1, 1)
-smooth_speed = 2.0
-max_distance = 25.0
 
 [node name="World" type="Node2D" parent="."]
 modulate = Color(1.2, 1.2, 1.2, 1)
@@ -283,6 +292,16 @@ spawn_shape = NodePath("../../Spawner/CollisionShape2D2")
 spawn_group = SubResource("Resource_s8cxh")
 metadata/_custom_type_script = "uid://bcjmdqied76to"
 
+[node name="PlayerBulletsPool" parent="." groups=["PBulletsPool"] instance=ExtResource("15_xdq2w")]
+instance_template = ExtResource("16_w6c12")
+max_amount = 200
+instantiate_new_on_empty = true
+
+[node name="EnemyBulletsPool" parent="." groups=["EBulletsPool"] instance=ExtResource("15_xdq2w")]
+instance_template = ExtResource("15_w6c12")
+max_amount = 400
+instantiate_new_on_empty = true
+
 [node name="PoolFractureCutVisualizer" parent="." instance=ExtResource("10_ri3l1")]
 z_index = 5
 
@@ -293,11 +312,6 @@ instantiate_new_on_empty = true
 
 [node name="EnemiesHolder" type="Node2D" parent="." groups=["Enemies"]]
 unique_name_in_owner = true
-
-[node name="Pool_FractureBullets" parent="." instance=ExtResource("15_xdq2w")]
-instance_template = ExtResource("16_w6c12")
-max_amount = 10
-instantiate_new_on_empty = true
 
 [node name="PickupsHolder" type="Node2D" parent="." groups=["Pickups"]]
 

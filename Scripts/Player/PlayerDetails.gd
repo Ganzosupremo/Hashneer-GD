@@ -23,13 +23,17 @@ func add_weapon_to_array(weapon: WeaponDetails) -> void:
  
 ## Apply the stats bonuses to the player.
 ## and also adds the unlocked weapons to the [param  PlayerDetails.weapons_array]
-func apply_stats() -> Array:
+func apply_stats() -> Dictionary:
 	_add_unlocked_weapons()
 	speed = PlayerStatsManager.get_stat_final_value("Speed")
 	damage_multiplier = PlayerStatsManager.get_stat_final_value("Damage")
 	max_health = PlayerStatsManager.get_stat_final_value("Health")
 	
-	return [speed, damage_multiplier, max_health]
+	return {
+		"Speed": speed,
+		"Damage": damage_multiplier,
+		"Health": max_health,
+	}
 
 func _add_unlocked_weapons() -> void:
 	for weapon_id in PlayerStatsManager.get_unlocked_weapons().keys():

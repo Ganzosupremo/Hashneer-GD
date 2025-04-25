@@ -20,7 +20,7 @@ func _ready() -> void:
 	hide()
 
 func _on_zero_health() -> void:
-	open_ui(Constants.ERROR_404)
+	GameManager.complete_level(Constants.ERROR_404)
 
 func _on_level_completed(args: MainEventBus.LevelCompletedArgs) -> void:
 	open_ui(args.code)

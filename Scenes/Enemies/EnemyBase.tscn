@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=29 format=3 uid="uid://d1ck5inf3bdcq"]
 
 [ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
 [ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_t8mk1"]
 [ext_resource type="AudioStream" uid="uid://dxye7xd8fofkc" path="res://Audio/Enemies/EnemyHurt.wav" id="2_tgb06"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_fj512"]
 [ext_resource type="Script" uid="uid://dsjqejcixdgmm" path="res://Scripts/Components/SoundEffectComponent.gd" id="3_m1s7c"]
@@ -240,8 +241,11 @@ can_sleep = false
 contact_monitor = true
 max_contacts_reported = 12
 script = ExtResource("1_iiq2q")
+main_event_bus = ExtResource("2_t8mk1")
 invincible_time = 0.1
 shape_area_percent = 0.3
+fractures = 10
+collision_damage = Vector2(2, 4)
 target_reached_tolerance = 50.0
 target_pos_interval_range = Vector2(10, 20)
 keep_distance_range = Vector2(1.5, 1.5)

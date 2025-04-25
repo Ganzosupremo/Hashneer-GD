@@ -1,0 +1,377 @@
+[gd_scene load_steps=56 format=3 uid="uid://crwlndhaddjpy"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
+[ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShotingEnemy.gd" id="2_28o60"]
+[ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
+[ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="3_28o60"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_w0wfm"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="4_ubhwd"]
+[ext_resource type="AudioStream" uid="uid://ohf53t0i8dxc" path="res://Audio/Weapons/Laser Pistol.wav" id="4_w0wfm"]
+[ext_resource type="Script" uid="uid://cx75gxr4fjdc1" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="5_vfbhq"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
+[ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="11_u1hpi"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_nrp74"]
+load_path = "res://.godot/imported/1x1 Square.png-5bdf01ae1415d9c56af98897dd5fe287.ctex"
+
+[sub_resource type="Curve" id="Curve_vfbhq"]
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_u1hpi"]
+curve = SubResource("Curve_vfbhq")
+
+[sub_resource type="Gradient" id="Gradient_7v154"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.36044, 0.573626, 0.773626, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_lyfb5"]
+gradient = SubResource("Gradient_7v154")
+
+[sub_resource type="Curve" id="Curve_lhiu6"]
+_data = [Vector2(0, 100), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_owl41"]
+curve = SubResource("Curve_lhiu6")
+
+[sub_resource type="Curve" id="Curve_k8pjs"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 1.4, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_xh128"]
+curve = SubResource("Curve_k8pjs")
+
+[sub_resource type="Curve" id="Curve_0gydn"]
+_data = [Vector2(0, 3), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_kwdgl"]
+curve = SubResource("Curve_0gydn")
+
+[sub_resource type="Curve" id="Curve_oe4wi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_8qd08"]
+curve = SubResource("Curve_oe4wi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ydqam"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+emission_shape_scale = Vector3(1, 1, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 2.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_min = 40.0
+initial_velocity_max = 100.0
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+angular_velocity_curve = SubResource("CurveTexture_u1hpi")
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 40.0
+linear_accel_max = 100.0
+radial_accel_min = 36.5
+radial_accel_max = 86.5
+damping_max = 10.0
+damping_curve = SubResource("CurveTexture_owl41")
+scale_max = 5.0
+scale_curve = SubResource("CurveTexture_xh128")
+scale_over_velocity_max = 1.0
+scale_over_velocity_curve = SubResource("CurveTexture_kwdgl")
+color_ramp = SubResource("GradientTexture1D_lyfb5")
+turbulence_enabled = true
+turbulence_noise_strength = 10.0
+turbulence_noise_scale = 6.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.69
+turbulence_influence_min = 0.116
+turbulence_influence_max = 0.507
+turbulence_initial_displacement_max = 9.0
+turbulence_influence_over_life = SubResource("CurveTexture_8qd08")
+
+[sub_resource type="Resource" id="Resource_36q5n"]
+script = ExtResource("5_vfbhq")
+amount = 50
+lifetime = 1.0
+one_shot = false
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.736
+particle_texture = SubResource("CompressedTexture2D_nrp74")
+process_material = SubResource("ParticleProcessMaterial_ydqam")
+
+[sub_resource type="Gradient" id="Gradient_rscwa"]
+offsets = PackedFloat32Array(0, 0.534653, 0.727723, 1)
+colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.607843, 0.913725, 0.470588, 0.572549, 0.807843, 0.956863, 0.470588, 1, 1, 1, 0.470588)
+
+[sub_resource type="Resource" id="Resource_7p12m"]
+script = ExtResource("2_2phcg")
+min_lifetime = 2.0
+max_lifetime = 4.0
+bullet_damage = 50.0
+bullet_speed = 1000.0
+size = 6
+bullets_per_shoot_min = 1
+bullets_per_shoot_max = 1
+bullet_spawn_interval_min = 0.0
+bullet_spawn_interval_max = 0.0
+trail_gradient = SubResource("Gradient_rscwa")
+trail_length = 5
+trail_width = 15.0
+fracture_damage = Vector2(50, 50)
+fracture_force = 10000.0
+emits_trail_particles = false
+particle_trail_details = SubResource("Resource_36q5n")
+randomness = 0.5
+lifetime_randomness = 0.25
+
+[sub_resource type="Resource" id="Resource_x51p6"]
+script = ExtResource("3_w0wfm")
+sound_volume = -20.0
+audio_stream = ExtResource("4_w0wfm")
+sound_pitch = 1.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2h0tc"]
+load_path = "res://.godot/imported/SmokeEffect.png-64cef4c21ecab723665dd865e79b13d1.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssn8w"]
+atlas = SubResource("CompressedTexture2D_2h0tc")
+region = Rect2(0, 0, 123, 127)
+
+[sub_resource type="Curve" id="Curve_lqrw2"]
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_s21a4"]
+curve = SubResource("Curve_lqrw2")
+
+[sub_resource type="Gradient" id="Gradient_skwfu"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3188a"]
+gradient = SubResource("Gradient_skwfu")
+
+[sub_resource type="Curve" id="Curve_v5iw6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_yw0y7"]
+curve = SubResource("Curve_v5iw6")
+
+[sub_resource type="Curve" id="Curve_r76e6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.501538, 0.6), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_11mqs"]
+curve = SubResource("Curve_r76e6")
+
+[sub_resource type="Curve" id="Curve_02b53"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jk7yy"]
+curve = SubResource("Curve_02b53")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_o3oq2"]
+lifetime_randomness = 0.5
+particle_flag_align_y = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_min = 40.0
+initial_velocity_max = 100.0
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+angular_velocity_curve = SubResource("CurveTexture_s21a4")
+gravity = Vector3(0, -15, 0)
+linear_accel_min = 40.0
+linear_accel_max = 100.0
+radial_accel_min = 50.0
+radial_accel_max = 100.0
+damping_min = 2.0
+damping_max = 5.0
+damping_curve = SubResource("CurveTexture_yw0y7")
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_11mqs")
+color_ramp = SubResource("GradientTexture1D_3188a")
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.54
+turbulence_influence_min = 0.2
+turbulence_influence_max = 0.34
+turbulence_initial_displacement_max = 9.0
+turbulence_influence_over_life = SubResource("CurveTexture_jk7yy")
+
+[sub_resource type="Resource" id="Resource_bety5"]
+script = ExtResource("5_vfbhq")
+amount = 125
+lifetime = 1.5
+one_shot = true
+speed_scale = 1.0
+explosiveness = 1.0
+randomness = 0.3
+particle_texture = SubResource("AtlasTexture_ssn8w")
+process_material = SubResource("ParticleProcessMaterial_o3oq2")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wepmc"]
+load_path = "res://.godot/imported/Glock 17.png-8736569f147dbf2e0c65af9fdc0e2643.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60w8o"]
+atlas = SubResource("CompressedTexture2D_wepmc")
+region = Rect2(4, 0, 24, 14)
+
+[sub_resource type="Resource" id="Resource_o5j8s"]
+script = ExtResource("4_nrp74")
+weapon_name = "Pistol"
+weapon_texture = SubResource("AtlasTexture_60w8o")
+fire_sound = SubResource("Resource_x51p6")
+weapon_damage_multiplier = 0.0
+ammo_details = SubResource("Resource_7p12m")
+weapon_shoot_effect = SubResource("Resource_bety5")
+fire_rate = 0.5
+precharge_time = 0.0
+spread_min = 0.061
+spread_max = 0.085
+amplitude = 1.5
+frequency = 5.0
+duration = 0.25
+axis_ratio = 0.0
+armonic_ration = Array[int]([4, 5])
+phase_offset = 90
+samples = 10
+shake_trans = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28o60"]
+atlas = ExtResource("4_ubhwd")
+region = Rect2(271, 17, 112, 96)
+
+[sub_resource type="Gradient" id="Gradient_k4fs6"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.310493, 0.586724, 0.773019, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 1, 0, 1, 1, 0.647059, 0, 1, 0.479183, 0.479183, 0.479182, 1, 0.179, 0.179, 0.179, 0.439)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ubhwd"]
+gradient = SubResource("Gradient_k4fs6")
+use_hdr = true
+
+[sub_resource type="Curve" id="Curve_28o60"]
+_limits = [0.0, 100.0, 0.0, 1.0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_oloi1"]
+curve = SubResource("Curve_28o60")
+
+[sub_resource type="Curve" id="Curve_dnkxt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_2phcg"]
+curve = SubResource("Curve_dnkxt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w0wfm"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(1, 1, 0)
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 5.0
+emission_ring_radius = 10.0
+emission_ring_inner_radius = 5.0
+emission_ring_cone_angle = 90.0
+angle_min = 1.07288e-05
+angle_max = 180.0
+spread = 90.0
+initial_velocity_min = 20.0
+initial_velocity_max = 200.0
+angular_velocity_min = 40.0
+angular_velocity_max = 100.0
+radial_velocity_min = 30.0
+radial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 50.0
+linear_accel_max = 80.0
+radial_accel_min = 30.0
+radial_accel_max = 60.0
+tangential_accel_min = 30.0
+tangential_accel_max = 60.0
+damping_max = 3.0
+damping_curve = SubResource("CurveTexture_oloi1")
+scale_min = 0.01
+scale_max = 0.2
+scale_curve = SubResource("CurveTexture_2phcg")
+color_ramp = SubResource("GradientTexture1D_ubhwd")
+turbulence_enabled = true
+turbulence_noise_strength = 5.0
+turbulence_noise_speed = Vector3(2, 2, 0)
+turbulence_noise_speed_random = 0.44
+turbulence_influence_max = 0.209
+
+[node name="ShotingEnemy" instance=ExtResource("1_k4fs6")]
+script = ExtResource("2_28o60")
+can_shoot = true
+weapon = SubResource("Resource_o5j8s")
+shooting_duration_interval = Vector2(2, 3)
+shooting_cooldown_interval = Vector2(5, 10)
+invincible_time = 0.0
+shape_area_percent = 0.2
+fractures = 2
+max_speed = 125.0
+polygon_shape = 4
+s_p_number = 12
+s_a = 125.0
+s_b = 160.0
+min_m = 13.05
+m = 22.0
+min_n1 = 0.3
+n1 = 0.3
+min_n2 = 0.3
+n2 = 0.3
+min_n3 = 0.3
+n3 = 0.3
+
+[node name="ShotingMechanics" type="Node2D" parent="." index="0"]
+
+[node name="ActiveWeaponComponent" type="Node2D" parent="ShotingMechanics" index="0"]
+script = ExtResource("2_ubhwd")
+metadata/_custom_type_script = "uid://bmphh71yg4oct"
+
+[node name="FireWeapon" parent="ShotingMechanics" index="1" node_paths=PackedStringArray("active_weapon_component", "_fire_effect_particles") instance=ExtResource("3_28o60")]
+main_event_bus = ExtResource("10_vfbhq")
+shake_camera_on_fire = false
+active_weapon_component = NodePath("../ActiveWeaponComponent")
+_fire_effect_particles = NodePath("../GPUParticles2D")
+is_enemy_weapon = true
+use_object_pool = true
+bullet_scene = ExtResource("11_u1hpi")
+
+[node name="BulletFirePosition" type="Marker2D" parent="ShotingMechanics" index="2"]
+unique_name_in_owner = true
+position = Vector2(62, 0)
+
+[node name="ShootEffectPosition" type="Marker2D" parent="ShotingMechanics" index="3"]
+unique_name_in_owner = true
+position = Vector2(55, 0)
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ShotingMechanics" index="4"]
+emitting = false
+amount = 100
+texture = SubResource("AtlasTexture_28o60")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_w0wfm")

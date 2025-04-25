@@ -10,25 +10,22 @@ class_name PlayerController
 @export var initial_weapon: WeaponDetails
 @export var dead_sound_effect: SoundEffectDetails
 @export var move_sound_effect: SoundEffectDetails
+@export var sound_on_hurt: SoundEffectDetails
 @export var mass: float = 5.0
 @export var anti_gravity_thrust: float = 300.0
 
 var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
 
 
-# @export_category("Abilities")
-# @export var abilities: Dictionary = {
-# 	"block_core_finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
-# }
-
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
 @onready var _health: HealthComponent = %Health
-@onready var camera: AdvanceCamera = %AdvancedCamera
-@onready var _bullets_pool: PoolFracture = $"../Pool_FractureBullets"
-@onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
+@onready var _sound_effect_component: SoundEffectComponent = %SFXSoundComponent
+@onready var movement_sound_effect_component: SoundEffectComponent = %MovementSoundEffectComponent
 @onready var rotation_container: Node2D = $RotationContainer
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var edge_polygon: Polygon2D = $EdgePolygon
 
 var fired_previous_frame: bool = false
 var can_move: bool = true
@@ -36,14 +33,17 @@ var input: Vector2 = Vector2.ZERO
 var damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
+var abilities: Array = []
+
 
 func _ready() -> void:
 	gravity_sources.clear()
 	GameManager.player = self
 	_health.zero_health.connect(on_zero_power)
 	main_event_bus.level_completed.connect(deactivate_player)
-	_sound_effect_component.set_sound(move_sound_effect)
+	movement_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
+	edge_polygon.polygon = PolygonLib.createCirclePolygon(20.0, 6)
 
 func _process(_delta: float) -> void:
 	if !can_move: return
@@ -51,7 +51,6 @@ func _process(_delta: float) -> void:
 	fire()
 	switch_weapon()
 	rotation_container.look_at(get_global_mouse_position())
-	
 
 func _physics_process(delta) -> void:
 	if !can_move: return
@@ -65,7 +64,6 @@ func _physics_process(delta) -> void:
 
 func set_player() -> void:
 	if !player_details: return
-	# _instantiate_abilities()
 	_unlock_saved_abilities()
 	_apply_stats()
 
@@ -83,11 +81,16 @@ func set_weapon() -> void:
 func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	can_move = false
 
+	for ability in abilities:
+		ability.disable()
+
 func apply_gravity(force: Vector2) -> void:
-	# print("Applying gravity: ", force)
 	gravity_force = force
 
 func damage(_damage: float) -> void:
+	_sound_effect_component.set_sound(sound_on_hurt)
+	_sound_effect_component.play_sound()
+	animation_player.play("hit-flash")
 	get_health_node().take_damage(_damage)
 
 #endregion
@@ -96,17 +99,18 @@ func _unlock_saved_abilities() -> void:
 	for ability_id in PlayerStatsManager.get_unlocked_abilities().keys():
 		var ability: BaseAbility = PlayerStatsManager.get_unlocked_ability(ability_id).instantiate()
 		add_child(ability)
+		abilities.append(ability)
 		ability.enable()
 
 func _apply_stats() -> void:
-	var stats_array = player_details.apply_stats()
+	var stats = player_details.apply_stats()
 	
-	speed = stats_array[0]
-	damage_multiplier = stats_array[1]
-	_health.set_max_health(stats_array[2])
+	speed = stats.Speed
+	damage_multiplier = stats.Damage
+	_health.set_max_health(stats.Health)
 
+#region Input
 
-## ___________________INPUT FUNCTIONS__________________________
 func move(delta: float) -> void:
 	input = get_input()
 
@@ -118,12 +122,12 @@ func move(delta: float) -> void:
 			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
 		else:
 			velocity = Vector2.ZERO
-			_sound_effect_component.stop_sound()
+			movement_sound_effect_component.stop_sound()
 	else:
 		# Calculate movement velocity based on input
 		velocity += (input * Constants.Player_Acceleration * delta)
 		velocity = velocity.limit_length(Constants.Player_Max_Speed)
-		_sound_effect_component.play_sound()
+		movement_sound_effect_component.play_sound()
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -135,13 +139,19 @@ func switch_weapon() -> void:
 
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, damage_multiplier)
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, damage_multiplier, get_global_mouse_position())
 		fired_previous_frame = true
 	else:
 		fired_previous_frame = false
 
+func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
+	if !weapons_array.has(weapon_to_add):
+		weapons_array.append(weapon_to_add)
+		active_weapon._weapons_list = weapons_array
 
-## ___________________SIGNAL FUNCTIONS__________________________
+#endregion
+
+#region Signal
 
 func on_zero_power() -> void:
 	_sound_effect_component.set_sound(dead_sound_effect)
@@ -154,7 +164,16 @@ func on_zero_power() -> void:
 	await tween.finished
 	visible = false
 
-## _________________SETTERS AND GETTERS______________________
+func _on_pickups_collector_area_entered(area: Area2D) -> void:
+	if area.is_in_group("GravitySource"):
+		gravity_sources.append(area)
+
+func _on_pickups_collector_area_exited(area: Area2D) -> void:
+	gravity_sources.erase(area)
+
+#endregion
+
+#region Getters
 
 func get_max_health() -> float:
 	return _health.get_max_health()
@@ -164,9 +183,6 @@ func get_current_health() -> float:
 
 func get_health_node() -> HealthComponent:
 	return _health
-
-func get_player_camera() -> AdvanceCamera:
-	return camera
 
 func get_input() -> Vector2:
 	var local: Vector2 = Vector2.ZERO
@@ -200,23 +216,9 @@ func calculate_total_gravity() -> Vector2:
 			print_debug("Gravity source: ", source.name, " Strength: ", strength, " Distance: ", distance)
 		return total
 
-
 func get_active_weapon_node() -> ActiveWeaponComponent:
 	return active_weapon
 
 func get_current_weapon() -> WeaponDetails:
 	return get_active_weapon_node().get_current_weapon()
-
-func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
-	if !weapons_array.has(weapon_to_add):
-		weapons_array.append(weapon_to_add)
-		active_weapon._weapons_list = weapons_array
-
-func _on_pickups_collector_area_entered(area: Area2D) -> void:
-	if area.is_in_group("GravitySource"):
-		print("Gravity source entered: ", area.name)
-		gravity_sources.append(area)
-
-
-func _on_pickups_collector_area_exited(area: Area2D) -> void:
-	gravity_sources.erase(area)
+#endregion

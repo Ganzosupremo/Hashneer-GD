@@ -29,8 +29,10 @@ class_name BaseEnemy extends RigidBody2D
 signal Died(ref: BaseEnemy, pos: Vector2, natural_death: bool)
 signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
 signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
-signal Freed(ref: BaseEnemy)
+# signal Freed(ref: BaseEnemy)
 
+@export_category("Main Event Bus")
+@export var main_event_bus: MainEventBus
 
 @export_category("General")
 @export var advanced_regeneration: bool = false
@@ -68,7 +70,6 @@ signal Freed(ref: BaseEnemy)
 @export var sound_on_hurt: SoundEffectDetails
 @export var sound_on_dead: SoundEffectDetails
 @export var sound_on_heal: SoundEffectDetails
-
 
 @export_category("Visuals")
 @export_group("Shape")
@@ -145,7 +146,6 @@ var drops_count : int = 0
 @onready var _hit_flash_anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _invincible_timer: Timer = $InvincibleTimer
 
-
 func _ready() -> void:
 	spawn_timestamp = Time.get_ticks_msec()
 	_rng.randomize()
@@ -175,9 +175,6 @@ func _ready() -> void:
 	
 	# setTarget(null)
 	setNewTargetPos()
-
-func _draw() -> void:
-	draw_rect(_off_screen_notifier.rect, Color.BLUE, false, 2.0)
 
 func _createPolygonShape() -> PackedVector2Array:
 	match polygon_shape:
@@ -244,46 +241,28 @@ func _physics_process(delta):
 
 # Handle screen wrapping - when enemy goes off one side, it appears on the opposite side
 func _handle_screen_wrapping() -> void:
-	var viewport_rect: Rect2 = get_viewport_rect()
-	var viewport_pos: Vector2 = viewport_rect.position
-	var viewport_size: Vector2 = viewport_rect.size
+	var camera: Camera2D = get_viewport().get_camera_2d()
+	if not camera: return
 	
-	var position_changed : bool = false
+	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	var zoom: Vector2 = camera.zoom
+	var cam_pos: Vector2 = camera.global_position
 	
 	# Get the current global position
 	var current_position = global_position
 	
-	# Define the boundaries based on the viewport rect
-	var left_bound = viewport_pos.x
-	print_debug("left_bound: ", left_bound)
-	var right_bound = viewport_pos.x + viewport_size.x
-	print_debug("right_bound: ", right_bound)
-	var top_bound = viewport_pos.y
-	print_debug("top_bound: ", top_bound)
-	var bottom_bound = viewport_pos.y + viewport_size.y
-	print_debug("bottom_bound: ", bottom_bound)
-	print_debug("current_position: ", current_position)
+	# Calculate visible world boundaries based on camera position and zoom
+	var left_bound : float = cam_pos.x - (viewport_size.x / 2) / zoom.x
+	var right_bound : float = cam_pos.x + (viewport_size.x / 2) / zoom.x
+	var top_bound : float = cam_pos.y - (viewport_size.y / 2) / zoom.y
+	var bottom_bound : float = cam_pos.y + (viewport_size.y / 2) / zoom.y
 	
-	# Check horizontal wrapping
-	if current_position.x < left_bound:
-		current_position.x = right_bound
-		position_changed = true
-	elif current_position.x > right_bound:
-		current_position.x = left_bound
-		position_changed = true
+	current_position.x = wrapf(current_position.x, left_bound, right_bound)
+	current_position.y = wrapf(current_position.y, bottom_bound, top_bound)
 	
-	# Check vertical wrapping
-	if current_position.y < top_bound:
-		current_position.y = bottom_bound
-		position_changed = true
-	elif current_position.y > bottom_bound:
-		current_position.y = top_bound
-		position_changed = true
-	
-	# Apply position change if needed
-	# Use global_position directly since RigidBody2D's position is relative to parent
-	if position_changed:
-		global_position = current_position
+	global_position = current_position
+
+
 
 #region Poly Fracture Functions
 
@@ -292,7 +271,7 @@ func applyColor(color : Color) -> void:
 	_line.modulate = color
 	_origin_poly.modulate = color
 
-func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector2, knockback_time : float, damage_dealer: Node2D, damage_color : Color) -> Dictionary:
+func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector2, knockback_time : float, damage_color : Color) -> Dictionary:
 	if isDead(): 
 		return {"percent_cut" : 0.0, "dead" : true}
 	
@@ -464,6 +443,8 @@ func isDead() -> bool:
 
 func isKnockbackActive() -> bool:
 	return knockback_timer > 0.0
+
+
 
 #endregion
 

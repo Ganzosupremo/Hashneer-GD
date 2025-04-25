@@ -45,6 +45,7 @@ EffectsManager="res://Scripts/Managers/EffectsManager.gd"
 
 [display]
 
+window/size/always_on_top=true
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=3
@@ -171,6 +172,7 @@ thrust={
 2d_physics/layer_9="BlockCore"
 2d_physics/layer_10="PickUps"
 2d_physics/layer_11="Entities"
+2d_physics/layer_12="Enemy Ammo"
 
 [physics]
 

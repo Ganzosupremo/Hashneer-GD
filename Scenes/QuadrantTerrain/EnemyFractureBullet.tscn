@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxsis1jiu5g06"]
+
+[ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="1_acc2p"]
+
+[node name="EnemyFractureBullet" instance=ExtResource("1_acc2p")]
+collision_layer = 2048
+collision_mask = 192
+radius = 25.0
+speed = 600.0
+
+[node name="CollisionBoxComponent" parent="." index="3"]
+collision_layer = 2048
+collision_mask = 153
