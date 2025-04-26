@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://e020rkf5aefu"]
+
+[ext_resource type="AudioStream" uid="uid://bc5twmq0amhlt" path="res://Audio/Enemies/EnemyDead.wav" id="1_c5m8x"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_k3fpm"]
+
+[resource]
+script = ExtResource("2_k3fpm")
+limit = 50
+sound_type = 11
+destination_audio_bus = 2
+sound_volume = 0.0
+audio_stream = ExtResource("1_c5m8x")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

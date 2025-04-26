@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://bnplrlx3ejx04" path="res://Audio/Music/Préludes, Opus 28.mp3" id="4_g7g25"]
 [ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_wkdkc"]
 [ext_resource type="Script" uid="uid://l3j7jfe1glvs" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
-[ext_resource type="AudioStream" uid="uid://bml2j0kemm8fg" path="res://Audio/Music/Egmont Overture.mp3" id="5_oc2wu"]
+[ext_resource type="AudioStream" uid="uid://k8fk8ts4qpd4" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="5_r00sj"]
 [ext_resource type="Shader" uid="uid://b0ab6xn647225" path="res://Shaders/Stars.gdshader" id="6_6waxn"]
 [ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Fiat/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
 [ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Fiat/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
@@ -47,7 +47,7 @@ stream_count = 4
 stream_0 = ExtResource("2_madtc")
 stream_1 = ExtResource("3_r00sj")
 stream_2 = ExtResource("4_g7g25")
-stream_3 = ExtResource("5_oc2wu")
+stream_3 = ExtResource("5_r00sj")
 
 [sub_resource type="Resource" id="Resource_qu23o"]
 script = ExtResource("3_0xv7s")

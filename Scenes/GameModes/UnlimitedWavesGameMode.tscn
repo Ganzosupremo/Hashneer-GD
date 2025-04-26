@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=55 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
@@ -9,13 +9,19 @@
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="5_w6c12"]
 [ext_resource type="PackedScene" uid="uid://xos3xcnwpqn6" path="res://Scenes/UI/WeaponUIWavesGameMode.tscn" id="5_xahjo"]
+[ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="6_bevur"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="7_3aspk"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_4pl34"]
+[ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="7_7n1wt"]
+[ext_resource type="AudioStream" uid="uid://y3nyp5xeicnn" path="res://Audio/Music/Southern Gothic.mp3" id="8_rg2dc"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="8_tscnx"]
+[ext_resource type="AudioStream" uid="uid://bml2j0kemm8fg" path="res://Audio/Music/Egmont Overture.mp3" id="9_7n1wt"]
 [ext_resource type="Texture2D" uid="uid://dfma7im01t6w" path="res://Textures/BG/HasheneerTileset.png" id="9_k46ua"]
 [ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="9_s8cxh"]
+[ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="9_w41ci"]
 [ext_resource type="PackedScene" uid="uid://3wd536t1tgdx" path="res://Scenes/QuadrantTerrain/PoolFractureCutVisualizer.tscn" id="10_ri3l1"]
+[ext_resource type="AudioStream" uid="uid://cw1kt08tfv0f6" path="res://Audio/Music/Myuu-Final-Boss.mp3" id="11_rg2dc"]
 [ext_resource type="PackedScene" uid="uid://d074pyn2g110d" path="res://Scenes/QuadrantTerrain/PoolFractureShards.tscn" id="11_rxwaq"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_tscnx"]
 [ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="15_w6c12"]
@@ -46,6 +52,28 @@ enemy_drops_count = 5
 enemy_damage_multiplier = 1.3
 enemies_drop_table = SubResource("Resource_rvc4p")
 metadata/_custom_type_script = "uid://b6pf1rc5kjonv"
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_vdwhb"]
+shuffle = true
+stream_count = 4
+stream_0 = ExtResource("6_bevur")
+stream_1 = ExtResource("7_7n1wt")
+stream_2 = ExtResource("8_rg2dc")
+stream_3 = ExtResource("9_7n1wt")
+
+[sub_resource type="Resource" id="Resource_fpn40"]
+script = ExtResource("9_w41ci")
+volume_linear = 1.0
+has_playlist = true
+playlist = SubResource("AudioStreamPlaylist_vdwhb")
+metadata/_custom_type_script = "uid://so4m0io4gjtt"
+
+[sub_resource type="Resource" id="Resource_w41ci"]
+script = ExtResource("9_w41ci")
+music_clip = ExtResource("11_rg2dc")
+volume_linear = 1.0
+has_playlist = false
+metadata/_custom_type_script = "uid://so4m0io4gjtt"
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_rvc4p"]
 tile_data = PackedInt32Array(0, 196608, 0, 65536, 196608, 0, 131072, 196608, 0, 196608, 196608, 0, 262144, 196608, 0, 327680, 196608, 0, 1, 196608, 0, 65537, 196608, 0, 131073, 262144, 1, 196609, 131072, 1, 262145, 0, 1, 327681, 196608, 0, 2, 262144, 1, 262146, 393216, 0, 327682, 196608, 0, 262147, 393216, 0, 327683, 196608, 0, 262148, 393216, 0, 327684, 196608, 0, 196613, 327680, 2, 262149, 262144, 2, 327685, 196608, 0, 196614, 393216, 0, 262150, 196608, 0, 327686, 196608, 0, 196615, 393216, 0, 262151, 196608, 0, 327687, 196608, 0, 131080, 327680, 2, 196616, 262144, 2, 262152, 196608, 0, 327688, 196608, 0, 9, 196608, 0, 131081, 262144, 2, 196617, 196608, 0, 262153, 196608, 0, 327689, 196608, 0, 10, 196608, 0, 65546, 196608, 0, 131082, 196608, 0, 196618, 196608, 0, 262154, 196608, 0, 327690, 196608, 0, 11, 196608, 0, 65547, 196608, 0, 131083, 196608, 0, 196619, 196608, 0, 262155, 196608, 0, 327691, 196608, 0)
@@ -222,6 +250,8 @@ z_index = 1
 script = ExtResource("1_b5yyy")
 level_args = SubResource("Resource_b5yyy")
 main_event_bus = ExtResource("5_w6c12")
+music = SubResource("Resource_fpn40")
+boss_music = SubResource("Resource_w41ci")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_b5yyy")

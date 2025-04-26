@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://daacsw3qy6nj"]
+
+[ext_resource type="AudioStream" uid="uid://dxye7xd8fofkc" path="res://Audio/Enemies/EnemyHurt.wav" id="1_wt7w4"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_ccp5d"]
+
+[resource]
+script = ExtResource("2_ccp5d")
+limit = 50
+sound_type = 10
+destination_audio_bus = 2
+sound_volume = 0.0
+audio_stream = ExtResource("1_wt7w4")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

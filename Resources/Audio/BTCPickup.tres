@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://dqp2hb7622nlf"]
+
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_60746"]
+[ext_resource type="AudioStream" uid="uid://bpg3g7h0t7cr4" path="res://Audio/Pickups/BTCPickup.wav" id="1_snrr8"]
+
+[resource]
+script = ExtResource("1_60746")
+limit = 5
+sound_type = 14
+destination_audio_bus = 2
+sound_volume = 1.0
+audio_stream = ExtResource("1_snrr8")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

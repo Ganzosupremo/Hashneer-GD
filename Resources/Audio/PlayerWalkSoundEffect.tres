@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://bpmg8awb0dpxs"]
+
+[ext_resource type="AudioStream" uid="uid://b6xtdvlf02gu3" path="res://Audio/Player/Squidward Walking Sound Effect Cutted.wav" id="1_lpj5i"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_fyjes"]
+
+[resource]
+script = ExtResource("2_fyjes")
+limit = 5
+sound_type = 9
+destination_audio_bus = 1
+sound_volume = 1.0
+audio_stream = ExtResource("1_lpj5i")
+sound_pitch = 1.0
+pitch_randomness = 0.0

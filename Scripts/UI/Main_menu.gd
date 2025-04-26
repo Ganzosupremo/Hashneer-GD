@@ -8,7 +8,7 @@ extends Control
 
 func _ready() -> void:
 	start_game.grab_focus()
-	MusicManager.change_music_clip(main_menu_music, 2.5)
+	AudioManager.change_music_clip(main_menu_music, 2.5)
 
 func _on_button_pressed() -> void:
 	await start_game.sound_effect_component_ui.play_sound()

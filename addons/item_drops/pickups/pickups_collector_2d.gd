@@ -56,8 +56,14 @@ func try_pick_up(pickup: Pickup2D) -> bool:
 		if inventory == null: return false
 
 	if resource is CurrencyPickupResource:
-		if resource.currency_type == CurrencyPickupResource.CURRENCY_TYPE.FIAT:
-			pickup.resource_count = FED.get_fiat_subsidy()
+		match resource.currency_type:
+			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
+				pickup.resource_count = FED.get_fiat_subsidy()
+				AudioManager.create_2d_audio_at_location(pickup.global_position, SoundEffectDetails.SoundEffectType.FIAT_PICKUP, SoundEffectDetails.DestinationAudioBus.SFX)
+			CurrencyPickupResource.CURRENCY_TYPE.BTC:
+				AudioManager.create_2d_audio_at_location(pickup.global_position, SoundEffectDetails.SoundEffectType.BTC_PICKUP, SoundEffectDetails.DestinationAudioBus.SFX)
+			_:
+				pass
 
 	var results = inventory.call(access.method_add, resource, pickup.resource_count)
 	
@@ -67,11 +73,7 @@ func try_pick_up(pickup: Pickup2D) -> bool:
 			return false
 		
 		picked_up.emit(data)
-		
-		if sound_player and data.pickup.sound:
-			sound_player.stream = data.pickup.sound
-			sound_player.play()
-		
+	
 		return true
 	return false
 

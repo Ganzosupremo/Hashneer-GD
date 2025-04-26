@@ -145,16 +145,20 @@ func get_properties() -> Dictionary:
 
 func _on_button_up() -> void:
 	if sound_effect_component_ui == null: return
-	await sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
+	AudioManager.create_audio(on_mouse_up_effect.sound_type, on_mouse_up_effect.destination_audio_bus)
+	# await sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_button_down() -> void:
 	if sound_effect_component_ui == null: return
-	sound_effect_component_ui.set_and_play_sound(on_mouse_down_effect)
+	# sound_effect_component_ui.set_and_play_sound(on_mouse_down_effect)
+	AudioManager.create_audio(on_mouse_down_effect.sound_type, on_mouse_down_effect.destination_audio_bus)
 
 func _on_mouse_entered() -> void:
 	if sound_effect_component_ui == null: return
-	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
+	# sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
+	AudioManager.create_audio(on_mouse_entered_effect.sound_type, on_mouse_entered_effect.destination_audio_bus)
 
 func _on_focus_entered() -> void:
 	if sound_effect_component_ui == null: return
-	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
+	# sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
+	AudioManager.create_audio(on_mouse_entered_effect.sound_type, on_mouse_entered_effect.destination_audio_bus)

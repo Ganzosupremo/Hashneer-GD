@@ -32,7 +32,7 @@ axis_stretch_horizontal = 1
 axis_stretch_vertical = 1
 modulate_color = Color(0, 0.113725, 0.239216, 1)
 
-[node name="Settings" type="Control"]
+[node name="Settings" type="Control" groups=["PersistentNodes"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -69,10 +69,11 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_i76vb")
 tab_alignment = 1
-current_tab = 0
+current_tab = 1
 drag_to_rearrange_enabled = true
 
 [node name="Video" type="PanelContainer" parent="TabContainer"]
+visible = false
 layout_mode = 2
 theme = ExtResource("1_i76vb")
 metadata/_tab_index = 0
@@ -173,7 +174,6 @@ layout_mode = 2
 theme = ExtResource("1_i76vb")
 
 [node name="Audio" type="PanelContainer" parent="TabContainer"]
-visible = false
 layout_mode = 2
 theme = ExtResource("1_i76vb")
 metadata/_tab_index = 1
@@ -263,6 +263,44 @@ max_value = 1.0
 step = 0.1
 ticks_on_borders = true
 
+[node name="PlayerSfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 75
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Player SFX Volume"
+
+[node name="PlayerSFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="WeaponsSfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 75
+alignment = 1
+
+[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Weapons SFX Volume"
+
+[node name="WeaponsSFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_vertical = 1
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
 [node name="HSeparator2" type="HSeparator" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
@@ -270,3 +308,5 @@ theme = ExtResource("1_i76vb")
 [connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio/PlayerSFXSlider" to="." method="_on_player_sfx_slider_value_changed"]
+[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio/WeaponsSFXSlider" to="." method="_on_weapons_slider_value_changed"]

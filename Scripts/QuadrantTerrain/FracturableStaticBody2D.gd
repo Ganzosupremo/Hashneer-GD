@@ -119,7 +119,8 @@ func create_polygon_shape() -> PackedVector2Array:
 			return PackedVector2Array([])
 
 func _on_zero_health() -> void:
-	await _hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
+	# await _hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
+	AudioManager.create_2d_audio_at_location(global_position, sound_effect_on_destroy.sound_type, sound_effect_on_destroy.destination_audio_bus)
 	destroyed = true
 
 # ______________________Geters and Setters_______________________________________

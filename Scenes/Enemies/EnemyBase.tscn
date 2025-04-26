@@ -1,13 +1,12 @@
-[gd_scene load_steps=29 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=25 format=3 uid="uid://d1ck5inf3bdcq"]
 
 [ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
 [ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_t8mk1"]
-[ext_resource type="AudioStream" uid="uid://dxye7xd8fofkc" path="res://Audio/Enemies/EnemyHurt.wav" id="2_tgb06"]
-[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_fj512"]
+[ext_resource type="Resource" uid="uid://daacsw3qy6nj" path="res://Resources/Audio/EnemyHurt.tres" id="3_5jwg1"]
 [ext_resource type="Script" uid="uid://dsjqejcixdgmm" path="res://Scripts/Components/SoundEffectComponent.gd" id="3_m1s7c"]
-[ext_resource type="AudioStream" uid="uid://bc5twmq0amhlt" path="res://Audio/Enemies/EnemyDead.wav" id="4_fj512"]
-[ext_resource type="AudioStream" uid="uid://bbbjxgmvr5uxf" path="res://Audio/Enemies/EnemyHeal.wav" id="5_uhgc7"]
+[ext_resource type="Resource" uid="uid://e020rkf5aefu" path="res://Resources/Audio/EnemyDeath.tres" id="4_t8mk1"]
+[ext_resource type="Resource" uid="uid://djtuc3etgejud" path="res://Resources/Audio/EnemyHeal.tres" id="5_bo7sv"]
 [ext_resource type="Texture2D" uid="uid://cwtw4gx8qcy3w" path="res://Textures/Enemies/Grass.png" id="8_5jwg1"]
 [ext_resource type="Texture2D" uid="uid://bhoj5ykjs0ahw" path="res://Textures/FracturableBodies/BlockCoreTextureNormal.png" id="9_5jwg1"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
@@ -15,27 +14,6 @@
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="12_5jwg1"]
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="13_imyi4"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="14_5jwg1"]
-
-[sub_resource type="Resource" id="Resource_uhgc7"]
-script = ExtResource("3_fj512")
-sound_volume = 0.0
-audio_stream = ExtResource("2_tgb06")
-sound_pitch = 1.0
-metadata/_custom_type_script = "uid://tjgxmgkq4pce"
-
-[sub_resource type="Resource" id="Resource_4ni7a"]
-script = ExtResource("3_fj512")
-sound_volume = 0.0
-audio_stream = ExtResource("4_fj512")
-sound_pitch = 1.0
-metadata/_custom_type_script = "uid://tjgxmgkq4pce"
-
-[sub_resource type="Resource" id="Resource_lv37s"]
-script = ExtResource("3_fj512")
-sound_volume = 0.0
-audio_stream = ExtResource("5_uhgc7")
-sound_pitch = 1.0
-metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t8mk1"]
 atlas = ExtResource("8_5jwg1")
@@ -252,9 +230,9 @@ keep_distance_range = Vector2(1.5, 1.5)
 rotate_towards_velocity = true
 max_speed = 75.0
 accel = 800.0
-sound_on_hurt = SubResource("Resource_uhgc7")
-sound_on_dead = SubResource("Resource_4ni7a")
-sound_on_heal = SubResource("Resource_lv37s")
+sound_on_hurt = ExtResource("3_5jwg1")
+sound_on_dead = ExtResource("4_t8mk1")
+sound_on_heal = ExtResource("5_bo7sv")
 cir_radius = 50.0
 cir_smoothing = 8
 

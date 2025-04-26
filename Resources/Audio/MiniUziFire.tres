@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://st6ywkowjfe6"]
+
+[ext_resource type="AudioStream" uid="uid://bhkgu53rk0sek" path="res://Audio/Weapons/MP7Fire 1.wav" id="1_8t4on"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_6m0tx"]
+
+[resource]
+script = ExtResource("2_6m0tx")
+limit = 40
+sound_type = 4
+destination_audio_bus = 4
+sound_volume = 1.0
+audio_stream = ExtResource("1_8t4on")
+sound_pitch = 1.25
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

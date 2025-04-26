@@ -293,7 +293,8 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
 	
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
-		_sound_effect_component.set_and_play_sound(sound_on_dead)
+		# _sound_effect_component.set_and_play_sound(sound_on_dead)
+		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 		
 		if hasRegeneration():
 			_health_component.change_regeneration_state(false)
@@ -315,7 +316,8 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			polygon_restorer.addShape(cur_shape.shape, cur_shape.area)
 		setPolygon(cur_shape.shape)
 		
-		_sound_effect_component.set_and_play_sound(sound_on_hurt)
+		# _sound_effect_component.set_and_play_sound(sound_on_hurt)
+		AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 		if _rng.randf() > 0.1:
 			apply_central_impulse(knockback_force)
 			knockback_timer = knockback_time
@@ -339,7 +341,8 @@ func kill(natural_death: bool = false) -> void:
 	if !natural_death:
 		for i in range(drops_count):
 			random_drops.spawn_drops(1)
-		await _sound_effect_component.set_and_play_sound(sound_on_dead)
+		# await _sound_effect_component.set_and_play_sound(sound_on_dead)
+		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
 
 ## Applies healing to the enemy and manages related visual effects
@@ -354,7 +357,8 @@ func heal(heal_amount : float) -> void:
 		cur_area = start_area
 		_health_component.heal(start_area)
 		_hit_flash_anim_player.play("heal")
-		_sound_effect_component.set_and_play_sound(sound_on_heal)
+		# _sound_effect_component.set_and_play_sound(sound_on_heal)
+		AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
 		_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 		
 		if !hasRegeneration(): return
@@ -402,7 +406,8 @@ func restore() -> void:
 		_health_component.set_current_health(area)
 	
 	_hit_flash_anim_player.play("heal")
-	_sound_effect_component.set_and_play_sound(sound_on_heal)
+	# _sound_effect_component.set_and_play_sound(sound_on_heal)
+	AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
 	_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 	
 	if hasRegeneration():
@@ -477,22 +482,6 @@ func setNewTargetPos() -> void:
 	
 	target_pos = Vector3(target_edge_position.x, target_edge_position.y, 1.0)
 	prev_target_pos = global_position # Use current position as previous
-
-
-	# if not target or not is_instance_valid(target): 
-	# 	prev_target_pos = Vector2.ZERO
-	# 	var rand_angle : float = _rng.randf() * 2.0 * PI
-	# 	var v := Vector2.RIGHT.rotated(rand_angle) * _rng.randf() * 1500
-	# 	target_pos = Vector3(v.x, v.y, 1.0)
-	# 	return
-	# if keep_distance_range.y <= 0.0:
-	# 	target_pos = Vector3(target.global_position.x, target.global_position.y, 1.0)
-	# 	prev_target_pos = target.global_position
-	# else:
-	# 	var random_rot : float = _rng.randf_range(0, PI * 2.0)
-	# 	var pos : Vector2 = target.global_position + Vector2.RIGHT.rotated(random_rot) * _rng.randf_range(keep_distance_range.x, keep_distance_range.y)
-	# 	target_pos = Vector3(pos.x, pos.y, 1.0)
-	# 	prev_target_pos = target.global_position
 
 ## DEPRECATED
 func startTargetPosTimer(min_time : float, max_time : float) -> void:

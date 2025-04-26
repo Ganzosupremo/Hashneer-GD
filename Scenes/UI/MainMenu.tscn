@@ -1,21 +1,31 @@
-[gd_scene load_steps=26 format=3 uid="uid://d4bsaxj0j3hoc"]
+[gd_scene load_steps=30 format=3 uid="uid://d4bsaxj0j3hoc"]
 
 [ext_resource type="Script" uid="uid://bi7u7tu0t1h1k" path="res://Scripts/UI/Main_menu.gd" id="1_n1dpb"]
+[ext_resource type="AudioStream" uid="uid://dmgy8fmg28t7k" path="res://Audio/Music/Cello Suite 1 in G - Prelude.mp3" id="2_hys1s"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_mqeuu"]
-[ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="2_q6ayx"]
+[ext_resource type="AudioStream" uid="uid://bnplrlx3ejx04" path="res://Audio/Music/Préludes, Opus 28.mp3" id="3_fgqbg"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="3_juhrs"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_mlo2r"]
 [ext_resource type="PackedScene" uid="uid://bkmy27dnw7m2b" path="res://Scenes/UIComponents/ResponsiveBackground.tscn" id="3_rj78t"]
 [ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="4_5ycdg"]
+[ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="4_euk5f"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="5_3o1w0"]
+[ext_resource type="AudioStream" uid="uid://k8fk8ts4qpd4" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="5_kdsd0"]
 [ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/UIComponents/RippleComponentUI.tscn" id="6_udh87"]
 [ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="7_a0eer"]
 
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_w0mr3"]
+stream_count = 4
+stream_0 = ExtResource("2_hys1s")
+stream_1 = ExtResource("3_fgqbg")
+stream_2 = ExtResource("4_euk5f")
+stream_3 = ExtResource("5_kdsd0")
+
 [sub_resource type="Resource" id="Resource_tpqx3"]
 script = ExtResource("3_juhrs")
-music_clip = ExtResource("2_q6ayx")
 volume_linear = 1.0
-has_playlist = false
+has_playlist = true
+playlist = SubResource("AudioStreamPlaylist_w0mr3")
 
 [sub_resource type="Environment" id="Environment_kv8h2"]
 background_mode = 3

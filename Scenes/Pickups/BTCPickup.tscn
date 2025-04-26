@@ -4,7 +4,7 @@
 [ext_resource type="PhysicsMaterial" uid="uid://deqagbq7eod2b" path="res://samples/softbody2d/softbody2d_phys_bouncy.tres" id="1_lrual"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="2_5gwqa"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_0nwdx"]
-[ext_resource type="AudioStream" uid="uid://bpg3g7h0t7cr4" path="res://Audio/Pickups/FiatPickup.wav" id="4_3a5da"]
+[ext_resource type="AudioStream" uid="uid://bpg3g7h0t7cr4" path="res://Audio/Pickups/BTCPickup.wav" id="4_3a5da"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="5_3a5da"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5gwqa"]

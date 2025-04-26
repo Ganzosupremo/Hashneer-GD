@@ -43,7 +43,7 @@ func _ready() -> void:
 	# _calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
-	MusicManager.change_music_clip(music)
+	AudioManager.change_music_clip(music)
 	_init_builder()
 
 ## Initializes the builder with the given arguments.

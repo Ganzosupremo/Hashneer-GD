@@ -88,8 +88,9 @@ func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
 func damage(_damage: float) -> void:
-	_sound_effect_component.set_sound(sound_on_hurt)
-	_sound_effect_component.play_sound()
+	# _sound_effect_component.set_sound(sound_on_hurt)
+	# _sound_effect_component.play_sound()
+	AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 	animation_player.play("hit-flash")
 	get_health_node().take_damage(_damage)
 
@@ -122,12 +123,13 @@ func move(delta: float) -> void:
 			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
 		else:
 			velocity = Vector2.ZERO
-			movement_sound_effect_component.stop_sound()
+			# movement_sound_effect_component.stop_sound()
 	else:
 		# Calculate movement velocity based on input
 		velocity += (input * Constants.Player_Acceleration * delta)
 		velocity = velocity.limit_length(Constants.Player_Max_Speed)
-		movement_sound_effect_component.play_sound()
+		AudioManager.create_2d_audio_at_location_with_persistent_player(global_position, move_sound_effect.sound_type, move_sound_effect.destination_audio_bus)
+		# movement_sound_effect_component.play_sound()
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -154,10 +156,11 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 #region Signal
 
 func on_zero_power() -> void:
-	_sound_effect_component.set_sound(dead_sound_effect)
+	# _sound_effect_component.set_sound(dead_sound_effect)
 	deactivate_player()
 	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
-	_sound_effect_component.play_sound()
+	# _sound_effect_component.play_sound()
+	AudioManager.create_2d_audio_at_location(global_position, dead_sound_effect.sound_type, dead_sound_effect.destination_audio_bus)
 	tween.tween_property(self, "scale", Vector2(0.0,0.0), 1.5).from_current()
 	tween.tween_property(self, "rotation", 360.0, 1.0).from_current()
 	

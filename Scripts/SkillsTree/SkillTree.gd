@@ -12,7 +12,7 @@ class_name SkillTreeManager extends Control
 var _use_btc_as_currency: bool = false
 
 func _ready() -> void:
-	MusicManager.change_music_clip(music_details)
+	AudioManager.change_music_clip(music_details)
 	skill_nodes = _get_skill_nodes()
 	
 	var id: int = 0

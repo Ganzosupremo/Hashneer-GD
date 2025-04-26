@@ -37,11 +37,10 @@ GameManager="*res://Scenes/Manager/GameManager.tscn"
 SceneManager="*res://Scenes/Manager/SceneManager.tscn"
 PlayerStatsManager="*res://Scenes/Manager/PlayerStatsManager.tscn"
 Interface="*res://Scripts/Utils/Interface.gd"
-MusicManager="*res://Scenes/Manager/MusicManager.tscn"
+AudioManager="*res://Scenes/Manager/AudioManager.tscn"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
-EffectsManager="res://Scripts/Managers/EffectsManager.gd"
 
 [display]
 

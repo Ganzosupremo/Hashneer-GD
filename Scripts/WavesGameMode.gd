@@ -21,6 +21,8 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 
 @export var level_args: LevelBuilderArgs
 @export var main_event_bus: MainEventBus
+@export var music: MusicDetails
+@export var boss_music: MusicDetails
 
 var time_to_spawn_boss: float = 60.0
 var time_to_spawn_boss_passed: float = 0.0
@@ -33,6 +35,7 @@ var _spawned_enemies_array: Array = []
 var _enemies_to_despawn_queue: Array = [] # Queue for enemies pending despawn
 
 func _ready() -> void:
+	AudioManager.change_music_clip(music)
 	level_args = GameManager.get_level_args()
 	boss_progress_bar.max_value = time_to_spawn_boss
 	boss_progress_bar.value = 0.0
@@ -162,11 +165,9 @@ func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
 		label.text = "Enemies Killed: {0}".format([kill_count])
 		boss_progress_bar.value += 1
 
-# func on_enemy_freed(ref: BaseEnemy) -> void:
-# 	_spawned_enemies_array.erase(ref)
-
 func _on_boss_progress_bar_value_changed(value: float) -> void:
 	if value == boss_progress_bar.max_value:
+		AudioManager.change_music_clip(boss_music)
 		boss_spawner.spawn_drops(1)
 		boss_spawned = true
 		

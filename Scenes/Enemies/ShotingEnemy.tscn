@@ -1,14 +1,13 @@
-[gd_scene load_steps=56 format=3 uid="uid://crwlndhaddjpy"]
+[gd_scene load_steps=54 format=3 uid="uid://crwlndhaddjpy"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
 [ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShotingEnemy.gd" id="2_28o60"]
 [ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="3_28o60"]
-[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_w0wfm"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="4_ubhwd"]
-[ext_resource type="AudioStream" uid="uid://ohf53t0i8dxc" path="res://Audio/Weapons/Laser Pistol.wav" id="4_w0wfm"]
+[ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="5_u1hpi"]
 [ext_resource type="Script" uid="uid://cx75gxr4fjdc1" path="res://Scripts/Resources/ParticleEffectDetails.gd" id="5_vfbhq"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
 [ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="11_u1hpi"]
@@ -134,12 +133,6 @@ particle_trail_details = SubResource("Resource_36q5n")
 randomness = 0.5
 lifetime_randomness = 0.25
 
-[sub_resource type="Resource" id="Resource_x51p6"]
-script = ExtResource("3_w0wfm")
-sound_volume = -20.0
-audio_stream = ExtResource("4_w0wfm")
-sound_pitch = 1.0
-
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_2h0tc"]
 load_path = "res://.godot/imported/SmokeEffect.png-64cef4c21ecab723665dd865e79b13d1.ctex"
 
@@ -236,9 +229,9 @@ region = Rect2(4, 0, 24, 14)
 
 [sub_resource type="Resource" id="Resource_o5j8s"]
 script = ExtResource("4_nrp74")
-weapon_name = "Pistol"
+weapon_name = "Enemy Pistol"
 weapon_texture = SubResource("AtlasTexture_60w8o")
-fire_sound = SubResource("Resource_x51p6")
+fire_sound = ExtResource("5_u1hpi")
 weapon_damage_multiplier = 0.0
 ammo_details = SubResource("Resource_7p12m")
 weapon_shoot_effect = SubResource("Resource_bety5")

@@ -1,0 +1,38 @@
+[gd_scene load_steps=26 format=3 uid="uid://b5kjj1t5jwafd"]
+
+[ext_resource type="Script" uid="uid://b4iwf1flt845c" path="res://Scripts/Managers/AudioManager.gd" id="1_8c7ao"]
+[ext_resource type="AudioBusLayout" uid="uid://1ibwcs1mu46p" path="res://Resources/MainAudioBus.tres" id="2_q7udv"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_mddlq"]
+[ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="4_bilgx"]
+[ext_resource type="Resource" uid="uid://bl3gcxc42ryaw" path="res://Resources/Audio/BossDeath.tres" id="5_3ndka"]
+[ext_resource type="Resource" uid="uid://xo74ypflhafb" path="res://Resources/Audio/BossHeal.tres" id="6_n58yx"]
+[ext_resource type="Resource" uid="uid://bg7tdmtbw2iis" path="res://Resources/Audio/BossHurt.tres" id="7_hx8td"]
+[ext_resource type="Resource" uid="uid://e020rkf5aefu" path="res://Resources/Audio/EnemyDeath.tres" id="8_vcblb"]
+[ext_resource type="Resource" uid="uid://djtuc3etgejud" path="res://Resources/Audio/EnemyHeal.tres" id="9_mu847"]
+[ext_resource type="Resource" uid="uid://daacsw3qy6nj" path="res://Resources/Audio/EnemyHurt.tres" id="10_m5beh"]
+[ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="11_wob84"]
+[ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/MouseClick.tres" id="12_tqt06"]
+[ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/MouseHover.tres" id="13_ktceg"]
+[ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/MouseRelease.tres" id="14_bn8qg"]
+[ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="15_dv5xf"]
+[ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Audio/PlayerDeadSoundEffect.tres" id="16_2ixia"]
+[ext_resource type="Resource" uid="uid://bkkyj440tbud" path="res://Resources/Audio/PlayerHitSoundEffect.tres" id="17_qxoid"]
+[ext_resource type="Resource" uid="uid://bpmg8awb0dpxs" path="res://Resources/Audio/PlayerWalkSoundEffect.tres" id="18_davep"]
+[ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="19_mqklg"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/QuadrantHit.tres" id="20_8gatj"]
+[ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="21_ajjf1"]
+[ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="23_3ndka"]
+[ext_resource type="Resource" uid="uid://bq7engmoexioi" path="res://Resources/Audio/UIVolumeSlidersTest.tres" id="24_n58yx"]
+[ext_resource type="Resource" uid="uid://dqp2hb7622nlf" path="res://Resources/Audio/BTCPickup.tres" id="25_vcblb"]
+[ext_resource type="Resource" uid="uid://dt13c8o08ow00" path="res://Resources/Audio/FiatPickup.tres" id="26_mu847"]
+
+[node name="AudioManager" type="Node2D"]
+script = ExtResource("1_8c7ao")
+main_game_mixer = ExtResource("2_q7udv")
+sound_effects = Array[ExtResource("3_mddlq")]([ExtResource("4_bilgx"), ExtResource("5_3ndka"), ExtResource("6_n58yx"), ExtResource("7_hx8td"), ExtResource("8_vcblb"), ExtResource("9_mu847"), ExtResource("10_m5beh"), ExtResource("23_3ndka"), ExtResource("11_wob84"), ExtResource("12_tqt06"), ExtResource("13_ktceg"), ExtResource("14_bn8qg"), ExtResource("15_dv5xf"), ExtResource("16_2ixia"), ExtResource("17_qxoid"), ExtResource("18_davep"), ExtResource("19_mqklg"), ExtResource("20_8gatj"), ExtResource("21_ajjf1"), ExtResource("24_n58yx"), ExtResource("25_vcblb"), ExtResource("26_mu847")])
+
+[node name="FirstAudioStream" type="AudioStreamPlayer" parent="."]
+bus = &"Music"
+
+[node name="SecondAudioStream" type="AudioStreamPlayer" parent="."]
+bus = &"Music"

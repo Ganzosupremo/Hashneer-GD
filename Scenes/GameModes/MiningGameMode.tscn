@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=47 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="1_eny06"]
 [ext_resource type="Texture2D" uid="uid://dnkikaarda1ys" path="res://Textures/BG/59.png" id="2_uw255"]
@@ -13,11 +13,9 @@
 [ext_resource type="Script" uid="uid://d2veqt7wkxl4y" path="res://Scripts/QuadrantTerrain/QuadrantBuilder.gd" id="11_lf7vs"]
 [ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="12_cvs73"]
 [ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="13_wefku"]
-[ext_resource type="AudioStream" uid="uid://k8fk8ts4qpd4" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="14_pf3dr"]
+[ext_resource type="AudioStream" uid="uid://y3nyp5xeicnn" path="res://Audio/Music/Southern Gothic.mp3" id="14_mnofu"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="15_1cro5"]
 [ext_resource type="PackedScene" uid="uid://dqo2lrxl5di8o" path="res://Scenes/QuadrantTerrain/BlockCore.tscn" id="16_86g1h"]
-[ext_resource type="AudioStream" uid="uid://c4yunj0mkgsxx" path="res://Audio/FracturableTerrain/BlockCoreDestroyed.wav" id="17_1gtfo"]
-[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="18_hf832"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="19_i1wc4"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="20_2lbus"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/QuadrantTerrain/CutShapeVisualizer.tscn" id="21_4y4n7"]
@@ -95,22 +93,16 @@ shuffle = true
 stream_count = 3
 stream_0 = ExtResource("12_cvs73")
 stream_1 = ExtResource("13_wefku")
-stream_2 = ExtResource("14_pf3dr")
+stream_2 = ExtResource("14_mnofu")
 
 [sub_resource type="Resource" id="Resource_ao83a"]
 script = ExtResource("15_1cro5")
-volume_linear = 0.5
+volume_linear = 1.0
 has_playlist = true
 playlist = SubResource("AudioStreamPlaylist_v8agn")
 metadata/_custom_type_script = "uid://so4m0io4gjtt"
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_ln2a1"]
-
-[sub_resource type="Resource" id="Resource_ynhtl"]
-script = ExtResource("18_hf832")
-sound_volume = 1.0
-audio_stream = ExtResource("17_1gtfo")
-sound_pitch = 1.0
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xxpkq"]
 
@@ -266,7 +258,6 @@ show_behind_parent = false
 top_level = true
 position = Vector2(624, 394)
 poly_texture = SubResource("CompressedTexture2D_ln2a1")
-sound_effect_on_destroy = SubResource("Resource_ynhtl")
 s_p_number = 30
 s_a = 400.0
 s_b = 400.0
@@ -307,7 +298,7 @@ position = Vector2(299, 293)
 [node name="RigidBodiesParent" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="Pool_FractureBullets" parent="." instance=ExtResource("20_2lbus")]
+[node name="Pool_FractureBullets" parent="." groups=["PBulletsPool"] instance=ExtResource("20_2lbus")]
 instance_template = ExtResource("21_xxpkq")
 max_amount = 10
 instantiate_new_on_empty = true
