@@ -2,6 +2,7 @@ class_name SkillNodeData extends Resource
 
 signal next_tier_unlocked()
 signal upgrade_maxed()
+signal upgrade_level_changed(new_level: int, max_level: int)
 
 enum DataStatus {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
 
@@ -59,12 +60,15 @@ enum StatType {
 var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
 var upgrade_level: int = 0:
 	set(value):
-		upgrade_level = value
-		check_next_tier_unlock()
-		check_upgrade_maxed_out()
+		if upgrade_level != value:
+			upgrade_level = value
+			upgrade_level_changed.emit(upgrade_level, upgrade_max_level)
+			check_next_tier_unlock()
+			check_upgrade_maxed_out()
 
 var _id: int = 0
 var status: DataStatus = DataStatus.LOCKED
+var use_bitcoin: bool = false
 
 #region Main
 
@@ -159,18 +163,18 @@ func _log(value: float, base: float) -> float:
 func check_upgrade_maxed_out() -> bool:
 	if upgrade_level == upgrade_max_level:
 		if status != DataStatus.MAXED_OUT:
-			# print_debug("Upgrade maxed out, should become gold now...")
 			upgrade_maxed.emit()
 		status = DataStatus.MAXED_OUT
+		upgrade_maxed.emit()
 		return true
 	return false
 
 func check_next_tier_unlock() -> bool:
 	if upgrade_level >= next_tier_threshold:
 		if status != DataStatus.UNLOCKED:
-			# print_debug("Next tier node should unlock now...")
 			next_tier_unlocked.emit()
 		status = DataStatus.UNLOCKED
+		next_tier_unlocked.emit()
 		return true
 	return false
 

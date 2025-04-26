@@ -10,6 +10,9 @@ enum FEATURE_TYPE {
 	## Upgrades a player stat, like health, damage or speed.
 	STAT_UPGRADE}
 
+@export_category("Event Bus")
+@export var main_event_bus: MainEventBus
+
 @export_category("Settings")
 @export_group("General")
 @export var skill_tree_event_bus: SkillTreeEventBus
@@ -65,7 +68,6 @@ enum FEATURE_TYPE {
 var is_maxed_out: bool = false
 var node_identifier: int = 0
 var node_state: SkillNodeData.DataStatus = SkillNodeData.DataStatus.LOCKED
-var SAVE_PATH: String = ""
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -73,10 +75,11 @@ const implements = [
 
 func _enter_tree() -> void:
 	if !skillnode_data: return
-	SAVE_PATH = "user://saves/SkillsTree/{0}.tres".format([save_name])
 
+	main_event_bus.use_btc_toggled_ui.connect(set_use_btc_as_currency)
 	skillnode_data.upgrade_maxed.connect(_on_upgrade_maxed)
 	skillnode_data.next_tier_unlocked.connect(_unlock_next_tier)
+	skillnode_data.upgrade_level_changed.connect(_on_level_changed)
 
 func _ready() -> void:
 	progress_bar.show()
@@ -86,8 +89,7 @@ func _ready() -> void:
 		lock()
 	_update_node_line_points()
 	set_currency_icon(use_bitcoin)
-	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost())
-	# set_skill_normal_icon(skill_icon)
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
 
 #region Public API
 
@@ -95,7 +97,7 @@ func lock() -> void:
 	hide()
 	_set_disabled_state(true)
 	is_unlocked = false
-	_update_skill_status_label("LOCKED", is_maxed_out)
+	_update_skill_status_label("LOCKED")
 	_set_modulate_color(Color.GRAY)
 	_update_node_line_points()
 
@@ -103,7 +105,7 @@ func unlock() -> void:
 	show()
 	_set_disabled_state(false)
 	is_unlocked = true
-	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), is_maxed_out)
+	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]))
 	_set_modulate_color(Color.WHITE)
 	_update_node_line_points()
 
@@ -133,7 +135,7 @@ func _unlock_or_upgrade() -> void:
 		FEATURE_TYPE.STAT_UPGRADE:
 			_upgrade_stat()
 		FEATURE_TYPE.NONE:
-			print_debug("Define a feature type...")
+			push_error("Define a feature type...")
 
 func _unlock_weapon() -> void:
 	skill_tree_event_bus.unlock_weapon(Utils.weapon_name_to_string(
@@ -160,10 +162,8 @@ func _buy_upgrade() -> bool:
 
 #region UI functions
 
-func _update_skill_status_label(_text: String, maxed_out: bool = false):
-		var new_text = _text if not maxed_out else "Maxed"
-		skill_label_status.text = new_text
-		# _update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), maxed_out)
+func _update_skill_status_label(_text: String):
+		skill_label_status.text = _text
 
 func _update_progress_bar(value: float, max_value: float) -> void:
 	progress_bar.max_value = max_value
@@ -195,16 +195,13 @@ func _update_node_line_points() -> void:
 		skill_line.hide()
 	skill_line.show()
 
-# func _update_info_panel(_cost: float, maxed_out: bool = false) -> void:
-# 	skill_info_panel.update_cost_label(int(_cost), maxed_out)
-
-func _update_skill_node_info(_title: String, _desc: String, _cost: float) -> void:
+func _update_skill_node_ui(_title: String, _desc: String, _cost: float) -> void:
 	title.text = _title
 	var texture: Texture2D = icon_on_maxed_out if is_maxed_out else skill_icon
 	skill_node_texture.texture = texture
 	desc.text = _desc
-	_update_cost_background()
 	cost.text = Utils.format_currency(_cost, true)
+	_update_cost_background()
 
 func _update_cost_background() -> void:
 	cost_background.remove_theme_stylebox_override("panel")
@@ -244,11 +241,11 @@ func _set_line_points() -> void:
 		skill_line.add_point(current_node_center_local)
 		skill_line.add_point(parent_node_center_local)
 
-func set_use_btc_as_currency(new_value: bool) -> void:
-	use_bitcoin = new_value
+func set_use_btc_as_currency(toggled_on: bool) -> void:
+	use_bitcoin = toggled_on
+	skillnode_data.use_bitcoin = toggled_on
 	set_currency_icon(use_bitcoin)
-	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	# skill_info_panel.update_cost_label(skillnode_data.upgrade_cost(use_bitcoin), use_bitcoin, is_maxed_out)
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
 
 func set_currency_icon(btc_icon: bool) -> void:
 	currency_icon.texture = bitcoin_icon if btc_icon else dollar_icon
@@ -262,17 +259,12 @@ func _on_mouse_entered() -> void:
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
-# func _on_mouse_exited() -> void:
-# 	skill_info_panel.deactivate_panel()
 
 func _on_skill_pressed() -> void:
 	if not _buy_upgrade():
 		return
-	
-	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), is_maxed_out)
-	_update_progress_bar(skillnode_data.upgrade_level, skillnode_data.upgrade_max_level)
-	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	# _update_info_panel(skillnode_data.upgrade_cost(use_bitcoin), is_maxed_out)
+		
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
 	_unlock_or_upgrade()
 
 func _on_button_down() -> void:
@@ -286,10 +278,9 @@ func _on_button_up() -> void:
 func _on_upgrade_maxed() -> void:
 	show()
 	is_maxed_out = true
-	_update_skill_status_label("Maxed", is_maxed_out)
+	_update_skill_status_label("Maxed")
 	_set_disabled_state(true)
-	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	currency_icon.visible = false
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
 	_unlock_next_tier()
 	_unlock_or_upgrade()
 
@@ -298,6 +289,10 @@ func _unlock_next_tier() -> void:
 		if node.is_unlocked:
 			continue  # Skip nodes that are already unlocked
 		node.unlock()
+
+func _on_level_changed(new_level: int, max_level: int) -> void:
+	_update_skill_status_label("{0}/{1}".format([new_level, max_level]))
+	_update_progress_bar(new_level, max_level)
 
 #endregion
 
@@ -323,13 +318,13 @@ func load_data() -> void:
 	skillnode_data.upgrade_level = data["upgrade_level"]
 	skillnode_data.status = data["node_state"]
 	is_maxed_out = data["is_maxed_out"]
+	is_unlocked = data["is_unlocked"]
 	
-	if is_next_tier_unlocked():
-		_unlock_next_tier()
-	if is_this_skill_maxed_out():
-		_on_upgrade_maxed()
-	_update_skill_node_info(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]), is_maxed_out)
+	is_next_tier_unlocked()
+	is_this_skill_maxed_out()
+	
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
+	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]) if !is_maxed_out else "Maxed")
 	_update_progress_bar(skillnode_data.upgrade_level, skillnode_data.upgrade_max_level)
 	_update_node_line_points()
 	

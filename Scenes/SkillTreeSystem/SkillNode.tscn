@@ -1,8 +1,9 @@
-[gd_scene load_steps=25 format=3 uid="uid://dekniu7v110w4"]
+[gd_scene load_steps=26 format=3 uid="uid://dekniu7v110w4"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0662n"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="2_e6wyl"]
 [ext_resource type="Script" uid="uid://b73fftsidofgy" path="res://Scripts/SkillsTree/SkillNode.gd" id="2_jhy1s"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="3_nincy"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="5_dcm06"]
 [ext_resource type="PackedScene" uid="uid://c63juqbjnho33" path="res://Scenes/SkillTreeSystem/Skill_branch.tscn" id="5_ed0gt"]
 [ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="6_7srpc"]
@@ -97,6 +98,7 @@ autowrap_mode = 3
 icon_alignment = 1
 expand_icon = true
 script = ExtResource("2_jhy1s")
+main_event_bus = ExtResource("3_nincy")
 enabled_label_settings = SubResource("LabelSettings_lqf14")
 disabled_label_settings = SubResource("LabelSettings_wgeri")
 bitcoin_icon = ExtResource("2_e6wyl")
@@ -220,7 +222,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_0662n")
 max_value = 20.0
-value = 8.0
 fill_mode = 8
 nine_patch_stretch = true
 texture_under = ExtResource("12_3osas")

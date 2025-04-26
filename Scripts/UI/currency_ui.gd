@@ -1,4 +1,8 @@
-extends Control
+class_name CurrencyUI extends Control
+
+signal use_btc_toggled(toggled_on: bool)
+
+@export var main_event_bus: MainEventBus
 
 @onready var btc_label: Label = %BitcoinLabel
 @onready var fiat_label: Label = %FiatLabel
@@ -38,4 +42,4 @@ func _on_money_changed(amount: float, is_bitcoin: bool = false) -> void:
 		btc_label.text = amount_text
 
 func _on_use_btc_button_toggled(toggled_on: bool) -> void:
-	skill_tree.set_use_btc_bool(toggled_on)
+	main_event_bus.use_btc_toggled_ui.emit(toggled_on)
