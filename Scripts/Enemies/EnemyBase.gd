@@ -279,7 +279,17 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_hit_flash_anim_player.play("invincible-hit-flash")
 		return {"percent_cut" : 0.0, "dead" : false} 
 	
-	# setTarget(damage_dealer)
+	# Handle shield damage first
+	var remaining_damage = damage_to_apply
+	if _health_component.get_shield() and _health_component.get_shield().is_active():
+		remaining_damage = Vector2(
+			_health_component.get_shield().absord_damage(damage_to_apply.x),
+			_health_component.get_shield().absord_damage(damage_to_apply.y)
+		)
+		if remaining_damage.x <= 0 and remaining_damage.y <= 0:
+			# All damage was absorbed by shield
+			_hit_flash_anim_player.play("shield-hit")
+			return {"percent_cut": 0.0, "dead": false}
 	
 	var percent_cut : float = 0.0
 	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(damage_to_apply, Vector2(53,77), Vector2.ZERO)
@@ -332,7 +342,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_invincible_timer.start(invincible_time)
 		if hasRegeneration() and canRegenerate():
 			_health_component.regenerate(self)
-			
+		
 	return {"percent_cut" : percent_cut , "dead" : isDead()}
 
 func kill(natural_death: bool = false) -> void:

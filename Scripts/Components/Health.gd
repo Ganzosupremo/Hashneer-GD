@@ -5,7 +5,8 @@ signal zero_health()
 signal update_health(current_health: float, max_health: float)
 
 @export var max_health: float = 300.0
-
+@export var has_shield: bool = false
+@export var shield: ShieldComponent
 var current_health: float = 0.0
 
 func _ready() -> void:
@@ -24,7 +25,11 @@ func heal(amount_to_heal: float) -> void:
 	_update_health()
 
 func take_damage(damage: float) -> void:
-	current_health -= damage
+	if has_shield and shield:
+		damage -= shield.absord_damage(damage)
+		current_health -= damage
+	else:
+		current_health -= damage
 	_update_health()
 	if current_health <= 0.0:
 		zero_health.emit()
@@ -44,6 +49,9 @@ func get_current_health() -> float:
 
 func get_max_health() -> float:
 	return max_health
+
+func get_shield() -> ShieldComponent:
+	return shield
 
 func get_health_percentage() -> float:
 	if current_health == 0.0:

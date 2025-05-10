@@ -51,12 +51,12 @@ float Perlin3D(vec3 P) {
     vec4 grad_x1 = hashx1 - 0.49999;
     vec4 grad_y1 = hashy1 - 0.49999;
     vec4 grad_z1 = hashz1 - 0.49999;
-    
+
     vec4 grad_results_0 = inversesqrt(grad_x0 * grad_x0 + grad_y0 * grad_y0 + grad_z0 * grad_z0) *
         (vec2(Pf.x, Pf_min1.x).xyxy * grad_x0 +
          vec2(Pf.y, Pf_min1.y).xxyy * grad_y0 +
          Pf.zzzz * grad_z0);
-         
+
     vec4 grad_results_1 = inversesqrt(grad_x1 * grad_x1 + grad_y1 * grad_y1 + grad_z1 * grad_z1) *
         (vec2(Pf.x, Pf_min1.x).xyxy * grad_x1 +
          vec2(Pf.y, Pf_min1.y).xxyy * grad_y1 +
@@ -111,17 +111,17 @@ vec2 TriangleUV(vec2 uv, float c, float r, float s) {
 void fragment() {
     // Compute fragment coordinate in pixels.
     vec2 fragCoord = UV * iResolution;
-    
+
     // Process UV map for texture pattern mapping.
     vec2 uv = fragCoord.xy * 0.00025;
-    
+
     // Compute two Perlin noise contributions.
     float n1 = Perlin3D(vec3(TriangleUV(uv, PatternScale, Rotation, TIME * Scroll) * 10.0, TIME * NoiseSpeed));
     float n2 = Perlin3D(vec3(TriangleUV(uv * 2.0 + vec2(10.0, 10.0), PatternScale, Rotation, TIME * Scroll) * 10.0, TIME * NoiseSpeed));
-    
+
     // Combine and clamp noise values.
     n1 = clamp((n1 + n2) * 0.5 + 0.5, 0.0, 1.0);
-    
+
     // Mix the two colors based on the noise value.
     COLOR = mix(BackgroundColor
 , ForegroundColor, n1);
