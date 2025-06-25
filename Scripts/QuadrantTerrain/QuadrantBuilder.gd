@@ -68,11 +68,13 @@ func _physics_process(delta: float) -> void:
 		player.apply_gravity(gravity_force)
 
 func _calculate_gravity_force(target_position: Vector2) -> Vector2:
-	var direction = (_grid_center - target_position).normalized()
-	var distance = target_position.distance_to(_grid_center)
-	var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
+    var direction = (_grid_center - target_position).normalized()
+    var distance = target_position.distance_to(_grid_center)
+    if distance < 0.001:
+        return Vector2.ZERO
+    var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
 
-	return direction * force_magnitude
+    return direction * force_magnitude
 
 
 func _apply_gravity_to_objects(body1: Node2D, body2: Node2D, delta: float) -> void:
