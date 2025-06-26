@@ -22,7 +22,7 @@ var upgrade_bonuses: Dictionary = {
 	"Damage": 0.0,
 }
 
-# Accumulated percentage bonuses (stored as decimals, e.g. 0.1 for 10%).
+## Accumulated percentage bonuses (stored as decimals, e.g. 0.1 for 10%).
 var percent_bonuses: Dictionary = {
 	"Speed": 0.0,
 	"Health": 0.0,
