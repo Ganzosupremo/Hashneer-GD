@@ -23,7 +23,7 @@
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="11_g7g25"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
-[ext_resource type="Resource" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="15_hsn28"]
+[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="15_hsn28"]
 [ext_resource type="Texture2D" uid="uid://cmwev2it4sxt3" path="res://Textures/Player/Abilities/RegenHealthOverTime.png" id="19_pm0d4"]
 [ext_resource type="Resource" uid="uid://bk3blai1anpdr" path="res://Resources/Upgrades/Fiat/ShotgunUnlock.tres" id="20_cet81"]
 [ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="21_h6krv"]
