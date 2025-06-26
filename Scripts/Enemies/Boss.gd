@@ -12,7 +12,7 @@ func kill(natural_death: bool = false) -> void:
 	hide()
 	if !natural_death:
 		random_drops.spawn_drops(1)
-		await _sound_effect_component.set_and_play_sound(sound_on_dead)
+		AudioManager.create_2d_audio_at_location(position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
 
 func _on_target_pos_reached(_pos: Vector3) -> void:

@@ -3,6 +3,8 @@ class_name HealthComponent
 
 signal zero_health()
 signal update_health(current_health: float, max_health: float)
+signal health_changed(new_health: float)
+
 
 @export var max_health: float = 300.0
 @export var has_shield: bool = false
@@ -18,7 +20,8 @@ func increase_max_health(new_max: float) -> void:
 	current_health = max_health
 
 func _update_health() -> void:
-	emit_signal("update_health", current_health, max_health)
+	update_health.emit(current_health, max_health)
+	health_changed.emit(current_health)
 
 func heal(amount_to_heal: float) -> void:
 	current_health = clamp(current_health + amount_to_heal, 0.0, max_health)
@@ -26,7 +29,7 @@ func heal(amount_to_heal: float) -> void:
 
 func take_damage(damage: float) -> void:
 	if has_shield and shield:
-		damage -= shield.absord_damage(damage)
+		damage -= shield.absorb_damage(damage, position)
 		current_health -= damage
 	else:
 		current_health -= damage

@@ -1,5 +1,5 @@
 ## This script handles the health and regeneration of 
-## the enemies, that are FractureBodies.
+## any entity that is a fracture body.
 class_name FractureBodyHealthComponent extends HealthComponent
 
 @export_category("Regeneration")

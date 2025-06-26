@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=3 uid="uid://dwdagjqqbaxkd"]
+
+[ext_resource type="Script" uid="uid://pcy423e5xwyu" path="res://Scripts/Components/ShieldComponent.gd" id="1_cel7m"]
+[ext_resource type="PackedScene" uid="uid://dt4kv727aad0l" path="res://Scenes/Components/FractureBodyHealthComponent.tscn" id="2_cel7m"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_dflkp"]
+
+[sub_resource type="Resource" id="Resource_owo4n"]
+script = ExtResource("2_dflkp")
+limit = 5
+sound_type = 24
+destination_audio_bus = 2
+sound_volume = 1.0
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="Resource" id="Resource_bwyhd"]
+script = ExtResource("2_dflkp")
+limit = 5
+sound_type = 23
+destination_audio_bus = 2
+sound_volume = 1.0
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_cel7m"]
+
+[node name="ShieldComponent" type="RigidBody2D"]
+collision_layer = 32
+collision_mask = 80
+gravity_scale = 0.0
+script = ExtResource("1_cel7m")
+shield_fracture_cut_extents_min_max = Vector2(27, 30)
+shield_min_area_percent = 0.2
+hit_effect_duration = 0.5
+placed_in_level = true
+hit_sound_effect = SubResource("Resource_owo4n")
+sound_effect_on_destroy = SubResource("Resource_bwyhd")
+cir_radius = 50.0
+cir_smoothing = 5
+
+[node name="Health" parent="." instance=ExtResource("2_cel7m")]
+unique_name_in_owner = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.0901961, 0.458824, 0.937255, 0.392157)
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+width = 5.0
+default_color = Color(1, 1, 1, 0.392157)
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+light_mask = 8
+visibility_layer = 8
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_cel7m")
+occluder_light_mask = 58

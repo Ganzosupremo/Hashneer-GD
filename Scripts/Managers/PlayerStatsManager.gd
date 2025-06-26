@@ -116,7 +116,7 @@ func load_data() -> void:
 	var data: Dictionary = SaveSystem.get_var(SaveName)
 	upgrade_bonuses = data["upgrade_bonuses"]
 	_load_saved_bonuses(upgrade_bonuses)
-	# _load_unlocked_weapons(data["unlocked_weapons"])
+	_load_unlocked_weapons(data["unlocked_weapons"])
 
 func _load_saved_bonuses(data: Dictionary) -> void:
 	for entry in data.keys():

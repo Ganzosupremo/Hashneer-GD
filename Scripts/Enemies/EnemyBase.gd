@@ -35,11 +35,11 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var main_event_bus: MainEventBus
 
 @export_category("General")
-@export var advanced_regeneration: bool = false
 @export var invincible_time: float = 0.5
 @export var color_default: Color = Color.ANTIQUE_WHITE
 ## 1.0 = no change. 2.0 means twice as fast over. 0.5 means takes longer twice as much
-@export_range(0.0, 2.0, 0.5, "or_greater") var knockback_resistance_base: float = 1.0 
+@export_range(0.0, 2.0, 0.5, "or_greater") var knockback_resistance_base: float = 1.0
+@export var shield: ShieldComponent
 
 @export_category("Fracture")
 ## shape_area < start_area * shape_area_percent -> shape will be fractured
@@ -111,7 +111,6 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export_range(0.0, 1.0, 0.05) var min_n3: float = 0
 @export_range(0.0, 1.0, 0.05) var n3 : float = 0
 
-
 var cur_area : float = 0.0
 var start_area : float = 0.0
 var target_pos := Vector3.ZERO
@@ -135,7 +134,6 @@ var drops_count : int = 0
 @onready var _drop_poly: Polygon2D = $DropPoly
 @onready var _origin_poly: Polygon2D = $OriginPoly
 @onready var _health_component: FractureBodyHealthComponent = $FractureBodyHealthComponent
-@onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 @onready var _off_screen_notifier: VisibleOnScreenNotifier2D = $OffScreenNotifier
 @onready var random_drops: RandomDrops = $RandomDrops
 
@@ -147,18 +145,19 @@ var drops_count : int = 0
 @onready var _invincible_timer: Timer = $InvincibleTimer
 
 func _ready() -> void:
-	spawn_timestamp = Time.get_ticks_msec()
-	_rng.randomize()
-	
 	var new_polygon : PackedVector2Array = _createPolygonShape()
 	start_poly = new_polygon
 	setPolygon(start_poly)
+
+	spawn_timestamp = Time.get_ticks_msec()
+	_rng.randomize()
+	
 	_off_screen_notifier.rect = getPolygonRect()
 	
 	cur_area = start_area
 	_health_component.set_max_health(start_area)
 	
-	if  !_health_component.has_advanced_regeneration():
+	if !_health_component.has_advanced_regeneration():
 		polygon_restorer = PolygonRestorer.new()
 		polygon_restorer.addShape(_polygon.get_polygon(), start_area)
 	
@@ -172,8 +171,6 @@ func _ready() -> void:
 	if _health_component.regeneration_interval_range != Vector2.ZERO:
 		regeneration_timer = _health_component.create_regeneration_timer()
 		regeneration_timer.timeout.connect(on_regeneration_timer_timeout)
-	
-	# setTarget(null)
 	setNewTargetPos()
 
 func _createPolygonShape() -> PackedVector2Array:
@@ -262,8 +259,6 @@ func _handle_screen_wrapping() -> void:
 	
 	global_position = current_position
 
-
-
 #region Poly Fracture Functions
 
 func applyColor(color : Color) -> void:
@@ -279,20 +274,33 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_hit_flash_anim_player.play("invincible-hit-flash")
 		return {"percent_cut" : 0.0, "dead" : false} 
 	
-	# Handle shield damage first
+ # Handle shield damage first
 	var remaining_damage = damage_to_apply
-	if _health_component.get_shield() and _health_component.get_shield().is_active():
-		remaining_damage = Vector2(
-			_health_component.get_shield().absord_damage(damage_to_apply.x),
-			_health_component.get_shield().absord_damage(damage_to_apply.y)
-		)
-		if remaining_damage.x <= 0 and remaining_damage.y <= 0:
-			# All damage was absorbed by shield
-			_hit_flash_anim_player.play("shield-hit")
-			return {"percent_cut": 0.0, "dead": false}
+	# var shield_component = _health_component.get_shield()
 	
+	# if shield_component and shield_component.is_active():
+	# 	# Use the total magnitude of the damage vector for the shield
+	# 	var damage_magnitude = (damage_to_apply.x + damage_to_apply.y) * 0.5
+		
+	# 	# Pass the impact point to the shield's absorb_damage function
+	# 	var remaining_damage_scalar = shield_component.absorb_damage(damage_magnitude, point)
+		
+	# 	# Convert scalar remaining damage back to vector format
+	# 	# If shield absorbs everything, both components will be 0
+	# 	if remaining_damage_scalar <= 0:
+	# 		_hit_flash_anim_player.play("shield-hit")
+	# 		return {"percent_cut": 0.0, "dead": false}
+		
+	# 	# Scale original damage vector by remaining percentage
+	# 	var damage_percent_remaining = remaining_damage_scalar / damage_magnitude
+	# 	remaining_damage = damage_to_apply * damage_percent_remaining
+   
 	var percent_cut : float = 0.0
-	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(damage_to_apply, Vector2(53,77), Vector2.ZERO)
+	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(
+		remaining_damage, 
+		Vector2(21,23), 
+		Vector2.ZERO
+		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
 	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)

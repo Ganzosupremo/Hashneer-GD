@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=51 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
@@ -208,31 +208,6 @@ guaranteed_drops = 1
 combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
-[sub_resource type="Resource" id="Resource_rxwaq"]
-script = ExtResource("7_3aspk")
-drop_path = "uid://d1ck5inf3bdcq"
-odds = 0.4
-metadata/_custom_type_script = "uid://daksr3jumc0af"
-
-[sub_resource type="Resource" id="Resource_xahjo"]
-script = ExtResource("7_3aspk")
-drop_path = "uid://dhsf3uibxlt6l"
-odds = 0.5
-metadata/_custom_type_script = "uid://daksr3jumc0af"
-
-[sub_resource type="Resource" id="Resource_xdq2w"]
-script = ExtResource("7_3aspk")
-drop_path = "uid://crwlndhaddjpy"
-odds = 0.5
-metadata/_custom_type_script = "uid://daksr3jumc0af"
-
-[sub_resource type="Resource" id="Resource_ri3l1"]
-script = ExtResource("8_tscnx")
-possible_drops = Array[ExtResource("7_3aspk")]([SubResource("Resource_rxwaq"), SubResource("Resource_xahjo"), SubResource("Resource_xdq2w")])
-guaranteed_drops = 2
-combined_odds = true
-metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
-
 [sub_resource type="Resource" id="Resource_s8cxh"]
 script = ExtResource("11_tscnx")
 name = &"Enemies"
@@ -245,7 +220,7 @@ size = Vector2(108, 98)
 radius = 40.0
 height = 242.0
 
-[node name="SurvivalGameMode" type="Node2D"]
+[node name="WavesGameMode" type="Node2D"]
 z_index = 1
 script = ExtResource("1_b5yyy")
 level_args = SubResource("Resource_b5yyy")
@@ -295,14 +270,12 @@ metadata/_custom_type_script = "uid://b8fqt8af86l80"
 [node name="RandomDrops" type="Node2D" parent="RandomDropsHolder" node_paths=PackedStringArray("scene_spawner")]
 z_index = 5
 script = ExtResource("6_l3lx7")
-drops_table = SubResource("Resource_ri3l1")
 scene_spawner = NodePath("../../Spawners/ShapeEdgeSceneSpawner2D")
 metadata/_custom_type_script = "uid://b8fqt8af86l80"
 
 [node name="RandomDrops2" type="Node2D" parent="RandomDropsHolder" node_paths=PackedStringArray("scene_spawner")]
 z_index = 5
 script = ExtResource("6_l3lx7")
-drops_table = SubResource("Resource_ri3l1")
 scene_spawner = NodePath("../../Spawners/ShapeEdgeSceneSpawner2D2")
 metadata/_custom_type_script = "uid://b8fqt8af86l80"
 

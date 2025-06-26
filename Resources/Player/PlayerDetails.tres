@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="1_3ldop"]
 [ext_resource type="Script" uid="uid://btnlbrr52ggm" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Audio/PlayerDeadSoundEffect.tres" id="2_s2elr"]
-[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="3_s2elr"]
+[ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="3_s2elr"]
 [ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="4_hsb6s"]
 [ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="6_t0dqd"]
 

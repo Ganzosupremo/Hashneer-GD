@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=26 format=3 uid="uid://d1ck5inf3bdcq"]
 
 [ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
 [ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
@@ -57,6 +57,18 @@ tracks/2/path = NodePath("FlashPoly:color")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("FlashPoly:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -183,12 +195,53 @@ tracks/2/keys = {
 "values": [Color(1, 1, 0, 1), Color(0.836007, 0.836006, 7.70092e-07, 1), Color(0.740646, 0.622345, 1.92523e-07, 1), Color(0.760784, 0.658824, 0, 0.54902), Color(1, 0.647059, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_5jwg1"]
+resource_name = "shield-hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlashPoly:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Shape3D:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.15, 0.24, 0.33, 0.4),
+"transitions": PackedFloat32Array(1, 1, -2, -2, 0.5),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1, 1), Vector2(0.8, 0.8), Vector2(1.2, 1.2), Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FlashPoly:color")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.23, 0.4),
+"transitions": PackedFloat32Array(1, 1, 0.5),
+"update": 0,
+"values": [Color(0, 0, 1, 0.627451), Color(0.360784, 0.556863, 1, 0.627451), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_2a3kf"]
 _data = {
 &"RESET": SubResource("Animation_srcxp"),
 &"heal": SubResource("Animation_m1s7c"),
 &"hit-flash": SubResource("Animation_2a3kf"),
-&"invincible-hit-flash": SubResource("Animation_p6c21")
+&"invincible-hit-flash": SubResource("Animation_p6c21"),
+&"shield-hit": SubResource("Animation_5jwg1")
 }
 
 [sub_resource type="Resource" id="Resource_t8mk1"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=76 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="2_vk5qk"]
@@ -27,14 +27,20 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_lbc0e"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://dhsf3uibxlt6l"
-odds = 1.0
+odds = 0.4
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_1glqy"]
+script = ExtResource("6_1wrq4")
+drop_path = "uid://cqab4qj7pmytx"
+odds = 0.6
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_f24ny"]
 script = ExtResource("7_lbc0e")
-possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_lbc0e")])
-guaranteed_drops = 1
-combined_odds = false
+possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_lbc0e"), SubResource("Resource_1glqy")])
+guaranteed_drops = 5
+combined_odds = true
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_2qui5"]

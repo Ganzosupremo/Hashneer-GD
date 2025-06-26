@@ -37,6 +37,10 @@ var _enemies_to_despawn_queue: Array = [] # Queue for enemies pending despawn
 func _ready() -> void:
 	AudioManager.change_music_clip(music)
 	level_args = GameManager.get_level_args()
+	boss_spawner.drops_table = level_args.boss_drop_table
+	random_drops.drops_table = level_args.enemies_drop_table
+	random_drops_2.drops_table = level_args.enemies_drop_table
+	
 	boss_progress_bar.max_value = time_to_spawn_boss
 	boss_progress_bar.value = 0.0
 #region Enemies Timer
@@ -48,17 +52,6 @@ func _ready() -> void:
 	_spawned_enemies_array.append_array(_spawn_enemies(level_args.spawn_count))
 	spawn_enemies_timer.start()
 #endregion
-	
-	main_event_bus.emit_bullet_pool_setted(
-		{
-			"player_pool": player_bullets_pool,
-			"enemy_pool": enemy_bullets_pool,
-		}
-	)
-	
-	boss_spawner.drops_table = level_args.boss_drop_table
-	random_drops.drops_table = level_args.enemies_drop_table
-	random_drops_2.drops_table = level_args.enemies_drop_table
 
 func _process(_delta: float) -> void:
 	_check_enemy_lifetime()
@@ -95,11 +88,6 @@ func _process_despawn_queue() -> void:
 
 		enemy_to_despawn.kill(true)
 		despawn_count += 1
-
-# func _increase_time_to_spawn_boss(delta: float) -> void:
-# 	if boss_spawned == false:
-# 		time_to_spawn_boss_passed += delta
-# 		boss_progress_bar.value = time_to_spawn_boss_passed
 
 func _spawn_enemies(count: int) -> Array[Node]:
 	var enemies: Array[Node] = []

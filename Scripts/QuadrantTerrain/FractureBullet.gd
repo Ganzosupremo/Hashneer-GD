@@ -40,6 +40,9 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 		var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
 		body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.25, modulate)
 		call_deferred("destroy")
+	elif body is ShieldComponent:
+		body.call_deferred("absorb_damage", ammo_details.fracture_damage.x, global_position)
+		call_deferred("destroy")
 	elif body is PlayerController:
 		body.damage(ammo_details.bullet_damage)
 		call_deferred("destroy")
