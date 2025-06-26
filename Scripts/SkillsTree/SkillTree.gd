@@ -11,7 +11,6 @@ class_name SkillTreeManager extends Control
 
 func _exit_tree() -> void:
 	PersistenceDataManager.save_game(true)
-	print("Saving game data...")
 
 func _ready() -> void:
 	AudioManager.change_music_clip(music_details)

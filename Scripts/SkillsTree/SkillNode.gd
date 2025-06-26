@@ -138,16 +138,16 @@ func _unlock_or_upgrade() -> void:
 			push_error("Define a feature type...")
 
 func _unlock_weapon() -> void:
-        progress_event_bus.unlock_weapon(Utils.weapon_name_to_string(
-                skillnode_data.weapon_data.weapon_type), skillnode_data.weapon_data.weapon_to_unlock)
+		progress_event_bus.unlock_weapon(Utils.weapon_name_to_string(
+				skillnode_data.weapon_data.weapon_type), skillnode_data.weapon_data.weapon_to_unlock)
 
 func _unlock_ability() -> void:
-        progress_event_bus.unlock_ability(Utils.ability_name_to_string(
-                skillnode_data.ability_data.ability_type
-                ), skillnode_data.ability_data.ability_to_unlock)
+		progress_event_bus.unlock_ability(Utils.ability_name_to_string(
+				skillnode_data.ability_data.ability_type
+				), skillnode_data.ability_data.ability_to_unlock)
 
 func _upgrade_stat() -> void:
-        progress_event_bus.upgrade_stat(Utils.player_stat_type_to_string(skillnode_data.stat_type), skillnode_data.get_current_power(), skillnode_data.is_percentage)
+		progress_event_bus.upgrade_stat(Utils.player_stat_type_to_string(skillnode_data.stat_type), skillnode_data.get_current_power(), skillnode_data.is_percentage)
 
 func _is_next_tier_node_unlocked() -> bool:
 	for node in next_tier_nodes:
