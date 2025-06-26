@@ -71,8 +71,8 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 	if amount_to_spend > bitcoin_balance:
 		return false
 	
-	bitcoin_balance -= amount_to_spend
-	BitcoinNetwork.set_bitcoins_spent(amount_to_spend)
+       bitcoin_balance -= amount_to_spend
+       BitcoinNetwork.add_coins_spent(amount_to_spend)
 	money_changed.emit(bitcoin_balance, true)
 	#emit_signal("money_changed", bitcoin_balance, true)
 	return true
