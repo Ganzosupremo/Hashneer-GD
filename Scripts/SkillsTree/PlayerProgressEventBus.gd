@@ -1,29 +1,29 @@
-class_name SkillTreeEventBus extends Resource
+class_name PlayerProgressEventBus extends Resource
 
-signal stat_upgraded(event: SkillTreeStatEvent)
+signal stat_upgraded(event: StatUpgradeEvent)
 
-signal weapon_unlocked(event: SkillTreeWeaponEvent)
+signal weapon_unlocked(event: WeaponUnlockEvent)
 
-signal ability_unlocked(event: SkillTreeAbilityEvent)
+signal ability_unlocked(event: AbilityUnlockEvent)
 
 
 func upgrade_stat(_stat_name: String, _upgrade_power: float, _is_percentage) -> void:
-    var event = SkillTreeStatEvent.new(_stat_name, _upgrade_power, _is_percentage)
-    print("SkillTreeEventBus: Upgrading stat: {0}. Stat power: {1}".format([_stat_name, _upgrade_power]))
+    var event = StatUpgradeEvent.new(_stat_name, _upgrade_power, _is_percentage)
+    print("PlayerProgressEventBus: Upgrading stat: {0}. Stat power: {1}".format([_stat_name, _upgrade_power]))
     stat_upgraded.emit(event)
 
 func unlock_weapon(_weapon_id: String, _weapon_resource: WeaponDetails) -> void:
-    var event = SkillTreeWeaponEvent.new(_weapon_id, _weapon_resource)
-    print("SkillTreeEventBus: Unlocking weapon: {0}.".format([_weapon_id]))
+    var event = WeaponUnlockEvent.new(_weapon_id, _weapon_resource)
+    print("PlayerProgressEventBus: Unlocking weapon: {0}.".format([_weapon_id]))
     weapon_unlocked.emit(event)
 
 func unlock_ability(_ability_id: String, _ability_scene: PackedScene) -> void:
-    var event = SkillTreeAbilityEvent.new(_ability_id, _ability_scene)
-    print("SkillTreeEventBus: Unlocking Ability: {0}".format([_ability_id]))
+    var event = AbilityUnlockEvent.new(_ability_id, _ability_scene)
+    print("PlayerProgressEventBus: Unlocking Ability: {0}".format([_ability_id]))
     ability_unlocked.emit(event)
 
 
-class SkillTreeStatEvent:
+class StatUpgradeEvent:
     extends Object
 
     var stat_name: String = ""
@@ -35,7 +35,7 @@ class SkillTreeStatEvent:
         upgrade_power = _upgrade_power
         is_percentage = _is_percentage
 
-class SkillTreeWeaponEvent:
+class WeaponUnlockEvent:
     extends Object
 
     var weapon_id: String = ""
@@ -46,7 +46,7 @@ class SkillTreeWeaponEvent:
         weapon_resource = _weapon_resource
 
 
-class SkillTreeAbilityEvent:
+class AbilityUnlockEvent:
     extends Object
 
     var ability_id: String = ""
