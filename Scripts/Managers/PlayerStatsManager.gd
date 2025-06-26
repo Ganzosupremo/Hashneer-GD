@@ -8,6 +8,11 @@ signal ability_unlocked(event: SkillTreeEventBus.SkillTreeAbilityEvent)
 
 @export var skill_tree_event_bus: SkillTreeEventBus
 @export var weapon_details_dictionary: Dictionary = {}
+@export var ability_scenes_dictionary: Dictionary = {
+       "Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
+       "Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
+       "Regenerate Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
+}
 ## Base stats for the player.
 var base_stats: Dictionary = {
 	"Speed": 150.0,
@@ -105,26 +110,36 @@ func save_data() -> void:
 	SaveSystem.set_var(SaveName, _build_save_data())
 
 func _build_save_data() -> Dictionary:
-	return {
-		"upgrade_bonuses": upgrade_bonuses,
-		"unlocked_weapons": unlocked_weapons.keys(),
-		"unlocked_abilities": unlocked_abilities.keys(),
-	}
+        return {
+                "upgrade_bonuses": upgrade_bonuses,
+                "percent_bonuses": percent_bonuses,
+                "unlocked_weapons": unlocked_weapons.keys(),
+                "unlocked_abilities": unlocked_abilities.keys(),
+        }
 
 func load_data() -> void:
-	if !SaveSystem.has(SaveName): return
-	var data: Dictionary = SaveSystem.get_var(SaveName)
-	upgrade_bonuses = data["upgrade_bonuses"]
-	_load_saved_bonuses(upgrade_bonuses)
-	_load_unlocked_weapons(data["unlocked_weapons"])
+        if !SaveSystem.has(SaveName): return
+        var data: Dictionary = SaveSystem.get_var(SaveName)
+        upgrade_bonuses = data["upgrade_bonuses"]
+        percent_bonuses = data.get("percent_bonuses", percent_bonuses)
+        _load_saved_bonuses(upgrade_bonuses, false)
+        _load_saved_bonuses(percent_bonuses, true)
+        _load_unlocked_weapons(data["unlocked_weapons"])
+        _load_unlocked_abilities(data["unlocked_abilities"])
 
-func _load_saved_bonuses(data: Dictionary) -> void:
-	for entry in data.keys():
-		var event = SkillTreeEventBus.SkillTreeStatEvent.new(entry, data.get(entry, 0.0))
-		stats_updated.emit(event)
+func _load_saved_bonuses(data: Dictionary, is_percentage: bool = false) -> void:
+        for entry in data.keys():
+                var event = SkillTreeEventBus.SkillTreeStatEvent.new(entry, data.get(entry, 0.0), is_percentage)
+                stats_updated.emit(event)
 
 func _load_unlocked_weapons(data: Array) -> void:
-	for weapon_name in data:
-		var weapon: WeaponDetails = get_weapon_details_from_dictionary(weapon_name)
-		var event: SkillTreeEventBus.SkillTreeWeaponEvent = SkillTreeEventBus.SkillTreeWeaponEvent.new(weapon_name, weapon)
-		unlock_weapon(weapon_name, weapon, event)
+        for weapon_name in data:
+                var weapon: WeaponDetails = get_weapon_details_from_dictionary(weapon_name)
+                var event: SkillTreeEventBus.SkillTreeWeaponEvent = SkillTreeEventBus.SkillTreeWeaponEvent.new(weapon_name, weapon)
+                unlock_weapon(weapon_name, weapon, event)
+
+func _load_unlocked_abilities(data: Array) -> void:
+        for ability_id in data:
+                var ability_scene: PackedScene = ability_scenes_dictionary.get(ability_id, null)
+                var event: SkillTreeEventBus.SkillTreeAbilityEvent = SkillTreeEventBus.SkillTreeAbilityEvent.new(ability_id, ability_scene)
+                unlock_ability(ability_id, ability_scene, event)
