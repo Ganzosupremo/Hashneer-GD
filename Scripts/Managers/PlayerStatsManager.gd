@@ -1,13 +1,18 @@
 extends Node2D
 
-signal stats_updated(event: SkillTreeEventBus.SkillTreeStatEvent)
+signal stats_updated(event: PlayerProgressEventBus.StatUpgradeEvent)
 
-signal weapon_unlocked(event: SkillTreeEventBus.SkillTreeWeaponEvent)
+signal weapon_unlocked(event: PlayerProgressEventBus.WeaponUnlockEvent)
 
-signal ability_unlocked(event: SkillTreeEventBus.SkillTreeAbilityEvent)
+signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 
-@export var skill_tree_event_bus: SkillTreeEventBus
+@export var progress_event_bus: PlayerProgressEventBus
 @export var weapon_details_dictionary: Dictionary = {}
+@export var ability_scenes_dictionary: Dictionary = {
+       "Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
+       "Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
+       "Regenerate Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
+}
 ## Base stats for the player.
 var base_stats: Dictionary = {
 	"Speed": 150.0,
@@ -41,21 +46,21 @@ const implements = [
 ]
 
 func _ready() -> void:
-	skill_tree_event_bus.stat_upgraded.connect(_on_stat_upgraded)
-	skill_tree_event_bus.weapon_unlocked.connect(_on_weapon_unlocked)
-	skill_tree_event_bus.ability_unlocked.connect(_on_ability_unlocked)
+    progress_event_bus.stat_upgraded.connect(_on_stat_upgraded)
+    progress_event_bus.weapon_unlocked.connect(_on_weapon_unlocked)
+    progress_event_bus.ability_unlocked.connect(_on_ability_unlocked)
 
-func _on_stat_upgraded(event: SkillTreeEventBus.SkillTreeStatEvent):
+func _on_stat_upgraded(event: PlayerProgressEventBus.StatUpgradeEvent):
 	add_upgrade_bonus(event.stat_name, event.upgrade_power, event.is_percentage, event)
 
-func _on_weapon_unlocked(event: SkillTreeEventBus.SkillTreeWeaponEvent):
+func _on_weapon_unlocked(event: PlayerProgressEventBus.WeaponUnlockEvent):
 	unlock_weapon(event.weapon_id, event.weapon_resource, event)
 
-func _on_ability_unlocked(event: SkillTreeEventBus.SkillTreeAbilityEvent):
+func _on_ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent):
 	unlock_ability(event.ability_id, event.ability_scene, event)
 
 ## Called to add bonus when an upgrade is applied.
-func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, event: SkillTreeEventBus.SkillTreeStatEvent = null) -> void:
+func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, event: PlayerProgressEventBus.StatUpgradeEvent = null) -> void:
         if is_percentage:
                 if !percent_bonuses.has(stat_name):
                         percent_bonuses[stat_name] = bonus
@@ -68,11 +73,11 @@ func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, eve
                         upgrade_bonuses[stat_name] += bonus
         stats_updated.emit(event)
 
-func unlock_weapon(weapon_id: String, weapon_resource: WeaponDetails, event: SkillTreeEventBus.SkillTreeWeaponEvent = null) -> void:
+func unlock_weapon(weapon_id: String, weapon_resource: WeaponDetails, event: PlayerProgressEventBus.WeaponUnlockEvent = null) -> void:
 	unlocked_weapons[weapon_id] = weapon_resource
 	weapon_unlocked.emit(event)
 
-func unlock_ability(ability_id: String, ability_scene: PackedScene, event: SkillTreeEventBus.SkillTreeAbilityEvent = null) -> void:
+func unlock_ability(ability_id: String, ability_scene: PackedScene, event: PlayerProgressEventBus.AbilityUnlockEvent = null) -> void:
 	unlocked_abilities[ability_id] = ability_scene
 	ability_unlocked.emit(event)
 
@@ -105,26 +110,36 @@ func save_data() -> void:
 	SaveSystem.set_var(SaveName, _build_save_data())
 
 func _build_save_data() -> Dictionary:
-	return {
-		"upgrade_bonuses": upgrade_bonuses,
-		"unlocked_weapons": unlocked_weapons.keys(),
-		"unlocked_abilities": unlocked_abilities.keys(),
-	}
+        return {
+                "upgrade_bonuses": upgrade_bonuses,
+                "percent_bonuses": percent_bonuses,
+                "unlocked_weapons": unlocked_weapons.keys(),
+                "unlocked_abilities": unlocked_abilities.keys(),
+        }
 
 func load_data() -> void:
-	if !SaveSystem.has(SaveName): return
-	var data: Dictionary = SaveSystem.get_var(SaveName)
-	upgrade_bonuses = data["upgrade_bonuses"]
-	_load_saved_bonuses(upgrade_bonuses)
-	_load_unlocked_weapons(data["unlocked_weapons"])
+        if !SaveSystem.has(SaveName): return
+        var data: Dictionary = SaveSystem.get_var(SaveName)
+        upgrade_bonuses = data["upgrade_bonuses"]
+        percent_bonuses = data.get("percent_bonuses", percent_bonuses)
+        _load_saved_bonuses(upgrade_bonuses, false)
+        _load_saved_bonuses(percent_bonuses, true)
+        _load_unlocked_weapons(data["unlocked_weapons"])
+        _load_unlocked_abilities(data["unlocked_abilities"])
 
-func _load_saved_bonuses(data: Dictionary) -> void:
-	for entry in data.keys():
-		var event = SkillTreeEventBus.SkillTreeStatEvent.new(entry, data.get(entry, 0.0))
-		stats_updated.emit(event)
+func _load_saved_bonuses(data: Dictionary, is_percentage: bool = false) -> void:
+        for entry in data.keys():
+                var event = PlayerProgressEventBus.StatUpgradeEvent.new(entry, data.get(entry, 0.0), is_percentage)
+                stats_updated.emit(event)
 
 func _load_unlocked_weapons(data: Array) -> void:
-	for weapon_name in data:
-		var weapon: WeaponDetails = get_weapon_details_from_dictionary(weapon_name)
-		var event: SkillTreeEventBus.SkillTreeWeaponEvent = SkillTreeEventBus.SkillTreeWeaponEvent.new(weapon_name, weapon)
-		unlock_weapon(weapon_name, weapon, event)
+        for weapon_name in data:
+                var weapon: WeaponDetails = get_weapon_details_from_dictionary(weapon_name)
+                var event: PlayerProgressEventBus.WeaponUnlockEvent = PlayerProgressEventBus.WeaponUnlockEvent.new(weapon_name, weapon)
+                unlock_weapon(weapon_name, weapon, event)
+
+func _load_unlocked_abilities(data: Array) -> void:
+        for ability_id in data:
+                var ability_scene: PackedScene = ability_scenes_dictionary.get(ability_id, null)
+                var event: PlayerProgressEventBus.AbilityUnlockEvent = PlayerProgressEventBus.AbilityUnlockEvent.new(ability_id, ability_scene)
+                unlock_ability(ability_id, ability_scene, event)
