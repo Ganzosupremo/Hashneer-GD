@@ -126,28 +126,8 @@ func is_this_skill_maxed_out() -> bool:
 
 #region Private functions
 
-func _unlock_or_upgrade() -> void:
-	match skillnode_data.feature_type:
-		FEATURE_TYPE.WEAPON:
-			_unlock_weapon()
-		FEATURE_TYPE.ABILITY:
-			_unlock_ability()
-		FEATURE_TYPE.STAT_UPGRADE:
-			_upgrade_stat()
-		FEATURE_TYPE.NONE:
-			push_error("Define a feature type...")
-
-func _unlock_weapon() -> void:
-		progress_event_bus.unlock_weapon(Utils.weapon_name_to_string(
-				skillnode_data.weapon_data.weapon_type), skillnode_data.weapon_data.weapon_to_unlock)
-
-func _unlock_ability() -> void:
-		progress_event_bus.unlock_ability(Utils.ability_name_to_string(
-				skillnode_data.ability_data.ability_type
-				), skillnode_data.ability_data.ability_to_unlock)
-
-func _upgrade_stat() -> void:
-		progress_event_bus.upgrade_stat(Utils.player_stat_type_to_string(skillnode_data.stat_type), skillnode_data.get_current_power(), skillnode_data.is_percentage)
+func _buy_upgrade() -> bool:
+        return UpgradeService.purchase_upgrade(skillnode_data, use_bitcoin)
 
 func _is_next_tier_node_unlocked() -> bool:
 		if next_tier_nodes.is_empty():
@@ -159,8 +139,6 @@ func _is_next_tier_node_unlocked() -> bool:
 
 		return true
 
-func _buy_upgrade() -> bool:
-	return skillnode_data.buy_upgrade(use_bitcoin)
 
 #endregion
 
@@ -265,11 +243,10 @@ func _on_mouse_entered() -> void:
 
 
 func _on_skill_pressed() -> void:
-	if not _buy_upgrade():
-		return
-		
-	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	_unlock_or_upgrade()
+        if not _buy_upgrade():
+                return
+
+        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
 
 func _on_button_down() -> void:
 	if sound_effect_component_ui == null: return
@@ -280,13 +257,12 @@ func _on_button_up() -> void:
 	sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_upgrade_maxed() -> void:
-	show()
-	is_maxed_out = true
-	_update_skill_status_label("Maxed")
-	_set_disabled_state(true)
-	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
-	_unlock_next_tier()
-	_unlock_or_upgrade()
+        show()
+        is_maxed_out = true
+        _update_skill_status_label("Maxed")
+        _set_disabled_state(true)
+        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(use_bitcoin))
+        _unlock_next_tier()
 
 func _unlock_next_tier() -> void:
 	for node in next_tier_nodes:
