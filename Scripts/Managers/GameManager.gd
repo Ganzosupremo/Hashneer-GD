@@ -4,7 +4,7 @@ extends Node2D
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
 @export_category("Main Event Buses")
-@export var main_skill_tree_event_bus: SkillTreeEventBus
+@export var main_progress_event_bus: PlayerProgressEventBus
 @export var main_event_bus: MainEventBus
 
 @export_category("Levels")
@@ -92,7 +92,7 @@ func shake_camera(amplitude: float, frequency: float, duration: float, axis_rati
 # 	# else:
 # 	# 	printerr("NO WEAPON FOUND FOR {0} ON {1}".format([weapon_name, self.name]))
 
-# func _on_stat_upgraded(event: SkillTreeEventBus.SkillTreeStatEvent) -> void:
+# func _on_stat_upgraded(event: PlayerProgressEventBus.StatUpgradeEvent) -> void:
 # 	var stat_name = event.stat_name
 # 	var stat_type = event.stat_type
 # 	var upgrade_power = event.upgrade_power

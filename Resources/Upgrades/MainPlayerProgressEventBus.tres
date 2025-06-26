@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PlayerProgressEventBus" load_steps=2 format=3 uid="uid://db5qwlvsonwhq"]
+
+[ext_resource type="Script" uid="uid://d4eroyv5xcu6r" path="res://Scripts/SkillsTree/PlayerProgressEventBus.gd" id="1_6dq2j"]
+
+[resource]
+script = ExtResource("1_6dq2j")
+metadata/_custom_type_script = "uid://d4eroyv5xcu6r"
