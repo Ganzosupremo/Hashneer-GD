@@ -1,6 +1,6 @@
 class_name CurrencyUI extends Control
 
-signal currency_changed(currency: Currency.CurrencyType)
+signal currency_changed(currency: Constants.CurrencyType)
 
 @export var main_event_bus: MainEventBus
 
@@ -42,6 +42,6 @@ func _on_money_changed(amount: float, is_bitcoin: bool = false) -> void:
 		btc_label.text = amount_text
 
 func _on_use_btc_button_toggled(toggled_on: bool) -> void:
-        var currency := Currency.CurrencyType.BITCOIN if toggled_on else Currency.CurrencyType.FIAT
+        var currency := Constants.CurrencyType.BITCOIN if toggled_on else Constants.CurrencyType.FIAT
         main_event_bus.currency_changed.emit(currency)
         currency_changed.emit(currency)

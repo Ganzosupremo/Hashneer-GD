@@ -93,3 +93,8 @@ enum AbilityNames {
 	MAGNET,
 	REGEN_HEALTH_OVER_TIME,
 }
+
+enum CurrencyType {
+	FIAT,
+	BITCOIN,
+}

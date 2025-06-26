@@ -71,10 +71,10 @@ var status: DataStatus = DataStatus.LOCKED
 
 #region Main
 
-func buy_upgrade(currency_type: Currency.CurrencyType = Currency.CurrencyType.FIAT) -> bool:
+func buy_upgrade(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> bool:
         if upgrade_level >= upgrade_max_level: return false
 
-        var success: bool = _buy_with_bitcoin() if currency_type == Currency.CurrencyType.BITCOIN else _buy_with_fiat()
+        var success: bool = _buy_with_bitcoin() if currency_type == Constants.CurrencyType.BITCOIN else _buy_with_fiat()
         if success:
                 check_next_tier_unlock()
                 check_upgrade_maxed_out()
@@ -84,7 +84,7 @@ func set_id(id:int = 0) -> void:
 	_id = id
 
 func _buy_with_bitcoin() -> bool:
-        if BitcoinWallet.spend_bitcoin(upgrade_cost(Currency.CurrencyType.BITCOIN)):
+        if BitcoinWallet.spend_bitcoin(upgrade_cost(Constants.CurrencyType.BITCOIN)):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
@@ -93,26 +93,26 @@ func _buy_with_bitcoin() -> bool:
 
 
 func _buy_with_fiat() -> bool:
-        if BitcoinWallet.spend_fiat(upgrade_cost(Currency.CurrencyType.FIAT)):
+        if BitcoinWallet.spend_fiat(upgrade_cost(Constants.CurrencyType.FIAT)):
 		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
 		# print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 		return false
 
-func buy_max(currency_type: Currency.CurrencyType = Currency.CurrencyType.FIAT) -> void:
+func buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> void:
         if upgrade_level >= upgrade_max_level: return
 
-        if currency_type == Currency.CurrencyType.BITCOIN:
+        if currency_type == Constants.CurrencyType.BITCOIN:
                 BitcoinWallet.spend_bitcoin(_buy_max(currency_type))
         else:
                 BitcoinWallet.spend_fiat(_buy_max(currency_type))
 			# print("Not enough fiat balance: {0}".format([BitcoinWallet.get_fiat_balance()]))
 
-func _buy_max(currency_type: Currency.CurrencyType = Currency.CurrencyType.FIAT) -> float:
+func _buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> float:
         var balance: float = 0.0
 
-        balance = BitcoinWallet.get_bitcoin_balance() if currency_type == Currency.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
+        balance = BitcoinWallet.get_bitcoin_balance() if currency_type == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
 	
         var n: int = floor(_log((balance * (upgrade_cost_multiplier - 1.0)) / upgrade_cost(currency_type) + 1.0, upgrade_cost_multiplier))
 	if n >= upgrade_max_level: n = upgrade_max_level
@@ -129,8 +129,8 @@ func _buy_max(currency_type: Currency.CurrencyType = Currency.CurrencyType.FIAT)
 
 #region Cost
 
-func upgrade_cost(currency_type: Currency.CurrencyType = Currency.CurrencyType.FIAT) -> float:
-        return _upgrade_cost_btc() if currency_type == Currency.CurrencyType.BITCOIN else _upgrade_cost_fiat()
+func upgrade_cost(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> float:
+        return _upgrade_cost_btc() if currency_type == Constants.CurrencyType.BITCOIN else _upgrade_cost_fiat()
 
 func _upgrade_cost_fiat() -> float:
 	var inflation_adjustment = 1.0 + FED.get_total_inflation()
@@ -178,6 +178,6 @@ func check_next_tier_unlock() -> bool:
 	return false
 
 func _to_string() -> String:
-        return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost(Currency.CurrencyType.FIAT) + "\nBitcoin Cost: %s"%upgrade_cost(Currency.CurrencyType.BITCOIN)
+        return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost(Constants.CurrencyType.FIAT) + "\nBitcoin Cost: %s"%upgrade_cost(Constants.CurrencyType.BITCOIN)
 
 #endregion

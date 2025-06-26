@@ -67,7 +67,7 @@ enum FEATURE_TYPE {
 var is_maxed_out: bool = false
 var node_identifier: int = 0
 var node_state: SkillNodeData.DataStatus = SkillNodeData.DataStatus.LOCKED
-var current_currency: Currency.CurrencyType = UpgradeService.current_currency
+var current_currency: Constants.CurrencyType = UpgradeService.current_currency
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -89,7 +89,7 @@ func _ready() -> void:
                 lock()
         _update_node_line_points()
         current_currency = UpgradeService.current_currency
-        set_currency_icon(current_currency == Currency.CurrencyType.BITCOIN)
+        set_currency_icon(current_currency == Constants.CurrencyType.BITCOIN)
         _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(current_currency))
 
 #region Public API
@@ -188,7 +188,7 @@ func _update_skill_node_ui(_title: String, _desc: String, _cost: float) -> void:
 
 func _update_cost_background() -> void:
         cost_background.remove_theme_stylebox_override("panel")
-        var balance: float = BitcoinWallet.get_bitcoin_balance() if UpgradeService.current_currency == Currency.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
+        var balance: float = BitcoinWallet.get_bitcoin_balance() if UpgradeService.current_currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
         var s_cost: float = skillnode_data.upgrade_cost(UpgradeService.current_currency)
 	
 	if is_maxed_out: 
@@ -224,9 +224,9 @@ func _set_line_points() -> void:
 		skill_line.add_point(current_node_center_local)
 		skill_line.add_point(parent_node_center_local)
 
-func _on_currency_changed(currency: Currency.CurrencyType) -> void:
+func _on_currency_changed(currency: Constants.CurrencyType) -> void:
         current_currency = currency
-        set_currency_icon(currency == Currency.CurrencyType.BITCOIN)
+        set_currency_icon(currency == Constants.CurrencyType.BITCOIN)
         _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(currency))
 
 func set_currency_icon(btc_icon: bool) -> void:
@@ -237,7 +237,7 @@ func set_currency_icon(btc_icon: bool) -> void:
 #region Signals
 
 func _on_mouse_entered() -> void:
-        # skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(UpgradeService.current_currency)), UpgradeService.current_currency == Currency.CurrencyType.BITCOIN, is_maxed_out)
+        # skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(UpgradeService.current_currency)), UpgradeService.current_currency == Constants.CurrencyType.BITCOIN, is_maxed_out)
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 

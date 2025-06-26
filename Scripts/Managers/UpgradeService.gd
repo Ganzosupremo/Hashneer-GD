@@ -2,20 +2,20 @@ extends Node
 class_name UpgradeService
 
 @export var progress_event_bus: PlayerProgressEventBus
-var current_currency: Currency.CurrencyType = Currency.CurrencyType.FIAT
+var current_currency: Constants.CurrencyType = Constants.CurrencyType.FIAT
 
 func _ready() -> void:
         if progress_event_bus == null:
                 progress_event_bus = preload("res://Resources/Upgrades/MainPlayerProgressEventBus.tres")
 
-func can_afford(data: SkillNodeData, currency: Currency.CurrencyType = current_currency) -> bool:
+func can_afford(data: SkillNodeData, currency: Constants.CurrencyType = current_currency) -> bool:
         if data == null:
                 return false
         var cost = data.upgrade_cost(currency)
-        var balance = BitcoinWallet.get_bitcoin_balance() if currency == Currency.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
+        var balance = BitcoinWallet.get_bitcoin_balance() if currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
         return balance >= cost
 
-func purchase_upgrade(data: SkillNodeData, currency: Currency.CurrencyType = current_currency) -> bool:
+func purchase_upgrade(data: SkillNodeData, currency: Constants.CurrencyType = current_currency) -> bool:
         if data == null:
                 return false
         if !can_afford(data, currency):
