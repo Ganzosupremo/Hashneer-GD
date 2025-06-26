@@ -41,6 +41,7 @@ AudioManager="*res://Scenes/Manager/AudioManager.tscn"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
+UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 
 [display]
 
