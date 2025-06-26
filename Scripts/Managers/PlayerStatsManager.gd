@@ -56,17 +56,17 @@ func _on_ability_unlocked(event: SkillTreeEventBus.SkillTreeAbilityEvent):
 
 ## Called to add bonus when an upgrade is applied.
 func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, event: SkillTreeEventBus.SkillTreeStatEvent = null) -> void:
-        if is_percentage:
-                if !percent_bonuses.has(stat_name):
-                        percent_bonuses[stat_name] = bonus
-                else:
-                        percent_bonuses[stat_name] += bonus
-        else:
-                if !upgrade_bonuses.has(stat_name):
-                        upgrade_bonuses[stat_name] = bonus
-                else:
-                        upgrade_bonuses[stat_name] += bonus
-        stats_updated.emit(event)
+		if is_percentage:
+				if !percent_bonuses.has(stat_name):
+						percent_bonuses[stat_name] = bonus
+				else:
+						percent_bonuses[stat_name] += bonus
+		else:
+				if !upgrade_bonuses.has(stat_name):
+						upgrade_bonuses[stat_name] = bonus
+				else:
+						upgrade_bonuses[stat_name] += bonus
+		stats_updated.emit(event)
 
 func unlock_weapon(weapon_id: String, weapon_resource: WeaponDetails, event: SkillTreeEventBus.SkillTreeWeaponEvent = null) -> void:
 	unlocked_weapons[weapon_id] = weapon_resource
