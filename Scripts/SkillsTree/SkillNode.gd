@@ -150,10 +150,14 @@ func _upgrade_stat() -> void:
 		progress_event_bus.upgrade_stat(Utils.player_stat_type_to_string(skillnode_data.stat_type), skillnode_data.get_current_power(), skillnode_data.is_percentage)
 
 func _is_next_tier_node_unlocked() -> bool:
-	for node in next_tier_nodes:
-		return node.is_node_unlocked()
-	
-	return false
+        if next_tier_nodes.is_empty():
+                return false
+
+        for node in next_tier_nodes:
+                if !node.is_node_unlocked():
+                        return false
+
+        return true
 
 func _buy_upgrade() -> bool:
 	return skillnode_data.buy_upgrade(use_bitcoin)
