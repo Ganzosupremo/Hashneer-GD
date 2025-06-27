@@ -31,17 +31,17 @@ func hide_ui() -> void:
 func show_ui() -> void:
 	show()
 
-func _on_money_changed(amount: float, is_bitcoin: bool = false) -> void:
+func _on_money_changed(amount: float, currency: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> void:
 	var amount_text: String = ""
-	
-	if !is_bitcoin:
-		amount_text = Utils.format_currency(int(amount), true)
-		fiat_label.text = amount_text
-	else:
-		amount_text = Utils.format_currency(int(amount), true)
-		btc_label.text = amount_text
+	match currency:
+		Constants.CurrencyType.FIAT:
+			amount_text = Utils.format_currency(int(amount), true)
+			fiat_label.text = amount_text
+		Constants.CurrencyType.BITCOIN:
+			amount_text = Utils.format_currency(int(amount), true)
+			btc_label.text = amount_text
 
 func _on_use_btc_button_toggled(toggled_on: bool) -> void:
-        var currency := Constants.CurrencyType.BITCOIN if toggled_on else Constants.CurrencyType.FIAT
-        main_event_bus.currency_changed.emit(currency)
-        currency_changed.emit(currency)
+		var currency: Constants.CurrencyType = Constants.CurrencyType.BITCOIN if toggled_on else Constants.CurrencyType.FIAT
+		main_event_bus.currency_changed.emit(currency)
+		currency_changed.emit(currency)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bjp6n48b77qnu"]
+[gd_scene load_steps=8 format=3 uid="uid://bjp6n48b77qnu"]
 
 [ext_resource type="Script" uid="uid://deq7phaj3grks" path="res://Scripts/UI/currency_ui.gd" id="1_5a6sp"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_gd8uk"]
 [ext_resource type="Texture2D" uid="uid://bo3t3ci0epcvi" path="res://Textures/UI/Panels/CurrencyBanner_v2.png" id="2_l54p7"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_vnajj"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="3_xvf2x"]
@@ -17,6 +18,7 @@ grow_horizontal = 2
 size_flags_horizontal = 0
 mouse_filter = 1
 script = ExtResource("1_5a6sp")
+main_event_bus = ExtResource("2_gd8uk")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(150, 50)

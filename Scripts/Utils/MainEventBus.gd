@@ -6,7 +6,6 @@ signal bullet_pool_setted(args: BulletPoolSettedArgs)
 signal currency_changed(currency: Constants.CurrencyType)
 
 func emit_bullet_pool_setted(_pools: Dictionary) -> void:
-	print_debug("Pools Setted")
 	bullet_pool_setted.emit(BulletPoolSettedArgs.new(_pools))
 
 class LevelCompletedArgs:

@@ -67,30 +67,29 @@ enum FEATURE_TYPE {
 var is_maxed_out: bool = false
 var node_identifier: int = 0
 var node_state: SkillNodeData.DataStatus = SkillNodeData.DataStatus.LOCKED
-var current_currency: Constants.CurrencyType = UpgradeService.current_currency
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
 
 func _enter_tree() -> void:
-        if !skillnode_data: return
+	if !skillnode_data: return
 
-        main_event_bus.currency_changed.connect(_on_currency_changed)
+	main_event_bus.currency_changed.connect(_on_currency_changed)
 	skillnode_data.upgrade_maxed.connect(_on_upgrade_maxed)
 	skillnode_data.next_tier_unlocked.connect(_unlock_next_tier)
 	skillnode_data.upgrade_level_changed.connect(_on_level_changed)
 
 func _ready() -> void:
-        progress_bar.show()
-        if is_unlocked:
-                unlock()
-        else:
-                lock()
-        _update_node_line_points()
-        current_currency = UpgradeService.current_currency
-        set_currency_icon(current_currency == Constants.CurrencyType.BITCOIN)
-        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(current_currency))
+		progress_bar.show()
+		if is_unlocked:
+				unlock()
+		else:
+				lock()
+		_update_node_line_points()
+		var current_currency := UpgradeService.current_currency
+		set_currency_icon(current_currency)
+		_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(current_currency))
 
 #region Public API
 
@@ -128,7 +127,7 @@ func is_this_skill_maxed_out() -> bool:
 #region Private functions
 
 func _buy_upgrade() -> bool:
-        return UpgradeService.purchase_upgrade(skillnode_data, UpgradeService.current_currency)
+		return UpgradeService.purchase_upgrade(skillnode_data)
 
 func _is_next_tier_node_unlocked() -> bool:
 		if next_tier_nodes.is_empty():
@@ -187,9 +186,9 @@ func _update_skill_node_ui(_title: String, _desc: String, _cost: float) -> void:
 	_update_cost_background()
 
 func _update_cost_background() -> void:
-        cost_background.remove_theme_stylebox_override("panel")
-        var balance: float = BitcoinWallet.get_bitcoin_balance() if UpgradeService.current_currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
-        var s_cost: float = skillnode_data.upgrade_cost(UpgradeService.current_currency)
+	cost_background.remove_theme_stylebox_override("panel")
+	var balance: float = BitcoinWallet.get_bitcoin_balance() if UpgradeService.current_currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
+	var s_cost: float = skillnode_data.upgrade_cost(UpgradeService.current_currency)
 	
 	if is_maxed_out: 
 		cost_background.add_theme_stylebox_override("panel", max_upgraded_style)
@@ -225,28 +224,32 @@ func _set_line_points() -> void:
 		skill_line.add_point(parent_node_center_local)
 
 func _on_currency_changed(currency: Constants.CurrencyType) -> void:
-        current_currency = currency
-        set_currency_icon(currency == Constants.CurrencyType.BITCOIN)
-        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(currency))
+		set_currency_icon(currency)
+		_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(currency))
 
-func set_currency_icon(btc_icon: bool) -> void:
-	currency_icon.texture = bitcoin_icon if btc_icon else dollar_icon
+func set_currency_icon(currency: Constants.CurrencyType) -> void:
+	match currency:
+		Constants.CurrencyType.BITCOIN:
+			currency_icon.texture = bitcoin_icon
+		Constants.CurrencyType.FIAT:
+			currency_icon.texture = dollar_icon
+		_:
+			currency_icon.texture = null  # Fallback if an unknown currency is used
 
 #endregion
 
 #region Signals
 
 func _on_mouse_entered() -> void:
-        # skill_info_panel.activate_panel(skillnode_data.upgrade_name, skillnode_data.upgrade_description, int(skillnode_data.upgrade_cost(UpgradeService.current_currency)), UpgradeService.current_currency == Constants.CurrencyType.BITCOIN, is_maxed_out)
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
 
 func _on_skill_pressed() -> void:
-        if not _buy_upgrade():
-                return
+		if not _buy_upgrade():
+				return
 
-        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
+		_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
 
 func _on_button_down() -> void:
 	if sound_effect_component_ui == null: return
@@ -257,12 +260,12 @@ func _on_button_up() -> void:
 	sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_upgrade_maxed() -> void:
-        show()
-        is_maxed_out = true
-        _update_skill_status_label("Maxed")
-        _set_disabled_state(true)
-        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
-        _unlock_next_tier()
+		show()
+		is_maxed_out = true
+		_update_skill_status_label("Maxed")
+		_set_disabled_state(true)
+		_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
+		_unlock_next_tier()
 
 func _unlock_next_tier() -> void:
 	for node in next_tier_nodes:
@@ -303,8 +306,13 @@ func load_data() -> void:
 	is_next_tier_unlocked()
 	is_this_skill_maxed_out()
 	
-        _update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
-	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]) if !is_maxed_out else "Maxed")
+	_update_skill_node_ui(skillnode_data.upgrade_name, \
+	skillnode_data.upgrade_description, \
+	skillnode_data.upgrade_cost(UpgradeService.current_currency))
+	
+	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, \
+	skillnode_data.upgrade_max_level]) if !is_maxed_out else "Maxed")
+	
 	_update_progress_bar(skillnode_data.upgrade_level, skillnode_data.upgrade_max_level)
 	_update_node_line_points()
 	

@@ -28,7 +28,7 @@ func _ready() -> void:
 	visible = false
 
 func activate_panel(title: String, description: String, cost: int, currency_type: Constants.CurrencyType, is_maxed_out: bool = false) -> void:
-        change_labels(title, description, cost, currency_type, is_maxed_out)
+	change_labels(title, description, cost, currency_type, is_maxed_out)
 	visible = true
 	animation_component.start_tween()
 
@@ -38,44 +38,44 @@ func deactivate_panel() -> void:
 	visible = false
 
 func _set_cost_icon(currency_type: Constants.CurrencyType) -> void:
-        _set_currency(currency_type)
-        if currency_type == Constants.CurrencyType.BITCOIN:
-                btc_texture.visible = true
-                fiat_texture.visible = false
-        else:
-                fiat_texture.visible = true
-                btc_texture.visible = false
+		_set_currency(currency_type)
+		if currency_type == Constants.CurrencyType.BITCOIN:
+				btc_texture.visible = true
+				fiat_texture.visible = false
+		else:
+				fiat_texture.visible = true
+				btc_texture.visible = false
 
 func change_labels(title: String, description: String, cost: int, currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT, is_maxed_out: bool = false) -> void:
-        _set_currency(currency_type)
-        skill_title.text = title
-        if description.is_empty():
-                skill_description.hide()
-        else:
-                skill_description.text = description
+		_set_currency(currency_type)
+		skill_title.text = title
+		if description.is_empty():
+				skill_description.hide()
+		else:
+				skill_description.text = description
 
-        _set_cost_icon(currency_type)
-        update_cost_label(cost, currency_type, is_maxed_out)
+		_set_cost_icon(currency_type)
+		update_cost_label(cost, currency_type, is_maxed_out)
 
 func update_cost_label(cost: int, currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT, is_maxed_out: bool = false) -> void:
-        _set_currency(currency_type)
-        _change_price_background(currency_type, cost, is_maxed_out)
-        skill_cost.text = "WELL DONE!" if is_maxed_out else Utils.format_currency(cost, true)
+		_set_currency(currency_type)
+		_change_price_background(currency_type, cost, is_maxed_out)
+		skill_cost.text = "WELL DONE!" if is_maxed_out else Utils.format_currency(cost, true)
 
 func _change_price_background(currency_type: Constants.CurrencyType, cost: float, is_maxed_out: bool = false) -> void:
-        price_background.remove_theme_stylebox_override("panel")
-        if is_maxed_out:
-                price_background.add_theme_stylebox_override("panel", max_ugraded_style)
-                skill_cost.label_settings = maxed_out_font
-                return
-        skill_cost.label_settings = normal_font
-        if _get_currency_balance(currency_type) < cost:
-                price_background.add_theme_stylebox_override("panel", cannot_afford_upgrade_style)
-        else:
-                price_background.add_theme_stylebox_override("panel", can_afford_upgrade_style)
+		price_background.remove_theme_stylebox_override("panel")
+		if is_maxed_out:
+				price_background.add_theme_stylebox_override("panel", max_ugraded_style)
+				skill_cost.label_settings = maxed_out_font
+				return
+		skill_cost.label_settings = normal_font
+		if _get_currency_balance(currency_type) < cost:
+				price_background.add_theme_stylebox_override("panel", cannot_afford_upgrade_style)
+		else:
+				price_background.add_theme_stylebox_override("panel", can_afford_upgrade_style)
 
 func _set_currency(value: Constants.CurrencyType) -> void:
-        currency = value
+		currency = value
 
 func _get_currency_balance(currency_type) -> float:
-        return BitcoinWallet.get_bitcoin_balance() if currency_type == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
+		return BitcoinWallet.get_bitcoin_balance() if currency_type == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
