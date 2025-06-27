@@ -84,7 +84,7 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_cur_fracture_color = color
 		_shatter_visualizer.self_modulate = _cur_fracture_color
 
-func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
+func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, _miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 
 	if !destroyed:
@@ -94,11 +94,8 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		_slowdown_timer.start(1.0)
 		_block_core_particles.emitting = false
 		Engine.time_scale = 0.21
-		# var tween: Tween = GameManager.init_tween().set_parallel(true)
-		# tween.tween_property(Engine, "time_scale", 0.21, 0.15).set_ease(Tween.EASE_IN_OUT)
-		
+
 		_destroy_block_core(other_body, cuts, min_area)
-		# _mine_block(miner)
 
 		random_drops.spawn_drops(1)
 
@@ -134,12 +131,12 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 	body_instance.setTexture(PolygonLib.setTextureOffset(texture_info, fracture_info.centroid))
 
 func _mine_block(miner: String = "Player") -> void:
-        var level_id: int = GameManager.get_current_level()
-        var block: BitcoinBlock = null
-        if BitcoinNetwork.is_level_mined(level_id):
-                block = BitcoinNetwork.get_block_by_id(level_id)
+	var level_id: int = GameManager.get_current_level()
+	var block: BitcoinBlock = null
+	if BitcoinNetwork.is_level_mined(level_id):
+			block = BitcoinNetwork.get_block_by_id(level_id)
 
-        BitcoinNetwork.mine_block(miner, block)
+	BitcoinNetwork.mine_block(miner, block)
 
 func _on_slow_down_timer_timeout() -> void:
 	print_debug("Slow down timer timeout")

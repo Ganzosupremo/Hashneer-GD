@@ -57,10 +57,10 @@ func try_pick_up(pickup: Pickup2D) -> bool:
 
 	if resource is CurrencyPickupResource:
 		match resource.currency_type:
-			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
+			Constants.CurrencyType.FIAT:
 				pickup.resource_count = FED.get_fiat_subsidy()
 				AudioManager.create_2d_audio_at_location(pickup.global_position, SoundEffectDetails.SoundEffectType.FIAT_PICKUP, SoundEffectDetails.DestinationAudioBus.SFX)
-			CurrencyPickupResource.CURRENCY_TYPE.BTC:
+			Constants.CurrencyType.BITCOIN:
 				AudioManager.create_2d_audio_at_location(pickup.global_position, SoundEffectDetails.SoundEffectType.BTC_PICKUP, SoundEffectDetails.DestinationAudioBus.SFX)
 			_:
 				pass
