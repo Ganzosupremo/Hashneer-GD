@@ -89,10 +89,13 @@ func add_coins_spent(value: float) -> void:
        coins_spent += value
 
 func get_block_by_id(id: int) -> BitcoinBlock:
-	for b in chain:
-		if b.height == id:
-			return b
-	return null
+        for b in chain:
+                if b.height == id:
+                        return b
+        return null
+
+func is_level_mined(level_index: int) -> bool:
+        return get_block_by_id(level_index) != null
 
 func get_block_by_hash(_hash: String) -> BitcoinBlock:
 	for b in chain:

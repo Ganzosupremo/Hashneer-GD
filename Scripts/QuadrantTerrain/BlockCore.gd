@@ -134,11 +134,12 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 	body_instance.setTexture(PolygonLib.setTextureOffset(texture_info, fracture_info.centroid))
 
 func _mine_block(miner: String = "Player") -> void:
-	var block: BitcoinBlock = null
-	if GameManager.player_in_completed_level():
-		block = BitcoinNetwork.get_block_by_id(GameManager.get_current_level())
+        var level_id: int = GameManager.get_current_level()
+        var block: BitcoinBlock = null
+        if BitcoinNetwork.is_level_mined(level_id):
+                block = BitcoinNetwork.get_block_by_id(level_id)
 
-	BitcoinNetwork.mine_block(miner, block)
+        BitcoinNetwork.mine_block(miner, block)
 
 func _on_slow_down_timer_timeout() -> void:
 	print_debug("Slow down timer timeout")
