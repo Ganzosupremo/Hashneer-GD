@@ -5,10 +5,12 @@ func add_to_inventory(resource: Resource, amount: float) -> bool:
 		match resource.currency_type:
 			CurrencyPickupResource.CURRENCY_TYPE.FIAT:
 				return true
-			# TEST - Mine the block when the pickup is picked up
-			CurrencyPickupResource.CURRENCY_TYPE.BTC:
-				BitcoinNetwork.mine_block("Player")
-				return true
+                        # Mine a new block only if this level hasn't been mined before
+                        CurrencyPickupResource.CURRENCY_TYPE.BTC:
+                                var lvl: int = GameManager.get_current_level()
+                                if !BitcoinNetwork.is_level_mined(lvl):
+                                        BitcoinNetwork.mine_block("Player")
+                                return true
 			CurrencyPickupResource.CURRENCY_TYPE.NONE:
 				return false
 			_:

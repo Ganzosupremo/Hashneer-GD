@@ -49,12 +49,8 @@ func complete_level(code: String = "") -> void:
 func emit_level_completed(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 
-func player_in_completed_level() -> bool:
-	if levels_unlocked < previous_levels_unlocked_index:
-		return true
-	if _current_level < previous_levels_unlocked_index - 1: # Means the player is in an already completed level
-		return true
-	return false
+func player_in_completed_level(level_index: int = _current_level) -> bool:
+        return level_index < levels_unlocked - 1
 
 func init_tween() -> Tween:
 	return create_tween()

@@ -53,20 +53,21 @@ func _on_item_picked(event : PickupEvent) -> void:
 	
 	if pickup is not CurrencyPickupResource: return
 	
-	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(GameManager.get_current_level())
-	match pickup.currency_type:
+        var level_id: int = GameManager.get_current_level()
+        var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(level_id)
+        match pickup.currency_type:
 		CurrencyPickupResource.CURRENCY_TYPE.FIAT:
 			fiat_gained_so_far += event.pickup.resource_count
 		CurrencyPickupResource.CURRENCY_TYPE.BTC:
 			event.pickup.resource_count = BitcoinNetwork.get_block_subsidy()
 			btc_gained_this_time += event.pickup.resource_count
 			
-			if GameManager.player_in_completed_level():
-				btc_gained_this_time = 0
-				GameManager.complete_level(Constants.ERROR_500)
-			elif block.miner == "Player":
-				GameManager.complete_level(Constants.ERROR_200)
-			else:
-				GameManager.complete_level(Constants.ERROR_401)
+                        if GameManager.player_in_completed_level():
+                                btc_gained_this_time = 0
+                                GameManager.complete_level(Constants.ERROR_500)
+                        elif block == null or block.miner == "Player":
+                                GameManager.complete_level(Constants.ERROR_200)
+                        else:
+                                GameManager.complete_level(Constants.ERROR_401)
 		CurrencyPickupResource.CURRENCY_TYPE.NONE:
 			pass
