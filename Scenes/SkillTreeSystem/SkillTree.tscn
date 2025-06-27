@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=79 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -21,7 +21,6 @@
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Bitcoin/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Bitcoin/PlayerDamageUpgrade.tres" id="11_6em56"]
-[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="11_g7g25"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Fiat/SniperUnlock.tres" id="13_a2onp"]
 [ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="15_hsn28"]
 [ext_resource type="Texture2D" uid="uid://cmwev2it4sxt3" path="res://Textures/Player/Abilities/RegenHealthOverTime.png" id="19_pm0d4"]
@@ -356,7 +355,6 @@ visible = false
 anchors_preset = 0
 anchor_right = 0.0
 grow_horizontal = 1
-main_event_bus = ExtResource("11_g7g25")
 
 [node name="ButtonContainer" type="HBoxContainer" parent="FrontLayer"]
 anchors_preset = 12

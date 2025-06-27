@@ -13,7 +13,7 @@ func _ready() -> void:
 	GameManager.main_event_bus.level_completed.connect(stop_mining)
 	ai_timer.start(time)
 
-func stop_mining() -> void:
+func stop_mining(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	ai_timer.stop()
 
 func _on_zero_power() -> void:

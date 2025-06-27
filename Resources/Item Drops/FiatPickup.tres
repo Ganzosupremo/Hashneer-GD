@@ -6,5 +6,5 @@
 script = ExtResource("1_tga1x")
 display_name = "Fiat Pickup"
 amount = 0.0
-currency_type = 1
+currency_type = 0
 metadata/_custom_type_script = "uid://b55jdk3nyw100"

@@ -49,7 +49,7 @@ func spawn(pos : Vector2) -> void:
 	set_process(true)
 	_t = 0.0
 
-func despawn() -> void:
+func despawn(_ref) -> void:
 	global_rotation = 0.0
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
