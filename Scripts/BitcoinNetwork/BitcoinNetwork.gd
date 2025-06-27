@@ -80,13 +80,13 @@ func is_block_already_mined(block: BitcoinBlock) -> bool:
 	return false
 
 func set_bitcoins_in_circulation(value: float) -> void:
-       bitcoins_in_circulation += value
+	bitcoins_in_circulation += value
 
 func add_coins_lost(value: float) -> void:
-       coins_lost += value
+	coins_lost += value
 
 func add_coins_spent(value: float) -> void:
-       coins_spent += value
+	coins_spent += value
 
 func get_block_by_id(id: int) -> BitcoinBlock:
 	for b in chain:
@@ -113,7 +113,7 @@ func get_total_deflation() -> float:
 	return total_deflation
 
 func get_total_bitcoins_in_circulation() -> float:
-       return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
+	return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
 
 func get_bitcoins_spent() -> float:
 	return coins_spent
@@ -141,32 +141,32 @@ func _add_block_to_chain(new_block: BitcoinBlock) -> void:
 
 """Issues the block subsidy to the miner that mined the block, i.e the player or the ai."""
 func _issue_block_reward(miner: String, subsidy: float) -> void:
-        if miner == "Player" or miner == "player":
-                coin_subsidy_issued.emit(subsidy)
-        elif miner == "AI":
-                add_coins_lost(subsidy)
+	if miner == "Player" or miner == "player":
+		coin_subsidy_issued.emit(subsidy)
+	elif miner == "AI":
+		add_coins_lost(subsidy)
 
 func _compute_block_reward() -> float:
-       var halvings: int = height / halving_interval
-       if halvings >= TOTAL_HALVINGS:
-               return 0.0
+	var halvings: int = height / halving_interval
+	if halvings >= TOTAL_HALVINGS:
+			return 0.0
 
-       var remaining_supply: float = TOTAL_COINS - get_total_bitcoins_in_circulation()
-       if remaining_supply <= 0.0:
-               return 0.0
+	var remaining_supply: float = TOTAL_COINS - get_total_bitcoins_in_circulation()
+	if remaining_supply <= 0.0:
+			return 0.0
 
-       var subsidy: float = TOTAL_COINS / (halving_interval * 2)
-       subsidy /= pow(2.0, halvings)
-       subsidy = min(subsidy, remaining_supply)
+	var subsidy: float = TOTAL_COINS / (halving_interval * 2)
+	subsidy /= pow(2.0, halvings)
+	subsidy = min(subsidy, remaining_supply)
 
-       var previous_subsidy: float = current_block_subsidy
-       current_block_subsidy = subsidy
+	var previous_subsidy: float = current_block_subsidy
+	current_block_subsidy = subsidy
 
-       if subsidy != previous_subsidy:
-               halving_occurred.emit(subsidy)
+	if subsidy != previous_subsidy:
+		halving_occurred.emit(subsidy)
 
-       bitcoins_in_circulation += subsidy
-       return subsidy
+	bitcoins_in_circulation += subsidy
+	return subsidy
 
 
 
@@ -204,10 +204,10 @@ func load_data():
 	chain = saved_chain.duplicate(true)
 	height = data["height"]
 	current_block_subsidy = data["current_block_subsidy"]
-       coins_lost = data["coins_lost"]
-       coins_spent = data["coins_spent"]
-       bitcoins_in_circulation = get_total_bitcoins_in_circulation()
-       loaded = true
+	coins_lost = data["coins_lost"]
+	coins_spent = data["coins_spent"]
+	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
+	loaded = true
 
 
 const TEN: String = "The Times: Chancellor on Brink of Second Bailout for Banks."
