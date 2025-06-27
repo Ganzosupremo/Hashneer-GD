@@ -22,8 +22,6 @@ var loaded: bool = false
 # Deflation parameters
 ## The prices will be halved on every halving.
 var deflation_rate: float = 0.5
-## The total deflation since the begginning of times.
-var total_deflation: float = 0.0
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -110,10 +108,11 @@ func create_block(miner: String) -> BitcoinBlock:
 	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), "Block Height: %s " % height + "Mined by: %s" % miner, miner)
 
 func get_blockheight() -> int:
-	return height
+        return height
 
-func get_total_deflation() -> float:
-	return total_deflation
+func get_deflation_multiplier() -> float:
+        var halvings: int = height / halving_interval
+        return pow(1.0 - deflation_rate, halvings)
 
 func get_total_bitcoins_in_circulation() -> float:
 	return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
@@ -175,7 +174,7 @@ func _compute_block_reward() -> float:
 
 """Called when a halving occurs"""
 func _on_halving_ocurred(_new_subsidy: float) -> void:
-	total_deflation += deflation_rate
+        pass
 
 #endregion
 

@@ -2,7 +2,7 @@ extends Node2D
 
 var inflation_rate: float = 0.02 # 2% inflation, which is the lowest it can go.
 var inflation_interval: int = 2 # Inflation will increase on every halving. Halving happens every 21 blocks
-var total_inflation: float = 0.0 # The total in-game inflation since the beginning of times.
+var total_inflation: float = 1.0 # Accumulated inflation multiplier since the beginning of time.
 var fiat_currency_in_circulation: float = 0.0
 
 
@@ -16,10 +16,10 @@ func _ready() -> void:
 	BitcoinNetwork.halving_occurred.connect(_on_halving_ocurred)
 
 func _on_halving_ocurred(_new_subsidy: float) -> void:
-	inflation_rate = randf_range(0.02, 0.69)
-	var inflation_amount: float = fiat_currency_in_circulation * inflation_rate
-	fiat_currency_in_circulation += inflation_amount
-	total_inflation += inflation_rate
+        inflation_rate = randf_range(0.02, 0.69)
+        var inflation_factor: float = 1.0 + inflation_rate
+        fiat_currency_in_circulation *= inflation_factor
+        total_inflation *= inflation_factor
 
 func add_currency_in_circulation(new_coins) -> void:
 	fiat_currency_in_circulation += new_coins
@@ -38,7 +38,7 @@ func authorize_transaction(amount: float) -> bool:
 	return true
 
 func get_total_inflation() -> float:
-	return total_inflation
+        return total_inflation
 
 func get_fiat_subsidy() -> float:
 	var subsidy: float = randf_range(250.0, 2500.0)
@@ -63,8 +63,8 @@ func _build_dictionary_to_save() -> Dictionary:
 	}
 
 func load_data():
-	if !SaveSystem.has(FEDSaveName): return
+        if !SaveSystem.has(FEDSaveName): return
 
-	var data: Dictionary = SaveSystem.get_var(FEDSaveName)
-	total_inflation = data["total_inflation"]
-	fiat_currency_in_circulation = data["fiat_currency_in_circulation"]
+        var data: Dictionary = SaveSystem.get_var(FEDSaveName)
+        total_inflation = data.get("total_inflation", 1.0)
+        fiat_currency_in_circulation = data.get("fiat_currency_in_circulation", 0.0)
