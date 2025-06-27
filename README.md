@@ -5,7 +5,7 @@ Hashneer is a Godot 4 project focused on Bitcoin themed gameplay. Players mine b
 ## Gameplay Overview
 - **Bitcoin mining**: The `Timechain` (`BitcoinNetwork.gd`) simulates mining blocks. Each mined block grants a Bitcoin subsidy which is sent to the player's wallet.
 - **Upgrades**: Upgrades are defined in `Scripts/SkillsTree` and can be purchased with fiat or Bitcoin. Costs scale with inflation or deflation, encouraging strategic spending.
-- **Inflation/deflation**: The `FED.gd` node injects fiat currency and increases inflation over time, while halving events in `BitcoinNetwork.gd` trigger deflation for Bitcoin prices.
+- **Inflation/deflation**: The `FED.gd` node compounds inflation each halving, while `BitcoinNetwork.gd` reduces Bitcoin prices by a halving multiplier.
 
 ## Project Structure
 - **Scenes/** – All `.tscn` scenes used by the game. Subfolders include game modes, player, enemies, UI and more.
@@ -21,8 +21,8 @@ Hashneer is a Godot 4 project focused on Bitcoin themed gameplay. Players mine b
 ### Architecture Notes
 - `GameManager.gd` handles level selection, saving progress and references to important nodes.
 - `BitcoinWallet.gd` tracks fiat and Bitcoin balances and converts between them.
-- `BitcoinNetwork.gd` stores the blockchain, issues subsidies and applies deflation on halvings.
-- `FED.gd` manages fiat supply and adds inflation after each halving.
-- Upgrade data (`SkillNodeData.gd`) adjusts cost by the total inflation or deflation.
+- `BitcoinNetwork.gd` stores the blockchain, issues subsidies and computes a deflation multiplier from the current halving.
+- `FED.gd` manages fiat supply and multiplies total inflation after each halving.
+- Upgrade data (`SkillNodeData.gd`) adjusts cost using inflation and deflation multipliers.
 
 This repository uses the MIT License (see `LICENSE`).
