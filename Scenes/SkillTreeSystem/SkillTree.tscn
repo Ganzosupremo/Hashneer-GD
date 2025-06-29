@@ -34,7 +34,7 @@
 [ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Bitcoin/AK47Unlock.tres" id="23_lm8ko"]
 [ext_resource type="PackedScene" uid="uid://bwv6468intk6r" path="res://Scenes/Player/Abilities/Magnet.tscn" id="24_pm0d4"]
 [ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="25_glihh"]
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="26_kmf73"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="26_kmf73"]
 [ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]
 [ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/BlockCoreFinder.tres" id="29_5uag3"]
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]

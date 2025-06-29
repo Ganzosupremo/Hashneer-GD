@@ -1,10 +1,19 @@
-class_name SkillNodeData extends Resource
+class_name UpgradeData extends Resource
 
 signal next_tier_unlocked()
 signal upgrade_maxed()
 signal upgrade_level_changed(new_level: int, max_level: int)
 
-enum DataStatus {LOCKED = 0, UNLOCKED = 1, MAXED_OUT = 2}
+enum FEATURE_TYPE {
+    ## Default state.
+    NONE,
+    ## Unlocks a new weapon, the weapon_to_unlock must be specified.
+    WEAPON,
+    ## Unlocks a new player ability, not implemented yet.
+    ABILITY,
+    ## Upgrades a player stat, like health, damage or speed.
+    STAT_UPGRADE
+}
 
 ## The type of stat to upgrade.
 enum StatType {
@@ -20,7 +29,7 @@ enum StatType {
 
 @export_category("Upgrade Basic Parameters")
 ## Defines if this node should unlock a new weapon, player ability or simply upgrade a player stat.
-@export var feature_type: SkillNode.FEATURE_TYPE = SkillNode.FEATURE_TYPE.NONE
+@export var feature_type: FEATURE_TYPE = FEATURE_TYPE.NONE
 @export var upgrade_name: String = ""
 @export_multiline var upgrade_description: String = ""
 @export var skill_image: Texture = Texture.new()
@@ -67,7 +76,6 @@ var upgrade_level: int = 0:
 			check_upgrade_maxed_out()
 
 var _id: int = 0
-var status: DataStatus = DataStatus.LOCKED
 
 #region Main
 
@@ -160,22 +168,16 @@ func _log(value: float, base: float) -> float:
 
 
 func check_upgrade_maxed_out() -> bool:
-	if upgrade_level == upgrade_max_level:
-		if status != DataStatus.MAXED_OUT:
-			upgrade_maxed.emit()
-		status = DataStatus.MAXED_OUT
-		upgrade_maxed.emit()
-		return true
-	return false
+        if upgrade_level == upgrade_max_level:
+                upgrade_maxed.emit()
+                return true
+        return false
 
 func check_next_tier_unlock() -> bool:
-	if upgrade_level >= next_tier_threshold:
-		if status != DataStatus.UNLOCKED:
-			next_tier_unlocked.emit()
-		status = DataStatus.UNLOCKED
-		next_tier_unlocked.emit()
-		return true
-	return false
+        if upgrade_level >= next_tier_threshold:
+                next_tier_unlocked.emit()
+                return true
+        return false
 
 func _to_string() -> String:
 		return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost(Constants.CurrencyType.FIAT) + "\nBitcoin Cost: %s"%upgrade_cost(Constants.CurrencyType.BITCOIN)

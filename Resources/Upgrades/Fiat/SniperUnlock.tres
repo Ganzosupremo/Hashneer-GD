@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SkillNodeData" load_steps=6 format=3 uid="uid://c6lryfoxdvlix"]
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=6 format=3 uid="uid://c6lryfoxdvlix"]
 
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="1_e3xsg"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_e3xsg"]
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="2_ji62a"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="3_634jl"]
 [ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="4_lhsxl"]

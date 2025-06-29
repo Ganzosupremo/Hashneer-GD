@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SkillNodeData" load_steps=6 format=3 uid="uid://bk3blai1anpdr"]
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=6 format=3 uid="uid://bk3blai1anpdr"]
 
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="1_t2p5j"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_t2p5j"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_tp3pd"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="3_lbbeg"]
 [ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="4_k5oqn"]
