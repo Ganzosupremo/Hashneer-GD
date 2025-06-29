@@ -4,15 +4,15 @@ signal next_tier_unlocked()
 signal upgrade_maxed()
 signal upgrade_level_changed(new_level: int, max_level: int)
 
-enum FEATURE_TYPE {
-    ## Default state.
-    NONE,
-    ## Unlocks a new weapon, the weapon_to_unlock must be specified.
-    WEAPON,
-    ## Unlocks a new player ability, not implemented yet.
-    ABILITY,
-    ## Upgrades a player stat, like health, damage or speed.
-    STAT_UPGRADE
+enum PlayerFeatureType {
+	## Default state.
+	NONE,
+	## Unlocks a new weapon, the weapon_to_unlock must be specified.
+	WEAPON,
+	## Unlocks a new player ability, not implemented yet.
+	ABILITY,
+	## Upgrades a player stat, like health, damage or speed.
+	STAT_UPGRADE
 }
 
 ## The type of stat to upgrade.
@@ -24,12 +24,13 @@ enum StatType {
 	## Upgrades the player's speed.
 	SPEED = 2,
 	## Upgrades the player's damage multiplier.
-	DAMAGE = 3}
+	DAMAGE = 3
+}
 
 
 @export_category("Upgrade Basic Parameters")
 ## Defines if this node should unlock a new weapon, player ability or simply upgrade a player stat.
-@export var feature_type: FEATURE_TYPE = FEATURE_TYPE.NONE
+@export var feature_type: PlayerFeatureType = PlayerFeatureType.NONE
 @export var upgrade_name: String = ""
 @export_multiline var upgrade_description: String = ""
 @export var skill_image: Texture = Texture.new()

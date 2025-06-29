@@ -34,17 +34,17 @@ func purchase_upgrade(data: UpgradeData) -> bool:
 
 func _emit_upgrade_event(data: UpgradeData) -> void:
 	match data.feature_type:
-		UpgradeData.FEATURE_TYPE.WEAPON:
+		UpgradeData.PlayerFeatureType.WEAPON:
 			progress_event_bus.unlock_weapon(
 				Utils.weapon_name_to_string(data.weapon_data.weapon_type),
 				data.weapon_data.weapon_to_unlock
 			)
-		UpgradeData.FEATURE_TYPE.ABILITY:
+		UpgradeData.PlayerFeatureType.ABILITY:
 			progress_event_bus.unlock_ability(
 				Utils.ability_name_to_string(data.ability_data.ability_type),
 				data.ability_data.ability_to_unlock
 			)
-		UpgradeData.FEATURE_TYPE.STAT_UPGRADE:
+		UpgradeData.PlayerFeatureType.STAT_UPGRADE:
 			progress_event_bus.upgrade_stat(
 				Utils.player_stat_type_to_string(data.stat_type),
 				data.get_current_power(),
