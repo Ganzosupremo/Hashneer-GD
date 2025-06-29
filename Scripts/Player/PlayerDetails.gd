@@ -9,7 +9,6 @@ class_name PlayerDetails extends Resource
 @export var dead_sound_effect: SoundEffectDetails
 @export var weapons_array: Array = []
 
-
 func _init(_speed: float = 250.0) -> void:
 	speed = _speed
 

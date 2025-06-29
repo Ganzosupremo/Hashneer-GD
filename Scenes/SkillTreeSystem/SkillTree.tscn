@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
 [ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Weapons/AK47Unlock.tres" id="23_lm8ko"]
 [ext_resource type="Resource" uid="uid://bjrfc5yj77v5q" path="res://Resources/Upgrades/Abilities/Magnet.tres" id="24_r00sj"]
+[ext_resource type="Resource" uid="uid://b32xxsiymp2fs" path="res://Resources/Upgrades/Abilities/Magnet.tres" id="24_r00sj"]
 [ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="25_glihh"]
 [ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="26_kmf73"]
 [ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]

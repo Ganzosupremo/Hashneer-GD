@@ -27,3 +27,23 @@ upgrade_cost_multiplier = 1.0
 upgrade_cost_base_btc = 100000.0
 upgrade_cost_multiplier_btc = 1.0
 upgrade_max_level = 1
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://cbwgvq0rara7k"]
+
+[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_0ywg4"]
+
+[resource]
+script = ExtResource("1_0ywg4")
+feature_type = 0
+upgrade_name = ""
+upgrade_description = ""
+upgrade_tier = 0
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+upgrade_base_power = 5.0
+upgrade_power_multiplier = 1.2
+upgrade_cost_base = 10.0
+upgrade_cost_multiplier = 1.2
+upgrade_cost_base_btc = 1.0
+upgrade_cost_multiplier_btc = 1.1
+upgrade_max_level = 10

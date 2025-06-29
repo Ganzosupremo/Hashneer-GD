@@ -76,6 +76,23 @@ static func enum_label(enum_dict: Dictionary, value: int) -> String:
 ## @see Utils.enum_label
 ## @see Constants.WeaponNames
 ## @see Constants.WeaponNames.RIFLE
+## Returns the raw enum name for a given enum value.
+static func enum_name(enum_dict: Dictionary, value: int) -> String:
+	var values = enum_dict.values()
+	var idx = values.find(value)
+	if idx == -1:
+			return "UNKNOWN"
+	return str(enum_dict.keys()[idx])
+
+## Formats an enum value into a user friendly string.
+static func enum_label(enum_dict: Dictionary, value: int) -> String:
+	var e_name = enum_name(enum_dict, value)
+	var parts = e_name.to_lower().split("_")
+	for i in range(parts.size()):
+			parts[i] = parts[i].capitalize()
+	return " ".join(parts)
+
+
 static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 	return enum_label(Constants.WeaponNames, weapon_name)
 
@@ -94,6 +111,14 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 ## @see Constants.AbilityNames.MAGNET
 static func ability_name_to_string(ability_name: Constants.AbilityNames) -> String:
 	return enum_label(Constants.AbilityNames, ability_name)
+
+## The PlayerStatsManager saves the upgrade data in the [param PlayerStatsManager.upgraded_stats] dictionary based on the [param UpgradeData.stat_type] variable.
+## This function converts the [param UpgradeData.stat_type] to a string for getting the correct stat's value from the dictionary.
+## To avoid typos when trying to recover a stat's value from the dictionay, this function should be used.
+## Just the player stats are saved in the dictionary. 
+## The weapon and ability upgrades are saved in the [param PlayerStatsManager.unlocked_weapons] and [param PlayerStatsManager.unlocked_abilities] dictionaries.
+static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
+	return enum_label(UpgradeData.StatType, stat_type)
 
 ## Converts the [param UpgradeData.StatType] enum to a string.
 ## This is useful for displaying the stat type in the UI or for debugging purposes.
