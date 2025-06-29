@@ -126,10 +126,15 @@ static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 
 
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
-	for key in enum_type.keys():
-		if enum_type[key] == _enum:
-			return key
-	return "Unknown Enum"
+        for key in enum_type.keys():
+                if enum_type[key] == _enum:
+                        return key
+        return "Unknown Enum"
+
+static func string_to_enum(name: String, enum_type: Dictionary) -> int:
+        if enum_type.has(name):
+                return enum_type[name]
+        return -1
 
 static func format_currency(amount: float, use_short_format: bool = false) -> String:
 	if use_short_format:
