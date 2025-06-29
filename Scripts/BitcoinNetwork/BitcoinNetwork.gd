@@ -110,6 +110,8 @@ func get_blockheight() -> int:
 func get_deflation_multiplier() -> float:
 	var halvings: int = height / halving_interval
 	return pow(1.0 - deflation_rate, halvings)
+	var halvings: int = height / halving_interval
+	return pow(1.0 - deflation_rate, halvings)
 
 func get_total_bitcoins_in_circulation() -> float:
 	return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
@@ -150,11 +152,11 @@ func _issue_block_reward(miner: String, subsidy: float) -> void:
 func _compute_block_reward() -> float:
 	var halvings: int = height / halving_interval
 	if halvings >= TOTAL_HALVINGS:
-			return 0.0
+		return 0.0
 
 	var remaining_supply: float = TOTAL_COINS - get_total_bitcoins_in_circulation()
 	if remaining_supply <= 0.0:
-			return 0.0
+		return 0.0
 
 	var subsidy: float = TOTAL_COINS / (halving_interval * 2)
 	subsidy /= pow(2.0, halvings)

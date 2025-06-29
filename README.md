@@ -23,6 +23,6 @@ Hashneer is a Godot 4 project focused on Bitcoin themed gameplay. Players mine b
 - `BitcoinWallet.gd` tracks fiat and Bitcoin balances and converts between them.
 - `BitcoinNetwork.gd` stores the blockchain, issues subsidies and computes a deflation multiplier from the current halving.
 - `FED.gd` manages fiat supply and multiplies total inflation after each halving.
-- Upgrade data (`SkillNodeData.gd`) adjusts cost using inflation and deflation multipliers.
+- Upgrade data (`UpgradeData.gd`) adjusts cost using inflation and deflation multipliers.
 
 This repository uses the MIT License (see `LICENSE`).

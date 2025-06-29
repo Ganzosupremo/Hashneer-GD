@@ -99,21 +99,30 @@ static func ability_name_to_string(ability_name: Constants.AbilityNames) -> Stri
 		return ability_names_to_string[ability_name]
 	return "Unknown Ability"
 
-## The PlayerStatsManager saves the upgrade data in the [param PlayerStatsManager.upgraded_stats] dictionary based on the [param SkillNodeData.stat_type] variable.
-## This function converts the [param SkillNodeData.stat_type] to a string for getting the correct stat's value from the dictionary.
+## The PlayerStatsManager saves the upgrade data in the [param PlayerStatsManager.upgraded_stats] dictionary based on the [param UpgradeData.stat_type] variable.
+## This function converts the [param UpgradeData.stat_type] to a string for getting the correct stat's value from the dictionary.
 ## To avoid typos when trying to recover a stat's value from the dictionay, this function should be used.
 ## Just the player stats are saved in the dictionary. 
 ## The weapon and ability upgrades are saved in the [param PlayerStatsManager.unlocked_weapons] and [param PlayerStatsManager.unlocked_abilities] dictionaries.
-static func player_stat_type_to_string(stat_type: SkillNodeData.StatType) -> String:
+static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
 	var saved_names: Dictionary = {
-		SkillNodeData.StatType.HEALTH: "Health",
-		SkillNodeData.StatType.SPEED: "Speed",
-		SkillNodeData.StatType.DAMAGE: "Damage",
+		UpgradeData.StatType.HEALTH: "Health",
+		UpgradeData.StatType.SPEED: "Speed",
+		UpgradeData.StatType.DAMAGE: "Damage",
 	}
 
 	if saved_names.has(stat_type):
 		return saved_names[stat_type]
 	return "Unknown Stat"
+
+
+static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
+	match state:
+		0: return SkillNode.NodeState.LOCKED
+		1: return SkillNode.NodeState.CAN_AFFORD
+		2: return SkillNode.NodeState.CANNOT_AFFORD
+		3: return SkillNode.NodeState.MAXED_OUT
+		_: return SkillNode.NodeState.UNKNOWN
 
 
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
