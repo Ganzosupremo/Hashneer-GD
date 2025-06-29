@@ -110,8 +110,6 @@ func get_blockheight() -> int:
 func get_deflation_multiplier() -> float:
 	var halvings: int = height / halving_interval
 	return pow(1.0 - deflation_rate, halvings)
-	var halvings: int = height / halving_interval
-	return pow(1.0 - deflation_rate, halvings)
 
 func get_total_bitcoins_in_circulation() -> float:
 	return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()

@@ -9,9 +9,9 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 @export var progress_event_bus: PlayerProgressEventBus
 @export var weapon_details_dictionary: Dictionary = {}
 @export var ability_scenes_dictionary: Dictionary = {
-	   "Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
-	   "Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
-	   "Regenerate Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
+	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
+	"Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
+	"Regenerate Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
 }
 ## Base stats for the player.
 var base_stats: Dictionary = {
@@ -51,8 +51,8 @@ func _ready() -> void:
 	progress_event_bus.ability_unlocked.connect(_on_ability_unlocked)
 
 func _on_stat_upgraded(event: PlayerProgressEventBus.StatUpgradeEvent):
-    var stat_name := Utils.player_stat_type_to_string(event.stat_type)
-    add_upgrade_bonus(stat_name, event.upgrade_power, event.is_percentage, event)
+	var stat_name := Utils.player_stat_type_to_string(event.stat_type)
+	add_upgrade_bonus(stat_name, event.upgrade_power, event.is_percentage, event)
 
 func _on_weapon_unlocked(event: PlayerProgressEventBus.WeaponUnlockEvent):
 	unlock_weapon(event.weapon_id, event.weapon_resource, event)
@@ -75,24 +75,24 @@ func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, eve
 	stats_updated.emit(event)
 
 func unlock_weapon(weapon_id: Constants.WeaponNames, weapon_resource: WeaponDetails, event: PlayerProgressEventBus.WeaponUnlockEvent = null) -> void:
-    unlocked_weapons[weapon_id] = weapon_resource
-    weapon_unlocked.emit(event)
+	unlocked_weapons[weapon_id] = weapon_resource
+	weapon_unlocked.emit(event)
 
 func unlock_ability(ability_id: Constants.AbilityNames, ability_scene: PackedScene, event: PlayerProgressEventBus.AbilityUnlockEvent = null) -> void:
-    unlocked_abilities[ability_id] = ability_scene
-    ability_unlocked.emit(event)
+	unlocked_abilities[ability_id] = ability_scene
+	ability_unlocked.emit(event)
 
 func get_unlocked_abilities() -> Dictionary:
 	return unlocked_abilities
 
 func get_unlocked_ability(ability_id: Constants.AbilityNames) -> PackedScene:
-    return unlocked_abilities[ability_id]
+	return unlocked_abilities[ability_id]
 
 func get_unlocked_weapons() -> Dictionary:
 	return unlocked_weapons
 
 func get_weapon_details_from_dictionary(weapon_name: Constants.WeaponNames) -> WeaponDetails:
-    return weapon_details_dictionary.get(Utils.weapon_name_to_string(weapon_name), null)
+	return weapon_details_dictionary.get(Utils.weapon_name_to_string(weapon_name), null)
 
 ## Returns the final value of the given stat.
 func get_stat_final_value(stat_name: String) -> float:
@@ -112,10 +112,10 @@ func save_data() -> void:
 
 func _build_save_data() -> Dictionary:
 		return {
-				"upgrade_bonuses": upgrade_bonuses,
-				"percent_bonuses": percent_bonuses,
-				"unlocked_weapons": unlocked_weapons.keys(),
-				"unlocked_abilities": unlocked_abilities.keys(),
+			"upgrade_bonuses": upgrade_bonuses,
+			"percent_bonuses": percent_bonuses,
+			"unlocked_weapons": unlocked_weapons.keys(),
+			"unlocked_abilities": unlocked_abilities.keys(),
 		}
 
 func load_data() -> void:
@@ -129,19 +129,19 @@ func load_data() -> void:
 		_load_unlocked_abilities(data["unlocked_abilities"])
 
 func _load_saved_bonuses(data: Dictionary, is_percentage: bool = false) -> void:
-                for entry in data.keys():
-                                var stat_type := Utils.string_to_enum(entry, UpgradeData.StatType)
-                                var event = PlayerProgressEventBus.StatUpgradeEvent.new(stat_type, data.get(entry, 0.0), is_percentage)
-                                stats_updated.emit(event)
+	for entry in data.keys():
+		var stat_type := Utils.string_to_enum(entry, UpgradeData.StatType)
+		var event = PlayerProgressEventBus.StatUpgradeEvent.new(stat_type, data.get(entry, 0.0), is_percentage)
+		stats_updated.emit(event)
 
 func _load_unlocked_weapons(data: Array) -> void:
-                for weapon_enum in data:
-                                var weapon: WeaponDetails = get_weapon_details_from_dictionary(int(weapon_enum))
-                                var event: PlayerProgressEventBus.WeaponUnlockEvent = PlayerProgressEventBus.WeaponUnlockEvent.new(int(weapon_enum), weapon)
-                                unlock_weapon(int(weapon_enum), weapon, event)
+	for weapon_enum in data:
+		var weapon: WeaponDetails = get_weapon_details_from_dictionary(int(weapon_enum))
+		var event: PlayerProgressEventBus.WeaponUnlockEvent = PlayerProgressEventBus.WeaponUnlockEvent.new(int(weapon_enum), weapon)
+		unlock_weapon(int(weapon_enum), weapon, event)
 
 func _load_unlocked_abilities(data: Array) -> void:
-                for ability_enum in data:
-                                var ability_scene: PackedScene = ability_scenes_dictionary.get(Utils.ability_name_to_string(int(ability_enum)), null)
-                                var event: PlayerProgressEventBus.AbilityUnlockEvent = PlayerProgressEventBus.AbilityUnlockEvent.new(int(ability_enum), ability_scene)
-                                unlock_ability(int(ability_enum), ability_scene, event)
+	for ability_enum in data:
+		var ability_scene: PackedScene = ability_scenes_dictionary.get(Utils.ability_name_to_string(int(ability_enum)), null)
+		var event: PlayerProgressEventBus.AbilityUnlockEvent = PlayerProgressEventBus.AbilityUnlockEvent.new(int(ability_enum), ability_scene)
+		unlock_ability(int(ability_enum), ability_scene, event)

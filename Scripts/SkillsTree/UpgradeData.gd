@@ -33,7 +33,6 @@ enum StatType {
 @export var feature_type: PlayerFeatureType = PlayerFeatureType.NONE
 @export var upgrade_name: String = ""
 @export_multiline var upgrade_description: String = ""
-@export var skill_image: Texture = Texture.new()
 @export var upgrade_tier: int = 0
 ## Defines the type of skill this is. True will just upgrade an ability/skill. False to unlock an entire new skill/ability
 @export var is_upgrade: bool = false
