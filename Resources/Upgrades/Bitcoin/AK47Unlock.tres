@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=7 format=3 uid="uid://bidjra86l58ip"]
+[gd_resource type="Resource" script_class="SkillNodeData" load_steps=7 format=3 uid="uid://bidjra86l58ip"]
 
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_qfme2"]
+[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/SkillNodeData.gd" id="1_qfme2"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_hq1eh"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="3_iv10j"]
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="4_bi58f"]

@@ -16,10 +16,10 @@ func _ready() -> void:
 	BitcoinNetwork.halving_occurred.connect(_on_halving_ocurred)
 
 func _on_halving_ocurred(_new_subsidy: float) -> void:
-        inflation_rate = randf_range(0.02, 0.69)
-        var inflation_factor: float = 1.0 + inflation_rate
-        fiat_currency_in_circulation *= inflation_factor
-        total_inflation *= inflation_factor
+		inflation_rate = randf_range(0.02, 0.69)
+		var inflation_factor: float = 1.0 + inflation_rate
+		fiat_currency_in_circulation *= inflation_factor
+		total_inflation *= inflation_factor
 
 func add_currency_in_circulation(new_coins) -> void:
 	fiat_currency_in_circulation += new_coins
@@ -38,7 +38,7 @@ func authorize_transaction(amount: float) -> bool:
 	return true
 
 func get_total_inflation() -> float:
-        return total_inflation
+		return total_inflation
 
 func get_fiat_subsidy() -> float:
 	var subsidy: float = randf_range(250.0, 2500.0)
@@ -63,8 +63,8 @@ func _build_dictionary_to_save() -> Dictionary:
 	}
 
 func load_data():
-        if !SaveSystem.has(FEDSaveName): return
+		if !SaveSystem.has(FEDSaveName): return
 
-        var data: Dictionary = SaveSystem.get_var(FEDSaveName)
-        total_inflation = data.get("total_inflation", 1.0)
-        fiat_currency_in_circulation = data.get("fiat_currency_in_circulation", 0.0)
+		var data: Dictionary = SaveSystem.get_var(FEDSaveName)
+		total_inflation = data.get("total_inflation", 1.0)
+		fiat_currency_in_circulation = data.get("fiat_currency_in_circulation", 0.0)

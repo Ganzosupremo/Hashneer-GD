@@ -1,21 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://vynimae5q6bh"]
-
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_wodgc"]
+[gd_resource type="Resource" format=3 uid="uid://vynimae5q6bh"]
 
 [resource]
 resource_name = "SpeedF1SkillNodeData"
-script = ExtResource("1_wodgc")
-feature_type = 3
-upgrade_name = "New boots"
-upgrade_description = "Increase speed by 5 points."
-upgrade_tier = 1
-is_upgrade = true
-is_percentage = false
-stat_type = 2
-upgrade_base_power = 5.0
-upgrade_power_multiplier = 1.0
-upgrade_cost_base = 17500.0
-upgrade_cost_multiplier = 1.5
-upgrade_cost_base_btc = 5000.0
-upgrade_cost_multiplier_btc = 1.5
-upgrade_max_level = 5

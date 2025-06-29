@@ -141,12 +141,12 @@ func upgrade_cost(currency_type: Constants.CurrencyType = Constants.CurrencyType
 		return _upgrade_cost_btc() if currency_type == Constants.CurrencyType.BITCOIN else _upgrade_cost_fiat()
 
 func _upgrade_cost_fiat() -> float:
-        var inflation_adjustment = FED.get_total_inflation()
-        return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment
+	var inflation_adjustment = FED.get_total_inflation()
+	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment
 
 func _upgrade_cost_btc() -> float:
-        var deflation_adjustment = BitcoinNetwork.get_deflation_multiplier()
-        return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level) * deflation_adjustment
+	var deflation_adjustment = BitcoinNetwork.get_deflation_multiplier()
+	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level) * deflation_adjustment
 
 func upgrade_cost_string() -> String:
 	return str(_upgrade_cost_fiat())
@@ -168,16 +168,16 @@ func _log(value: float, base: float) -> float:
 
 
 func check_upgrade_maxed_out() -> bool:
-        if upgrade_level == upgrade_max_level:
-                upgrade_maxed.emit()
-                return true
-        return false
+	if upgrade_level == upgrade_max_level:
+		upgrade_maxed.emit()
+		return true
+	return false
 
 func check_next_tier_unlock() -> bool:
-        if upgrade_level >= next_tier_threshold:
-                next_tier_unlocked.emit()
-                return true
-        return false
+	if upgrade_level >= next_tier_threshold:
+		next_tier_unlocked.emit()
+		return true
+	return false
 
 func _to_string() -> String:
 		return "ID: %s"%_id + "\nLevel: %s"%upgrade_level + "\nFiat Cost: %s"%upgrade_cost(Constants.CurrencyType.FIAT) + "\nBitcoin Cost: %s"%upgrade_cost(Constants.CurrencyType.BITCOIN)

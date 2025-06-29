@@ -116,6 +116,15 @@ static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> Strin
 	return "Unknown Stat"
 
 
+static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
+	match state:
+		0: return SkillNode.NodeState.LOCKED
+		1: return SkillNode.NodeState.CAN_AFFORD
+		2: return SkillNode.NodeState.CANNOT_AFFORD
+		3: return SkillNode.NodeState.MAXED_OUT
+		_: return SkillNode.NodeState.UNKNOWN
+
+
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():
 		if enum_type[key] == _enum:

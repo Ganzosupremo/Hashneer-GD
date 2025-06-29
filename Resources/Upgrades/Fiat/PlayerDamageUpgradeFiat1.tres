@@ -1,27 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=4 format=3 uid="uid://cd4d7vwiv68a7"]
-
-[ext_resource type="Script" uid="uid://cakthm6papim2" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_rum0o"]
-[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="2_c4k6f"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ruefw"]
-atlas = ExtResource("2_c4k6f")
-region = Rect2(0, 0, 16, 16)
+[gd_resource type="Resource" format=3 uid="uid://cd4d7vwiv68a7"]
 
 [resource]
 resource_name = "DamageF1SkillNodeData"
-script = ExtResource("1_rum0o")
-feature_type = 3
-upgrade_name = "A Bit Stronger "
-upgrade_description = "Increases damage."
-skill_image = SubResource("AtlasTexture_ruefw")
-upgrade_tier = 1
-is_upgrade = true
-is_percentage = false
-stat_type = 3
-upgrade_base_power = 0.2
-upgrade_power_multiplier = 1.0
-upgrade_cost_base = 35000.0
-upgrade_cost_multiplier = 1.5
-upgrade_cost_base_btc = 15000.0
-upgrade_cost_multiplier_btc = 1.4
-upgrade_max_level = 10
