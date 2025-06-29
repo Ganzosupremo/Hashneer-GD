@@ -9,10 +9,8 @@ class_name SkillTreeManager extends Control
 @onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
 @onready var level_selector_new: LevelSelectorMenu = $LevelSelectorNew
 
-func _exit_tree() -> void:
-	PersistenceDataManager.save_game(true)
-
 func _ready() -> void:
+	PersistenceDataManager.load_game()
 	AudioManager.change_music_clip(music_details)
 	skill_nodes = _get_skill_nodes()
 	
@@ -21,7 +19,6 @@ func _ready() -> void:
 		node.pressed.connect(Callable(node, "_on_skill_pressed"))
 		node.set_node_identifier(id)
 		id += 1
-	PersistenceDataManager.load_game()
 
 func _get_skill_nodes() -> Array:
 	var nodes: Array = []
@@ -31,7 +28,7 @@ func _get_skill_nodes() -> Array:
 	return nodes
 
 func _on_start_game_pressed() -> void:
-	# PersistenceDataManager.save_game(true)
+	PersistenceDataManager.save_game()
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, SoundEffectDetails.DestinationAudioBus.SFX)
 	level_selector_new.open()
 

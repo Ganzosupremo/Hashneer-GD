@@ -80,25 +80,25 @@ const implements = [
 ]
 
 func _enter_tree() -> void:
-		if !skillnode_data:
-				return
+	if !skillnode_data:
+		return
 
-		upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
-		upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
-		upgrade_logic.level_changed.connect(_on_level_changed)
-		main_event_bus.currency_changed.connect(_on_currency_changed)
+	upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
+	upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
+	upgrade_logic.level_changed.connect(_on_level_changed)
+	main_event_bus.currency_changed.connect(_on_currency_changed)
 
 func _ready() -> void:
-				progress_bar.show()
-				if is_unlocked:
-								unlock()
-				else:
-								lock()
-				_update_node_line_points()
-				var current_currency := UpgradeService.current_currency
-				set_currency_icon(current_currency)
-				_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(current_currency))
-				_update_node_state()
+	progress_bar.show()
+	if is_unlocked:
+		unlock()
+	else:
+		lock()
+	_update_node_line_points()
+	var current_currency := UpgradeService.current_currency
+	set_currency_icon(current_currency)
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(current_currency))
+	_update_node_state()
 
 #region Public API
 
@@ -185,25 +185,25 @@ func _update_skill_node_ui(_title: String, _desc: String, _cost: float) -> void:
 		_update_cost_background()
 
 func _update_node_state() -> void:
-		if !is_unlocked:
-				node_state = NodeState.LOCKED
-		elif is_maxed_out or skillnode_data.upgrade_level >= skillnode_data.upgrade_max_level:
-				node_state = NodeState.MAXED_OUT
-		elif UpgradeService.can_afford(skillnode_data):
-				node_state = NodeState.CAN_AFFORD
-		else:
-				node_state = NodeState.CANNOT_AFFORD
-		_update_cost_background()
+	if !is_unlocked:
+		node_state = NodeState.LOCKED
+	elif is_maxed_out or skillnode_data.upgrade_level >= skillnode_data.upgrade_max_level:
+		node_state = NodeState.MAXED_OUT
+	elif UpgradeService.can_afford(skillnode_data):
+		node_state = NodeState.CAN_AFFORD
+	else:
+		node_state = NodeState.CANNOT_AFFORD
+	_update_cost_background()
 
 func _update_cost_background() -> void:
-		cost_background.remove_theme_stylebox_override("panel")
-		match node_state:
-				NodeState.MAXED_OUT:
-						cost_background.add_theme_stylebox_override("panel", max_upgraded_style)
-				NodeState.CANNOT_AFFORD:
-						cost_background.add_theme_stylebox_override("panel", cannot_afford_style)
-				NodeState.CAN_AFFORD:
-						cost_background.add_theme_stylebox_override("panel", can_afford_style)
+	cost_background.remove_theme_stylebox_override("panel")
+	match node_state:
+		NodeState.MAXED_OUT:
+			cost_background.add_theme_stylebox_override("panel", max_upgraded_style)
+		NodeState.CANNOT_AFFORD:
+			cost_background.add_theme_stylebox_override("panel", cannot_afford_style)
+		NodeState.CAN_AFFORD:
+			cost_background.add_theme_stylebox_override("panel", can_afford_style)
 
 #endregion
 
@@ -285,9 +285,9 @@ func _unlock_next_tier() -> void:
 		node.unlock()
 
 func _on_level_changed(new_level: int, max_level: int) -> void:
-		_update_skill_status_label("{0}/{1}".format([new_level, max_level]))
-		_update_progress_bar(new_level, max_level)
-		_update_node_state()
+	_update_skill_status_label("{0}/{1}".format([new_level, max_level]))
+	_update_progress_bar(new_level, max_level)
+	_update_node_state()
 
 #endregion
 

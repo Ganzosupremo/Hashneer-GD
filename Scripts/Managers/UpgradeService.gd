@@ -4,6 +4,11 @@ extends Node
 @export var main_event_bus: MainEventBus
 var current_currency: Constants.CurrencyType = Constants.CurrencyType.FIAT
 
+const implements = [
+	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
+]
+const SaveName: String = "upgrade_service_data"
+
 func _ready() -> void:
 	if progress_event_bus == null:
 		progress_event_bus = preload("res://Resources/Upgrades/MainPlayerProgressEventBus.tres")
@@ -36,19 +41,31 @@ func _emit_upgrade_event(data: UpgradeData) -> void:
 	match data.feature_type:
 		UpgradeData.PlayerFeatureType.WEAPON:
 			progress_event_bus.unlock_weapon(
-				Utils.weapon_name_to_string(data.weapon_data.weapon_type),
+				data.weapon_data.weapon_type,
 				data.weapon_data.weapon_to_unlock
 			)
 		UpgradeData.PlayerFeatureType.ABILITY:
 			progress_event_bus.unlock_ability(
-				Utils.ability_name_to_string(data.ability_data.ability_type),
+				data.ability_data.ability_type,
 				data.ability_data.ability_to_unlock
 			)
 		UpgradeData.PlayerFeatureType.STAT_UPGRADE:
 			progress_event_bus.upgrade_stat(
-				Utils.player_stat_type_to_string(data.stat_type),
+				data.stat_type,
 				data.get_current_power(),
 				data.is_percentage
 			)
 		_:
 			pass
+
+func load_data() -> void:
+	if !SaveSystem.has(SaveName):
+		return
+	var data: Dictionary = SaveSystem.get_var(SaveName)
+	current_currency = data.get("current_currency", Constants.CurrencyType.FIAT)
+
+
+func save_data() -> void:
+	SaveSystem.set_var(SaveName, {
+		"current_currency": current_currency,
+	})

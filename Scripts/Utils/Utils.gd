@@ -46,6 +46,36 @@ static func copy_properties(parent: Node, child: Node) -> void:
 		var parent_properties = parent.call("get_properties")
 		child.call("set_properties", parent_properties)
 
+# Returns the raw enum name for a given enum value.
+static func _enum_name(enum_dict: Dictionary, value: int) -> String:
+	var values = enum_dict.values()
+	var idx = values.find(value)
+	if idx == -1:
+		return "UNKNOWN"
+	return str(enum_dict.keys()[idx])
+
+# Formats an enum value into a user friendly string.
+static func enum_label(enum_dict: Dictionary, value: int) -> String:
+	var e_name = _enum_name(enum_dict, value)
+	var parts = e_name.to_lower().split("_")
+	for i in range(parts.size()):
+		parts[i] = parts[i].capitalize()
+	return " ".join(parts)
+
+
+## Converts the [param Constants.WeaponNames] enum to a string.
+## This is useful for displaying the weapon name in the UI or for debugging purposes.
+## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
+#### Example:
+## ```gdscript
+## var weapon_name: String = Utils.weapon_name_to_string(Constants.WeaponNames.RIFLE)
+## print(weapon_name) # Output: "Rifle"
+## ```
+## @param weapon_name The [enum Constants.WeaponNames] enum value to convert.
+## @return A user-friendly string representation of the weapon name.
+## @see Utils.enum_label
+## @see Constants.WeaponNames
+## @see Constants.WeaponNames.RIFLE
 ## Returns the raw enum name for a given enum value.
 static func enum_name(enum_dict: Dictionary, value: int) -> String:
 	var values = enum_dict.values()
@@ -66,6 +96,19 @@ static func enum_label(enum_dict: Dictionary, value: int) -> String:
 static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 	return enum_label(Constants.WeaponNames, weapon_name)
 
+## Converts the [param Constants.AbilityNames] enum to a string.
+## This is useful for displaying the ability name in the UI or for debugging purposes.
+## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
+#### Example:
+## ```gdscript
+## var ability_name: String = Utils.ability_name_to_string(Constants.AbilityNames.MAGNET)
+## print(ability_name) # Output: "Magnet"
+## ```
+## @param ability_name The [enum Constants.AbilityNames] enum value to convert.
+## @return A user-friendly string representation of the ability name.
+## @see Utils.enum_label
+## @see Constants.AbilityNames
+## @see Constants.AbilityNames.MAGNET
 static func ability_name_to_string(ability_name: Constants.AbilityNames) -> String:
 	return enum_label(Constants.AbilityNames, ability_name)
 
@@ -77,6 +120,21 @@ static func ability_name_to_string(ability_name: Constants.AbilityNames) -> Stri
 static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
 	return enum_label(UpgradeData.StatType, stat_type)
 
+## Converts the [param UpgradeData.StatType] enum to a string.
+## This is useful for displaying the stat type in the UI or for debugging purposes.
+## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
+#### Example:
+## ```gdscript
+## var stat_type_name: String = Utils.player_stat_type_to_string(UpgradeData.StatType.HEALTH)
+## print(stat_type_name) # Output: "Health"
+## ```
+## @param stat_type The [enum UpgradeData.StatType] enum value to convert.
+## @return A user-friendly string representation of the stat type.
+## @see Utils.enum_label
+## @see UpgradeData.StatType
+## @see UpgradeData.StatType.HEALTH
+static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
+	return enum_label(UpgradeData.StatType, stat_type)
 
 static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 	match state:
@@ -89,9 +147,14 @@ static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():
-		if enum_type[key] == _enum:
-			return key
+			if enum_type[key] == _enum:
+					return key
 	return "Unknown Enum"
+
+static func string_to_enum(s_name: String, enum_type: Dictionary) -> int:
+	if enum_type.has(s_name):
+			return enum_type[s_name]
+	return -1
 
 static func format_currency(amount: float, use_short_format: bool = false) -> String:
 	if use_short_format:
