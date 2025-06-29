@@ -33,22 +33,22 @@ func purchase_upgrade(data: SkillNodeData) -> bool:
 		return true
 
 func _emit_upgrade_event(data: SkillNodeData) -> void:
-		match data.feature_type:
-				SkillNode.FEATURE_TYPE.WEAPON:
-						progress_event_bus.unlock_weapon(
-								Utils.weapon_name_to_string(data.weapon_data.weapon_type),
-								data.weapon_data.weapon_to_unlock
-						)
-				SkillNode.FEATURE_TYPE.ABILITY:
-						progress_event_bus.unlock_ability(
-								Utils.ability_name_to_string(data.ability_data.ability_type),
-								data.ability_data.ability_to_unlock
-						)
-				SkillNode.FEATURE_TYPE.STAT_UPGRADE:
-						progress_event_bus.upgrade_stat(
-								Utils.player_stat_type_to_string(data.stat_type),
-								data.get_current_power(),
-								data.is_percentage
-						)
-				_:
-						pass
+	match data.feature_type:
+		SkillNode.FEATURE_TYPE.WEAPON:
+			progress_event_bus.unlock_weapon(
+					Utils.weapon_name_to_string(data.weapon_data.weapon_type),
+					data.weapon_data.weapon_to_unlock
+			)
+		SkillNode.FEATURE_TYPE.ABILITY:
+			progress_event_bus.unlock_ability(
+					Utils.ability_name_to_string(data.ability_data.ability_type),
+					data.ability_data.ability_to_unlock
+			)
+		SkillNode.FEATURE_TYPE.STAT_UPGRADE:
+			progress_event_bus.upgrade_stat(
+					Utils.player_stat_type_to_string(data.stat_type),
+					data.get_current_power(),
+					data.is_percentage
+			)
+		_:
+			pass

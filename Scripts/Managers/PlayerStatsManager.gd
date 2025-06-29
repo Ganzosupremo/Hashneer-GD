@@ -46,7 +46,6 @@ const implements = [
 ]
 
 func _ready() -> void:
-	#progress_event_bus.stat_upgraded.connect(_on_stat_upgraded)
 	progress_event_bus.stat_upgraded.connect(_on_stat_upgraded)
 	progress_event_bus.weapon_unlocked.connect(_on_weapon_unlocked)
 	progress_event_bus.ability_unlocked.connect(_on_ability_unlocked)
@@ -62,17 +61,17 @@ func _on_ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent):
 
 ## Called to add bonus when an upgrade is applied.
 func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, event: PlayerProgressEventBus.StatUpgradeEvent = null) -> void:
-		if is_percentage:
-				if !percent_bonuses.has(stat_name):
-						percent_bonuses[stat_name] = bonus
-				else:
-						percent_bonuses[stat_name] += bonus
+	if is_percentage:
+		if !percent_bonuses.has(stat_name):
+			percent_bonuses[stat_name] = bonus
 		else:
-				if !upgrade_bonuses.has(stat_name):
-						upgrade_bonuses[stat_name] = bonus
-				else:
-						upgrade_bonuses[stat_name] += bonus
-		stats_updated.emit(event)
+			percent_bonuses[stat_name] += bonus
+	else:
+		if !upgrade_bonuses.has(stat_name):
+			upgrade_bonuses[stat_name] = bonus
+		else:
+			upgrade_bonuses[stat_name] += bonus
+	stats_updated.emit(event)
 
 func unlock_weapon(weapon_id: String, weapon_resource: WeaponDetails, event: PlayerProgressEventBus.WeaponUnlockEvent = null) -> void:
 	unlocked_weapons[weapon_id] = weapon_resource

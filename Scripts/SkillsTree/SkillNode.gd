@@ -53,7 +53,6 @@ enum FEATURE_TYPE {
 
 @onready var skill_line: Line2D = %SkillBranch
 @onready var skill_label_status: Label = %SkillLabel
-# @onready var skill_info_panel: SkillInfoPanelInNode = $SkillInfoPanel
 @onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 @onready var currency_icon: TextureRect = %CurrencyIcon
 @onready var progress_bar: TextureProgressBar = %LevelProgressBar
