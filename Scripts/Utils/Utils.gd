@@ -45,59 +45,29 @@ static func copy_properties(parent: Node, child: Node) -> void:
 	if parent.has_method("get_properties") and child.has_method("set_properties"):
 		var parent_properties = parent.call("get_properties")
 		child.call("set_properties", parent_properties)
-	
+
+## Returns the raw enum name for a given enum value.
+static func enum_name(enum_dict: Dictionary, value: int) -> String:
+	var values = enum_dict.values()
+	var idx = values.find(value)
+	if idx == -1:
+			return "UNKNOWN"
+	return str(enum_dict.keys()[idx])
+
+## Formats an enum value into a user friendly string.
+static func enum_label(enum_dict: Dictionary, value: int) -> String:
+	var e_name = enum_name(enum_dict, value)
+	var parts = e_name.to_lower().split("_")
+	for i in range(parts.size()):
+			parts[i] = parts[i].capitalize()
+	return " ".join(parts)
+
+
 static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
-	var weapon_names_to_string = {
-		Constants.WeaponNames.PISTOL: "Pistol",
-		Constants.WeaponNames.SHOTGUN: "Shotgun",
-		Constants.WeaponNames.RIFLE: "Rifle",
-		Constants.WeaponNames.SNIPER: "Sniper",
-		Constants.WeaponNames.MINI_UZI: "Mini-Uzi",
-		Constants.WeaponNames.AK47: "AK47",
-		Constants.WeaponNames.MACHINE_GUN: "Machine Gun",
-		Constants.WeaponNames.ROCKET_LAUNCHER: "Rocket Launcher",
-		Constants.WeaponNames.GRENADE_LAUNCHER: "Grenade Launcher",
-		Constants.WeaponNames.FLAMETHROWER: "Flamethrower",
-		Constants.WeaponNames.LASER: "Laser",
-		Constants.WeaponNames.RAILGUN: "Railgun",
-		Constants.WeaponNames.PLASMA: "Plasma",
-		Constants.WeaponNames.RAYGUN: "Raygun",
-		Constants.WeaponNames.BAZOOKA: "Bazooka",
-		Constants.WeaponNames.CANNON: "Cannon",
-		Constants.WeaponNames.BFG: "BFG",
-		Constants.WeaponNames.MINIGUN: "Minigun",
-		Constants.WeaponNames.CHAINSAW: "Chainsaw",
-		Constants.WeaponNames.SWORD: "Sword",
-		Constants.WeaponNames.AXE: "Axe",
-		Constants.WeaponNames.HAMMER: "Hammer",
-		Constants.WeaponNames.MACE: "Mace",
-		Constants.WeaponNames.SPEAR: "Spear",
-		Constants.WeaponNames.BOW: "Bow",
-		Constants.WeaponNames.CROSSBOW: "Crossbow",
-		Constants.WeaponNames.SHURIKEN: "Shuriken",
-		Constants.WeaponNames.KUNAI: "Kunai",
-		Constants.WeaponNames.NINJA_STAR: "Ninja Star"
-	}
-	
-	if weapon_names_to_string.has(weapon_name):
-		return weapon_names_to_string[weapon_name]
-	return "Unknown Weapon"
+	return enum_label(Constants.WeaponNames, weapon_name)
 
 static func ability_name_to_string(ability_name: Constants.AbilityNames) -> String:
-	var ability_names_to_string = {
-		Constants.AbilityNames.BLOCK_CORE_FINDER: "Block Core Finder",
-		Constants.AbilityNames.MAGNET: "Magnet",
-		Constants.AbilityNames.REGEN_HEALTH_OVER_TIME: "Regenerate Health Over Time",
-		# Constants.AbilityNames.HOVER: "Hover",
-		# Constants.AbilityNames.INVISIBILITY: "Invisibility",
-		# Constants.AbilityNames.SPRINT: "Sprint",
-		# Constants.AbilityNames.TELEPORT: "Teleport",
-		# Constants.AbilityNames.WALL_JUMP: "Wall Jump"
-	}
-	
-	if ability_names_to_string.has(ability_name):
-		return ability_names_to_string[ability_name]
-	return "Unknown Ability"
+	return enum_label(Constants.AbilityNames, ability_name)
 
 ## The PlayerStatsManager saves the upgrade data in the [param PlayerStatsManager.upgraded_stats] dictionary based on the [param UpgradeData.stat_type] variable.
 ## This function converts the [param UpgradeData.stat_type] to a string for getting the correct stat's value from the dictionary.
@@ -105,15 +75,7 @@ static func ability_name_to_string(ability_name: Constants.AbilityNames) -> Stri
 ## Just the player stats are saved in the dictionary. 
 ## The weapon and ability upgrades are saved in the [param PlayerStatsManager.unlocked_weapons] and [param PlayerStatsManager.unlocked_abilities] dictionaries.
 static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
-	var saved_names: Dictionary = {
-		UpgradeData.StatType.HEALTH: "Health",
-		UpgradeData.StatType.SPEED: "Speed",
-		UpgradeData.StatType.DAMAGE: "Damage",
-	}
-
-	if saved_names.has(stat_type):
-		return saved_names[stat_type]
-	return "Unknown Stat"
+	return enum_label(UpgradeData.StatType, stat_type)
 
 
 static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:

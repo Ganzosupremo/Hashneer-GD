@@ -1,11 +1,8 @@
-[gd_resource type="Resource" script_class="PlayerDetails" load_steps=7 format=3 uid="uid://cy7f2rybcjt4v"]
+[gd_resource type="Resource" script_class="PlayerDetails" load_steps=4 format=3 uid="uid://cy7f2rybcjt4v"]
 
-[ext_resource type="Resource" uid="uid://7fsku67hlg17" path="res://Resources/Stats/PlayerDamageStat.tres" id="1_3ldop"]
 [ext_resource type="Script" uid="uid://btnlbrr52ggm" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Audio/PlayerDeadSoundEffect.tres" id="2_s2elr"]
 [ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="3_s2elr"]
-[ext_resource type="Resource" uid="uid://biluxwaptfd3t" path="res://Resources/Stats/PlayerHealthStat.tres" id="4_hsb6s"]
-[ext_resource type="Resource" uid="uid://c28y48eijcapn" path="res://Resources/Stats/PlayerSpeedStat.tres" id="6_t0dqd"]
 
 [resource]
 resource_name = "PlayerDetailsToUse"
@@ -16,6 +13,3 @@ damage_multiplier = 1.0
 initial_weapon = ExtResource("3_s2elr")
 dead_sound_effect = ExtResource("2_s2elr")
 weapons_array = []
-speed_stat = ExtResource("6_t0dqd")
-damage_multiplier_stat = ExtResource("1_3ldop")
-max_health_stat = ExtResource("4_hsb6s")
