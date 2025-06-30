@@ -1,5 +1,4 @@
 [gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://bjrfc5yj77v5q"]
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://b32xxsiymp2fs"]
 
 [ext_resource type="PackedScene" uid="uid://bwv6468intk6r" path="res://Scenes/Player/Abilities/Magnet.tscn" id="1_uup4g"]
 [ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="2_6aqeb"]
