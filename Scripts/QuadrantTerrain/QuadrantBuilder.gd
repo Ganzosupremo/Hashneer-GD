@@ -46,6 +46,127 @@ func _ready() -> void:
 	AudioManager.change_music_clip(music)
 	_init_builder()
 
+func _physics_process(delta: float) -> void:
+	if not enable_center_gravity: return
+
+	## TODO - Fix gravity calculation
+	if player and is_instance_valid(player):
+		var gravity_force = _calculate_gravity_force(player.global_position)
+		player.apply_gravity(gravity_force)
+
+func _calculate_gravity_force(target_position: Vector2) -> Vector2:
+    var direction = (_grid_center - target_position).normalized()
+    var distance = target_position.distance_to(_grid_center)
+    if distance < 0.001:
+        return Vector2.ZERO
+    var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
+
+    return direction * force_magnitude
+
+
+func _apply_gravity_to_objects(body1: Node2D, body2: Node2D, delta: float) -> void:
+	var force_magnitude = pow(body2.global_position.distance_to(body1.global_position), gravity_falloff)
+	
+	var force = (body2.global_position\
+	 - body1.global_position).normalized()\
+	  * gravity_strength * body1.mass * body2.mass\
+	   / force_magnitude
+
+	body1.apply_central_force(force * delta)
+
+func _apply_gravity_to_object(object: Node2D, object2: Node2D, _delta: float) -> void:
+	if not object or not is_instance_valid(object):
+		return
+	
+	var direction: Vector2 = object2.global_position - object.global_position
+	var distance: float = direction.length()
+
+	# Prevent extreme forces when very close to center
+	if distance < 10: return 
+
+	var force_magnitude: float = pow(distance, gravity_falloff)
+	
+	var force = (object2.global_position\
+	 - object.global_position).normalized()\
+	  * gravity_strength * object.mass * object2.mass\
+	   / force_magnitude
+	
+	# Debug the calculation components
+	print("Distance: ", distance, " Force magnitude: ", force_magnitude)
+	
+	# Apply gravity differently based on the object's type
+	if object is RigidBody2D:
+		object.apply_central_force(force)
+	elif object is PlayerController:
+		object.apply_central_force(force * _delta)
+
+func _calculate_map_bounds() -> void:
+	var level_width: float = quadrant_size.x * grid_size.x
+	var level_height: float = quadrant_size.y * grid_size.y
+	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
+	_map_bounds = Rect2(
+		Vector2(-buffer, -buffer),
+		Vector2(level_width + buffer * 2, level_height + buffer * 2)
+	)
+
+	_create_boundary_walls()
+
+func _calculate_grid_center() -> void:
+	_grid_center = Vector2(
+		grid_size.x * quadrant_size.x / 2.0,
+		grid_size.y * quadrant_size.y / 2.0
+	)
+
+func _create_boundary_walls() -> void:
+	# Wall thickness
+	var thickness: float = 75.0
+	var horizontal_offset: float = 1.2
+
+	# Calculate map center
+	var center: Vector2 = Vector2(
+		_map_bounds.position.x + _map_bounds.size.x/2,
+		_map_bounds.position.y + _map_bounds.size.y/2
+	)
+
+	## Calculate adjusted width for top/bottom walls
+	var horizontal_wall_width: float = _map_bounds.size.x * horizontal_offset + thickness * 2
+	
+	var wall_configs: Array = [
+		# Top wall (adjusted width)
+		{
+			"size": Vector2(horizontal_wall_width, thickness),
+			"position": center + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
+		},
+		# Right wall
+		{
+			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+			"position": center + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
+		},
+		# Bottom wall (adjusted width)
+		{
+			"size": Vector2(horizontal_wall_width, thickness),
+			"position": center + Vector2(0, _map_bounds.size.y/2 + thickness/2)
+		},
+		# Left wall
+		{
+			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+			"position": center + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
+		}
+	]
+
+	for config in wall_configs:
+		var wall: StaticBody2D = StaticBody2D.new()
+		var collision_shape: CollisionShape2D = CollisionShape2D.new()
+		var rect_shape: RectangleShape2D = RectangleShape2D.new()
+
+		rect_shape.size = config.size
+		collision_shape.shape = rect_shape
+		wall.position = config.position
+
+		wall.add_child(collision_shape)
+		map_boundaries.add_child(wall)
+
+
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
 	var builder_data: LevelBuilderArgs = GameManager.current_level_args
