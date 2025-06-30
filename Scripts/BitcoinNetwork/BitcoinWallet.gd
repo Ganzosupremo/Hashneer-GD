@@ -1,7 +1,7 @@
 extends Node2D
 class_name BWallet
 
-signal money_changed(amount_changed: float, is_bitcoin: bool) 
+signal money_changed(amount_changed: float, currency: Constants.CurrencyType) 
 
 const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
 @onready var request: HTTPRequest = $HTTPRequest
@@ -17,15 +17,6 @@ const implements = [
 
 func _ready() -> void:
 	BitcoinNetwork.coin_subsidy_issued.connect(on_reward_issued)
-	#request.request_completed.connect(on_request_completed)
-	#request.request(API_REQUEST)
-	await request.request_completed
-	
-	var timer: Timer = Timer.new()
-	add_child(timer)
-	timer.timeout.connect(on_timeout)
-	timer.one_shot = false
-	timer.wait_time = 600.0
 
 func on_reward_issued(reward: float) -> void:
 	add_bitcoin(reward)
@@ -40,41 +31,34 @@ func on_request_completed(result: int, _response_code: int, _headers: PackedStri
 	else:
 		bitcoin_price = static_bitcoin_price
 
-func on_timeout():
-	request.request(API_REQUEST)
-
 
 func add_fiat(amount: float) -> void:
 	if amount <= 0.0: return
 	
 	fiat_balance += amount
-	money_changed.emit(fiat_balance, false)
-	#emit_signal("money_changed", fiat_balance, false)
+	money_changed.emit(fiat_balance, Constants.CurrencyType.FIAT)
 
 func spend_fiat(amount_to_spend: float) -> bool:
 	if amount_to_spend > fiat_balance:
 		return false
 	
 	fiat_balance -= amount_to_spend
-	money_changed.emit(fiat_balance, false)
-	#emit_signal("money_changed", fiat_balance, false)
+	money_changed.emit(fiat_balance, Constants.CurrencyType.FIAT)
 	return true
 
 func add_bitcoin(amount_to_add: float) -> void:
 	if amount_to_add <= 0.0: return
 	
 	bitcoin_balance += amount_to_add
-	money_changed.emit(bitcoin_balance, true)
-	#emit_signal("money_changed", bitcoin_balance, true)
+	money_changed.emit(bitcoin_balance, Constants.CurrencyType.BITCOIN)
 
 func spend_bitcoin(amount_to_spend: float) -> bool:
 	if amount_to_spend > bitcoin_balance:
 		return false
 	
 	bitcoin_balance -= amount_to_spend
-	BitcoinNetwork.set_bitcoins_spent(amount_to_spend)
+	BitcoinNetwork.add_coins_spent(amount_to_spend)
 	money_changed.emit(bitcoin_balance, true)
-	#emit_signal("money_changed", bitcoin_balance, true)
 	return true
 
 ## exchanges the fiat currency to Bitcoin

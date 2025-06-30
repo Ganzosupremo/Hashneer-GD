@@ -12,6 +12,9 @@ var odds_multiplier : float
 func _init(p_drops_table : DropsTable, p_odds_multiplier : float) -> void:
 	drops_table = p_drops_table
 	odds_multiplier = p_odds_multiplier
+	
+	if drops_table == null:
+		push_error("No Drops table defined. Define a drop table before continuing...")
 
 ## Randomly generates drops from the drop table a single time
 func generate_drops() -> Array[Droppable]:

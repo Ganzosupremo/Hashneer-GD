@@ -1,7 +1,7 @@
 [gd_scene load_steps=34 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
-[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="2_ehrd3"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/QuadrantHit.tres" id="2_ehrd3"]
 [ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]

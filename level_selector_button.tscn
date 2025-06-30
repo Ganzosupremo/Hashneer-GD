@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://bkqvmk284u4ap"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_fvp7h"]
-[ext_resource type="Script" path="res://Scripts/UI/LevelSelector/LevelSelectorButton.gd" id="2_st11g"]
-[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/BlockLevels/World.tscn" id="3_feokr"]
+[ext_resource type="Script" uid="uid://c2m2keeetmmlv" path="res://Scripts/UI/LevelSelector/LevelSelectorButton.gd" id="2_st11g"]
+[ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/GameModes/MiningGameMode.tscn" id="3_feokr"]
 [ext_resource type="Texture2D" uid="uid://cdsnsj3ub3kat" path="res://Textures/BG/medievalTile_58.png" id="4_r6x5x"]
-[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/FracturableBodyCollision.tres" id="5_7te4v"]
+[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/QuadrantHit.tres" id="5_7te4v"]
 
 [node name="LevelSelectorButton" type="Button"]
 custom_minimum_size = Vector2(140, 90)

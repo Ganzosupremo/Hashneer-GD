@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3 uid="uid://bv36oct4uiv5w"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_glr62"]
+[ext_resource type="Script" uid="uid://2i17mcnw3la2" path="res://Scripts/Enemies/Boss.gd" id="2_fkfjs"]
+[ext_resource type="Resource" uid="uid://bl3gcxc42ryaw" path="res://Resources/Audio/BossDeath.tres" id="3_6ehc6"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="3_6wbg5"]
+[ext_resource type="Resource" uid="uid://bg7tdmtbw2iis" path="res://Resources/Audio/BossHurt.tres" id="3_m42mc"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="4_1bt1g"]
+[ext_resource type="Resource" uid="uid://xo74ypflhafb" path="res://Resources/Audio/BossHeal.tres" id="4_m42mc"]
+
+[sub_resource type="Resource" id="Resource_6ehc6"]
+script = ExtResource("3_6wbg5")
+drop_path = "uid://beswcfw4ytxol"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_m42mc"]
+script = ExtResource("3_6wbg5")
+drop_path = "uid://bjdc26h1h0pfv"
+odds = 1.0
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_ug63n"]
+script = ExtResource("4_1bt1g")
+possible_drops = Array[ExtResource("3_6wbg5")]([SubResource("Resource_6ehc6"), SubResource("Resource_m42mc")])
+guaranteed_drops = 2
+combined_odds = false
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[node name="SquareBoss" instance=ExtResource("1_glr62")]
+mass = 10.0
+script = ExtResource("2_fkfjs")
+advanced_regeneration = true
+invincible_time = 0.25
+color_default = Color(0.965179, 0.0726337, 0.403013, 1)
+knockback_resistance_base = 2.0
+shape_area_percent = 0.1
+fractures = 15
+collision_damage = Vector2(4, 8)
+collision_knockback_time = 0.05
+find_new_target_pos_tolerance = 10.0
+target_reached_tolerance = 25.0
+target_pos_interval_range = Vector2(10, 15)
+keep_distance_range = Vector2(1, 1)
+accel = 1000.0
+sound_on_hurt = ExtResource("3_m42mc")
+sound_on_dead = ExtResource("3_6ehc6")
+sound_on_heal = ExtResource("4_m42mc")
+polygon_shape = 1
+cir_radius = 0.0
+cir_smoothing = 0
+rectangle_size = Vector2(140, 140)
+
+[node name="RandomDrops" parent="." index="11"]
+drops_table = SubResource("Resource_ug63n")

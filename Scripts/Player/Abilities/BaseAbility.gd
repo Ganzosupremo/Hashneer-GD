@@ -4,7 +4,7 @@ class_name BaseAbility extends Node2D
 @export var ability_description: String = "Ability Description"
 @export var ability_cooldown: float = 0.0
 
-var active: bool = true
+var active: bool = false
 var current_cooldown: float = 0.0
 
 func _ready() -> void:

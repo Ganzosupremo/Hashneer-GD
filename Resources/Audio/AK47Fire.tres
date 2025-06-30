@@ -5,6 +5,10 @@
 
 [resource]
 script = ExtResource("1_0lhk8")
-sound_volume = -10.0
+limit = 25
+sound_type = 0
+destination_audio_bus = 4
+sound_volume = 0.0
 audio_stream = ExtResource("1_5q1l4")
 sound_pitch = 1.0
+pitch_randomness = 0.0

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://bq7engmoexioi"]
+
+[ext_resource type="AudioStream" uid="uid://b23scsgtlm1ea" path="res://Audio/FracturableTerrain/FracturableBodyDestroyed.wav" id="1_3pyyo"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="1_s5djg"]
+
+[resource]
+script = ExtResource("1_s5djg")
+limit = 4
+sound_type = 25
+destination_audio_bus = 0
+sound_volume = 1.0
+audio_stream = ExtResource("1_3pyyo")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

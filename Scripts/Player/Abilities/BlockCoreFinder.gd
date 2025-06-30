@@ -6,11 +6,16 @@ var target_core: BlockCore
 
 func _ready() -> void:
 	super._ready()
-	GameManager.current_block_core.onBlockDestroyed.connect(_on_block_found)
-	set_target_core(GameManager.current_block_core)
+	if GameManager.current_block_core != null:
+		GameManager.current_block_core.onBlockDestroyed.connect(_on_block_found)
+		set_target_core(GameManager.current_block_core)
 
 func _on_activate() -> void:
-	if target_core == null: set_target_core(GameManager.current_block_core)
+	if !get_active_state(): return
+	if target_core == null: 
+		disable()
+		hide()
+		return
 
 	var target_position = target_core.global_position
 	var direction = target_position - global_position

@@ -7,25 +7,11 @@ signal quadrant_hitted(fiat_gained: float)
 @export_category("Settings")
 @export_group("General")
 @export var music: MusicDetails
-@export var quadrants_initial_health: float 
-@export var resource_droprate_multiplier: float = 1.5
 
 @export_group("Size and Color")
 @export var quadrant_size: Vector2i = Vector2i(250, 250)
 @export var grid_size: Vector2i = Vector2i(16, 16)
 @export var fracture_body_color: Color
-
-@export_group("Block Core Variables")
-@export var block_core_cuts: int = 50
-@export var block_core_min_cut_area: float = 100.0
-
-@export_group("Gravity Settings")
-## Whether to enable gravity towards the center of the grid.
-@export var enable_center_gravity: bool = true
-## This will pull all objects affected by gravity towards the center of the grid.
-@export_range(0.001, 1.0,  0.01,"or_greater") var gravity_strength: float = 500.0
-## The falloff of the gravity force.
-@export_range(0.1, 2.0, 0.1, "or_greater") var gravity_falloff: float = 2.0  # 2.0 = inverse square law
 
 #endregion
 
@@ -35,17 +21,18 @@ signal quadrant_hitted(fiat_gained: float)
 
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 @onready var _rigid_bodies_parent: Node2D = %RigidBodiesParent
-@onready var _pool_cut_visualizer: PoolFracture = $"../Pool_FractureCutVisualizer"
-@onready var _pool_fracture_shards: PoolFracture = $"../Pool_FractureShards"
+@onready var _pool_cut_visualizer: PoolFracture = $"../PoolFractureCutVisualizer"
+@onready var _pool_fracture_shards: PoolFracture = $"../PoolFractureShards"
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
 @onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
 @onready var map_boundaries: StaticBody2D = %MapBoundaries
+@onready var center: Area2D = %Center
 
 var polygon_fracture: PolygonFracture
 var _fracture_disabled: bool = false
 var _cur_fracture_color: Color = fracture_body_color
-var builder_args: QuadrantBuilderArgs
+var builder_args: LevelBuilderArgs
 var _map_bounds: Rect2
 var _grid_center: Vector2
 
@@ -53,10 +40,10 @@ var _grid_center: Vector2
 #region Private Methods
 
 func _ready() -> void:
-	_calculate_map_bounds()
+	# _calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
-	MusicManager.change_music_clip(music)
+	AudioManager.change_music_clip(music)
 	_init_builder()
 
 func _physics_process(delta: float) -> void:
@@ -182,17 +169,11 @@ func _create_boundary_walls() -> void:
 
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
-	var builder_data: QuadrantBuilderArgs = GameManager.current_builder_args
+	var builder_data: LevelBuilderArgs = GameManager.current_level_args
 	builder_args = builder_data
 	
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
 	grid_size = builder_data.grid_size
-	
-	block_core_cuts = builder_data.block_core_cuts_delaunay
-	block_core_min_cut_area = builder_data.block_core_cut_min_area
-	
-	quadrants_initial_health = builder_data.initial_health
-	resource_droprate_multiplier = builder_data.fiat_drop_rate_factor
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -207,7 +188,75 @@ func _init_builder() -> void:
 
 	_calculate_grid_center()
 	_set_player_position()
-	_initialize_grid_of_blocks(quadrants_initial_health)
+	_initialize_grid_of_blocks(builder_args.initial_health)
+
+func _calculate_grid_center() -> void:
+	_grid_center = Vector2(
+		grid_size.x * quadrant_size.x / 2.0,
+		grid_size.y * quadrant_size.y / 2.0
+	)
+	center.global_position = _grid_center
+
+
+# func _calculate_map_bounds() -> void:
+# 	var level_width: float = quadrant_size.x * grid_size.x
+# 	var level_height: float = quadrant_size.y * grid_size.y
+# 	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
+# 	_map_bounds = Rect2(
+# 		Vector2(-buffer, -buffer),
+# 		Vector2(level_width + buffer * 2, level_height + buffer * 2)
+# 	)
+
+# 	_create_boundary_walls()
+
+# func _create_boundary_walls() -> void:
+# 	# Wall thickness
+# 	var thickness: float = 75.0
+# 	var horizontal_offset: float = 1.2
+
+# 	# Calculate map center
+# 	var _center: Vector2 = Vector2(
+# 		_map_bounds.position.x + _map_bounds.size.x/2,
+# 		_map_bounds.position.y + _map_bounds.size.y/2
+# 	)
+
+# 	## Calculate adjusted width for top/bottom walls
+# 	var horizontal_wall_width: float = _map_bounds.size.x * horizontal_offset + thickness * 2
+	
+# 	var wall_configs: Array = [
+# 		# Top wall (adjusted width)
+# 		{
+# 			"size": Vector2(horizontal_wall_width, thickness),
+# 			"position": _center + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
+# 		},
+# 		# Right wall
+# 		{
+# 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+# 			"position": _center + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
+# 		},
+# 		# Bottom wall (adjusted width)
+# 		{
+# 			"size": Vector2(horizontal_wall_width, thickness),
+# 			"position": _center + Vector2(0, _map_bounds.size.y/2 + thickness/2)
+# 		},
+# 		# Left wall
+# 		{
+# 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
+# 			"position": _center + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
+# 		}
+# 	]
+
+# 	for config in wall_configs:
+# 		var wall: StaticBody2D = StaticBody2D.new()
+# 		var collision_shape: CollisionShape2D = CollisionShape2D.new()
+# 		var rect_shape: RectangleShape2D = RectangleShape2D.new()
+
+# 		rect_shape.size = config.size
+# 		collision_shape.shape = rect_shape
+# 		wall.position = config.position
+
+# 		wall.add_child(collision_shape)
+# 		map_boundaries.add_child(wall)
 
 #endregion
 
@@ -222,7 +271,6 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
-	print_debug("Damage to deal: " + str(bullet_damage))
 	if !other_body.take_damage(bullet_damage):
 		return
 	
@@ -242,7 +290,7 @@ func fracture_block_core(bullet_damage: float, miner: String = "Player", instaki
 	if _fracture_disabled: return
 	_fracture_disabled = true
 	
-	block_core.fracture(block_core_cuts, block_core_min_cut_area, bullet_damage, _cur_fracture_color, instakill, miner)
+	block_core.fracture(builder_args.block_core_cuts_delaunay, builder_args.block_core_cut_min_area, bullet_damage, _cur_fracture_color, instakill, miner)
 	
 	set_deferred("_fracture_disabled", false)
 
@@ -299,7 +347,7 @@ func _initialize_block_core():
 	var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
 
 	block_core.global_position = Vector2(random_x, random_y)
-	block_core.health.set_max_health(quadrants_initial_health * 2.0) # May change to scale exponentially
+	block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
 	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
@@ -361,4 +409,4 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.global_rotation = shape_info.spawn_rot
 	instance_staticbody.set_polygon(shape_info.centered_shape)
 	instance_staticbody.self_modulate = color
-	instance_staticbody.set_fracture_body(quadrants_initial_health, shape_info, texture_info, builder_args.hit_sound)
+	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info, builder_args.hit_sound)

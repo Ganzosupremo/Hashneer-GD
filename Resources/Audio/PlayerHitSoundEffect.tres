@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://bkkyj440tbud"]
+
+[ext_resource type="AudioStream" uid="uid://cq1x8a86vo63l" path="res://Audio/Player/PlayerHurt.wav" id="1_2iufa"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_cntvj"]
+
+[resource]
+script = ExtResource("2_cntvj")
+limit = 5
+sound_type = 7
+destination_audio_bus = 1
+sound_volume = 7.0
+audio_stream = ExtResource("1_2iufa")
+sound_pitch = 1.0
+pitch_randomness = 0.31
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

@@ -8,6 +8,7 @@ script = ExtResource("1_4f7da")
 
 [node name="SoundEffectComponent" parent="." instance=ExtResource("2_7aix1")]
 autoplay = true
+bus = &"Weapons"
 playback_type = 1
 
 [node name="FireCooldownTimer" type="Timer" parent="."]

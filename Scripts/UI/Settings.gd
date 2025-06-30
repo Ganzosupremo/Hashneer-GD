@@ -9,8 +9,16 @@ signal visibility_state_changed(visible: bool)
 @onready var master_slider: HSlider = %MasterSlider
 @onready var music_slider: HSlider = %MusicSlider
 @onready var sfx_slider: HSlider = %SFXSlider
+@onready var player_sfx_slider: HSlider = %PlayerSFXSlider
+@onready var weapons_sfx_slider: HSlider = %WeaponsSFXSlider
 
-var v_mode: DisplayServer.VSyncMode = DisplayServer.VSYNC_ENABLED
+var vsync_mode: DisplayServer.VSyncMode = DisplayServer.VSYNC_ENABLED
+var loaded: bool = false
+
+const SettingsSaveName = "user_settings"
+const implements = [
+	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
+]
 
 func _ready() -> void:
 	# Populate resolutions
@@ -44,9 +52,9 @@ func _ready() -> void:
 	vsync.toggled.connect(_on_vsync_toggled)
 	fullscreen.toggled.connect(_on_fullscreen_toggled)
 
-	master_slider.value = MusicManager.master_volume
-	music_slider.value = MusicManager.music_volume
-	sfx_slider.value = MusicManager.sfx_volume
+	master_slider.value = AudioManager.master_volume
+	music_slider.value = AudioManager.music_volume
+	sfx_slider.value = AudioManager.sfx_volume
 
 
 func _process(_delta: float) -> void:
@@ -75,10 +83,10 @@ func _on_resolution_selected(index: int) -> void:
 
 func _on_vsync_toggled(button_pressed: bool) -> void:
 	if vsync.button_pressed:
-		v_mode = DisplayServer.VSYNC_ENABLED
+		vsync_mode = DisplayServer.VSYNC_ENABLED
 	else:
-		v_mode = DisplayServer.VSYNC_DISABLED
-	DisplayServer.window_set_vsync_mode(v_mode)
+		vsync_mode = DisplayServer.VSYNC_DISABLED
+	DisplayServer.window_set_vsync_mode(vsync_mode)
 
 func _on_fullscreen_toggled(button_pressed: bool) -> void:
 	if button_pressed:
@@ -86,14 +94,64 @@ func _on_fullscreen_toggled(button_pressed: bool) -> void:
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_MAXIMIZED)
 
-
 func _on_sfx_slider_value_changed(value: float) -> void:
-	MusicManager.set_sfx_volume(value)
-
+	AudioManager.set_sfx_volume(value)
+	if !loaded: return
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_VOLUME_SLIDER_TEST, SoundEffectDetails.DestinationAudioBus.SFX)
 
 func _on_music_slider_value_changed(value: float) -> void:
-	MusicManager.set_music_volume(value)
-
+	AudioManager.set_music_volume(value)
 
 func _on_master_slider_value_changed(value: float) -> void:
-	MusicManager.set_master_volume(value)
+	AudioManager.set_master_volume(value)
+
+func _on_player_sfx_slider_value_changed(value: float) -> void:
+	AudioManager.set_player_sfx_volume(value)
+	if !loaded: return
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.PLAYER_HIT, SoundEffectDetails.DestinationAudioBus.PLAYER_SFX)
+
+func _on_weapons_slider_value_changed(value: float) -> void:
+	AudioManager.set_weapons_volume(value)
+	if !loaded: return
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.AK47_RIFLE_FIRE, SoundEffectDetails.DestinationAudioBus.WEAPONS)
+
+func save_data() -> void:
+	var settings = {
+		"resolution": {
+			"window_size": resolutions.get_item_text(resolutions.get_selected_id()),
+			"index": resolutions.get_item_index(resolutions.get_selected_id())
+		},
+		"fullscreen": DisplayServer.window_get_mode() == DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN,
+		"vsync": vsync_mode,
+		"master_volume": AudioManager.master_volume,
+		"music_volume": AudioManager.music_volume,
+		"sfx_volume": AudioManager.sfx_volume,
+		"player_sfx_volume": AudioManager.player_sfx_volume,
+		"weapons_volume": AudioManager.weapons_volume
+	}
+	SaveSystem.set_var(SettingsSaveName, settings)
+
+func load_data() -> void:
+	if !SaveSystem.has(SettingsSaveName): return
+	
+	var settings = SaveSystem.get_var(SettingsSaveName)
+	var res: String = settings["resolution"]["window_size"]
+	var window_size: Array = res.split("x")
+	DisplayServer.window_set_size(Vector2i(window_size[0].to_int(), window_size[1].to_int()))
+	DisplayServer.window_set_mode(settings["fullscreen"] if DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN else DisplayServer.WindowMode.WINDOW_MODE_MAXIMIZED)
+	_enable_vsync(settings["vsync"])
+	AudioManager.set_master_volume(settings["master_volume"])
+	AudioManager.set_music_volume(settings["music_volume"])
+	AudioManager.set_sfx_volume(settings["sfx_volume"])
+	AudioManager.set_player_sfx_volume(settings["player_sfx_volume"])
+	AudioManager.set_weapons_volume(settings["weapons_volume"])
+
+	master_slider.value = AudioManager.master_volume
+	music_slider.value = AudioManager.music_volume
+	sfx_slider.value = AudioManager.sfx_volume
+	player_sfx_slider.value = AudioManager.player_sfx_volume
+	weapons_sfx_slider.value = AudioManager.weapons_volume
+	resolutions.select(settings["resolution"]["index"])
+	vsync.button_pressed = settings["vsync"] == DisplayServer.VSYNC_ENABLED
+	fullscreen.button_pressed = settings["fullscreen"]
+	loaded = true

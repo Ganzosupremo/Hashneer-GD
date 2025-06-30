@@ -7,14 +7,14 @@ extends ItemDropsNode
 @export var drops_table : DropsTable
 
 ## Handles placing objects into the game world
-@export var scene_spawner : Node2D
+@export var scene_spawner : SceneSpawner2D
 
 func _ready() -> void:
 	_validate()
 
 ## Generates an array of drops from the drops_table
 ## and then uses the scene_spawner to place them into the scene
-func spawn_drops(p_drop_rolls : int, p_odds_multiplier : float = 1.0):
+func spawn_drops(p_drop_rolls : int, p_odds_multiplier : float = 1.0) -> Node:
 	var drops_to_spawn : Array[Resource] = []
 	var generator = DropsGenerator.new(drops_table, p_odds_multiplier)
 	
@@ -24,7 +24,8 @@ func spawn_drops(p_drop_rolls : int, p_odds_multiplier : float = 1.0):
 
 	for drop in drops_to_spawn:
 		var packed_scene: PackedScene = load(drop.drop_path)
-		scene_spawner.spawn(packed_scene)
+		return scene_spawner.spawn(packed_scene)
+	return null
 
 func _validate():
 	if drops_table == null:

@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://dminafrjjckj7"]
+
+[ext_resource type="AudioStream" uid="uid://ohf53t0i8dxc" path="res://Audio/Weapons/Laser Pistol.wav" id="1_pvryk"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_oouxp"]
+
+[resource]
+script = ExtResource("2_oouxp")
+limit = 5
+sound_type = 5
+destination_audio_bus = 4
+sound_volume = -20.0
+audio_stream = ExtResource("1_pvryk")
+sound_pitch = 1.0
+pitch_randomness = 0.0

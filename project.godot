@@ -37,16 +37,16 @@ GameManager="*res://Scenes/Manager/GameManager.tscn"
 SceneManager="*res://Scenes/Manager/SceneManager.tscn"
 PlayerStatsManager="*res://Scenes/Manager/PlayerStatsManager.tscn"
 Interface="*res://Scripts/Utils/Interface.gd"
-MusicManager="*res://Scenes/Manager/MusicManager.tscn"
+AudioManager="*res://Scenes/Manager/AudioManager.tscn"
 BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
-EffectsManager="res://Scripts/Managers/EffectsManager.gd"
+UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 
 [display]
 
 window/size/always_on_top=true
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 window/vsync/vsync_mode=3
 
@@ -56,7 +56,7 @@ project/assembly_name="Hashneer"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/item_drops/plugin.cfg", "res://addons/save_system/plugin.cfg", "res://addons/softbody2d/plugin.cfg")
+enabled=PackedStringArray("res://addons/gamedev_assistant/plugin.cfg", "res://addons/item_drops/plugin.cfg", "res://addons/save_system/plugin.cfg", "res://addons/softbody2d/plugin.cfg")
 
 [file_customization]
 
@@ -166,11 +166,13 @@ thrust={
 2d_physics/layer_3="Ignore Collisions"
 2d_physics/layer_4="Ground&Walls"
 2d_physics/layer_5="Environment"
-2d_physics/layer_6="Entities"
+2d_physics/layer_6="Enemies"
 2d_physics/layer_7="Player Ammo"
 2d_physics/layer_8="Player"
 2d_physics/layer_9="BlockCore"
 2d_physics/layer_10="PickUps"
+2d_physics/layer_11="Entities"
+2d_physics/layer_12="Enemy Ammo"
 
 [physics]
 
@@ -178,12 +180,20 @@ thrust={
 
 [rendering]
 
-textures/canvas_textures/default_texture_filter=0
+textures/canvas_textures/default_texture_filter=3
 textures/vram_compression/import_s3tc_bptc=true
 textures/vram_compression/import_etc2_astc=true
 textures/default_filters/use_nearest_mipmap_filter=true
+textures/default_filters/anisotropic_filtering_level=0
 viewport/hdr_2d=true
-anti_aliasing/quality/msaa_2d=1
+anti_aliasing/quality/msaa_2d=2
+textures/default_filters/texture_mipmap_bias=-0.5
+textures/decals/filter=2
+textures/light_projectors/filter=2
+environment/glow/upscale_mode.mobile=1
 environment/screen_space_reflection/roughness_quality=2
+environment/defaults/default_clear_color=Color(0, 0, 0, 1)
+viewport/transparent_background=true
 anti_aliasing/quality/screen_space_aa=1
 anti_aliasing/quality/use_taa=true
+2d/snap/snap_2d_transforms_to_pixel=true

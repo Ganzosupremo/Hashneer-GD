@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://bsj51dud0foww"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FractureBullet.gd" id="1_fp570"]
+[ext_resource type="Script" uid="uid://bvs4sqhexy8xh" path="res://Scripts/QuadrantTerrain/FractureBullet.gd" id="1_fp570"]
 [ext_resource type="PackedScene" uid="uid://vvdbfpgwq6m6" path="res://Scenes/Components/HitBoxComponent.tscn" id="2_70ux4"]
 [ext_resource type="PackedScene" uid="uid://d2n78e7hlfmp4" path="res://Scenes/Components/BulletTrailComponent.tscn" id="3_dhedh"]
 [ext_resource type="PackedScene" uid="uid://dyoejfjm6wxw2" path="res://Scenes/WeaponSystem/bullet_particles.tscn" id="4_avyfh"]
@@ -18,16 +18,18 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [node name="FractureBullet" type="RigidBody2D"]
+modulate = Color(1.5, 1.5, 1.5, 1)
 light_mask = 32
 visibility_layer = 32
 collision_layer = 64
-collision_mask = 304
+collision_mask = 2352
 gravity_scale = 0.0
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 1
 angular_velocity = 0.785398
 script = ExtResource("1_fp570")
+use_object_pool = true
 radius = 10.0
 speed = 500.0
 
@@ -39,6 +41,7 @@ light_mask = 0
 visibility_layer = 32
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+modulate = Color(1.5, 1.5, 1.5, 1)
 light_mask = 32
 visibility_layer = 32
 
@@ -59,13 +62,18 @@ visible = false
 top_level = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 32
+visibility_layer = 32
 occluder = SubResource("OccluderPolygon2D_drv38")
 occluder_light_mask = 32
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
+light_mask = 32
+visibility_layer = 32
 energy = 0.9
+range_item_cull_mask = 190
 shadow_enabled = true
-shadow_item_cull_mask = 162
+shadow_item_cull_mask = 190
 texture = SubResource("GradientTexture2D_v6nxv")
 texture_scale = 2.0
 

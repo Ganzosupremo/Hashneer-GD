@@ -2,7 +2,7 @@ extends Node2D
 
 var inflation_rate: float = 0.02 # 2% inflation, which is the lowest it can go.
 var inflation_interval: int = 2 # Inflation will increase on every halving. Halving happens every 21 blocks
-var total_inflation: float = 0.0 # The total in-game inflation since the beginning of times.
+var total_inflation: float = 1.0 # Accumulated inflation multiplier since the beginning of time.
 var fiat_currency_in_circulation: float = 0.0
 
 
@@ -17,9 +17,9 @@ func _ready() -> void:
 
 func _on_halving_ocurred(_new_subsidy: float) -> void:
 	inflation_rate = randf_range(0.02, 0.69)
-	var inflation_amount: float = fiat_currency_in_circulation * inflation_rate
-	fiat_currency_in_circulation += inflation_amount
-	total_inflation += inflation_rate
+	var inflation_factor: float = 1.0 + inflation_rate
+	fiat_currency_in_circulation *= inflation_factor
+	total_inflation *= inflation_factor
 
 func add_currency_in_circulation(new_coins) -> void:
 	fiat_currency_in_circulation += new_coins
@@ -27,12 +27,11 @@ func add_currency_in_circulation(new_coins) -> void:
 func get_currency_in_circulation() -> float:
 	return fiat_currency_in_circulation
 
-
+## Tries to add the amount to the wallet, theres a chance it will be denied
 func authorize_transaction(amount: float) -> bool:
 	fiat_currency_in_circulation += amount
 	var prob: float = _probability_from_amount(amount)
 	if randf() < prob:
-		print("Transaction denied")
 		return false
 	
 	BitcoinWallet.add_fiat(amount)
@@ -42,14 +41,16 @@ func get_total_inflation() -> float:
 	return total_inflation
 
 func get_fiat_subsidy() -> float:
-	var subsidy: float = randf_range(250.0, 2500.0) * GameManager.get_builder_args().fiat_drop_rate_factor
+	var subsidy: float = randf_range(250.0, 2500.0)
+	if GameManager.get_level_args() != null:
+		subsidy = randf_range(250.0, 2500.0) * GameManager.get_level_args().fiat_drop_rate_factor
 	fiat_currency_in_circulation += subsidy
 	return subsidy
 
 func _probability_from_amount(amount: float) -> float:
 	var log_amount = log(amount) / log(10)
-	log_amount = clamp(log_amount, 4.0, 7.0)
-	return (log_amount - 4.0) / 4.0
+	log_amount = clamp(log_amount, 5.0, 7.0)
+	return (log_amount - 5.0) / 5.0
 
 
 func save_data():
@@ -65,5 +66,5 @@ func load_data():
 	if !SaveSystem.has(FEDSaveName): return
 
 	var data: Dictionary = SaveSystem.get_var(FEDSaveName)
-	total_inflation = data["total_inflation"]
-	fiat_currency_in_circulation = data["fiat_currency_in_circulation"]
+	total_inflation = data.get("total_inflation", 1.0)
+	fiat_currency_in_circulation = data.get("fiat_currency_in_circulation", 0.0)

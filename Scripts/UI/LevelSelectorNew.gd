@@ -1,11 +1,9 @@
-class_name LevelSelectorMenu extends Control
+class_name LevelSelectorMenu extends CanvasLayer
 
 @export var scene_to_load: PackedScene
+@export var waves_game_mode: PackedScene
 
 @onready var level_name: AnimatedLabel = %LevelName
-@onready var level_size: AnimatedLabel = %LevelSize
-@onready var quadrants_health: AnimatedLabel = %QuadrantsHealth
-@onready var block_core_health: AnimatedLabel = %BlockCoreHealth
 
 @onready var previous_level_button: TweenableButton = %PreviousLevelButton
 @onready var next_level_button: TweenableButton = %NextLevelButton
@@ -16,12 +14,10 @@ func _ready() -> void:
 	self.hide()
 	_setup_buttons()
 
-
 func open() -> void:
 	_current_level_index = GameManager.levels_unlocked - 1
 	_current_level_index = clampi(_current_level_index, 0, GameManager.game_levels.size() - 1)
 	_update_level_info()
-	_update_button_states()
 	_update_builder_args(_current_level_index)
 	self.show()
 
@@ -49,9 +45,6 @@ func _on_previous_level_pressed() -> void:
 		_update_level_info()
 		_update_builder_args(_current_level_index)
 
-func _on_enter_game_pressed() -> void:
-	SceneManager.switch_scene_with_packed(scene_to_load)
-
 func _update_builder_args(index: int) -> void:
 	GameManager._set_level_index(index)
 	GameManager.select_builder_args(index)
@@ -59,15 +52,16 @@ func _update_builder_args(index: int) -> void:
 func _update_level_info() -> void:
 	if GameManager.game_levels.size() == 0: return
 	
-	var level: QuadrantBuilderArgs = GameManager.game_levels[_current_level_index]
+	var level: LevelBuilderArgs = GameManager.game_levels[_current_level_index]
 	
-	level_name.set_text("Level %d" % (level.level_index + 1))
-	level_size.set_text("Map Size: %dx%d" % [level.grid_size.x, level.grid_size.y])
-	quadrants_health.set_text("Block's Health: %d" % level.initial_health)
-	var block_cores_health = level.initial_health * 2.0
-	block_core_health.set_text("Block Core's Health: %d" % block_cores_health)
-
+	level_name.set_text("Level %d" % (level.level_index))
 	_update_button_states()
+
+func _on_enter_game_pressed() -> void:
+	SceneManager.switch_scene_with_packed(scene_to_load)
 
 func _on_exit_button_pressed() -> void:
 	self.hide()
+
+func _on_waves_game_mode_pressed() -> void:
+	SceneManager.switch_scene_with_packed(waves_game_mode)

@@ -1,12 +1,6 @@
 class_name CurrencyPickupResource
 extends Resource
-
-enum CURRENCY_TYPE{
-	NONE = 0,
-	FIAT = 1,
-	BTC = 2
-}
-
+# This resource represents a currency pickup in the game, which can be either fiat or bitcoin.
 @export var display_name: String
 @export var amount: float
-@export var currency_type: CURRENCY_TYPE = CURRENCY_TYPE.NONE
+@export var currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT

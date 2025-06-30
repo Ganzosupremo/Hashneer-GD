@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://c14e7myivksx8"]
+
+[ext_resource type="AudioStream" uid="uid://bjg8i1lvfpd2b" path="res://Audio/UI/19. Whoosh Swoosh.wav" id="1_bugbk"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_6wvoy"]
+
+[resource]
+script = ExtResource("2_6wvoy")
+limit = 5
+sound_type = 16
+destination_audio_bus = 2
+sound_volume = 0.0
+audio_stream = ExtResource("1_bugbk")
+sound_pitch = 1.0
+pitch_randomness = 0.0

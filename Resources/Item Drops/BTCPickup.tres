@@ -6,5 +6,5 @@
 script = ExtResource("1_pfbo4")
 display_name = "Bitcoin Pickup"
 amount = 0.0
-currency_type = 2
+currency_type = 1
 metadata/_custom_type_script = "uid://b55jdk3nyw100"

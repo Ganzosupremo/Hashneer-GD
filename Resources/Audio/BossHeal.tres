@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://xo74ypflhafb"]
+
+[ext_resource type="AudioStream" uid="uid://bbbjxgmvr5uxf" path="res://Audio/Enemies/EnemyHeal.wav" id="1_y2hpc"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_pjm4x"]
+
+[resource]
+script = ExtResource("2_pjm4x")
+limit = 5
+sound_type = 22
+destination_audio_bus = 2
+sound_volume = 0.0
+audio_stream = ExtResource("1_y2hpc")
+sound_pitch = 1.5
+pitch_randomness = 0.69
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

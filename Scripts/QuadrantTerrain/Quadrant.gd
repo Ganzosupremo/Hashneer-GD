@@ -8,13 +8,13 @@ var current_health: float= 0.0
 var initial_health: float = 0.0
 
 var default_quadrant_polygon: PackedVector2Array = []
-var builder_args: QuadrantBuilderArgs
+var builder_args: LevelBuilderArgs
 var damage_to_deal: float = 25.0
 
 
 func _ready() -> void:
 	_rng.randomize()
-	builder_args = GameManager.current_builder_args
+	builder_args = GameManager.current_level_args
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		

@@ -14,7 +14,7 @@ func _ready() -> void:
 func set_textes() -> void:
 	coins_lost.text = "Coins Lost: %.2f" % BitcoinNetwork.coins_lost
 	coins_on_player.text = "Coins in Wallet: %.2f" % BitcoinWallet.get_bitcoin_balance()
-	var left_to_mine: float = BitcoinNetwork.TOTAL_COINS - (BitcoinNetwork.coins_lost + BitcoinWallet.get_bitcoin_balance())
+	var left_to_mine: float = BitcoinNetwork.TOTAL_COINS - BitcoinNetwork.get_total_bitcoins_in_circulation()
 	coins_left.text = "Coins Left to Mine: %.2f" % left_to_mine
 
 func set_block_visualizers() -> void:

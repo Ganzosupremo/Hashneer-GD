@@ -10,4 +10,3 @@ signal item_picked(event : PickupEvent)
 
 ## Emitted when a Gatherable is gathered
 signal gathered(event : GatherEvent)
-

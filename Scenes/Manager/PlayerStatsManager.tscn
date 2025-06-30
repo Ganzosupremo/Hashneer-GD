@@ -1,14 +1,14 @@
 [gd_scene load_steps=6 format=3 uid="uid://osfk14435tmw"]
 
 [ext_resource type="Script" uid="uid://cbcavfaso5vrd" path="res://Scripts/Managers/PlayerStatsManager.gd" id="1_kg87y"]
-[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainSkillTreeEventBus.tres" id="2_kejm2"]
+[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="2_vbhka"]
 [ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/AWPSniper.tres" id="3_vbhka"]
 [ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/AK47.tres" id="4_wwrsy"]
 [ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Shotgun.tres" id="5_pwla2"]
 
 [node name="PlayerStatsManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_kg87y")
-skill_tree_event_bus = ExtResource("2_kejm2")
+progress_event_bus = ExtResource("2_vbhka")
 weapon_details_dictionary = {
 "AK47": ExtResource("4_wwrsy"),
 "Shotgun": ExtResource("5_pwla2"),

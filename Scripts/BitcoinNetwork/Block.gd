@@ -9,10 +9,11 @@ class_name BitcoinBlock extends Resource
 @export var block_subsidy: float = 0.0
 @export var mined: bool = false
 
-func _init(_height: int = 0, _timestamp: String = "", _data: String = ""):
+func _init(_height: int = 0, _timestamp: String = "", _data: String = "", _miner: String = ""):
 	height = _height
 	timestamp = _timestamp
 	data = _data
+	miner = _miner
 	block_hash = calculate_block_hash()
 	
 func calculate_block_hash() -> String:

@@ -1,12 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://fk52mrn5gvsy"]
+[gd_scene load_steps=2 format=3 uid="uid://fk52mrn5gvsy"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/PoolFracture.gd" id="1_wxj12"]
-[ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="2_yhqmj"]
+[ext_resource type="Script" uid="uid://qu7e4eb1ymfx" path="res://addons/polygon_fracture/PoolFracture.gd" id="1_wxj12"]
 
 [node name="PoolFracture" type="Node2D"]
 script = ExtResource("1_wxj12")
 placed_in_level = true
-instance_template = ExtResource("2_yhqmj")
 max_amount = 100
 
 [node name="Instances" type="Node2D" parent="."]

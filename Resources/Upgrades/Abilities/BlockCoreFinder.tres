@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://cbwgvq0rara7k"]
+
+[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_eqd04"]
+[ext_resource type="PackedScene" uid="uid://di5istg4hebxi" path="res://Scenes/Player/Abilities/BlockCoreFinder.tscn" id="1_xa1ty"]
+[ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="2_y0r12"]
+
+[sub_resource type="Resource" id="Resource_xa1ty"]
+script = ExtResource("2_y0r12")
+ability_type = 1
+ability_to_unlock = ExtResource("1_xa1ty")
+metadata/_custom_type_script = "uid://ukdtmxps3f8a"
+
+[resource]
+script = ExtResource("1_eqd04")
+feature_type = 2
+upgrade_name = "Block Core Finder"
+upgrade_description = "It shows you the way."
+upgrade_tier = 1
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+ability_data = SubResource("Resource_xa1ty")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 3e+06
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 100000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1

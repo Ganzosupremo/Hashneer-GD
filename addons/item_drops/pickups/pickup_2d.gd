@@ -3,7 +3,6 @@ extends Area2D
 ## Represents an object in a 2D scene that can be picked up by a PickupCollector2D, such as one attached to a player character. 
 ## It tracks a resource and its count to add to an inventory when collected.
 ## The pickup can be delayed from being collectible using a timer, during which it remains unmonitorable.
-##
 ## Make sure the pickup is either the root or a child of the root object so it can be located
 
 ## Emitted when the object is picked up by another node but before the pickup scene is removed from the 2D world.
@@ -24,7 +23,7 @@ signal picked_up(data: PickupEvent)
 ## Whether to automatically free the scene once picked up
 ## or simply set monitorable false instead and allow animations
 ## or other scripts to handle freeing the scene instead.
-@export var free_on_pickup := true
+@export var free_on_pickup: bool = true
 
 ## The sound to be played on pickup, played through the event since the pickup is freed before the sound finishes.
 @export var sound: AudioStream
@@ -46,7 +45,7 @@ func _ready() -> void:
 
 ## Takes the pickup item and removes the scene object.
 func take(taker: PickupsCollector2D) -> PickupEvent:
-	var event := PickupEvent.new(self, taker)
+	var event : PickupEvent = PickupEvent.new(self, taker)
 	picked_up.emit(event)
 	items_drop_bus.item_picked.emit(event)
 	

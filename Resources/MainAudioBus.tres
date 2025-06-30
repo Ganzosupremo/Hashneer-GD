@@ -1,47 +1,83 @@
-[gd_resource type="AudioBusLayout" load_steps=5 format=3 uid="uid://1ibwcs1mu46p"]
-
-[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_837o2"]
-resource_name = "Compressor"
-threshold = -21.0
-attack_us = 50.0
-sidechain = &"SFX"
-
-[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_fvo30"]
-resource_name = "Compressor"
-threshold = -15.0
+[gd_resource type="AudioBusLayout" load_steps=7 format=3 uid="uid://1ibwcs1mu46p"]
 
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_0w2f5"]
 resource_name = "Reverb"
-room_size = 0.25
-damping = 0.35
-spread = 0.5
+room_size = 0.15
+damping = 0.15
 hipass = 0.1
-dry = 0.8
-wet = 0.2
+wet = 0.3
 
 [sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_mpw00"]
 resource_name = "Compressor"
-threshold = -15.0
+threshold = -12.0
+gain = 4.0
+
+[sub_resource type="AudioEffectLowPassFilter" id="AudioEffectLowPassFilter_mpw00"]
+resource_name = "LowPassFilter"
+
+[sub_resource type="AudioEffectEQ21" id="AudioEffectEQ21_mpw00"]
+resource_name = "EQ21"
+band_db/22_hz = -60.0
+band_db/32_hz = -60.0
+band_db/44_hz = -60.0
+band_db/63_hz = -60.0
+band_db/1000_hz = -2.5
+band_db/1400_hz = -5.0
+band_db/2000_hz = -7.5
+band_db/2800_hz = -10.0
+band_db/4000_hz = -15.0
+band_db/5600_hz = -15.0
+band_db/8000_hz = -15.0
+band_db/11000_hz = -15.0
+band_db/16000_hz = -15.0
+band_db/22000_hz = -15.0
+
+[sub_resource type="AudioEffectLimiter" id="AudioEffectLimiter_mpw00"]
+resource_name = "Limiter"
+ceiling_db = -11.0
+
+[sub_resource type="AudioEffectCompressor" id="AudioEffectCompressor_h1jut"]
+resource_name = "Compressor"
+threshold = -10.0
+attack_us = 500.0
+release_ms = 300.0
+sidechain = &"SFX"
 
 [resource]
 bus/0/volume_db = 0.00282288
-bus/1/name = &"Music"
+bus/1/name = &"SFX"
 bus/1/solo = false
 bus/1/mute = false
 bus/1/bypass_fx = false
-bus/1/volume_db = -15.1981
+bus/1/volume_db = -0.130497
 bus/1/send = &"Master"
-bus/1/effect/0/effect = SubResource("AudioEffectCompressor_837o2")
+bus/1/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
 bus/1/effect/0/enabled = true
-bus/1/effect/1/effect = SubResource("AudioEffectCompressor_fvo30")
+bus/1/effect/1/effect = SubResource("AudioEffectCompressor_mpw00")
 bus/1/effect/1/enabled = true
-bus/2/name = &"SFX"
+bus/1/effect/2/effect = SubResource("AudioEffectLowPassFilter_mpw00")
+bus/1/effect/2/enabled = true
+bus/2/name = &"Player SFX"
 bus/2/solo = false
 bus/2/mute = false
 bus/2/bypass_fx = false
-bus/2/volume_db = -0.128275
-bus/2/send = &"Master"
-bus/2/effect/0/effect = SubResource("AudioEffectReverb_0w2f5")
-bus/2/effect/0/enabled = true
-bus/2/effect/1/effect = SubResource("AudioEffectCompressor_mpw00")
-bus/2/effect/1/enabled = true
+bus/2/volume_db = -0.130497
+bus/2/send = &"SFX"
+bus/3/name = &"Music"
+bus/3/solo = false
+bus/3/mute = false
+bus/3/bypass_fx = false
+bus/3/volume_db = -0.130497
+bus/3/send = &"Master"
+bus/3/effect/0/effect = SubResource("AudioEffectEQ21_mpw00")
+bus/3/effect/0/enabled = true
+bus/3/effect/1/effect = SubResource("AudioEffectLimiter_mpw00")
+bus/3/effect/1/enabled = true
+bus/3/effect/2/effect = SubResource("AudioEffectCompressor_h1jut")
+bus/3/effect/2/enabled = true
+bus/4/name = &"Weapons"
+bus/4/solo = false
+bus/4/mute = false
+bus/4/bypass_fx = false
+bus/4/volume_db = -0.130497
+bus/4/send = &"SFX"

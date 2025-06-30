@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhsf3uibxlt6l"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_pyqee"]
+[ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="2_al4en"]
+[ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="3_al4en"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_isfyj"]
+diffuse_texture = ExtResource("2_al4en")
+normal_texture = ExtResource("3_al4en")
+texture_repeat = 2
+
+[node name="SquareEnemy" instance=ExtResource("1_pyqee")]
+color_default = Color(1, 1, 1, 1)
+shape_area_percent = 0.1
+max_speed = 100.0
+polygon_shape = 1
+rectangle_size = Vector2(25, 25)
+
+[node name="FractureBodyHealthComponent" parent="." index="0"]
+advanced_regeneration = false
+regeneration_interval_range = Vector2(0, 0)
+regeneration_start_threshold = 0.0
+regeneration_amount = 0.0
+
+[node name="Polygon2D" parent="Shape3D" index="0"]
+texture = SubResource("CanvasTexture_isfyj")
+polygon = PackedVector2Array(-16, 56, -72, 56, -72, 0, -16, 0)
+uv = PackedVector2Array(0, 0, -72, 0, -24, -24, 56, -24)
+
+[node name="Line2D" parent="Shape3D" index="1"]
+default_color = Color(0, 0, 0, 1)

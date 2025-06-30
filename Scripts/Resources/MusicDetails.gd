@@ -6,4 +6,3 @@ class_name MusicDetails extends Resource
 @export var has_playlist: bool = false
 ## The playlist to play
 @export var playlist: AudioStreamPlaylist
-

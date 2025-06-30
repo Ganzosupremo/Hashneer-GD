@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://cktci4up4mih5" path="res://addons/softbody2d/softbody2d.gd" id="2_w71iv"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="3_y1ahn"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="4_neo3l"]
-[ext_resource type="AudioStream" uid="uid://cjekq0w84bbdd" path="res://Audio/Pickups/BitcoinPickup.wav" id="5_tm80k"]
+[ext_resource type="AudioStream" uid="uid://cjekq0w84bbdd" path="res://Audio/Pickups/FiatPickup.wav" id="5_tm80k"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="6_v2xuj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_iyhrl"]

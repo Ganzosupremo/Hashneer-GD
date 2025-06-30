@@ -2,15 +2,12 @@ class_name ActiveWeaponComponent extends Node2D
 
 signal weapon_setted(weapon: WeaponDetails)
 
-@onready var _sound_component: SoundEffectComponent = $ActiveWeaponSoundComponent
-
 var _current_weapon: WeaponDetails
 var _current_weapon_index: int = 0
 var _weapons_list: Array = []
 
 func set_weapon(weapon: WeaponDetails) -> void:
 	_current_weapon = weapon
-	_sound_component.set_sound(weapon.fire_sound)
 	add_weapon_to_list(weapon)
 	weapon_setted.emit(weapon)
 
@@ -46,10 +43,6 @@ func select_previous_weapon() -> void:
 		_current_weapon_index = _weapons_list.size()
 	
 	set_weapon_by_index(_current_weapon_index)
-
-
-func play_sound_on_fire() -> void:
-	_sound_component.play_sound()
 
 func get_current_ammo() -> AmmoDetails:
 	return _current_weapon.ammo_details
