@@ -119,7 +119,6 @@ func create_polygon_shape() -> PackedVector2Array:
 			return PackedVector2Array([])
 
 func _on_zero_health() -> void:
-	# await _hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
 	AudioManager.create_2d_audio_at_location(global_position, sound_effect_on_destroy.sound_type, sound_effect_on_destroy.destination_audio_bus)
 	destroyed = true
 
@@ -239,25 +238,25 @@ func get_bounding_square() -> Rect2:
 	
 	# Create square centered on polygon
 	var center = Vector2((min_x + max_x) / 2, (min_y + max_y) / 2)
-        var top_left = center - Vector2(size/2, size/2)
+	var top_left = center - Vector2(size/2, size/2)
 
-        return Rect2(top_left, Vector2(size, size))
+	return Rect2(top_left, Vector2(size, size))
 
 ## Returns the axis aligned bounding rectangle for the polygon
 func get_bounding_rect() -> Rect2:
-        var points = getPolygon()
-        var min_x = points[0].x
-        var max_x = points[0].x
-        var min_y = points[0].y
-        var max_y = points[0].y
+	var points = getPolygon()
+	var min_x = points[0].x
+	var max_x = points[0].x
+	var min_y = points[0].y
+	var max_y = points[0].y
 
-        for point in points:
-                min_x = min(min_x, point.x)
-                max_x = max(max_x, point.x)
-                min_y = min(min_y, point.y)
-                max_y = max(max_y, point.y)
+	for point in points:
+		min_x = min(min_x, point.x)
+		max_x = max(max_x, point.x)
+		min_y = min(min_y, point.y)
+		max_y = max(max_y, point.y)
 
-        return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x, max_y - min_y))
+	return Rect2(Vector2(min_x, min_y), Vector2(max_x - min_x, max_y - min_y))
 
 #endregion
 

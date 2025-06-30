@@ -7,7 +7,7 @@
 script = ExtResource("1_s5djg")
 limit = 4
 sound_type = 25
-destination_audio_bus = 0
+destination_audio_bus = 2
 sound_volume = 1.0
 audio_stream = ExtResource("1_3pyyo")
 sound_pitch = 1.0

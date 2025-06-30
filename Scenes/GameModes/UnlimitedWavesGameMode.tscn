@@ -42,6 +42,7 @@ script = ExtResource("2_obtmh")
 debug_name = ""
 quadrant_size = 200
 grid_size = Vector2(6, 6)
+map_shape = 0
 initial_health = 50.0
 fiat_drop_rate_factor = 1.0
 block_core_cuts_delaunay = 200
@@ -233,7 +234,6 @@ environment = ExtResource("2_b5yyy")
 
 [node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
 position = Vector2(566, 321)
-zoom = Vector2(0.95, 0.95)
 smooth_speed = 2.0
 max_distance = 25.0
 

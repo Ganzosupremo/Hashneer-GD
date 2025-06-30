@@ -88,9 +88,12 @@ enum PolygonShape {
 
 # Shapes for the overall map grid
 enum MapShape {
-        Square,
-        Circle,
-        Diamond
+	Square,
+	Circle,
+	Diamond,
+	Cross,
+	Ring,
+	LShape,
 }
 
 

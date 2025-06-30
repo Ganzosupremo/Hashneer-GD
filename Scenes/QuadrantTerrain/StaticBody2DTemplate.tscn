@@ -18,8 +18,8 @@
 [sub_resource type="Resource" id="Resource_0ewf5"]
 script = ExtResource("3_0mtpy")
 limit = 5
-sound_type = 0
-destination_audio_bus = 0
+sound_type = 24
+destination_audio_bus = 2
 sound_volume = 1.0
 audio_stream = ExtResource("2_rdcfh")
 sound_pitch = 1.0
@@ -28,8 +28,8 @@ pitch_randomness = 0.0
 [sub_resource type="Resource" id="Resource_u25mb"]
 script = ExtResource("3_0mtpy")
 limit = 5
-sound_type = 0
-destination_audio_bus = 0
+sound_type = 24
+destination_audio_bus = 2
 sound_volume = 1.0
 audio_stream = ExtResource("4_j1b78")
 sound_pitch = 1.0

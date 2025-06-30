@@ -326,7 +326,6 @@ position = Vector2(425, 0)
 
 [node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("24_thavx")]
 position = Vector2(302, 296)
-zoom = Vector2(1.75, 1.75)
 limit_left = -13500
 limit_top = -11000
 limit_right = 13500

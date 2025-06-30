@@ -13,6 +13,12 @@ signal quadrant_hitted(fiat_gained: float)
 @export var grid_size: Vector2i = Vector2i(16, 16)
 @export var fracture_body_color: Color
 
+@export_group("Gravity Settings")
+@export var enable_center_gravity: bool = true
+@export var gravity_strength: float = 600.0
+@export var gravity_falloff: float = 2.0  # Exponent for gravity falloff
+
+
 #endregion
 
 @onready var player: PlayerController = %Player
@@ -42,7 +48,6 @@ var _quadrant_positions: Array = []
 #region Private Methods
 
 func _ready() -> void:
-	# _calculate_map_bounds()
 	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
 	AudioManager.change_music_clip(music)
@@ -51,87 +56,43 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not enable_center_gravity: return
 
-	## TODO - Fix gravity calculation
 	if player and is_instance_valid(player):
 		var gravity_force = _calculate_gravity_force(player.global_position)
 		player.apply_gravity(gravity_force)
 
 func _calculate_gravity_force(target_position: Vector2) -> Vector2:
-    var direction = (_grid_center - target_position).normalized()
-    var distance = target_position.distance_to(_grid_center)
-    if distance < 0.001:
-        return Vector2.ZERO
-    var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
+	var direction = (_grid_center - target_position).normalized()
+	var distance = target_position.distance_to(_grid_center)
+	if distance < 0.001:
+		return Vector2.ZERO
+	var force_magnitude = gravity_strength / pow(distance, gravity_falloff)  # Simplified falloff
 
-    return direction * force_magnitude
-
-
-func _apply_gravity_to_objects(body1: Node2D, body2: Node2D, delta: float) -> void:
-	var force_magnitude = pow(body2.global_position.distance_to(body1.global_position), gravity_falloff)
-	
-	var force = (body2.global_position\
-	 - body1.global_position).normalized()\
-	  * gravity_strength * body1.mass * body2.mass\
-	   / force_magnitude
-
-	body1.apply_central_force(force * delta)
-
-func _apply_gravity_to_object(object: Node2D, object2: Node2D, _delta: float) -> void:
-	if not object or not is_instance_valid(object):
-		return
-	
-	var direction: Vector2 = object2.global_position - object.global_position
-	var distance: float = direction.length()
-
-	# Prevent extreme forces when very close to center
-	if distance < 10: return 
-
-	var force_magnitude: float = pow(distance, gravity_falloff)
-	
-	var force = (object2.global_position\
-	 - object.global_position).normalized()\
-	  * gravity_strength * object.mass * object2.mass\
-	   / force_magnitude
-	
-	# Debug the calculation components
-	print("Distance: ", distance, " Force magnitude: ", force_magnitude)
-	
-	# Apply gravity differently based on the object's type
-	if object is RigidBody2D:
-		object.apply_central_force(force)
-	elif object is PlayerController:
-		object.apply_central_force(force * _delta)
+	return direction * force_magnitude
 
 func _calculate_map_bounds() -> void:
-        if _quadrant_positions.is_empty():
-                _map_bounds = Rect2(Vector2.ZERO, Vector2.ZERO)
-                return
+	if _quadrant_positions.is_empty():
+		_map_bounds = Rect2(Vector2.ZERO, Vector2.ZERO)
+		return
 
-        var min_x = INF
-        var max_x = -INF
-        var min_y = INF
-        var max_y = -INF
-        for pos in _quadrant_positions:
-                min_x = min(min_x, pos.x)
-                max_x = max(max_x, pos.x + quadrant_size.x)
-                min_y = min(min_y, pos.y)
-                max_y = max(max_y, pos.y + quadrant_size.y)
+	var min_x = INF
+	var max_x = -INF
+	var min_y = INF
+	var max_y = -INF
+	for pos in _quadrant_positions:
+		min_x = min(min_x, pos.x)
+		max_x = max(max_x, pos.x + quadrant_size.x)
+		min_y = min(min_y, pos.y)
+		max_y = max(max_y, pos.y + quadrant_size.y)
 
-        var level_width: float = max_x - min_x
-        var level_height: float = max_y - min_y
-        var buffer: float = max(level_width, level_height) * 0.5
-        _map_bounds = Rect2(
-                Vector2(min_x - buffer, min_y - buffer),
-                Vector2(level_width + buffer * 2, level_height + buffer * 2)
-        )
-
-        _create_boundary_walls()
-
-func _calculate_grid_center() -> void:
-	_grid_center = Vector2(
-		grid_size.x * quadrant_size.x / 2.0,
-		grid_size.y * quadrant_size.y / 2.0
+	var level_width: float = max_x - min_x
+	var level_height: float = max_y - min_y
+	var buffer: float = max(level_width, level_height) * 0.5
+	_map_bounds = Rect2(
+		Vector2(min_x - buffer, min_y - buffer),
+		Vector2(level_width + buffer * 2, level_height + buffer * 2)
 	)
+
+	_create_boundary_walls()
 
 func _create_boundary_walls() -> void:
 	# Wall thickness
@@ -139,7 +100,7 @@ func _create_boundary_walls() -> void:
 	var horizontal_offset: float = 1.2
 
 	# Calculate map center
-	var center: Vector2 = Vector2(
+	var vcenter: Vector2 = Vector2(
 		_map_bounds.position.x + _map_bounds.size.x/2,
 		_map_bounds.position.y + _map_bounds.size.y/2
 	)
@@ -151,22 +112,22 @@ func _create_boundary_walls() -> void:
 		# Top wall (adjusted width)
 		{
 			"size": Vector2(horizontal_wall_width, thickness),
-			"position": center + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
+			"position": vcenter + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
 		},
 		# Right wall
 		{
 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
-			"position": center + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
+			"position": vcenter + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
 		},
 		# Bottom wall (adjusted width)
 		{
 			"size": Vector2(horizontal_wall_width, thickness),
-			"position": center + Vector2(0, _map_bounds.size.y/2 + thickness/2)
+			"position": vcenter + Vector2(0, _map_bounds.size.y/2 + thickness/2)
 		},
 		# Left wall
 		{
 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
-			"position": center + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
+			"position": vcenter + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
 		}
 	]
 
@@ -185,12 +146,12 @@ func _create_boundary_walls() -> void:
 
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
-        var builder_data: LevelBuilderArgs = GameManager.current_level_args
-        builder_args = builder_data
+	var builder_data: LevelBuilderArgs = GameManager.current_level_args
+	builder_args = builder_data
 
-        quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
-        grid_size = builder_data.grid_size
-        map_shape = builder_data.map_shape
+	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
+	grid_size = builder_data.grid_size
+	map_shape = builder_data.map_shape
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -203,9 +164,9 @@ func _init_builder() -> void:
 	block_nodes.modulate = _cur_fracture_color
 	_rigid_bodies_parent.modulate = _cur_fracture_color
 
-        _calculate_grid_center()
-        _initialize_grid_of_blocks(builder_args.initial_health)
-        _set_player_position()
+	_calculate_grid_center()
+	_initialize_grid_of_blocks(builder_args.initial_health)
+	_set_player_position()
 
 func _calculate_grid_center() -> void:
 	_grid_center = Vector2(
@@ -213,67 +174,6 @@ func _calculate_grid_center() -> void:
 		grid_size.y * quadrant_size.y / 2.0
 	)
 	center.global_position = _grid_center
-
-
-# func _calculate_map_bounds() -> void:
-# 	var level_width: float = quadrant_size.x * grid_size.x
-# 	var level_height: float = quadrant_size.y * grid_size.y
-# 	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
-# 	_map_bounds = Rect2(
-# 		Vector2(-buffer, -buffer),
-# 		Vector2(level_width + buffer * 2, level_height + buffer * 2)
-# 	)
-
-# 	_create_boundary_walls()
-
-# func _create_boundary_walls() -> void:
-# 	# Wall thickness
-# 	var thickness: float = 75.0
-# 	var horizontal_offset: float = 1.2
-
-# 	# Calculate map center
-# 	var _center: Vector2 = Vector2(
-# 		_map_bounds.position.x + _map_bounds.size.x/2,
-# 		_map_bounds.position.y + _map_bounds.size.y/2
-# 	)
-
-# 	## Calculate adjusted width for top/bottom walls
-# 	var horizontal_wall_width: float = _map_bounds.size.x * horizontal_offset + thickness * 2
-	
-# 	var wall_configs: Array = [
-# 		# Top wall (adjusted width)
-# 		{
-# 			"size": Vector2(horizontal_wall_width, thickness),
-# 			"position": _center + Vector2(0, -_map_bounds.size.y/2 - thickness/2)
-# 		},
-# 		# Right wall
-# 		{
-# 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
-# 			"position": _center + Vector2(_map_bounds.size.x/2 + thickness/2, 0) * horizontal_offset
-# 		},
-# 		# Bottom wall (adjusted width)
-# 		{
-# 			"size": Vector2(horizontal_wall_width, thickness),
-# 			"position": _center + Vector2(0, _map_bounds.size.y/2 + thickness/2)
-# 		},
-# 		# Left wall
-# 		{
-# 			"size": Vector2(thickness, _map_bounds.size.y + thickness * 2),
-# 			"position": _center + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
-# 		}
-# 	]
-
-# 	for config in wall_configs:
-# 		var wall: StaticBody2D = StaticBody2D.new()
-# 		var collision_shape: CollisionShape2D = CollisionShape2D.new()
-# 		var rect_shape: RectangleShape2D = RectangleShape2D.new()
-
-# 		rect_shape.size = config.size
-# 		collision_shape.shape = rect_shape
-# 		wall.position = config.position
-
-# 		wall.add_child(collision_shape)
-# 		map_boundaries.add_child(wall)
 
 #endregion
 
@@ -312,35 +212,50 @@ func fracture_block_core(bullet_damage: float, miner: String = "Player", instaki
 	set_deferred("_fracture_disabled", false)
 
 func _is_cell_in_shape(cell: Vector2i) -> bool:
-        var cell_center = (cell.to_vector2() + Vector2(0.5, 0.5)) * quadrant_size
-        match map_shape:
-                Constants.MapShape.Circle:
-                        var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
-                        return cell_center.distance_to(_grid_center) <= radius
-                Constants.MapShape.Diamond:
-                        var rx = grid_size.x * quadrant_size.x / 2.0
-                        var ry = grid_size.y * quadrant_size.y / 2.0
-                        return abs(cell_center.x - _grid_center.x) / rx + abs(cell_center.y - _grid_center.y) / ry <= 1.0
-                _:
-                        return true
+	var cell_center = (Vector2(cell) + Vector2(0.5, 0.5)) * Vector2(quadrant_size)
+	match map_shape:
+		Constants.MapShape.Circle:
+			var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+			return cell_center.distance_to(_grid_center) <= radius
+		Constants.MapShape.Diamond:
+			var rx = grid_size.x * quadrant_size.x / 2.0
+			var ry = grid_size.y * quadrant_size.y / 2.0
+			return abs(cell_center.x - _grid_center.x) / rx + abs(cell_center.y - _grid_center.y) / ry <= 1.0
+		Constants.MapShape.Cross:
+			var mid_x = grid_size.x / 2.0
+			var mid_y = grid_size.y / 2.0
+			var thickness = max(1, int(min(grid_size.x, grid_size.y) * 0.25))
+			return abs(cell.x + 0.5 - mid_x) <= thickness or abs(cell.y + 0.5 - mid_y) <= thickness
+		Constants.MapShape.Ring:
+			var radius_outer = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+			var radius_inner = radius_outer * 0.5
+			var distance = cell_center.distance_to(_grid_center)
+			return distance <= radius_outer and distance >= radius_inner
+		Constants.MapShape.LShape:
+			var thickness = max(1, int(min(grid_size.x, grid_size.y) * 0.3))
+			return cell.x < thickness or cell.y >= grid_size.y - thickness
+		_:
+			return true
 
 func _initialize_grid_of_blocks(initial_health: float) -> void:
-        _quadrant_positions.clear()
-        for i in range(grid_size.x):
-                for j in range(grid_size.y):
-                        var cell := Vector2i(i, j)
-                        if not _is_cell_in_shape(cell):
-                                continue
-                        var block: FracturableStaticBody2D = staticbody_template.instantiate()
-                        block_nodes.add_child(block)
-                        block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
-                        block.placed_in_level = true
-                        var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-                        block.position = pos
-                        _quadrant_positions.append(pos)
-                        block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
-        _calculate_map_bounds()
-        _initialize_block_core()
+	_quadrant_positions.clear()
+	for i in range(grid_size.x):
+		for j in range(grid_size.y):
+			var cell: Vector2i = Vector2i(i, j)
+			if not _is_cell_in_shape(cell):
+				continue
+			
+			var block: FracturableStaticBody2D = staticbody_template.instantiate()
+			block_nodes.add_child(block)
+			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
+			block.placed_in_level = true
+			var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
+			block.position = pos
+			_quadrant_positions.append(pos)
+			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
+	
+	_calculate_map_bounds()
+	_initialize_block_core()
 
 func _set_player_position() -> void:
 	## Set the player position to a random position within the grid of blocks with a little offset
@@ -373,38 +288,51 @@ func _set_player_position() -> void:
 	player.global_position = spawn_point
 
 func _initialize_block_core():
-        var bounds: Rect2 = block_core.get_bounding_square()
-        var core_size: float = bounds.size.x
+	var bounds: Rect2 = block_core.get_bounding_square()
+	var core_size: float = bounds.size.x
 
-        var padding: float = core_size * 0.5
-        block_core.global_position = _random_position_within_shape(padding)
-        block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
-        block_core.set_hit_sound_effect(builder_args.hit_sound, false)
+	var padding: float = core_size * 0.5
+	block_core.global_position = _random_position_within_shape(padding)
+	block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
+	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _point_inside_shape(point: Vector2) -> bool:
-        match map_shape:
-                Constants.MapShape.Circle:
-                        var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
-                        return point.distance_to(_grid_center) <= radius
-                Constants.MapShape.Diamond:
-                        var rx = grid_size.x * quadrant_size.x / 2.0
-                        var ry = grid_size.y * quadrant_size.y / 2.0
-                        return abs(point.x - _grid_center.x) / rx + abs(point.y - _grid_center.y) / ry <= 1.0
-                _:
-                        return Rect2(Vector2.ZERO, quadrant_size * grid_size).has_point(point)
+	match map_shape:
+		Constants.MapShape.Circle:
+			var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+			return point.distance_to(_grid_center) <= radius
+		Constants.MapShape.Diamond:
+			var rx = grid_size.x * quadrant_size.x / 2.0
+			var ry = grid_size.y * quadrant_size.y / 2.0
+			return abs(point.x - _grid_center.x) / rx + abs(point.y - _grid_center.y) / ry <= 1.0
+		Constants.MapShape.Cross:
+			var mid_x = grid_size.x * quadrant_size.x / 2.0
+			var mid_y = grid_size.y * quadrant_size.y / 2.0
+			var thickness = max(quadrant_size.x, quadrant_size.y) * min(grid_size.x, grid_size.y) * 0.1
+			return abs(point.x - mid_x) <= thickness or abs(point.y - mid_y) <= thickness
+		Constants.MapShape.Ring:
+			var radius_outer = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+			var radius_inner = radius_outer * 0.5
+			var d = point.distance_to(_grid_center)
+			return d <= radius_outer and d >= radius_inner
+		Constants.MapShape.LShape:
+			var thickness = max(quadrant_size.x, quadrant_size.y) * min(grid_size.x, grid_size.y) * 0.3
+			return point.x <= thickness or point.y >= grid_size.y * quadrant_size.y - thickness
+		_:
+			return Rect2(Vector2.ZERO, quadrant_size * grid_size).has_point(point)
 
 func _random_position_within_shape(padding: float) -> Vector2:
-        var min_pos: Vector2 = Vector2(padding, padding)
-        var max_pos: Vector2 = quadrant_size * grid_size - Vector2(padding, padding)
-        var attempts := 0
-        while attempts < 50:
-                var random_x: float = _rng.randf_range(min_pos.x, max_pos.x)
-                var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
-                var p = Vector2(random_x, random_y)
-                if _point_inside_shape(p):
-                        return p
-                attempts += 1
-        return _grid_center
+	var min_pos: Vector2 = Vector2(padding, padding)
+	var max_pos: Vector2 = Vector2(quadrant_size) * Vector2(grid_size) - Vector2(padding, padding)
+	var attempts: int = 0
+	while attempts < 50:
+		var random_x: float = _rng.randf_range(min_pos.x, max_pos.x)
+		var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
+		var p = Vector2(random_x, random_y)
+		if _point_inside_shape(p):
+			return p
+		attempts += 1
+	return _grid_center
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
 	_spawn_cut_visualizers(cut_pos, cut_shape, fade_speed)

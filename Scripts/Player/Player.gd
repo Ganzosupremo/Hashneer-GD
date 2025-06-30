@@ -88,8 +88,6 @@ func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
 func damage(_damage: float) -> void:
-	# _sound_effect_component.set_sound(sound_on_hurt)
-	# _sound_effect_component.play_sound()
 	AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 	animation_player.play("hit-flash")
 	get_health_node().take_damage(_damage)
@@ -123,13 +121,11 @@ func move(delta: float) -> void:
 			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
 		else:
 			velocity = Vector2.ZERO
-			# movement_sound_effect_component.stop_sound()
 	else:
 		# Calculate movement velocity based on input
 		velocity += (input * Constants.Player_Acceleration * delta)
 		velocity = velocity.limit_length(Constants.Player_Max_Speed)
 		AudioManager.create_2d_audio_at_location_with_persistent_player(global_position, move_sound_effect.sound_type, move_sound_effect.destination_audio_bus)
-		# movement_sound_effect_component.play_sound()
 	move_and_slide()
 
 func switch_weapon() -> void:
