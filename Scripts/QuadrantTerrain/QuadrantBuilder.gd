@@ -35,6 +35,8 @@ var _cur_fracture_color: Color = fracture_body_color
 var builder_args: LevelBuilderArgs
 var _map_bounds: Rect2
 var _grid_center: Vector2
+var map_shape: Constants.MapShape = Constants.MapShape.Square
+var _quadrant_positions: Array = []
 
 
 #region Private Methods
@@ -101,15 +103,29 @@ func _apply_gravity_to_object(object: Node2D, object2: Node2D, _delta: float) ->
 		object.apply_central_force(force * _delta)
 
 func _calculate_map_bounds() -> void:
-	var level_width: float = quadrant_size.x * grid_size.x
-	var level_height: float = quadrant_size.y * grid_size.y
-	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
-	_map_bounds = Rect2(
-		Vector2(-buffer, -buffer),
-		Vector2(level_width + buffer * 2, level_height + buffer * 2)
-	)
+        if _quadrant_positions.is_empty():
+                _map_bounds = Rect2(Vector2.ZERO, Vector2.ZERO)
+                return
 
-	_create_boundary_walls()
+        var min_x = INF
+        var max_x = -INF
+        var min_y = INF
+        var max_y = -INF
+        for pos in _quadrant_positions:
+                min_x = min(min_x, pos.x)
+                max_x = max(max_x, pos.x + quadrant_size.x)
+                min_y = min(min_y, pos.y)
+                max_y = max(max_y, pos.y + quadrant_size.y)
+
+        var level_width: float = max_x - min_x
+        var level_height: float = max_y - min_y
+        var buffer: float = max(level_width, level_height) * 0.5
+        _map_bounds = Rect2(
+                Vector2(min_x - buffer, min_y - buffer),
+                Vector2(level_width + buffer * 2, level_height + buffer * 2)
+        )
+
+        _create_boundary_walls()
 
 func _calculate_grid_center() -> void:
 	_grid_center = Vector2(
@@ -169,11 +185,12 @@ func _create_boundary_walls() -> void:
 
 ## Initializes the builder with the given arguments.
 func _init_builder() -> void:
-	var builder_data: LevelBuilderArgs = GameManager.current_level_args
-	builder_args = builder_data
-	
-	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
-	grid_size = builder_data.grid_size
+        var builder_data: LevelBuilderArgs = GameManager.current_level_args
+        builder_args = builder_data
+
+        quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
+        grid_size = builder_data.grid_size
+        map_shape = builder_data.map_shape
 	
 	polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
@@ -186,9 +203,9 @@ func _init_builder() -> void:
 	block_nodes.modulate = _cur_fracture_color
 	_rigid_bodies_parent.modulate = _cur_fracture_color
 
-	_calculate_grid_center()
-	_set_player_position()
-	_initialize_grid_of_blocks(builder_args.initial_health)
+        _calculate_grid_center()
+        _initialize_grid_of_blocks(builder_args.initial_health)
+        _set_player_position()
 
 func _calculate_grid_center() -> void:
 	_grid_center = Vector2(
@@ -294,16 +311,36 @@ func fracture_block_core(bullet_damage: float, miner: String = "Player", instaki
 	
 	set_deferred("_fracture_disabled", false)
 
+func _is_cell_in_shape(cell: Vector2i) -> bool:
+        var cell_center = (cell.to_vector2() + Vector2(0.5, 0.5)) * quadrant_size
+        match map_shape:
+                Constants.MapShape.Circle:
+                        var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+                        return cell_center.distance_to(_grid_center) <= radius
+                Constants.MapShape.Diamond:
+                        var rx = grid_size.x * quadrant_size.x / 2.0
+                        var ry = grid_size.y * quadrant_size.y / 2.0
+                        return abs(cell_center.x - _grid_center.x) / rx + abs(cell_center.y - _grid_center.y) / ry <= 1.0
+                _:
+                        return true
+
 func _initialize_grid_of_blocks(initial_health: float) -> void:
-	for i in range(grid_size.x):
-		for j in range(grid_size.y):
-			var block: FracturableStaticBody2D = staticbody_template.instantiate()
-			block_nodes.add_child(block)
-			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
-			block.placed_in_level = true
-			block.position = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
-	_initialize_block_core()
+        _quadrant_positions.clear()
+        for i in range(grid_size.x):
+                for j in range(grid_size.y):
+                        var cell := Vector2i(i, j)
+                        if not _is_cell_in_shape(cell):
+                                continue
+                        var block: FracturableStaticBody2D = staticbody_template.instantiate()
+                        block_nodes.add_child(block)
+                        block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
+                        block.placed_in_level = true
+                        var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
+                        block.position = pos
+                        _quadrant_positions.append(pos)
+                        block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
+        _calculate_map_bounds()
+        _initialize_block_core()
 
 func _set_player_position() -> void:
 	## Set the player position to a random position within the grid of blocks with a little offset
@@ -336,19 +373,38 @@ func _set_player_position() -> void:
 	player.global_position = spawn_point
 
 func _initialize_block_core():
-	var bounds: Rect2 = block_core.get_bounding_square()
-	var core_size: float = bounds.size.x
+        var bounds: Rect2 = block_core.get_bounding_square()
+        var core_size: float = bounds.size.x
 
-	var padding: float = core_size * 0.5
-	var min_pos: Vector2 = Vector2(padding, padding)
-	var max_pos: Vector2 = quadrant_size * grid_size - Vector2i(padding, padding)
+        var padding: float = core_size * 0.5
+        block_core.global_position = _random_position_within_shape(padding)
+        block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
+        block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
-	var random_x: float = _rng.randf_range(min_pos.x, max_pos.x)
-	var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
+func _point_inside_shape(point: Vector2) -> bool:
+        match map_shape:
+                Constants.MapShape.Circle:
+                        var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
+                        return point.distance_to(_grid_center) <= radius
+                Constants.MapShape.Diamond:
+                        var rx = grid_size.x * quadrant_size.x / 2.0
+                        var ry = grid_size.y * quadrant_size.y / 2.0
+                        return abs(point.x - _grid_center.x) / rx + abs(point.y - _grid_center.y) / ry <= 1.0
+                _:
+                        return Rect2(Vector2.ZERO, quadrant_size * grid_size).has_point(point)
 
-	block_core.global_position = Vector2(random_x, random_y)
-	block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
-	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
+func _random_position_within_shape(padding: float) -> Vector2:
+        var min_pos: Vector2 = Vector2(padding, padding)
+        var max_pos: Vector2 = quadrant_size * grid_size - Vector2(padding, padding)
+        var attempts := 0
+        while attempts < 50:
+                var random_x: float = _rng.randf_range(min_pos.x, max_pos.x)
+                var random_y: float = _rng.randf_range(min_pos.y, max_pos.y)
+                var p = Vector2(random_x, random_y)
+                if _point_inside_shape(p):
+                        return p
+                attempts += 1
+        return _grid_center
 
 func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Array, cut_rot : float, fade_speed : float = 2.0) -> void:
 	_spawn_cut_visualizers(cut_pos, cut_shape, fade_speed)

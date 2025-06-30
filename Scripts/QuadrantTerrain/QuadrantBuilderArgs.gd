@@ -8,6 +8,8 @@ class_name LevelBuilderArgs
 @export var quadrant_size: int = 200
 ## The size of the grid in quadrants
 @export var grid_size: Vector2 = Vector2(6, 6)
+## Shape of the map grid
+@export var map_shape: Constants.MapShape = Constants.MapShape.Square
 ## The texture used to draw the quadrants
 @export var quadrant_texture: Texture2D
 ## The texture used to draw the quadrants when they are fractured

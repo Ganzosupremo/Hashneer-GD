@@ -78,12 +78,19 @@ enum WeaponNames {
 	CLAYMORE 
 }
 
-enum PolygonShape { 
-	Circular, 
-	Rectangular, 
-	Beam, 
-	SuperEllipse, 
-	SuperShape
+enum PolygonShape {
+        Circular,
+        Rectangular,
+        Beam,
+        SuperEllipse,
+        SuperShape
+}
+
+# Shapes for the overall map grid
+enum MapShape {
+        Square,
+        Circle,
+        Diamond
 }
 
 
