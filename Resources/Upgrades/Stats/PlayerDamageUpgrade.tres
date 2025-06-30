@@ -5,7 +5,7 @@
 [resource]
 resource_name = "DamageB1SkillNodeData"
 script = ExtResource("1_a8bi5")
-feature_type = 0
+feature_type = 3
 upgrade_name = ""
 upgrade_description = ""
 upgrade_tier = 0

@@ -13,11 +13,11 @@ signal quadrant_hitted(fiat_gained: float)
 @export var grid_size: Vector2i = Vector2i(16, 16)
 @export var fracture_body_color: Color
 
+
 @export_group("Gravity Settings")
 @export var enable_center_gravity: bool = true
 @export var gravity_strength: float = 600.0
 @export var gravity_falloff: float = 2.0  # Exponent for gravity falloff
-
 
 #endregion
 
@@ -53,7 +53,7 @@ func _ready() -> void:
 	AudioManager.change_music_clip(music)
 	_init_builder()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if not enable_center_gravity: return
 
 	if player and is_instance_valid(player):
@@ -87,6 +87,9 @@ func _calculate_map_bounds() -> void:
 	var level_width: float = max_x - min_x
 	var level_height: float = max_y - min_y
 	var buffer: float = max(level_width, level_height) * 0.5
+	var level_width: float = quadrant_size.x * grid_size.x
+	var level_height: float = quadrant_size.y * grid_size.y
+	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
 	_map_bounds = Rect2(
 		Vector2(min_x - buffer, min_y - buffer),
 		Vector2(level_width + buffer * 2, level_height + buffer * 2)
