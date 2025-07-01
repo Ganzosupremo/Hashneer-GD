@@ -91,11 +91,15 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		destroyed = true
 		onBlockDestroyed.emit()
 
-		_slowdown_timer.start(1.0)
-		_block_core_particles.emitting = false
-		Engine.time_scale = 0.21
+                _slowdown_timer.start(1.0)
+                _block_core_particles.emitting = false
+                Engine.time_scale = 0.21
+                if GameManager.vfx_manager:
+                        GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.EXPLOSION, global_transform)
+                        GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.DEBRIS, global_transform)
+                        GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SCREEN_FLASH, Transform2D.IDENTITY, 0.15)
 
-		_destroy_block_core(other_body, cuts, min_area)
+                _destroy_block_core(other_body, cuts, min_area)
 
 		random_drops.spawn_drops(1)
 

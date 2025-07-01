@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="7_lbc0e"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="9_1f4k2"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="9_qgubg"]
+[ext_resource type="PackedScene" uid="uid://vfxmanager" path="res://Scenes/VFX/VFXManager.tscn" id="1_vfxman"]
 
 [sub_resource type="Resource" id="Resource_1wrq4"]
 script = ExtResource("6_1wrq4")
@@ -564,3 +565,4 @@ script = ExtResource("1_t86oc")
 player_details = ExtResource("2_vk5qk")
 main_event_bus = ExtResource("4_4lapq")
 game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8"), SubResource("Resource_o0qoy")])
+[node name="VFXManager" parent="." instance=ExtResource("1_vfxman")]

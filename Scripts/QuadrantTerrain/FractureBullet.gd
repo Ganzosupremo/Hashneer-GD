@@ -25,11 +25,14 @@ func _ready() -> void:
 		Despawn.connect(despawn)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	if state.get_contact_count() <= 0: return
-	var damage_to_deal = ammo_details.bullet_damage_multiplied
+        if state.get_contact_count() <= 0: return
+        var damage_to_deal = ammo_details.bullet_damage_multiplied
 
-	var body = state.get_contact_collider_object(0)
-	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
+        var body = state.get_contact_collider_object(0)
+        var hit_pos: Vector2 = state.get_contact_collider_position(0)
+        if GameManager.vfx_manager:
+                GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(0, hit_pos))
+        if body is FracturableStaticBody2D and body is not BlockCore and q_b:
 		var pos : Vector2 = state.get_contact_collider_position(0)
 		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
 		call_deferred("destroy")
