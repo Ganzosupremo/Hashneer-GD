@@ -103,22 +103,22 @@ func _ready() -> void:
 #region Public API
 
 func lock() -> void:
-		hide()
-		_set_disabled_state(true)
-		is_unlocked = false
-		_update_skill_status_label("LOCKED")
-		_set_modulate_color(Color.GRAY)
-		_update_node_line_points()
-		_update_node_state()
+	hide()
+	_set_disabled_state(true)
+	is_unlocked = false
+	_update_skill_status_label("LOCKED")
+	_set_modulate_color(Color.GRAY)
+	_update_node_line_points()
+	_update_node_state()
 
 func unlock() -> void:
-		show()
-		_set_disabled_state(false)
-		is_unlocked = true
-		_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]))
-		_set_modulate_color(Color.WHITE)
-		_update_node_line_points()
-		_update_node_state()
+	show()
+	_set_disabled_state(false)
+	is_unlocked = true
+	_update_skill_status_label("{0}/{1}".format([skillnode_data.upgrade_level, skillnode_data.upgrade_max_level]))
+	_set_modulate_color(Color.WHITE)
+	_update_node_line_points()
+	_update_node_state()
 
 func is_node_unlocked() -> bool:
 	return is_unlocked
@@ -189,6 +189,7 @@ func _update_node_state() -> void:
 		node_state = NodeState.LOCKED
 	elif is_maxed_out or skillnode_data.upgrade_level >= skillnode_data.upgrade_max_level:
 		node_state = NodeState.MAXED_OUT
+		is_maxed_out = true
 	elif UpgradeService.can_afford(skillnode_data):
 		node_state = NodeState.CAN_AFFORD
 	else:
@@ -270,13 +271,13 @@ func _on_button_up() -> void:
 	sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_upgrade_maxed() -> void:
-				show()
-				is_maxed_out = true
-				_update_skill_status_label("Maxed")
-				_set_disabled_state(true)
-				_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
-				_unlock_next_tier()
-				_update_node_state()
+	show()
+	is_maxed_out = true
+	_update_skill_status_label("Maxed")
+	_set_disabled_state(true)
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
+	_unlock_next_tier()
+	_update_node_state()
 
 func _unlock_next_tier() -> void:
 	for node in next_tier_nodes:

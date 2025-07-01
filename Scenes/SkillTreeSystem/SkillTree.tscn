@@ -383,12 +383,13 @@ theme_override_constants/h_separation = 100
 theme_override_constants/v_separation = 120
 columns = 8
 
-[node name="HealthUpgradeI" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="HealthUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 expand_icon = false
 progress_event_bus = ExtResource("15_hsn28")
 is_unlocked = true
+next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
 skill_icon = SubResource("AtlasTexture_r00sj")
 skillnode_data = ExtResource("6_26cjf")

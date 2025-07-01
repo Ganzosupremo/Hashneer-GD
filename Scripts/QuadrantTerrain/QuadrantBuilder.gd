@@ -87,9 +87,6 @@ func _calculate_map_bounds() -> void:
 	var level_width: float = max_x - min_x
 	var level_height: float = max_y - min_y
 	var buffer: float = max(level_width, level_height) * 0.5
-	var level_width: float = quadrant_size.x * grid_size.x
-	var level_height: float = quadrant_size.y * grid_size.y
-	var buffer: float = max(level_width, level_height) * 0.5  # 50% buffer zone
 	_map_bounds = Rect2(
 		Vector2(min_x - buffer, min_y - buffer),
 		Vector2(level_width + buffer * 2, level_height + buffer * 2)
