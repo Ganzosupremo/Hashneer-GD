@@ -389,7 +389,7 @@ mouse_default_cursor_shape = 2
 expand_icon = false
 progress_event_bus = ExtResource("15_hsn28")
 is_unlocked = true
-next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI")]
+next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI"), NodePath("../HealthUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
 skill_icon = SubResource("AtlasTexture_r00sj")
 skillnode_data = ExtResource("6_26cjf")
@@ -399,10 +399,11 @@ save_name = "PlayerHealthUpgradeFiatT1"
 material = SubResource("ShaderMaterial_1qxbe")
 layout_mode = 1
 
-[node name="SpeedUpgradeI" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="SpeedUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../ShotgunUnlock"), NodePath("../MagnetAbility")]
 icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
 skill_icon = SubResource("AtlasTexture_xfqgc")
 skillnode_data = ExtResource("6_aog38")
@@ -425,10 +426,11 @@ save_name = "ShotgunUnlock"
 material = SubResource("ShaderMaterial_8k647")
 layout_mode = 1
 
-[node name="MagnetAbility" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="MagnetAbility" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../MiniUzisUnlock"), NodePath("../RegenHealthOverTime")]
 icon_on_maxed_out = ExtResource("22_5t31m")
 skill_icon = ExtResource("22_5t31m")
 skillnode_data = ExtResource("24_r00sj")
@@ -438,10 +440,11 @@ save_name = "MagnetUnlock"
 material = SubResource("ShaderMaterial_oevro")
 layout_mode = 1
 
-[node name="DamageUpgradeII" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="DamageUpgradeII" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../AK47Unlock"), NodePath("../SniperUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skill_icon = SubResource("AtlasTexture_6ck1a")
 skillnode_data = ExtResource("11_6em56")
@@ -477,11 +480,12 @@ save_name = "AK47Unlock"
 material = SubResource("ShaderMaterial_uh0ok")
 layout_mode = 1
 
-[node name="DamageUpgradeI" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="DamageUpgradeI" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 expand_icon = false
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../DamageUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
 skill_icon = SubResource("AtlasTexture_g7g25")
 skillnode_data = ExtResource("7_4c22w")
@@ -504,10 +508,11 @@ save_name = "PlayerHealthUpgradeBitcoinT2"
 material = SubResource("ShaderMaterial_ta8n5")
 layout_mode = 1
 
-[node name="RegenHealthOverTime" parent="UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="RegenHealthOverTime" parent="UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 2
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = ExtResource("19_pm0d4")
 skill_icon = ExtResource("19_pm0d4")
 skillnode_data = SubResource("Resource_14fyc")

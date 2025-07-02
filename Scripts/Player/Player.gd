@@ -212,7 +212,6 @@ func calculate_total_gravity() -> Vector2:
 			strength = min(strength, max_strength)
 			
 			total += direction.normalized() * strength
-			print_debug("Gravity source: ", source.name, " Strength: ", strength, " Distance: ", distance)
 		return total
 
 func get_active_weapon_node() -> ActiveWeaponComponent:

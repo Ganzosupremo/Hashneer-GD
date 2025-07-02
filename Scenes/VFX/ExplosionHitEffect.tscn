@@ -1,6 +1,6 @@
 [gd_scene load_steps=15 format=3 uid="uid://ductry01t7u50"]
 
-[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_8o1vk"]
+[ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_ec4xf"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pvwpc"]
 blend_mode = 1
@@ -129,8 +129,8 @@ _data = {
 material = SubResource("CanvasItemMaterial_pvwpc")
 emitting = false
 amount = 32
-texture = ExtResource("1_8o1vk")
-lifetime = 0.3
+texture = ExtResource("1_ec4xf")
+lifetime = 0.35
 one_shot = true
 explosiveness = 1.0
 randomness = 1.0

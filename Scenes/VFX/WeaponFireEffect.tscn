@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddee8kvx84hdq"]
+
+[sub_resource type="ParticleProcessMaterial" id="process"]
+spread = 30.0
+initial_velocity_min = 500.0
+initial_velocity_max = 800.0
+gravity = Vector3(0, 0, 0)
+
+[node name="WeaponFireEffect" type="GPUParticles2D"]
+emitting = false
+amount = 15
+lifetime = 0.2
+one_shot = true
+process_material = SubResource("process")

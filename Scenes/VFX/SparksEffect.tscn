@@ -1,13 +1,103 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=10 format=3 uid="uid://emgj45rr5wua"]
+
+[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_v26tu"]
+
+[sub_resource type="Gradient" id="Gradient_v26tu"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.403614, 0.807229, 0.981928)
+colors = PackedColorArray(1, 0.647059, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0.223529)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_135e8"]
+gradient = SubResource("Gradient_v26tu")
+
+[sub_resource type="Curve" id="Curve_e84te"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_u2384"]
+curve = SubResource("Curve_e84te")
 
 [sub_resource type="ParticleProcessMaterial" id="process"]
+particle_flag_rotate_y = true
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 20.0
 initial_velocity_min = 600.0
 initial_velocity_max = 900.0
-spread = 20.0
 gravity = Vector3(0, 1200, 0)
+scale_min = 10.0
+scale_max = 21.0
+scale_curve = SubResource("CurveTexture_u2384")
+color_ramp = SubResource("GradientTexture1D_135e8")
+turbulence_noise_strength = 3.34
+turbulence_noise_scale = 10.0
+turbulence_noise_speed = Vector3(1, 2, 0)
+turbulence_noise_speed_random = 1.0
+turbulence_influence_max = 0.31
+turbulence_initial_displacement_min = 1.0
+turbulence_initial_displacement_max = 5.0
+
+[sub_resource type="Animation" id="Animation_u2384"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_e84te"]
+resource_name = "default"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.96667),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"queue_free"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u287s"]
+_data = {
+&"RESET": SubResource("Animation_u2384"),
+&"default": SubResource("Animation_e84te")
+}
 
 [node name="SparksEffect" type="GPUParticles2D"]
-one_shot = true
-amount = 20
+emitting = false
+amount = 21
+texture = ExtResource("1_v26tu")
 lifetime = 0.3
+one_shot = true
 process_material = SubResource("process")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_u287s")
+}
+autoplay = "default"

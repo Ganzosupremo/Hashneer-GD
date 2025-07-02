@@ -9,8 +9,11 @@ class_name SkillTreeManager extends Control
 @onready var start_game: TweenableButton = $FrontLayer/ButtonContainer/StartGame
 @onready var level_selector_new: LevelSelectorMenu = $LevelSelectorNew
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_READY:
+		PersistenceDataManager.load_game()
+
 func _ready() -> void:
-	PersistenceDataManager.load_game()
 	AudioManager.change_music_clip(music_details)
 	skill_nodes = _get_skill_nodes()
 	

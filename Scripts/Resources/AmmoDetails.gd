@@ -33,20 +33,5 @@ class_name AmmoDetails
 ## The amount of force applied to a fracturable object, i.e. an enemy
 @export var fracture_force: float = 15_000.0
 
-
-@export_category("Bullet Particles Trail")
-## DEPRECATED: Use bullet trail instead
-@export var emits_trail_particles: bool = true
-## DEPRECATED: Use bullet trail instead
-@export var particle_trail_details: ParticleEffectDetails
-## DEPRECATED: Emission lifetime randomness ratio
-@export_range(0.0, 1.0) var randomness: float = 0.5
-## DEPRECATED: Particle lifetime randomness ratio, escales the lifetime of it's original value
-@export_range(0.0, 1.0) var lifetime_randomness = 0.25
-
 ## The damage dealt by the bullet multiplied by the damage multiplier
 var bullet_damage_multiplied: float = 0.0
-
-func _init(_damage = 25.0, _speed = 1000.0) -> void:
-	bullet_damage = _damage
-	bullet_speed = _speed

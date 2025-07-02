@@ -311,7 +311,6 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
 	
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
-		# _sound_effect_component.set_and_play_sound(sound_on_dead)
 		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 		
 		if hasRegeneration():
@@ -334,7 +333,6 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			polygon_restorer.addShape(cur_shape.shape, cur_shape.area)
 		setPolygon(cur_shape.shape)
 		
-		# _sound_effect_component.set_and_play_sound(sound_on_hurt)
 		AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 		if _rng.randf() > 0.1:
 			apply_central_impulse(knockback_force)
@@ -359,7 +357,6 @@ func kill(natural_death: bool = false) -> void:
 	if !natural_death:
 		for i in range(drops_count):
 			random_drops.spawn_drops(1)
-		# await _sound_effect_component.set_and_play_sound(sound_on_dead)
 		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
 
