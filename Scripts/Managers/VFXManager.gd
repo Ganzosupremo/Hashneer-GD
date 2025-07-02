@@ -42,26 +42,36 @@ func _on_effect_timeout(effect: Node, timer: Timer) -> void:
 
 
 func _spawn_particles(scene: PackedScene, transform_effect: Transform2D, params: VFXEffectProperties) -> Node2D:
-	var effect = scene.instantiate()
+	var effect = scene.instantiate() as GPUParticles2D
 	add_child(effect)
 	effect.transform = transform_effect
 	if effect is GPUParticles2D:
-		_set_effects_properties(effect, params)
+		effect = _set_effects_properties(effect, params)
 		effect.restart()
 	_register_effect(effect, effect.lifetime)
 
 	return effect
 
-func _set_effects_properties(effect: GPUParticles2D, props: VFXEffectProperties = VFXEffectProperties.new()) -> void:
+func _set_effects_properties(effect: GPUParticles2D, props: VFXEffectProperties = VFXEffectProperties.new()) -> GPUParticles2D:
 	if !is_instance_valid(effect) or props == null:
-		return
-	for params_key in props.get_property_list():
-		effect.set(params_key.name, props.get(params_key.name))
+		return effect
+	
+	effect.amount = props.amount
+	effect.lifetime = props.lifetime
+	effect.one_shot = props.one_shot
+	effect.speed_scale = props.speed_scale
+	effect.explosiveness = props.explosiveness
+	effect.randomness = props.randomness
+	effect.texture = props.particle_texture
+	effect.process_material = props.process_material
+
+	return effect
 
 # Entry point for spawning effects based on an effect type
 func spawn_effect(effect_type: EffectType, 
 	transform_effect: Transform2D = Transform2D.IDENTITY, 
-	duration: float = 0.1, color: Color = Color(1,1,1,0.8), props: VFXEffectProperties = VFXEffectProperties.new()) -> Node2D:
+	 props: VFXEffectProperties = VFXEffectProperties.new(), duration: float = 0.1, color: Color = Color(1,1,1,0.8), ) -> Node:
+	
 	match effect_type:
 		EffectType.EXPLOSION:
 			return _spawn_explosion(transform_effect, props)
@@ -97,7 +107,7 @@ func _spawn_hit(transform_effect: Transform2D, props: VFXEffectProperties) -> No
 func _spawn_death(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
 	return _spawn_particles(death_effect, transform_effect, props)
 
-func _spawn_screen_flash(duration: float = 0.1, color: Color = Color(1,1,1,0.8)):
+func _spawn_screen_flash(duration: float = 0.1, color: Color = Color(1,1,1,0.8)) -> Node:
 	var flash: ScreenFlash = screen_flash_scene.instantiate()
 	add_child(flash)
 	flash.start_flash(duration, color)

@@ -49,7 +49,7 @@ func on_fire_weapon(_has_fired:bool, _fired_previous_frame: bool, damage_multipl
 func weapon_fire(damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 	if ready_to_fire():
 		current_weapon = active_weapon_component.get_current_weapon()
-		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.EXPLOSION, global_transform, 0.15)
+		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
 		
 		if shake_camera_on_fire:
 			GameManager.shake_camera(current_weapon.amplitude,\
