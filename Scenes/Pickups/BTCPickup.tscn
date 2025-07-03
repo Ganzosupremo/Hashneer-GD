@@ -1,13 +1,104 @@
-[gd_scene load_steps=10 format=3 uid="uid://beswcfw4ytxol"]
+[gd_scene load_steps=26 format=3 uid="uid://beswcfw4ytxol"]
 
-[ext_resource type="Texture2D" uid="uid://by5wtxspmt1fn" path="res://Textures/Bitcoin_pixel_art.png" id="1_52gt5"]
 [ext_resource type="PhysicsMaterial" uid="uid://deqagbq7eod2b" path="res://samples/softbody2d/softbody2d_phys_bouncy.tres" id="1_lrual"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="2_5gwqa"]
+[ext_resource type="Texture2D" uid="uid://d6tweu1do3n" path="res://Textures/Currencies/Bitcoin logo new anim.png" id="2_lrual"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_0nwdx"]
 [ext_resource type="AudioStream" uid="uid://bpg3g7h0t7cr4" path="res://Audio/Pickups/BTCPickup.wav" id="4_3a5da"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="5_3a5da"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_5arbs"]
+atlas = ExtResource("2_lrual")
+region = Rect2(7, 9, 51, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o43ie"]
+atlas = ExtResource("2_lrual")
+region = Rect2(7, 9, 51, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d34d1"]
+atlas = ExtResource("2_lrual")
+region = Rect2(76, 9, 41, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h743j"]
+atlas = ExtResource("2_lrual")
+region = Rect2(143, 9, 34, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gyqo"]
+atlas = ExtResource("2_lrual")
+region = Rect2(220, 7, 10, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8154q"]
+atlas = ExtResource("2_lrual")
+region = Rect2(271, 6, 34, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jjye6"]
+atlas = ExtResource("2_lrual")
+region = Rect2(332, 4, 41, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssoct"]
+atlas = ExtResource("2_lrual")
+region = Rect2(391, 5, 51, 51)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cug6k"]
+atlas = ExtResource("2_lrual")
+region = Rect2(460, 6, 41, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6vadq"]
+atlas = ExtResource("2_lrual")
+region = Rect2(527, 7, 34, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8gy2g"]
+atlas = ExtResource("2_lrual")
+region = Rect2(604, 9, 10, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_drvb5"]
+atlas = ExtResource("2_lrual")
+region = Rect2(655, 10, 34, 49)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eip27"]
+atlas = ExtResource("2_lrual")
+region = Rect2(716, 11, 41, 49)
+
+[sub_resource type="Animation" id="Animation_iut62"]
+resource_name = "default"
+length = 1.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BitcoinPixelArt:texture")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [SubResource("AtlasTexture_o43ie"), SubResource("AtlasTexture_d34d1"), SubResource("AtlasTexture_h743j"), SubResource("AtlasTexture_3gyqo"), SubResource("AtlasTexture_8154q"), SubResource("AtlasTexture_jjye6"), SubResource("AtlasTexture_ssoct"), SubResource("AtlasTexture_cug6k"), SubResource("AtlasTexture_6vadq"), SubResource("AtlasTexture_8gy2g"), SubResource("AtlasTexture_drvb5"), SubResource("AtlasTexture_eip27")]
+}
+
+[sub_resource type="Animation" id="Animation_6vkib"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BitcoinPixelArt:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_5arbs")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rq1s7"]
+_data = {
+&"RESET": SubResource("Animation_6vkib"),
+&"default": SubResource("Animation_iut62")
+}
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_5gwqa"]
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0nwdx"]
 radius = 23.0
@@ -24,7 +115,13 @@ can_sleep = false
 linear_damp = 5.0
 
 [node name="BitcoinPixelArt" type="Sprite2D" parent="."]
-texture = ExtResource("1_52gt5")
+texture = SubResource("AtlasTexture_5arbs")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_rq1s7")
+}
+autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_5gwqa")

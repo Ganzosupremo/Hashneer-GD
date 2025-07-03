@@ -80,15 +80,28 @@ const implements = [
 ]
 
 func _enter_tree() -> void:
-	if !skillnode_data:
-		return
+	if skillnode_data:
+		upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
+	
+	if !upgrade_logic.upgrade_maxed.is_connected(_on_upgrade_maxed) and !upgrade_logic.level_changed.is_connected(_on_level_changed):
+		upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
+		upgrade_logic.level_changed.connect(_on_level_changed)
 
-	upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
-	upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
-	upgrade_logic.level_changed.connect(_on_level_changed)
-	main_event_bus.currency_changed.connect(_on_currency_changed)
+func _exit_tree() -> void:
+	upgrade_logic.upgrade_maxed.disconnect(_on_upgrade_maxed)
+	upgrade_logic.level_changed.disconnect(_on_level_changed)
+	main_event_bus.currency_changed.disconnect(_on_currency_changed)
+	upgrade_logic.reset_next_tier_nodes_array()
+	skillnode_data.reset_next_tier_nodes()
 
 func _ready() -> void:
+	if skillnode_data:
+		skillnode_data.set_next_tier_nodes(self.next_tier_nodes)
+		upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
+		upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
+		upgrade_logic.level_changed.connect(_on_level_changed)
+	
+	main_event_bus.currency_changed.connect(_on_currency_changed)
 	progress_bar.show()
 	if is_unlocked:
 		unlock()
@@ -128,17 +141,11 @@ func set_node_identifier(id: int = 0) -> void:
 	skillnode_data.set_id(id)
 
 func is_next_tier_unlocked() -> bool:
-	return skillnode_data.check_next_tier_unlock()
+	return skillnode_data.check_next_tier_unlock(self.next_tier_nodes)
 
 func is_this_skill_maxed_out() -> bool:
 	return skillnode_data.check_upgrade_maxed_out()
 	
-#endregion
-
-#region Private functions
-
-
-
 #endregion
 
 #region UI functions
@@ -233,9 +240,9 @@ func _set_line_points() -> void:
 		skill_line.add_point(parent_node_center_local)
 
 func _on_currency_changed(currency: Constants.CurrencyType) -> void:
-				set_currency_icon(currency)
-				_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(currency))
-				_update_node_state()
+	set_currency_icon(currency)
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(currency))
+	_update_node_state()
 
 func set_currency_icon(currency: Constants.CurrencyType) -> void:
 	match currency:
@@ -254,13 +261,12 @@ func _on_mouse_entered() -> void:
 	if sound_effect_component_ui == null: return
 	sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
 
-
 func _on_skill_pressed() -> void:
-		if not upgrade_logic.purchase():
-				return
+	if not upgrade_logic.purchase():
+		return
 
-		_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
-		_update_node_state()
+	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
+	_update_node_state()
 
 func _on_button_down() -> void:
 	if sound_effect_component_ui == null: return

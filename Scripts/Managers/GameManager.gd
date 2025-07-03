@@ -1,5 +1,8 @@
 extends Node2D
 
+
+@onready var vfx_manager: VFXManager = $VFXManager
+
 @export_category("Player")
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
@@ -36,7 +39,7 @@ func _ready() -> void:
 	# This is used to identify the level in the game
 	# and to unlock the next level when the current one is completed
 	for i in range(game_levels.size()):
-		game_levels[i].level_index = i
+			game_levels[i].level_index = i
 
 #region Public API
 func complete_level(code: String = "") -> void:

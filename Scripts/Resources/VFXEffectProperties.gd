@@ -1,5 +1,4 @@
-extends Resource
-class_name ParticleEffectDetails
+class_name VFXEffectProperties extends Resource
 
 @export_category("Base Params")
 @export var amount: int = 50

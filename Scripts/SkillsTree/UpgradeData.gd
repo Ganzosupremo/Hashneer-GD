@@ -1,6 +1,6 @@
 class_name UpgradeData extends Resource
 
-signal next_tier_unlocked()
+signal next_tier_unlocked(next_tier_nodes: Array)
 signal upgrade_maxed()
 signal upgrade_level_changed(new_level: int, max_level: int)
 
@@ -74,18 +74,24 @@ var upgrade_level: int = 0:
 			upgrade_level_changed.emit(upgrade_level, upgrade_max_level)
 			check_next_tier_unlock()
 			check_upgrade_maxed_out()
-
+## Stores the next tier nodes 
+var next_tier_nodes: Array[SkillNode]
 var _id: int = 0
 
 #region Main
+
+func set_next_tier_nodes(nodes: Array[SkillNode]) -> void:
+	self.next_tier_nodes = nodes.duplicate()
+
+func reset_next_tier_nodes() -> void:
+	self.next_tier_nodes = []
 
 func buy_upgrade(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> bool:
 	if upgrade_level >= upgrade_max_level: return false
 
 	var success: bool = _buy_with_bitcoin() if currency_type == Constants.CurrencyType.BITCOIN else _buy_with_fiat()
 	if success:
-		check_next_tier_unlock()
-		check_upgrade_maxed_out()
+		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 	return success
 
 func set_id(id:int = 0) -> void:
@@ -101,7 +107,6 @@ func _buy_with_bitcoin() -> bool:
 
 func _buy_with_fiat() -> bool:
 	if BitcoinWallet.spend_fiat(upgrade_cost(Constants.CurrencyType.FIAT)):
-		upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
 		return false
@@ -172,9 +177,12 @@ func check_upgrade_maxed_out() -> bool:
 		return true
 	return false
 
-func check_next_tier_unlock() -> bool:
-	if upgrade_level >= next_tier_threshold:
-		next_tier_unlocked.emit()
+func check_next_tier_unlock(_next_tier_nodes: Array[SkillNode] = []) -> bool:
+	if upgrade_level > next_tier_threshold:
+		if _next_tier_nodes == []:
+			next_tier_unlocked.emit(self.next_tier_nodes)
+		else:
+			next_tier_unlocked.emit(_next_tier_nodes)
 		return true
 	return false
 

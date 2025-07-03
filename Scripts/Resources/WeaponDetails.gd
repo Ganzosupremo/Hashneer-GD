@@ -13,7 +13,7 @@ class_name WeaponDetails extends Resource
 
 
 @export_category("Shoot Effect")
-@export var weapon_shoot_effect: ParticleEffectDetails
+@export var weapon_shoot_effect: VFXEffectProperties
 
 @export_category("Weapon Fire Details")
 @export var fire_rate: float = 0.25

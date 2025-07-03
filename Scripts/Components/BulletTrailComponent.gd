@@ -6,6 +6,9 @@ var max_length: int = 10
 var queue: Array = []
 
 
+func _ready() -> void:
+	clear()
+
 func _process(_delta: float) -> void:
 	var pos: Vector2 = _get_global_position()
 	queue.push_front(pos)
@@ -27,6 +30,7 @@ func disable_trail():
 
 func clear() -> void:
 	clear_points()
+	queue.clear()
 
 func spawn(length: int, new_gradient: Gradient, new_width: float = 20.0) -> void:
 	width = new_width
@@ -39,4 +43,4 @@ func despawn() -> void:
 	queue_free()
 
 func _get_global_position() -> Vector2:
-	return get_parent().position
+	return get_parent().global_position

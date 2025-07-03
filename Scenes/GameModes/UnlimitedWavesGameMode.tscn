@@ -1,11 +1,10 @@
-[gd_scene load_steps=51 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=50 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
 [ext_resource type="Script" uid="uid://bjidpm36w0ok1" path="res://Scripts/WavesGameMode.gd" id="1_b5yyy"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="2_b5yyy"]
 [ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="2_obtmh"]
-[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="3_gaytf"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="5_w6c12"]
 [ext_resource type="PackedScene" uid="uid://xos3xcnwpqn6" path="res://Scenes/UI/WeaponUIWavesGameMode.tscn" id="5_xahjo"]
@@ -244,7 +243,6 @@ top_level = true
 z_index = 5
 position = Vector2(302, 218)
 scale = Vector2(1.2, 1.2)
-initial_weapon = ExtResource("3_gaytf")
 
 [node name="World" type="Node2D" parent="."]
 modulate = Color(1.2, 1.2, 1.2, 1)

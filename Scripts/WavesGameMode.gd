@@ -141,7 +141,7 @@ func on_spawn_enemies_timer_timeout() -> void:
 
 func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
 	spawnShapeVisualizer(pos, shape, color, fade_speed)
-	GameManager.player.damage(pow(randf_range(enemy.collision_damage.x, enemy.collision_damage.y), level_args.enemy_damage_multiplier))
+	GameManager.player.damage(pow(randf_range(enemy.collision_damage.x, enemy.collision_damage.y), level_args.enemy_damage_multiplier), enemy.global_position)
 
 func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass : float, color : Color, fracture_force : float, p : float) -> void:
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)

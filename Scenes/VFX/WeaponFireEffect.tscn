@@ -1,0 +1,72 @@
+[gd_scene load_steps=9 format=3 uid="uid://ddee8kvx84hdq"]
+
+[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_a4u2d"]
+[ext_resource type="Script" uid="uid://c53amyrfwsnjq" path="res://Scripts/VFX/VFXEffect.gd" id="2_udtut"]
+
+[sub_resource type="Curve" id="Curve_a4u2d"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_udtut"]
+curve = SubResource("Curve_a4u2d")
+
+[sub_resource type="ParticleProcessMaterial" id="process"]
+particle_flag_rotate_y = true
+spread = 180.0
+initial_velocity_min = 500.0
+initial_velocity_max = 1000.0
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 21.0
+scale_curve = SubResource("CurveTexture_udtut")
+
+[sub_resource type="Animation" id="Animation_udtut"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_a4u2d"]
+resource_name = "default"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_w4xc0"]
+_data = {
+&"RESET": SubResource("Animation_udtut"),
+&"default": SubResource("Animation_a4u2d")
+}
+
+[node name="WeaponFireEffect" type="GPUParticles2D"]
+z_index = 10
+emitting = false
+amount = 20
+texture = ExtResource("1_a4u2d")
+lifetime = 0.25
+one_shot = true
+process_material = SubResource("process")
+script = ExtResource("2_udtut")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_w4xc0")
+}

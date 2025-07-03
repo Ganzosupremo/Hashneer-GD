@@ -2,7 +2,7 @@ class_name SkillUpgrade
 extends Object
 
 var data: UpgradeData
-var next_tier_nodes: Array
+var next_tier_nodes: Array[SkillNode]
 
 signal upgrade_maxed
 signal level_changed(new_level:int, max_level:int)
@@ -24,8 +24,14 @@ func _on_upgrade_maxed() -> void:
 func _on_level_changed(new_level:int, max_level:int) -> void:
 	level_changed.emit(new_level, max_level)
 
-func _unlock_next_tier() -> void:
-	for node in next_tier_nodes:
+func _unlock_next_tier(_next_tier_nodes: Array[SkillNode]) -> void:
+	if _next_tier_nodes != []:
+		self.next_tier_nodes = _next_tier_nodes.duplicate()
+	
+	for node in self.next_tier_nodes:
 		if node.is_unlocked:
 			continue
 		node.unlock()
+
+func reset_next_tier_nodes_array() -> void:
+	next_tier_nodes = []

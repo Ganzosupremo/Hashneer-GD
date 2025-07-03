@@ -23,9 +23,6 @@ trail_length = 20
 trail_width = 20.0
 fracture_damage = Vector2(25, 25)
 fracture_force = 10000.0
-emits_trail_particles = false
-randomness = 0.5
-lifetime_randomness = 0.25
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
 
 [resource]

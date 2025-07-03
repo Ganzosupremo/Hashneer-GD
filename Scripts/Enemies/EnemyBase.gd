@@ -29,7 +29,6 @@ class_name BaseEnemy extends RigidBody2D
 signal Died(ref: BaseEnemy, pos: Vector2, natural_death: bool)
 signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
 signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
-# signal Freed(ref: BaseEnemy)
 
 @export_category("Main Event Bus")
 @export var main_event_bus: MainEventBus
@@ -66,10 +65,12 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var accel: float = 1000.0
 @export var decel: float = 1500.0
 
-@export_category("Audio")
+@export_category("Audio and VFX")
 @export var sound_on_hurt: SoundEffectDetails
 @export var sound_on_dead: SoundEffectDetails
 @export var sound_on_heal: SoundEffectDetails
+@export var hit_vfx: VFXEffectProperties
+@export var death_vfx: VFXEffectProperties
 
 @export_category("Visuals")
 @export_group("Shape")
@@ -303,6 +304,8 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
+	var angle: float = (-knockback_force).angle()
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point), hit_vfx)
 	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
 	
 	var p : float = cut_shape_area / cur_area
@@ -311,9 +314,6 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
 	
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
-		# _sound_effect_component.set_and_play_sound(sound_on_dead)
-		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
-		
 		if hasRegeneration():
 			_health_component.change_regeneration_state(false)
 			_health_component.stop_regeneration_timer()
@@ -334,7 +334,6 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			polygon_restorer.addShape(cur_shape.shape, cur_shape.area)
 		setPolygon(cur_shape.shape)
 		
-		# _sound_effect_component.set_and_play_sound(sound_on_hurt)
 		AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 		if _rng.randf() > 0.1:
 			apply_central_impulse(knockback_force)
@@ -356,11 +355,13 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 func kill(natural_death: bool = false) -> void:
 	Died.emit(self, global_position, natural_death)
 	hide()
+	
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_DEATH, global_transform, death_vfx)
+	AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
+	
 	if !natural_death:
 		for i in range(drops_count):
 			random_drops.spawn_drops(1)
-		# await _sound_effect_component.set_and_play_sound(sound_on_dead)
-		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
 
 ## Applies healing to the enemy and manages related visual effects
@@ -375,7 +376,6 @@ func heal(heal_amount : float) -> void:
 		cur_area = start_area
 		_health_component.heal(start_area)
 		_hit_flash_anim_player.play("heal")
-		# _sound_effect_component.set_and_play_sound(sound_on_heal)
 		AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
 		_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 		
@@ -424,7 +424,6 @@ func restore() -> void:
 		_health_component.set_current_health(area)
 	
 	_hit_flash_anim_player.play("heal")
-	# _sound_effect_component.set_and_play_sound(sound_on_heal)
 	AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
 	_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 	

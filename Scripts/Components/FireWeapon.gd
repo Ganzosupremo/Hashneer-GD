@@ -7,8 +7,7 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 
 @export var shake_camera_on_fire: bool = true
 @export var active_weapon_component: ActiveWeaponComponent
-@export var _fire_effect_particles: GPUParticles2D
- 
+
 @export var is_enemy_weapon: bool = false
 @export var use_object_pool: bool = false
 @export var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")
@@ -16,7 +15,6 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition
 @onready var _fire_cooldown_timer: Timer = %FireCooldownTimer
-@onready var _sound_effect_component: SoundEffectComponent = $SoundEffectComponent
 @onready var pool_fracture_bullets: PoolFracture = get_tree().get_first_node_in_group("FractureBulletsPool")
 
 
@@ -50,9 +48,7 @@ func on_fire_weapon(_has_fired:bool, _fired_previous_frame: bool, damage_multipl
 func weapon_fire(damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 	if ready_to_fire():
 		current_weapon = active_weapon_component.get_current_weapon()
-		# sound_effect_component.set_sound(current_weapon.fire_sound)
-		_fire_effect_particles.global_position = shoot_effect_position.global_position
-		_fire_effect_particles.restart()
+		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
 		
 		if shake_camera_on_fire:
 			GameManager.shake_camera(current_weapon.amplitude,\
@@ -77,8 +73,7 @@ func fire_ammo_async(ammo: AmmoDetails, target_position: Vector2 = Vector2.ZERO)
 	
 	if bullets_per_shoot > 1:
 		spawn_interval = randf_range(ammo.bullet_spawn_interval_min, ammo.bullet_spawn_interval_max)
-	
-	# sound_effect_component.play_sound()
+
 	AudioManager.create_2d_audio_at_location(shoot_effect_position.global_position, current_weapon.fire_sound.sound_type, current_weapon.fire_sound.destination_audio_bus)
 	while ammo_counter < bullets_per_shoot:
 		ammo_counter += 1
