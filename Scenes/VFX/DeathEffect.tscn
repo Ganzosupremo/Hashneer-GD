@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://g17mv0ohtmtk"]
+[gd_scene load_steps=3 format=3 uid="uid://g17mv0ohtmtk"]
+
+[ext_resource type="Script" uid="uid://c53amyrfwsnjq" path="res://Scripts/VFX/VFXEffect.gd" id="1_snhaw"]
 
 [sub_resource type="ParticleProcessMaterial" id="process"]
 spread = 180.0
@@ -12,3 +14,4 @@ amount = 60
 lifetime = 0.8
 one_shot = true
 process_material = SubResource("process")
+script = ExtResource("1_snhaw")

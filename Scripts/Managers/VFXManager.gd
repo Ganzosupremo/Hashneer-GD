@@ -42,35 +42,20 @@ func _on_effect_timeout(effect: Node, timer: Timer) -> void:
 
 
 func _spawn_particles(scene: PackedScene, transform_effect: Transform2D, params: VFXEffectProperties) -> Node2D:
-	var effect = scene.instantiate() as GPUParticles2D
+	var effect = scene.instantiate() as VFXEffect
 	add_child(effect)
 	effect.transform = transform_effect
-	if effect is GPUParticles2D:
-		effect = _set_effects_properties(effect, params)
-		effect.restart()
+	if effect is VFXEffect:
+		effect.set_effect_properties(params)
+		effect.start_effect()
 	_register_effect(effect, effect.lifetime)
-
-	return effect
-
-func _set_effects_properties(effect: GPUParticles2D, props: VFXEffectProperties = VFXEffectProperties.new()) -> GPUParticles2D:
-	if !is_instance_valid(effect) or props == null:
-		return effect
-	
-	effect.amount = props.amount
-	effect.lifetime = props.lifetime
-	effect.one_shot = props.one_shot
-	effect.speed_scale = props.speed_scale
-	effect.explosiveness = props.explosiveness
-	effect.randomness = props.randomness
-	effect.texture = props.particle_texture
-	effect.process_material = props.process_material
 
 	return effect
 
 # Entry point for spawning effects based on an effect type
 func spawn_effect(effect_type: EffectType, 
 	transform_effect: Transform2D = Transform2D.IDENTITY, 
-	 props: VFXEffectProperties = VFXEffectProperties.new(), duration: float = 0.1, color: Color = Color(1,1,1,0.8), ) -> Node:
+	 props: VFXEffectProperties = null, duration: float = 0.1, color: Color = Color(1,1,1,0.8), ) -> Node:
 	
 	match effect_type:
 		EffectType.EXPLOSION:

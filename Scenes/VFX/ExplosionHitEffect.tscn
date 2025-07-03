@@ -1,6 +1,7 @@
-[gd_scene load_steps=15 format=3 uid="uid://ductry01t7u50"]
+[gd_scene load_steps=16 format=3 uid="uid://ductry01t7u50"]
 
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="1_ec4xf"]
+[ext_resource type="Script" uid="uid://c53amyrfwsnjq" path="res://Scripts/VFX/VFXEffect.gd" id="2_yr3r8"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pvwpc"]
 blend_mode = 1
@@ -136,9 +137,9 @@ explosiveness = 1.0
 randomness = 1.0
 visibility_rect = Rect2(-1504.24, -1393.17, 2986.19, 3038.75)
 process_material = SubResource("ParticleProcessMaterial_rftkk")
+script = ExtResource("2_yr3r8")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_ifsb4")
 }
-autoplay = "default"

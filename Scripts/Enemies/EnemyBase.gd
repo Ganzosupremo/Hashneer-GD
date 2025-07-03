@@ -303,6 +303,8 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
+	var angle: float = (-knockback_force).angle()
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point))
 	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
 	
 	var p : float = cut_shape_area / cur_area
@@ -354,10 +356,13 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 func kill(natural_death: bool = false) -> void:
 	Died.emit(self, global_position, natural_death)
 	hide()
+	
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_DEATH, global_transform)
+	AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
+	
 	if !natural_death:
 		for i in range(drops_count):
 			random_drops.spawn_drops(1)
-		AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
 
 ## Applies healing to the enemy and manages related visual effects

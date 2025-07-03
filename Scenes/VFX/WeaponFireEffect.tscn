@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://ddee8kvx84hdq"]
+[gd_scene load_steps=9 format=3 uid="uid://ddee8kvx84hdq"]
 
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_a4u2d"]
+[ext_resource type="Script" uid="uid://c53amyrfwsnjq" path="res://Scripts/VFX/VFXEffect.gd" id="2_udtut"]
 
 [sub_resource type="Curve" id="Curve_a4u2d"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
@@ -63,9 +64,9 @@ texture = ExtResource("1_a4u2d")
 lifetime = 0.25
 one_shot = true
 process_material = SubResource("process")
+script = ExtResource("2_udtut")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_w4xc0")
 }
-autoplay = "default"

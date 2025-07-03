@@ -87,9 +87,13 @@ func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
-func damage(_damage: float) -> void:
+func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 	AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
 	animation_player.play("hit-flash")
+	var angle: float = 0.0
+	if hit_position != Vector2.ZERO:
+		angle = (global_position - hit_position).angle()
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_HIT, Transform2D(angle, global_position))
 	get_health_node().take_damage(_damage)
 
 #endregion
@@ -152,11 +156,11 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 #region Signal
 
 func on_zero_power() -> void:
-	# _sound_effect_component.set_sound(dead_sound_effect)
 	deactivate_player()
-	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
-	# _sound_effect_component.play_sound()
+	
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_DEATH, global_transform)
 	AudioManager.create_2d_audio_at_location(global_position, dead_sound_effect.sound_type, dead_sound_effect.destination_audio_bus)
+	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
 	tween.tween_property(self, "scale", Vector2(0.0,0.0), 1.5).from_current()
 	tween.tween_property(self, "rotation", 360.0, 1.0).from_current()
 	

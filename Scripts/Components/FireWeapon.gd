@@ -7,8 +7,7 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 
 @export var shake_camera_on_fire: bool = true
 @export var active_weapon_component: ActiveWeaponComponent
-@export var _fire_effect_particles: GPUParticles2D
- 
+
 @export var is_enemy_weapon: bool = false
 @export var use_object_pool: bool = false
 @export var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")

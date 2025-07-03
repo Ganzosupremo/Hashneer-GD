@@ -30,8 +30,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 	var body = state.get_contact_collider_object(0)
 	var hit_pos: Vector2 = state.get_contact_collider_position(0)
-	
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(0, hit_pos))
+	var angle: float = linear_velocity.angle() + PI
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos))
 	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
 		var pos : Vector2 = state.get_contact_collider_position(0)
 		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
@@ -61,7 +61,6 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	set_velocity(launch_vector)
 	global_position = pos
 	_timer.start(lifetime)
-	#set_trail_particles()
 	set_bullet_trail(ammo_details.trail_length, ammo_details.trail_gradient)
 	
 	linear_velocity = launch_vector
@@ -72,6 +71,10 @@ func despawn(_ref: Node2D = null) -> void:
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	
+
+	if is_instance_valid(trail):
+		trail.disable_trail()
+
 	# Delete if using the PoolFracturePool
 	if not use_object_pool:
 		queue_free()
@@ -79,6 +82,10 @@ func despawn(_ref: Node2D = null) -> void:
 
 func destroy() -> void:
 	_timer.stop()
+
+	if is_instance_valid(trail):
+		trail.disable_trail()
+
 	emit_signal("Despawn", self)
 
 
