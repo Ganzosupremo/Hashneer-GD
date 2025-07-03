@@ -5,9 +5,16 @@ class_name PlayerDetails extends Resource
 @export var max_health: float = 100.0
 @export var damage_multiplier: float = 1.0
 
+@export_category("Weapons")
 @export var initial_weapon: WeaponDetails
+@export var weapons_array: Array[WeaponDetails] = []
+
+@export_category("Sounds and VFX")
+@export var move_sound_effect: SoundEffectDetails
+@export var hit_sound_effect: SoundEffectDetails
 @export var dead_sound_effect: SoundEffectDetails
-@export var weapons_array: Array = []
+@export var death_vfx: VFXEffectProperties
+@export var hit_vfx: VFXEffectProperties
 
 func _init(_speed: float = 250.0) -> void:
 	speed = _speed

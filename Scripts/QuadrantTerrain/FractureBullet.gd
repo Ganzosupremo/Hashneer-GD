@@ -31,7 +31,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var body = state.get_contact_collider_object(0)
 	var hit_pos: Vector2 = state.get_contact_collider_position(0)
 	var angle: float = linear_velocity.angle() + PI
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos))
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos), ammo_details.bullet_hit_vfx)
 	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
 		var pos : Vector2 = state.get_contact_collider_position(0)
 		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)

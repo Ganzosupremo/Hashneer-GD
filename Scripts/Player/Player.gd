@@ -6,23 +6,20 @@ class_name PlayerController
 
 @export_category("Parameters")
 @export var player_details: PlayerDetails
-@export var speed: float = 200.0
-@export var initial_weapon: WeaponDetails
-@export var dead_sound_effect: SoundEffectDetails
-@export var move_sound_effect: SoundEffectDetails
-@export var sound_on_hurt: SoundEffectDetails
-@export var mass: float = 5.0
-@export var anti_gravity_thrust: float = 300.0
 
+var move_sound_effect: SoundEffectDetails
+var hit_sound_effect: SoundEffectDetails
+var death_vfx: VFXEffectProperties
+var hit_vfx: VFXEffectProperties
 var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
-
+var speed: float = 200.0
+var initial_weapon: WeaponDetails
+var dead_sound_effect: SoundEffectDetails
 
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
 @onready var _health: HealthComponent = %Health
-@onready var _sound_effect_component: SoundEffectComponent = %SFXSoundComponent
-@onready var movement_sound_effect_component: SoundEffectComponent = %MovementSoundEffectComponent
 @onready var rotation_container: Node2D = $RotationContainer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var edge_polygon: Polygon2D = $EdgePolygon
@@ -41,7 +38,6 @@ func _ready() -> void:
 	GameManager.player = self
 	_health.zero_health.connect(on_zero_power)
 	main_event_bus.level_completed.connect(deactivate_player)
-	movement_sound_effect_component.set_sound(move_sound_effect)
 	set_player()
 	edge_polygon.polygon = PolygonLib.createCirclePolygon(20.0, 6)
 
@@ -64,12 +60,21 @@ func _physics_process(delta) -> void:
 
 func set_player() -> void:
 	if !player_details: return
+	
 	_unlock_saved_abilities()
+	speed = player_details.speed
+	damage_multiplier = player_details.damage_multiplier
+	_health.set_max_health(player_details.max_health)
+	
 	_apply_stats()
 
 	initial_weapon = player_details.initial_weapon
 	weapons_array = player_details.weapons_array.duplicate(true)
 	dead_sound_effect = player_details.dead_sound_effect
+	move_sound_effect = player_details.move_sound_effect
+	hit_sound_effect = player_details.hit_sound_effect
+	death_vfx = player_details.death_vfx
+	hit_vfx = player_details.hit_vfx
 	set_weapon()
 
 func set_weapon() -> void:
@@ -88,12 +93,12 @@ func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
 func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
-	AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
-	animation_player.play("hit-flash")
+	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0
 	if hit_position != Vector2.ZERO:
 		angle = (global_position - hit_position).angle()
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_HIT, Transform2D(angle, global_position))
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_HIT, Transform2D(angle, global_position), hit_vfx)
+	animation_player.play("hit-flash")
 	get_health_node().take_damage(_damage)
 
 #endregion
@@ -158,7 +163,7 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 func on_zero_power() -> void:
 	deactivate_player()
 	
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_DEATH, global_transform)
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_DEATH, global_transform, death_vfx)
 	AudioManager.create_2d_audio_at_location(global_position, dead_sound_effect.sound_type, dead_sound_effect.destination_audio_bus)
 	var tween: Tween = get_tree().create_tween().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_SPRING).set_parallel(true)
 	tween.tween_property(self, "scale", Vector2(0.0,0.0), 1.5).from_current()
