@@ -39,6 +39,8 @@ var level_index: int = 0
 @export var spawn_time: float = 5.0
 ## The amount of enemies to spawn per wave
 @export var spawn_count: int = 5
+## Number of enemy kills required before boss spawns
+@export var kills_to_spawn_boss: int = 40
 ## This is used to determine how many drops the enemies will drop
 @export var enemy_drops_count: int = 5
 ## This value will exponentially multiply the damage of the enemies

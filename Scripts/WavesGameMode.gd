@@ -24,34 +24,32 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @export var music: MusicDetails
 @export var boss_music: MusicDetails
 
-var time_to_spawn_boss: float = 60.0
-var time_to_spawn_boss_passed: float = 0.0
 var boss_spawned: bool = false
 
 var kill_count: int = 0
+var current_wave_kills: int = 0
+var enemies_in_current_wave: int = 0
 var spawn_enemies_timer: Timer
-var _spawn_time: float = 15.0
 var _spawned_enemies_array: Array = []
 var _enemies_to_despawn_queue: Array = [] # Queue for enemies pending despawn
 
 func _ready() -> void:
-	AudioManager.change_music_clip(music)
-	level_args = GameManager.get_level_args()
-	boss_spawner.drops_table = level_args.boss_drop_table
-	random_drops.drops_table = level_args.enemies_drop_table
-	random_drops_2.drops_table = level_args.enemies_drop_table
-	
-	boss_progress_bar.max_value = time_to_spawn_boss
-	boss_progress_bar.value = 0.0
-#region Enemies Timer
-	spawn_enemies_timer = Timer.new()
-	add_child(spawn_enemies_timer)
-	spawn_enemies_timer.wait_time = _spawn_time
-	spawn_enemies_timer.one_shot = false
-	spawn_enemies_timer.timeout.connect(on_spawn_enemies_timer_timeout)
-	_spawned_enemies_array.append_array(_spawn_enemies(level_args.spawn_count))
-	spawn_enemies_timer.start()
-#endregion
+        AudioManager.change_music_clip(music)
+        level_args = GameManager.get_level_args()
+        boss_spawner.drops_table = level_args.boss_drop_table
+        random_drops.drops_table = level_args.enemies_drop_table
+        random_drops_2.drops_table = level_args.enemies_drop_table
+
+        boss_progress_bar.max_value = level_args.kills_to_spawn_boss
+        boss_progress_bar.value = 0.0
+
+        spawn_enemies_timer = Timer.new()
+        add_child(spawn_enemies_timer)
+        spawn_enemies_timer.wait_time = level_args.spawn_time
+        spawn_enemies_timer.one_shot = true
+        spawn_enemies_timer.timeout.connect(on_spawn_enemies_timer_timeout)
+
+        _start_new_wave()
 
 func _process(_delta: float) -> void:
 	_check_enemy_lifetime()
@@ -90,34 +88,38 @@ func _process_despawn_queue() -> void:
 		despawn_count += 1
 
 func _spawn_enemies(count: int) -> Array[Node]:
-	var enemies: Array[Node] = []
-	var spawners : Array = random_drops_holder.get_children()
-	
-	if spawners.is_empty():
-		push_error("WavesGameMode: Random drops holder is empty")
-		return enemies
+        var enemies: Array[Node] = []
+        var spawners : Array = random_drops_holder.get_children()
 
-	for i in range(count):
-		var random_spawner: RandomDrops = spawners[_rng.randi_range(0, spawners.size() - 1)]
-		
-		if not random_spawner:
-			push_warning("WavesGameMode: Random drops spawner is null")
-			continue
+        if spawners.is_empty():
+                push_error("WavesGameMode: Random drops holder is empty")
+                return enemies
 
-		var enemy: BaseEnemy = random_spawner.spawn_drops(1)
-		if enemy:
-			enemies.append(enemy)
-			enemy.drops_count = level_args.enemy_drops_count
-			enemy.Damaged.connect(on_enemy_damaged)
-			enemy.Fractured.connect(on_enemy_fractured)
-			enemy.Died.connect(on_enemy_died)
-			# enemy.Freed.connect(on_enemy_freed)
-			main_event_bus.emit_bullet_pool_setted(
-				{
-					"player_pool": player_bullets_pool,
-					"enemy_pool": enemy_bullets_pool,
-				})
-	return enemies
+        for i in range(count):
+                var random_spawner: RandomDrops = spawners[_rng.randi_range(0, spawners.size() - 1)]
+
+                if not random_spawner:
+                        push_warning("WavesGameMode: Random drops spawner is null")
+                        continue
+
+                var enemy: BaseEnemy = random_spawner.spawn_drops(1)
+                if enemy:
+                        enemies.append(enemy)
+                        enemy.drops_count = level_args.enemy_drops_count
+                        enemy.Damaged.connect(on_enemy_damaged)
+                        enemy.Fractured.connect(on_enemy_fractured)
+                        enemy.Died.connect(on_enemy_died)
+                        main_event_bus.emit_bullet_pool_setted(
+                                {
+                                        "player_pool": player_bullets_pool,
+                                        "enemy_pool": enemy_bullets_pool,
+                                })
+        return enemies
+
+func _start_new_wave() -> void:
+        enemies_in_current_wave = level_args.spawn_count
+        current_wave_kills = 0
+        _spawned_enemies_array.append_array(_spawn_enemies(enemies_in_current_wave))
 
 func spawnShapeVisualizer(cut_pos : Vector2, cut_shape : PackedVector2Array, color: Color, fade_speed : float) -> void:
 	var instance = _pool_cut_visualizer.getInstance()
@@ -137,7 +139,7 @@ func spawnFractureBody(fracture_shard : Dictionary, new_mass : float, color : Co
 	instance.addForce(dir * _p)
 
 func on_spawn_enemies_timer_timeout() -> void:
-	_spawned_enemies_array.append_array(_spawn_enemies(10))
+        _start_new_wave()
 
 func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
 	spawnShapeVisualizer(pos, shape, color, fade_speed)
@@ -147,11 +149,20 @@ func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
 
 func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
-	_spawned_enemies_array.erase(_ref)
-	if !natural_death:
-		kill_count += 1
-		label.text = "Enemies Killed: {0}".format([kill_count])
-		boss_progress_bar.value += 1
+        _spawned_enemies_array.erase(_ref)
+        if !natural_death:
+                kill_count += 1
+                current_wave_kills += 1
+                label.text = "Enemies Killed: {0}".format([kill_count])
+                boss_progress_bar.value = kill_count
+
+                if kill_count >= level_args.kills_to_spawn_boss and !boss_spawned:
+                        AudioManager.change_music_clip(boss_music)
+                        boss_spawner.spawn_drops(1)
+                        boss_spawned = true
+
+                if current_wave_kills >= enemies_in_current_wave and !boss_spawned:
+                        spawn_enemies_timer.start()
 
 func _on_boss_progress_bar_value_changed(value: float) -> void:
 	if value == boss_progress_bar.max_value:
