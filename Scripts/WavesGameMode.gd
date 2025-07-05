@@ -109,11 +109,8 @@ func _spawn_enemies(count: int) -> Array[Node]:
                         enemy.Damaged.connect(on_enemy_damaged)
                         enemy.Fractured.connect(on_enemy_fractured)
                         enemy.Died.connect(on_enemy_died)
-                        main_event_bus.emit_bullet_pool_setted(
-                                {
-                                        "player_pool": player_bullets_pool,
-                                        "enemy_pool": enemy_bullets_pool,
-                                })
+                        if enemy.has_method("set_bullet_pools"):
+                                enemy.set_bullet_pools(player_bullets_pool, enemy_bullets_pool)
         return enemies
 
 func _start_new_wave() -> void:
