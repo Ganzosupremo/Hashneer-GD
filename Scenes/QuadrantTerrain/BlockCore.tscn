@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=37 format=3 uid="uid://dqo2lrxl5di8o"]
 
 [ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
 [ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/QuadrantHit.tres" id="2_ehrd3"]
@@ -10,7 +10,9 @@
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_7drh7"]
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="7_j7cbf"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_pmhie"]
+[ext_resource type="Texture2D" uid="uid://byfxitvkdx3f8" path="res://Textures/VFX/Sparks.png" id="9_j7cbf"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wf5i4"]
+[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="10_hq16b"]
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_wf5i4"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_ehrd3"]
 
@@ -20,6 +22,13 @@ metadata/__load_path__ = "res://Textures/Black Image.png"
 [sub_resource type="CanvasTexture" id="CanvasTexture_hq16b"]
 diffuse_texture = ExtResource("6_08pad")
 normal_texture = ExtResource("7_j7cbf")
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_hq16b"]
+blend_mode = 1
+particles_animation = true
+particles_anim_h_frames = 5
+particles_anim_v_frames = 1
+particles_anim_loop = false
 
 [sub_resource type="Curve" id="Curve_v7xtn"]
 _data = [Vector2(0, 1), 0.0, -0.572136, 0, 1, Vector2(0.587771, 0.663715), -0.977458, -0.977458, 0, 0, Vector2(1, 0), -1.61006, 0.0, 1, 0]
@@ -62,6 +71,8 @@ curve = SubResource("Curve_kkell")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_epx75"]
 lifetime_randomness = 0.5
+particle_flag_align_y = true
+particle_flag_rotate_y = true
 particle_flag_disable_z = true
 emission_shape = 6
 emission_ring_axis = Vector3(0, 0, 1)
@@ -74,8 +85,8 @@ angle_max = 360.0
 angle_curve = SubResource("CurveTexture_qkmet")
 direction = Vector3(0, 1, 0)
 spread = 180.0
-initial_velocity_min = 10.0
-initial_velocity_max = 15.0
+initial_velocity_min = 50.0
+initial_velocity_max = 100.0
 orbit_velocity_min = -0.2
 orbit_velocity_max = 0.2
 orbit_velocity_curve = SubResource("CurveTexture_qfehm")
@@ -91,11 +102,11 @@ tangential_accel_max = 70.0
 damping_min = 1.0
 damping_max = 8.0
 damping_curve = SubResource("CurveTexture_olwjf")
-scale_min = 5.0
-scale_max = 15.0
 scale_curve = SubResource("CurveTexture_telbc")
 color_ramp = SubResource("GradientTexture1D_pssee")
 emission_curve = SubResource("CurveTexture_0qqqr")
+anim_speed_min = 0.5
+anim_speed_max = 1.2
 turbulence_enabled = true
 turbulence_noise_strength = 10.0
 turbulence_noise_speed = Vector3(10, 10, 0)
@@ -198,10 +209,13 @@ texture = ExtResource("5_tatvt")
 [node name="ShatterLine2D" type="Line2D" parent="ShatterVisualizer"]
 
 [node name="BlockCoreParticles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_hq16b")
 emitting = false
 amount = 50
 sub_emitter = NodePath("ExplosionEnd")
-lifetime = 7.0
+texture = ExtResource("9_j7cbf")
+lifetime = 0.7
+one_shot = true
 randomness = 0.5
 visibility_rect = Rect2(-110.353, -119.791, 231.584, 221.743)
 process_material = SubResource("ParticleProcessMaterial_epx75")
@@ -209,6 +223,8 @@ process_material = SubResource("ParticleProcessMaterial_epx75")
 [node name="ExplosionEnd" type="GPUParticles2D" parent="BlockCoreParticles"]
 emitting = false
 amount = 50
+texture = ExtResource("10_hq16b")
+one_shot = true
 explosiveness = 1.0
 randomness = 0.5
 visibility_rect = Rect2(-2.92889, -2.92596, 5.7912, 4642.98)
@@ -223,6 +239,7 @@ occluder_light_mask = 128
 [node name="PointLight2D" type="PointLight2D" parent="."]
 light_mask = 128
 visibility_layer = 128
+energy = 0.2
 range_item_cull_mask = 50
 shadow_enabled = true
 shadow_filter = 1

@@ -1,7 +1,5 @@
 class_name QuadrantBuilder extends Node2D
 
-signal quadrant_hitted(fiat_gained: float)
-
 #region Exports
 
 @export_category("Settings")
@@ -394,3 +392,4 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.set_polygon(shape_info.centered_shape)
 	instance_staticbody.self_modulate = color
 	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info, builder_args.hit_sound)
+	instance_staticbody.reset_health()

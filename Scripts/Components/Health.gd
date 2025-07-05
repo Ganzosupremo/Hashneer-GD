@@ -42,10 +42,12 @@ func set_current_health(_health: float) -> void:
 	_update_health()
 	if current_health <= 0.0:
 		zero_health.emit()
+	_update_health()
 
 func set_max_health(new_health: float):
 	max_health = new_health
 	current_health = max_health
+	_update_health()
 
 func get_current_health() -> float:
 	return current_health

@@ -26,29 +26,56 @@ func _ready() -> void:
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	if state.get_contact_count() <= 0: return
-	var damage_to_deal = ammo_details.bullet_damage_multiplied
 
 	var body = state.get_contact_collider_object(0)
 	var hit_pos: Vector2 = state.get_contact_collider_position(0)
+
+	_spawn_vfx_effect(hit_pos)
+	_handle_collision(body, hit_pos)
+	# if body is FracturableStaticBody2D and body is not BlockCore and q_b:
+	# 	var pos : Vector2 = state.get_contact_collider_position(0)
+	# 	q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
+	# 	call_deferred("destroy")
+	# elif body is BlockCore and q_b:
+	# 	q_b.fracture_block_core(damage_to_deal, "Player")
+	# 	call_deferred("destroy")
+	# elif body is BaseEnemy:
+	# 	var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
+	# 	body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.25, modulate)
+	# 	call_deferred("destroy")
+	# elif body is ShieldComponent:
+	# 	body.call_deferred("absorb_damage", ammo_details.fracture_damage.x, global_position)
+	# 	call_deferred("destroy")
+	# elif body is PlayerController:
+	# 	body.damage(ammo_details.bullet_damage)
+	# 	call_deferred("destroy")
+
+func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	var angle: float = linear_velocity.angle() + PI
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos), ammo_details.bullet_hit_vfx)
+
+func _handle_collision(body: Node2D, pos: Vector2) -> void:
+	var damage_to_deal = ammo_details.bullet_damage_multiplied
+	
 	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
-		var pos : Vector2 = state.get_contact_collider_position(0)
 		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
-		call_deferred("destroy")
+		_schedule_destruction()
 	elif body is BlockCore and q_b:
 		q_b.fracture_block_core(damage_to_deal, "Player")
-		call_deferred("destroy")
+		_schedule_destruction()
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
 		body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.25, modulate)
-		call_deferred("destroy")
+		_schedule_destruction()
 	elif body is ShieldComponent:
 		body.call_deferred("absorb_damage", ammo_details.fracture_damage.x, global_position)
-		call_deferred("destroy")
+		_schedule_destruction()
 	elif body is PlayerController:
 		body.damage(ammo_details.bullet_damage)
-		call_deferred("destroy")
+		_schedule_destruction()
+
+func _schedule_destruction() -> void:
+	call_deferred("destroy")
 
 func set_velocity(vel: Vector2):
 	launch_velocity = vel.length()

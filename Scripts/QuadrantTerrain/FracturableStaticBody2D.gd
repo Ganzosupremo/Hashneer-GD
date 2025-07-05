@@ -73,34 +73,18 @@ var destroyed: bool = false
 
 func _ready() -> void:
 	health.zero_health.connect(_on_zero_health)
-	
 	_rng.randomize()
 	if placed_in_level:
 		var poly = create_polygon_shape()
 		
 		setPolygon(poly)
-		
-		
-		if randomize_texture_properties and is_instance_valid(poly_texture):
-			var rand_scale : float = _rng.randf_range(0.25, 0.75)
-			var t_size = poly_texture.get_size() / rand_scale
-			var offset_range = t_size.x * 0.25
-			_polygon2d.texture_offset = (t_size / 2) + Vector2(_rng.randf_range(-offset_range, offset_range), _rng.randf_range(-offset_range, offset_range))
-			_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
-			_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
+		_apply_random_texture_properties()
 
 ## Recreates the polygon shape with current parameters
 func recreate_polygon_shape() -> void:
 	var poly = create_polygon_shape()
 	setPolygon(poly)
-
-	if randomize_texture_properties and is_instance_valid(poly_texture):
-		var rand_scale : float = _rng.randf_range(0.25, 0.75)
-		var t_size = poly_texture.get_size() / rand_scale
-		var offset_range = t_size.x * 0.25
-		_polygon2d.texture_offset = (t_size / 2) + Vector2(_rng.randf_range(-offset_range, offset_range), _rng.randf_range(-offset_range, offset_range))
-		_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
-		_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
+	_apply_random_texture_properties()
 
 ## Creates a polygon shape based on the selected shape type and parameters
 func create_polygon_shape() -> PackedVector2Array:
@@ -118,11 +102,22 @@ func create_polygon_shape() -> PackedVector2Array:
 		_:
 			return PackedVector2Array([])
 
+func reset_health() -> void:
+	health.set_current_health(health.get_max_health())
+
 func _on_zero_health() -> void:
 	AudioManager.create_2d_audio_at_location(global_position, sound_effect_on_destroy.sound_type, sound_effect_on_destroy.destination_audio_bus)
 	destroyed = true
 
-# ______________________Geters and Setters_______________________________________
+func _apply_random_texture_properties() -> void:
+	if randomize_texture_properties and is_instance_valid(poly_texture):
+		var rand_scale : float = _rng.randf_range(0.25, 0.75)
+		var t_size = poly_texture.get_size() / rand_scale
+		var offset_range = t_size.x * 0.25
+		_polygon2d.texture_offset = (t_size / 2) + Vector2(_rng.randf_range(-offset_range, offset_range), _rng.randf_range(-offset_range, offset_range))
+		_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
+		_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
+
 #region Getters and Setters
 
 func set_initial_health(initial_health: float) -> void:

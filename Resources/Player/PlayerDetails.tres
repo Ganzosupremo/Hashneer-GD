@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="PlayerDetails" load_steps=21 format=3 uid="uid://cy7f2rybcjt4v"]
+[gd_resource type="Resource" script_class="PlayerDetails" load_steps=22 format=3 uid="uid://cy7f2rybcjt4v"]
 
 [ext_resource type="Script" uid="uid://btnlbrr52ggm" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="2_ori8x"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_sybgm"]
 [ext_resource type="Resource" uid="uid://bpmg8awb0dpxs" path="res://Resources/Audio/PlayerWalkSoundEffect.tres" id="5_v2ko2"]
 [ext_resource type="Resource" uid="uid://bkkyj440tbud" path="res://Resources/Audio/PlayerHitSoundEffect.tres" id="7_fqb2i"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="8_sybgm"]
 
 [sub_resource type="Gradient" id="Gradient_ori8x"]
 offsets = PackedFloat32Array(0, 0.376543, 0.722222, 1)
@@ -126,7 +127,7 @@ speed = 250.0
 max_health = 300.0
 damage_multiplier = 1.0
 initial_weapon = ExtResource("3_s2elr")
-weapons_array = [ExtResource("3_s2elr")]
+weapons_array = Array[ExtResource("8_sybgm")]([ExtResource("3_s2elr")])
 move_sound_effect = ExtResource("5_v2ko2")
 hit_sound_effect = ExtResource("7_fqb2i")
 dead_sound_effect = ExtResource("2_s2elr")

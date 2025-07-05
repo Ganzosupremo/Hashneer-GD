@@ -267,7 +267,7 @@ occluder_light_mask = 170
 [node name="CurrencyInventory" type="Node2D" parent="."]
 script = ExtResource("15_esmjy")
 
-[node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node", "sound_player")]
+[node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node")]
 collision_layer = 128
 collision_mask = 528
 gravity_point = true
@@ -278,7 +278,6 @@ script = ExtResource("13_0u84n")
 actor = NodePath("..")
 inventory_node = NodePath("../CurrencyInventory")
 access = SubResource("Resource_6tu5v")
-sound_player = NodePath("")
 metadata/_custom_type_script = "uid://b542eoymso6xc"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupsCollector2D"]
