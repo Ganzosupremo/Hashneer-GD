@@ -52,9 +52,6 @@ var level_index: int = 0
 ## for each level
 @export var boss_drop_table: DropsTable
 
-func _init() -> void:
-	pass
-
 
 func get_initial_quadrant_health() -> float:
 	return initial_health

@@ -1,8 +1,8 @@
-[gd_scene load_steps=16 format=3 uid="uid://crwlndhaddjpy"]
+[gd_scene load_steps=16 format=3 uid="uid://nrfti3hkeyq4"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
-[ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShooterEnemy.gd" id="2_28o60"]
+[ext_resource type="Script" path="res://Scripts/Enemies/ShotingEnemy.gd" id="2_28o60"]
 [ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="3_28o60"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]

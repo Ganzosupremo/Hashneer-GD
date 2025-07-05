@@ -30,7 +30,9 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [node name="SquareBoss" instance=ExtResource("1_glr62")]
 mass = 10.0
 script = ExtResource("2_fkfjs")
-advanced_regeneration = true
+charge_cooldown_range = Vector2(1.5, 3)
+charge_duration = 0.69
+charge_speed = 800.0
 invincible_time = 0.25
 color_default = Color(0.965179, 0.0726337, 0.403013, 1)
 knockback_resistance_base = 2.0
