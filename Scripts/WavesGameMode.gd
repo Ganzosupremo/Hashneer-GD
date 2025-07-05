@@ -102,19 +102,16 @@ func _spawn_enemies(count: int) -> Array[Node]:
 						push_warning("WavesGameMode: Random drops spawner is null")
 						continue
 
-				var enemy: BaseEnemy = random_spawner.spawn_drops(1)
-				if enemy:
-						enemies.append(enemy)
-						enemy.drops_count = level_args.enemy_drops_count
-						enemy.Damaged.connect(on_enemy_damaged)
-						enemy.Fractured.connect(on_enemy_fractured)
-						enemy.Died.connect(on_enemy_died)
-						main_event_bus.emit_bullet_pool_setted(
-								{
-										"player_pool": player_bullets_pool,
-										"enemy_pool": enemy_bullets_pool,
-								})
-		return enemies
+                var enemy: BaseEnemy = random_spawner.spawn_drops(1)
+                if enemy:
+                        enemies.append(enemy)
+                        enemy.drops_count = level_args.enemy_drops_count
+                        enemy.Damaged.connect(on_enemy_damaged)
+                        enemy.Fractured.connect(on_enemy_fractured)
+                        enemy.Died.connect(on_enemy_died)
+                        if enemy.has_method("set_bullet_pools"):
+                                enemy.set_bullet_pools(player_bullets_pool, enemy_bullets_pool)
+        return enemies
 
 func _start_new_wave() -> void:
 		enemies_in_current_wave = level_args.spawn_count
