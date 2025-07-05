@@ -15,7 +15,6 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 @onready var bullet_spawn_position : Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition
 @onready var _fire_cooldown_timer: Timer = %FireCooldownTimer
-@onready var pool_fracture_bullets: PoolFracture = get_tree().get_first_node_in_group("FractureBulletsPool")
 
 
 var fire_rate_cooldown_timer: float = 0.0
@@ -24,14 +23,8 @@ var quadrant_builder: QuadrantBuilder
 var current_pool: PoolFracture
 
 func _ready() -> void:
-	#main_event_bus.bullet_pool_setted.connect(_on_bullet_pool_setted)
-	quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
-	set_bullet_pools(get_tree().get_first_node_in_group("PBulletsPool"), get_tree().get_first_node_in_group("EBulletsPool"))
+    quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
 
-func _on_bullet_pool_setted(args: MainEventBus.BulletPoolSettedArgs) -> void:
-	var player_pool: PoolFracture = args.pools["player_pool"]
-	var enemy_pool: PoolFracture = args.pools["enemy_pool"]
-	set_bullet_pools(player_pool, enemy_pool)
 
 func _process(delta: float) -> void:
 	fire_rate_cooldown_timer -= delta
@@ -109,9 +102,6 @@ func ready_to_fire() -> bool:
 
 func reset_cooldown_timer() -> void:
 	fire_rate_cooldown_timer = current_weapon.fire_rate
-
-func set_pool_paths(player_pool: PoolFracture, enemy_pool: PoolFracture) -> void:
-	set_bullet_pools(player_pool, enemy_pool)
 
 func set_bullet_pools(player_pool: PoolFracture, enemy_pool: PoolFracture) -> void:
 	if is_enemy_weapon:
