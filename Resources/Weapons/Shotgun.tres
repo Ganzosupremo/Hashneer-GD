@@ -24,7 +24,6 @@ bullet_spawn_interval_max = 0.025
 trail_gradient = SubResource("Gradient_ubo30")
 trail_length = 5
 trail_width = 9.0
-fracture_damage = Vector2(15, 15)
 fracture_force = 25000.0
 
 [sub_resource type="Resource" id="Resource_eukx2"]
@@ -44,10 +43,9 @@ fire_sound = ExtResource("3_kfa2b")
 weapon_damage_multiplier = 0.0
 ammo_details = SubResource("Resource_1gnsf")
 weapon_shoot_effect = SubResource("Resource_eukx2")
-fire_rate = 0.7
+shots_per_second = 1.43
 precharge_time = 0.0
-spread_min = 0.7
-spread_max = 0.85
+spread = 0.85
 amplitude = 4.0
 frequency = 15.0
 duration = 0.9

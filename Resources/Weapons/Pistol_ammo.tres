@@ -69,6 +69,5 @@ bullet_spawn_interval_max = 0.0
 trail_gradient = SubResource("Gradient_x0ieh")
 trail_length = 5
 trail_width = 15.0
-fracture_damage = Vector2(50, 50)
 fracture_force = 10000.0
 bullet_hit_vfx = SubResource("Resource_nuhma")

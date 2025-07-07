@@ -17,6 +17,9 @@ signal Despawn(ref)
 var q_b: QuadrantBuilder = null
 var launch_velocity : float = 0.0
 var ammo_details: AmmoDetails
+var bullet_type: Constants.BulletType = Constants.BulletType.NORMAL
+var max_hits: int = 1
+var hits_done: int = 0
 
 
 func _ready() -> void:
@@ -55,24 +58,30 @@ func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos), ammo_details.bullet_hit_vfx)
 
 func _handle_collision(body: Node2D, pos: Vector2) -> void:
-	var damage_to_deal = ammo_details.bullet_damage_multiplied
-	
-	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
-		q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
-		_schedule_destruction()
-	elif body is BlockCore and q_b:
-		q_b.fracture_block_core(damage_to_deal, "Player")
-		_schedule_destruction()
-	elif body is BaseEnemy:
-		var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
-		body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.25, modulate)
-		_schedule_destruction()
-	elif body is ShieldComponent:
-		body.call_deferred("absorb_damage", ammo_details.fracture_damage.x, global_position)
-		_schedule_destruction()
-	elif body is PlayerController:
-		body.damage(ammo_details.bullet_damage)
-		_schedule_destruction()
+        var damage_to_deal = ammo_details.bullet_damage_multiplied
+
+        if body is FracturableStaticBody2D and body is not BlockCore and q_b:
+                q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
+        elif body is BlockCore and q_b:
+                q_b.fracture_block_core(damage_to_deal, "Player")
+        elif body is BaseEnemy:
+                var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
+                body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.25, modulate)
+        elif body is ShieldComponent:
+                body.call_deferred("absorb_damage", damage_to_deal, global_position)
+        elif body is PlayerController:
+                body.damage(damage_to_deal)
+
+        hits_done += 1
+        match bullet_type:
+                Constants.BulletType.PIERCING:
+                        if hits_done < max_hits:
+                                return
+                Constants.BulletType.BOUNCING:
+                        if hits_done < max_hits and body is StaticBody2D:
+                                linear_velocity = linear_velocity.bounce((global_position - pos).normalized())
+                                return
+        _schedule_destruction()
 
 func _schedule_destruction() -> void:
 	call_deferred("destroy")
@@ -81,8 +90,11 @@ func set_velocity(vel: Vector2):
 	launch_velocity = vel.length()
 
 func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_builder: QuadrantBuilder, ammo_data: AmmoDetails) -> void:
-	self.ammo_details = ammo_data
-	self.q_b = quadrant_builder
+        self.ammo_details = ammo_data
+        self.q_b = quadrant_builder
+        self.bullet_type = ammo_data.bullet_type
+        self.max_hits = max(1, ammo_data.max_hits)
+        self.hits_done = 0
 	
 	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)

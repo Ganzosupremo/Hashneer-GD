@@ -16,10 +16,11 @@ class_name WeaponDetails extends Resource
 @export var weapon_shoot_effect: VFXEffectProperties
 
 @export_category("Weapon Fire Details")
-@export var fire_rate: float = 0.25
+## Shots that can be fired per second
+@export var shots_per_second: float = 1.0
 @export var precharge_time: float = 0.0
-@export_range(0.0, 1.0) var spread_min: float = 0.0
-@export_range(0.0, 1.0) var spread_max: float = 0.001
+## Maximum spread angle in radians for patterns that use spread
+@export_range(0.0, 1.0) var spread: float = 0.0
 
 @export_category("Weapon Shake")
 ## Movement to side to side
@@ -38,7 +39,7 @@ class_name WeaponDetails extends Resource
 var weapon_list_index: int = 0
 
 func set_fire_rate(value: float) -> void:
-	fire_rate = value
+        shots_per_second = value
 
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
@@ -51,11 +52,10 @@ func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
 	weapon_damage_multiplier = 1.0
 	ammo_details = AmmoDetails.new()
 	weapon_shoot_effect = null
-	fire_rate = 0.25
-	precharge_time = 0.0
-	spread_min = 0.0
-	spread_max = 0.001
+        shots_per_second = 1.0
+        precharge_time = 0.0
+        spread = 0.0
 
 
 func _to_string() -> String:
-	return "Weapon name: %s" % weapon_name + "\n\nWeapon texture: %" % weapon_texture + "\n\nFire sound: %" % fire_sound + "\n\nAmmo details: %" % ammo_details + "\n\nWeapon shoot effect: %" % weapon_shoot_effect + "\n\nFire rate: %.2f" % fire_rate + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nWeapon spread: min %.2f - max %.2f" % [spread_min, spread_max]
+        return "Weapon name: %s" % weapon_name + "\n\nWeapon texture: %" % weapon_texture + "\n\nFire sound: %" % fire_sound + "\n\nAmmo details: %" % ammo_details + "\n\nWeapon shoot effect: %" % weapon_shoot_effect + "\n\nShots/s: %.2f" % shots_per_second + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nSpread: %.2f" % spread

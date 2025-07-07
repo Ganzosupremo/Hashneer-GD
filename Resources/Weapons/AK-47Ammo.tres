@@ -20,5 +20,4 @@ bullet_spawn_interval_max = 0.0
 trail_gradient = SubResource("Gradient_jbavf")
 trail_length = 11
 trail_width = 12.0
-fracture_damage = Vector2(30, 30)
 fracture_force = 10000.0

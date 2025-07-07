@@ -10,6 +10,12 @@ class_name AmmoDetails
 @export var bullet_damage: float = 25.0
 ## The speed of the bullet
 @export var bullet_speed: float = 1000.0
+# Bullet behaviour type
+@export var bullet_type: Constants.BulletType = Constants.BulletType.NORMAL
+# Pattern used when firing this ammo
+@export var bullet_pattern: Constants.BulletPattern = Constants.BulletPattern.SINGLE
+# Maximum number of targets this bullet can hit (for piercing/bouncing)
+@export var max_hits: int = 1
 # The radius of this bullet
 @export var size: int = 10
 ### The amount of bullets to spawn per single shoot, a random value will be selected from the min and max
@@ -27,9 +33,7 @@ class_name AmmoDetails
 @export_range(1.0, 30.0, 0.5) var trail_width: float = 20.0
 
 @export_category("Fracture Parameters")
-## The amount of damage dealed to a fracturable object, i.e. an enemy
-@export var fracture_damage: Vector2 = Vector2(50, 50)
-## The amount of force applied to a fracturable object, i.e. an enemy
+## Force applied to fractured objects, i.e. an enemy
 @export var fracture_force: float = 15_000.0
 
 @export_category("VFX")
@@ -38,3 +42,5 @@ class_name AmmoDetails
 
 ## The damage dealt by the bullet multiplied by the damage multiplier
 var bullet_damage_multiplied: float = 0.0
+# Dictionary storing upgrade modifiers for this ammo
+var upgrade_modifiers: Dictionary = {}
