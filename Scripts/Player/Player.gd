@@ -85,13 +85,18 @@ func set_weapon() -> void:
 
 func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	can_move = false
-
+	collision_layer = 0
+	collision_mask = 0
 	for ability in abilities:
 		ability.disable()
 
 func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
+## Applies damage to the player and plays hit sound and visual effects.
+## @param _damage: The amount of damage to apply.
+## @param hit_position: The position where the hit occurred, used for visual effects.
+## If not provided, defaults to Vector2.ZERO.
 func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0

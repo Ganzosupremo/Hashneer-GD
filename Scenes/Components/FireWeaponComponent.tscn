@@ -1,15 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://c34f41tllr1ql"]
+[gd_scene load_steps=2 format=3 uid="uid://c34f41tllr1ql"]
 
 [ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="1_4f7da"]
-[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="2_7aix1"]
 
 [node name="FireWeapon" type="Node2D"]
 script = ExtResource("1_4f7da")
-
-[node name="SoundEffectComponent" parent="." instance=ExtResource("2_7aix1")]
-autoplay = true
-bus = &"Weapons"
-playback_type = 1
 
 [node name="FireCooldownTimer" type="Timer" parent="."]
 unique_name_in_owner = true

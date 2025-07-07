@@ -1,0 +1,128 @@
+[gd_scene load_steps=16 format=3 uid="uid://nrfti3hkeyq4"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
+[ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShooterEnemy.gd" id="2_hxamy"]
+[ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_xg7bx"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
+[ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="5_u1hpi"]
+[ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="8_i5djr"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13lb"]
+scale_min = 5.0
+scale_max = 10.0
+
+[sub_resource type="Resource" id="Resource_4y2qm"]
+script = ExtResource("3_xg7bx")
+amount = 50
+lifetime = 1.0
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_q13lb")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="Resource" id="Resource_nx4ij"]
+script = ExtResource("2_2phcg")
+min_lifetime = 1.0
+max_lifetime = 5.0
+bullet_damage = 100.0
+bullet_speed = 1000.0
+size = 10
+bullets_per_shoot_min = 1
+bullets_per_shoot_max = 1
+bullet_spawn_interval_min = 0.0
+bullet_spawn_interval_max = 0.0
+trail_length = 20
+trail_width = 20.0
+fracture_damage = Vector2(50, 50)
+fracture_force = 15000.0
+bullet_hit_vfx = SubResource("Resource_4y2qm")
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6mcbm"]
+scale_min = 5.0
+scale_max = 10.0
+
+[sub_resource type="Resource" id="Resource_hvhwf"]
+script = ExtResource("3_xg7bx")
+amount = 50
+lifetime = 1.0
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_6mcbm")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="Resource" id="Resource_58qa6"]
+script = ExtResource("4_nrp74")
+weapon_name = "Enemy Pistol"
+fire_sound = ExtResource("5_u1hpi")
+weapon_damage_multiplier = 0.0
+ammo_details = SubResource("Resource_nx4ij")
+weapon_shoot_effect = SubResource("Resource_hvhwf")
+fire_rate = 0.5
+precharge_time = 0.0
+spread_min = 0.0
+spread_max = 0.001
+amplitude = 3.0
+frequency = 5.0
+duration = 0.5
+axis_ratio = 0.0
+armonic_ration = Array[int]([1, 1])
+phase_offset = 90
+samples = 10
+shake_trans = 0
+metadata/_custom_type_script = "uid://c3oqvnse8erag"
+
+[node name="ShooterEnemy" instance=ExtResource("1_k4fs6")]
+script = ExtResource("2_hxamy")
+can_shoot = true
+weapon = SubResource("Resource_58qa6")
+shooting_duration_interval = Vector2(2, 3)
+shooting_cooldown_interval = Vector2(5, 10)
+invincible_time = 0.0
+shape_area_percent = 0.2
+fractures = 2
+max_speed = 125.0
+polygon_shape = 4
+s_p_number = 12
+s_a = 125.0
+s_b = 160.0
+min_m = 13.05
+m = 22.0
+min_n1 = 0.3
+n1 = 0.3
+min_n2 = 0.3
+n2 = 0.3
+min_n3 = 0.3
+n3 = 0.3
+
+[node name="ShotingMechanics" type="Node2D" parent="." index="0"]
+
+[node name="ActiveWeaponComponent" type="Node2D" parent="ShotingMechanics" index="0"]
+script = ExtResource("2_ubhwd")
+metadata/_custom_type_script = "uid://bmphh71yg4oct"
+
+[node name="FireWeapon" type="Node2D" parent="ShotingMechanics" index="1" node_paths=PackedStringArray("active_weapon_component")]
+script = ExtResource("8_i5djr")
+main_event_bus = ExtResource("10_vfbhq")
+shake_camera_on_fire = false
+active_weapon_component = NodePath("../ActiveWeaponComponent")
+is_enemy_weapon = true
+use_object_pool = true
+
+[node name="FireCooldownTimer" type="Timer" parent="ShotingMechanics/FireWeapon" index="0"]
+unique_name_in_owner = true
+
+[node name="BulletFirePosition" type="Marker2D" parent="ShotingMechanics" index="2"]
+unique_name_in_owner = true
+position = Vector2(62, 0)
+
+[node name="ShootEffectPosition" type="Marker2D" parent="ShotingMechanics" index="3"]
+unique_name_in_owner = true
+position = Vector2(55, 0)

@@ -28,7 +28,6 @@ class_name QuadrantBuilder extends Node2D
 @onready var _pool_cut_visualizer: PoolFracture = $"../PoolFractureCutVisualizer"
 @onready var _pool_fracture_shards: PoolFracture = $"../PoolFractureShards"
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
-@onready var _pool_fracture_bullet: PoolFracture = $"../Pool_FractureBullets"
 @onready var block_core: BlockCore = %BlockCore
 @onready var map_boundaries: StaticBody2D = %MapBoundaries
 @onready var center: Area2D = %Center
@@ -46,7 +45,6 @@ var _quadrant_positions: Array = []
 #region Private Methods
 
 func _ready() -> void:
-	GameManager.pool_fracture_bullets = _pool_fracture_bullet
 	GameManager.current_quadrant_builder = self
 	AudioManager.change_music_clip(music)
 	_init_builder()

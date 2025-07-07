@@ -125,6 +125,7 @@ var regeneration_started : bool = false
 var polygon_restorer : PolygonRestorer = null
 var spawn_timestamp : int = 0
 var drops_count : int = 0
+var is_player_dead: bool = false
 
 @onready var find_new_target_pos_tolerance_sq : float = find_new_target_pos_tolerance * find_new_target_pos_tolerance
 @onready var target_reached_tolerance_sq : float = target_reached_tolerance * target_reached_tolerance
@@ -149,7 +150,7 @@ func _ready() -> void:
 	var new_polygon : PackedVector2Array = _createPolygonShape()
 	start_poly = new_polygon
 	setPolygon(start_poly)
-
+	GameManager.player.get_health_node().zero_health.connect(_on_player_health_zero)
 	spawn_timestamp = Time.get_ticks_msec()
 	_rng.randomize()
 	
@@ -267,6 +268,7 @@ func applyColor(color : Color) -> void:
 	_line.modulate = color
 	_origin_poly.modulate = color
 
+##
 func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector2, knockback_time : float, damage_color : Color) -> Dictionary:
 	if isDead(): 
 		return {"percent_cut" : 0.0, "dead" : true}
@@ -574,9 +576,5 @@ func _on_TargetPosTimer_timeout() -> void:
 func on_regeneration_timer_timeout() -> void:
 	heal(_health_component.regeneration_amount)
 
-
-func _on_off_screen_notifier_screen_exited() -> void:
-	pass
-	# Freed.emit(self)
-	# await GameManager.init_timer(.8).timeout
-	# queue_free()
+func _on_player_health_zero() -> void:
+	is_player_dead = true
