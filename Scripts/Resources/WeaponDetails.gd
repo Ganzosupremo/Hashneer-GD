@@ -6,7 +6,7 @@ class_name WeaponDetails extends Resource
 
 @export var fire_sound: SoundEffectDetails
 ## This will be added to the bullet's final damage
-@export_range(1.0, 5.0, 0.5) var weapon_damage_multiplier: float
+@export_range(0.0, 1.0, 0.5) var weapon_damage_multiplier: float
 
 @export_category("Ammo Details")
 @export var ammo_details: AmmoDetails
@@ -39,11 +39,10 @@ class_name WeaponDetails extends Resource
 var weapon_list_index: int = 0
 
 func set_fire_rate(value: float) -> void:
-        shots_per_second = value
+	shots_per_second = value
 
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
-
 
 func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
 	weapon_name = "Default Weapon"
@@ -52,10 +51,6 @@ func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
 	weapon_damage_multiplier = 1.0
 	ammo_details = AmmoDetails.new()
 	weapon_shoot_effect = null
-        shots_per_second = 1.0
-        precharge_time = 0.0
-        spread = 0.0
-
-
-func _to_string() -> String:
-        return "Weapon name: %s" % weapon_name + "\n\nWeapon texture: %" % weapon_texture + "\n\nFire sound: %" % fire_sound + "\n\nAmmo details: %" % ammo_details + "\n\nWeapon shoot effect: %" % weapon_shoot_effect + "\n\nShots/s: %.2f" % shots_per_second + "\n\nPrecharge time: %.2f" % precharge_time + "\n\nSpread: %.2f" % spread
+	shots_per_second = 1.0
+	precharge_time = 0.0
+	spread = 0.0

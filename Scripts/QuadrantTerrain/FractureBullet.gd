@@ -17,9 +17,9 @@ signal Despawn(ref)
 var q_b: QuadrantBuilder = null
 var launch_velocity : float = 0.0
 var ammo_details: AmmoDetails
-var bullet_type: Constants.BulletType = Constants.BulletType.NORMAL
-var max_hits: int = 1
-var hits_done: int = 0
+var bullet_type: AmmoDetails.BulletType = AmmoDetails.BulletType.NORMAL
+var remaining_pierce: int = 0
+var remaining_bounce: int = 0
 
 
 func _ready() -> void:
@@ -35,53 +35,75 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 
 	_spawn_vfx_effect(hit_pos)
 	_handle_collision(body, hit_pos)
-	# if body is FracturableStaticBody2D and body is not BlockCore and q_b:
-	# 	var pos : Vector2 = state.get_contact_collider_position(0)
-	# 	q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
-	# 	call_deferred("destroy")
-	# elif body is BlockCore and q_b:
-	# 	q_b.fracture_block_core(damage_to_deal, "Player")
-	# 	call_deferred("destroy")
-	# elif body is BaseEnemy:
-	# 	var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
-	# 	body.call_deferred("damage", ammo_details.fracture_damage, global_position, force, 0.25, modulate)
-	# 	call_deferred("destroy")
-	# elif body is ShieldComponent:
-	# 	body.call_deferred("absorb_damage", ammo_details.fracture_damage.x, global_position)
-	# 	call_deferred("destroy")
-	# elif body is PlayerController:
-	# 	body.damage(ammo_details.bullet_damage)
-	# 	call_deferred("destroy")
 
 func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	var angle: float = linear_velocity.angle() + PI
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(angle, hit_pos), ammo_details.bullet_hit_vfx)
 
+## Handles collision between a bullet and a target object
+## @param body: The Node2D that was collided with
+## @param pos: The Vector2 position of the collision
+## 
+## Applies appropriate damage behavior based on the type of object hit:
+## - FracturableStaticBody2D: Fractures the quadrant at collision point
+## - BlockCore: Fractures the block core
+## - BaseEnemy: Applies damage with force and knockback
+## - ShieldComponent: Makes the shield absorb damage
+## - PlayerController: Damages the player
+## After handling the collision type, processes the hit effect
 func _handle_collision(body: Node2D, pos: Vector2) -> void:
-        var damage_to_deal = ammo_details.bullet_damage_multiplied
+	var damage_to_deal = ammo_details.damage_final
 
-        if body is FracturableStaticBody2D and body is not BlockCore and q_b:
-                q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
-        elif body is BlockCore and q_b:
-                q_b.fracture_block_core(damage_to_deal, "Player")
-        elif body is BaseEnemy:
-                var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
-                body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.25, modulate)
-        elif body is ShieldComponent:
-                body.call_deferred("absorb_damage", damage_to_deal, global_position)
-        elif body is PlayerController:
-                body.damage(damage_to_deal)
+	if body is FracturableStaticBody2D and body is not BlockCore and q_b:
+			q_b.fracture_quadrant_on_collision(pos, body, launch_velocity, damage_to_deal, ammo_details.bullet_speed)
+	elif body is BlockCore and q_b:
+			q_b.fracture_block_core(damage_to_deal, "Player")
+	elif body is BaseEnemy:
+			var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
+			body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.25, modulate)
+	elif body is ShieldComponent:
+			body.call_deferred("absorb_damage", damage_to_deal, global_position)
+	elif body is PlayerController:
+			body.damage(damage_to_deal)
+	else:
+		_schedule_destruction()
+	_process_hit(body, pos)
 
-        hits_done += 1
-        match bullet_type:
-                Constants.BulletType.PIERCING:
-                        if hits_done < max_hits:
-                                return
-                Constants.BulletType.BOUNCING:
-                        if hits_done < max_hits and body is StaticBody2D:
-                                linear_velocity = linear_velocity.bounce((global_position - pos).normalized())
-                                return
-        _schedule_destruction()
+## Processes what happens to the bullet after hitting something
+## @param body: The Node2D that was hit
+## @param body_pos: The Vector2 position of the hit
+##
+## Behavior depends on bullet type:
+## - NORMAL/LASER/EXPLOSIVE: Destroys bullet immediately
+## - PIERCING: Decrements remaining pierce count, destroys if depleted
+## - BOUNCING: Decrements bounce count and reflects if possible, otherwise destroys
+## - Other types: Destroys bullet
+func _process_hit(body: Node2D, body_pos: Vector2) -> void:
+	match bullet_type:
+		AmmoDetails.BulletType.NORMAL, AmmoDetails.BulletType.LASER, AmmoDetails.BulletType.EXPLOSIVE:
+			_schedule_destruction()
+		AmmoDetails.BulletType.PIERCING:
+			remaining_pierce -= 1
+			if remaining_pierce < 0:
+				_schedule_destruction()
+		AmmoDetails.BulletType.BOUNCING:
+			if remaining_bounce > 0 and _can_bounce_off(body):
+				remaining_bounce -= 1
+				linear_velocity = linear_velocity.bounce((global_position - body_pos).normalized())
+			else:
+				_schedule_destruction()
+		_:
+			_schedule_destruction()
+
+
+func _can_bounce_off(body: Node2D) -> bool:
+	if body is StaticBody2D or body is FracturableStaticBody2D:
+		return true
+	elif body is TileMapLayer:
+		return true
+	elif body is BlockCore: 
+		return true
+	return false
 
 func _schedule_destruction() -> void:
 	call_deferred("destroy")
@@ -90,11 +112,13 @@ func set_velocity(vel: Vector2):
 	launch_velocity = vel.length()
 
 func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_builder: QuadrantBuilder, ammo_data: AmmoDetails) -> void:
-        self.ammo_details = ammo_data
-        self.q_b = quadrant_builder
-        self.bullet_type = ammo_data.bullet_type
-        self.max_hits = max(1, ammo_data.max_hits)
-        self.hits_done = 0
+	self.ammo_details = ammo_data
+	self.q_b = quadrant_builder
+
+	self.remaining_bounce = ammo_data.get_total_bounce()
+	self.remaining_pierce = ammo_data.get_total_pierce()
+	self.bullet_type = ammo_data.bullet_type
+	print_debug("FractureBullet: Spawning bullet with behavior: {0}, pierce: {1}, bounce: {2}".format([ammo_data.bullet_type, self.remaining_pierce, self.remaining_bounce]))
 	
 	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)
