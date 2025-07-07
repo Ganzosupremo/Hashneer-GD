@@ -12,6 +12,7 @@ signal Despawn(ref)
 @onready var _collision_box_component_polygon: CollisionPolygon2D = %CollisionBoxComponentPolygon
 @onready var trail: BulletTrailComponent = %BulletTrail
 @onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
+@onready var bouncy_material: PhysicsMaterial = preload("res://Resources/WeaponResourcesUtils/FractureBulletPhysicsMaterial.tres")
 
 
 var q_b: QuadrantBuilder = null
@@ -20,6 +21,7 @@ var ammo_details: AmmoDetails
 var bullet_type: AmmoDetails.BulletType = AmmoDetails.BulletType.NORMAL
 var remaining_pierce: int = 0
 var remaining_bounce: int = 0
+var last_collision_body: Node2D = null
 
 
 func _ready() -> void:
@@ -28,11 +30,16 @@ func _ready() -> void:
 		Despawn.connect(despawn)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
-	if state.get_contact_count() <= 0: return
+	if state.get_contact_count() <= 0: 
+		last_collision_body = null
+		return
 
 	var body = state.get_contact_collider_object(0)
+	if body == last_collision_body:
+		return
+	
+	last_collision_body = body
 	var hit_pos: Vector2 = state.get_contact_collider_position(0)
-
 	_spawn_vfx_effect(hit_pos)
 	_handle_collision(body, hit_pos)
 
@@ -65,9 +72,9 @@ func _handle_collision(body: Node2D, pos: Vector2) -> void:
 			body.call_deferred("absorb_damage", damage_to_deal, global_position)
 	elif body is PlayerController:
 			body.damage(damage_to_deal)
-	else:
-		_schedule_destruction()
-	_process_hit(body, pos)
+	# else:
+	# 	_schedule_destruction()
+	_process_hit(body)
 
 ## Processes what happens to the bullet after hitting something
 ## @param body: The Node2D that was hit
@@ -78,18 +85,20 @@ func _handle_collision(body: Node2D, pos: Vector2) -> void:
 ## - PIERCING: Decrements remaining pierce count, destroys if depleted
 ## - BOUNCING: Decrements bounce count and reflects if possible, otherwise destroys
 ## - Other types: Destroys bullet
-func _process_hit(body: Node2D, body_pos: Vector2) -> void:
+func _process_hit(body: Node2D) -> void:
 	match bullet_type:
 		AmmoDetails.BulletType.NORMAL, AmmoDetails.BulletType.LASER, AmmoDetails.BulletType.EXPLOSIVE:
 			_schedule_destruction()
 		AmmoDetails.BulletType.PIERCING:
-			remaining_pierce -= 1
-			if remaining_pierce < 0:
+			if remaining_pierce >= 0 and _can_pierce_through(body):
+				remaining_pierce -= 1
+			else:
 				_schedule_destruction()
+			
 		AmmoDetails.BulletType.BOUNCING:
-			if remaining_bounce > 0 and _can_bounce_off(body):
+			if remaining_bounce >= 0 and _can_bounce_off(body):
+				print_debug("FractureBullet: Bouncing off {0} from {1}, remaining bounces: {2}".format([_can_bounce_off(body), body.name, remaining_bounce]))
 				remaining_bounce -= 1
-				linear_velocity = linear_velocity.bounce((global_position - body_pos).normalized())
 			else:
 				_schedule_destruction()
 		_:
@@ -102,6 +111,19 @@ func _can_bounce_off(body: Node2D) -> bool:
 	elif body is TileMapLayer:
 		return true
 	elif body is BlockCore: 
+		return true
+	return false
+
+func _can_pierce_through(body: Node2D) -> bool:
+	if body is StaticBody2D or body is FracturableStaticBody2D or body is BlockCore:
+		return false
+	elif body is TileMapLayer:
+		return false
+	elif body is ShieldComponent:
+		return false
+	elif body is BaseEnemy:
+		return true
+	elif body is PlayerController:
 		return true
 	return false
 
@@ -118,8 +140,7 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	self.remaining_bounce = ammo_data.get_total_bounce()
 	self.remaining_pierce = ammo_data.get_total_pierce()
 	self.bullet_type = ammo_data.bullet_type
-	print_debug("FractureBullet: Spawning bullet with behavior: {0}, pierce: {1}, bounce: {2}".format([ammo_data.bullet_type, self.remaining_pierce, self.remaining_bounce]))
-	
+
 	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)
 	global_position = pos
@@ -128,6 +149,14 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, quadrant_bu
 	
 	linear_velocity = launch_vector
 
+func _set_physics_material() -> void:
+	match bullet_type:
+		AmmoDetails.BulletType.PIERCING:
+			physics_material_override = null
+		AmmoDetails.BulletType.BOUNCING:
+			physics_material_override = bouncy_material
+		_:
+			physics_material_override = null
 
 func despawn(_ref: Node2D = null) -> void:
 	global_rotation = 0.0
@@ -161,11 +190,6 @@ func setPolygon(polygon : PackedVector2Array) -> void:
 
 func _on_Timer_timeout() -> void:
 	destroy()
-
-
-func _on_collision_detection_body_entered(_body: Node2D) -> void:
-	call_deferred("destroy")
-
 
 func set_bullet_trail(length: int, gradient: Gradient):
 	trail.spawn(length, gradient, ammo_details.trail_width)
