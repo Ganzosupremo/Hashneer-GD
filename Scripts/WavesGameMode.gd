@@ -1,6 +1,6 @@
 extends Node2D
 
-const ENEMY_LIFETIME_SECONDS: float = 60.0
+const ENEMY_LIFETIME_SECONDS: float = 90.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
 
 @onready var enemies_holder: Node2D = %EnemiesHolder
@@ -16,8 +16,8 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @onready var random_drops: RandomDrops = $RandomDropsHolder/RandomDrops
 @onready var random_drops_2: RandomDrops = $RandomDropsHolder/RandomDrops2
 
-@onready var player_bullets_pool: PoolFracture = $PlayerBulletsPool
-@onready var enemy_bullets_pool: PoolFracture = $EnemyBulletsPool
+@onready var player_bullets_pool: PoolFracture = %PlayerBulletsPool
+@onready var enemy_bullets_pool: PoolFracture = %EnemyBulletsPool
 
 @export var level_args: LevelBuilderArgs
 @export var main_event_bus: MainEventBus
@@ -88,35 +88,35 @@ func _process_despawn_queue() -> void:
 		despawn_count += 1
 
 func _spawn_enemies(count: int) -> Array[Node]:
-		var enemies: Array[Node] = []
-		var spawners : Array = random_drops_holder.get_children()
+	var enemies: Array[Node] = []
+	var spawners : Array = random_drops_holder.get_children()
 
-		if spawners.is_empty():
-				push_error("WavesGameMode: Random drops holder is empty")
-				return enemies
+	if spawners.is_empty():
+		push_error("WavesGameMode: Random drops holder is empty")
+		return enemies
 
-		for i in range(count):
-				var random_spawner: RandomDrops = spawners[_rng.randi_range(0, spawners.size() - 1)]
+	for i in range(count):
+		var random_spawner: RandomDrops = spawners[_rng.randi_range(0, spawners.size() - 1)]
 
-				if not random_spawner:
-						push_warning("WavesGameMode: Random drops spawner is null")
-						continue
+		if not random_spawner:
+			push_warning("WavesGameMode: Random drops spawner is null")
+			continue
 
-                var enemy: BaseEnemy = random_spawner.spawn_drops(1)
-                if enemy:
-                        enemies.append(enemy)
-                        enemy.drops_count = level_args.enemy_drops_count
-                        enemy.Damaged.connect(on_enemy_damaged)
-                        enemy.Fractured.connect(on_enemy_fractured)
-                        enemy.Died.connect(on_enemy_died)
-                        if enemy.has_method("set_bullet_pools"):
-                                enemy.set_bullet_pools(player_bullets_pool, enemy_bullets_pool)
-        return enemies
+		var enemy = random_spawner.spawn_drops(1) as BaseEnemy
+
+		if enemy:
+			enemies.append(enemy)
+			enemy.drops_count = level_args.enemy_drops_count
+			enemy.Damaged.connect(on_enemy_damaged)
+			enemy.Fractured.connect(on_enemy_fractured)
+			enemy.Died.connect(on_enemy_died)
+
+	return enemies
 
 func _start_new_wave() -> void:
-		enemies_in_current_wave = level_args.spawn_count
-		current_wave_kills = 0
-		_spawned_enemies_array.append_array(_spawn_enemies(enemies_in_current_wave))
+	enemies_in_current_wave = level_args.spawn_count
+	current_wave_kills = 0
+	_spawned_enemies_array.append_array(_spawn_enemies(enemies_in_current_wave))
 
 func spawnShapeVisualizer(cut_pos : Vector2, cut_shape : PackedVector2Array, color: Color, fade_speed : float) -> void:
 	var instance = _pool_cut_visualizer.getInstance()
@@ -136,7 +136,7 @@ func spawnFractureBody(fracture_shard : Dictionary, new_mass : float, color : Co
 	instance.addForce(dir * _p)
 
 func on_spawn_enemies_timer_timeout() -> void:
-		_start_new_wave()
+	_start_new_wave()
 
 func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
 	spawnShapeVisualizer(pos, shape, color, fade_speed)

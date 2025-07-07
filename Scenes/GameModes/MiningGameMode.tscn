@@ -300,9 +300,8 @@ position = Vector2(299, 293)
 [node name="RigidBodiesParent" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="Pool_FractureBullets" parent="." groups=["PBulletsPool"] instance=ExtResource("20_2lbus")]
+[node name="PlayerBulletsPool" parent="." groups=["PBulletsPool"] instance=ExtResource("20_2lbus")]
 instance_template = ExtResource("21_xxpkq")
-max_amount = 10
 instantiate_new_on_empty = true
 
 [node name="PoolFractureCutVisualizer" parent="." instance=ExtResource("20_2lbus")]

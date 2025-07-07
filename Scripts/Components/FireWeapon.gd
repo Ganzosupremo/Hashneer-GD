@@ -8,7 +8,7 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, damage_multiplie
 @export var shake_camera_on_fire: bool = true
 @export var active_weapon_component: ActiveWeaponComponent
 
-@export var is_enemy_weapon: bool = false
+@export var is_enemy_weapon: bool
 @export var use_object_pool: bool = false
 @export var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")
 
@@ -23,8 +23,13 @@ var quadrant_builder: QuadrantBuilder
 var current_pool: PoolFracture
 
 func _ready() -> void:
-    quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
-
+	quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
+	initialize_bullet_pools()
+	if _fire_cooldown_timer == null:
+		_fire_cooldown_timer = Timer.new()
+		add_child(_fire_cooldown_timer)
+		_fire_cooldown_timer.autostart = false
+		_fire_cooldown_timer.one_shot = false
 
 func _process(delta: float) -> void:
 	fire_rate_cooldown_timer -= delta
@@ -72,6 +77,8 @@ func fire_ammo_async(ammo: AmmoDetails, target_position: Vector2 = Vector2.ZERO)
 		ammo_counter += 1
 		
 		var bullet: FractureBullet
+		#if !is_pool_valid(current_pool) and is_enemy_weapon:
+			#current_pool = get_tree().get_first_node_in_group("EBulletsPool")
 		if use_object_pool:
 			bullet = current_pool.getInstance()
 		else:
@@ -97,14 +104,29 @@ func fire_ammo_async(ammo: AmmoDetails, target_position: Vector2 = Vector2.ZERO)
 func ready_to_fire() -> bool:
 	if fire_rate_cooldown_timer >= 0.0:
 		return false
-	
 	return true
 
 func reset_cooldown_timer() -> void:
 	fire_rate_cooldown_timer = current_weapon.fire_rate
 
-func set_bullet_pools(player_pool: PoolFracture, enemy_pool: PoolFracture) -> void:
+func is_pool_valid(pool: PoolFracture) -> bool:
+	if is_instance_valid(pool): 
+		return true
+	elif pool != null: 
+		return true
+	
+	return false
+
+func initialize_bullet_pools() -> void:
 	if is_enemy_weapon:
-		current_pool = enemy_pool
+		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
+		print_debug("{0}. FireWeaponComponent: Using enemy pool for firing bullets.".format([get_parent().name]))
 	else:
-		current_pool = player_pool
+		current_pool = get_tree().get_first_node_in_group("PBulletsPool")
+		print_debug("{0}. FireWeaponComponent: Using player pool for firing bullets.".format([get_parent().name]))
+	if not current_pool:
+		push_error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+		return
+	if use_object_pool and not current_pool:
+		push_error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+		return

@@ -57,6 +57,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 10
+kills_to_spawn_boss = 40
 enemy_drops_count = 1
 enemy_damage_multiplier = 1.0
 enemies_drop_table = SubResource("Resource_f24ny")
@@ -88,6 +89,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 15
+kills_to_spawn_boss = 40
 enemy_drops_count = 1
 enemy_damage_multiplier = 1.5
 enemies_drop_table = SubResource("Resource_f24ny")
@@ -133,6 +135,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 20
+kills_to_spawn_boss = 40
 enemy_drops_count = 2
 enemy_damage_multiplier = 1.75
 enemies_drop_table = SubResource("Resource_h5wcw")
@@ -183,6 +186,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 25
+kills_to_spawn_boss = 40
 enemy_drops_count = 3
 enemy_damage_multiplier = 2.0
 enemies_drop_table = SubResource("Resource_ldtmw")
@@ -234,6 +238,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 30
+kills_to_spawn_boss = 40
 enemy_drops_count = 4
 enemy_damage_multiplier = 2.2
 enemies_drop_table = SubResource("Resource_4qxyo")
@@ -260,20 +265,20 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_upvvp"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://dhsf3uibxlt6l"
+drop_path = "uid://dywd4qlh67doj"
 odds = 0.7
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_iqojj"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://crwlndhaddjpy"
+drop_path = "uid://nrfti3hkeyq4"
 odds = 0.7
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_gmo6b"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m72rw"), SubResource("Resource_upvvp"), SubResource("Resource_iqojj")])
-guaranteed_drops = 2
+guaranteed_drops = 3
 combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
@@ -290,6 +295,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 50.0
 spawn_time = 5.0
 spawn_count = 30
+kills_to_spawn_boss = 40
 enemy_drops_count = 5
 enemy_damage_multiplier = 2.5
 enemies_drop_table = SubResource("Resource_gmo6b")
@@ -322,7 +328,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_04lec"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://crwlndhaddjpy"
+drop_path = "uid://nrfti3hkeyq4"
 odds = 0.2
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
@@ -345,9 +351,10 @@ initial_health = 5800.0
 fiat_drop_rate_factor = 1.9
 block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
-spawn_time = 5.0
-spawn_count = 30
-enemy_drops_count = 6
+spawn_time = 2.5
+spawn_count = 10
+kills_to_spawn_boss = 100
+enemy_drops_count = 8
 enemy_damage_multiplier = 2.8
 enemies_drop_table = SubResource("Resource_577ov")
 boss_drop_table = SubResource("Resource_4v0ux")
@@ -379,7 +386,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_rifc4"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://crwlndhaddjpy"
+drop_path = "uid://nrfti3hkeyq4"
 odds = 0.4
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
@@ -403,6 +410,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 30
+kills_to_spawn_boss = 40
 enemy_drops_count = 7
 enemy_damage_multiplier = 2.9
 enemies_drop_table = SubResource("Resource_k17wg")
@@ -442,6 +450,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 5.0
 spawn_count = 30
+kills_to_spawn_boss = 40
 enemy_drops_count = 8
 enemy_damage_multiplier = 3.0
 enemies_drop_table = SubResource("Resource_6a3u3")
@@ -474,7 +483,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_ovygy"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://crwlndhaddjpy"
+drop_path = "uid://nrfti3hkeyq4"
 odds = 0.7
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
@@ -498,6 +507,7 @@ block_core_cuts_delaunay = 300
 block_core_cut_min_area = 100.0
 spawn_time = 4.25
 spawn_count = 25
+kills_to_spawn_boss = 40
 enemy_drops_count = 10
 enemy_damage_multiplier = 3.5
 enemies_drop_table = SubResource("Resource_mgo4a")
@@ -530,7 +540,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_q2u5f"]
 script = ExtResource("6_1wrq4")
-drop_path = "uid://crwlndhaddjpy"
+drop_path = "uid://nrfti3hkeyq4"
 odds = 0.7
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
@@ -555,6 +565,7 @@ block_core_cuts_delaunay = 240
 block_core_cut_min_area = 100.0
 spawn_time = 2.5
 spawn_count = 18
+kills_to_spawn_boss = 40
 enemy_drops_count = 14
 enemy_damage_multiplier = 4.0
 enemies_drop_table = SubResource("Resource_spcld")

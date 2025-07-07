@@ -19,7 +19,6 @@ var _current_level: int = 0
 
 var current_level_args: LevelBuilderArgs = null
 var player: PlayerController = null
-var pool_fracture_bullets: PoolFracture
 var current_block_core: BlockCore
 var current_quadrant_builder: QuadrantBuilder
 var player_camera: AdvanceCamera

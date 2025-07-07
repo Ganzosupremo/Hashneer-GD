@@ -295,11 +295,13 @@ spawn_group = SubResource("Resource_s8cxh")
 metadata/_custom_type_script = "uid://bcjmdqied76to"
 
 [node name="PlayerBulletsPool" parent="." groups=["PBulletsPool"] instance=ExtResource("15_xdq2w")]
+unique_name_in_owner = true
 instance_template = ExtResource("16_w6c12")
 max_amount = 200
 instantiate_new_on_empty = true
 
 [node name="EnemyBulletsPool" parent="." groups=["EBulletsPool"] instance=ExtResource("15_xdq2w")]
+unique_name_in_owner = true
 instance_template = ExtResource("15_w6c12")
 max_amount = 400
 instantiate_new_on_empty = true

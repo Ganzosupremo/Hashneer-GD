@@ -43,5 +43,5 @@ func _on_money_changed(amount: float, currency: Constants.CurrencyType = Constan
 
 func _on_use_btc_button_toggled(toggled_on: bool) -> void:
 		var currency: Constants.CurrencyType = Constants.CurrencyType.BITCOIN if toggled_on else Constants.CurrencyType.FIAT
-		main_event_bus.currency_changed.emit(currency)
+		main_event_bus.emit_currency_changed(currency)
 		currency_changed.emit(currency)

@@ -66,6 +66,3 @@ func _enter_state(new_state: State) -> void:
 	
 func isReadyToFire() -> bool:
 	return can_shoot and !_fired_previous_frame
-
-func set_bullet_pools(player_pool: PoolFracture, enemy_pool: PoolFracture) -> void:
-	fire_weapon.set_bullet_pools(player_pool, enemy_pool)

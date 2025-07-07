@@ -2,69 +2,87 @@
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
-[ext_resource type="Script" path="res://Scripts/Enemies/ShotingEnemy.gd" id="2_28o60"]
+[ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShooterEnemy.gd" id="2_hxamy"]
 [ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
-[ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="3_28o60"]
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_xg7bx"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
 [ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="5_u1hpi"]
+[ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="8_i5djr"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
-[ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="11_u1hpi"]
 
-[sub_resource type="Gradient" id="Gradient_rscwa"]
-offsets = PackedFloat32Array(0, 0.534653, 0.727723, 1)
-colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.607843, 0.913725, 0.470588, 0.572549, 0.807843, 0.956863, 0.470588, 1, 1, 1, 0.470588)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q13lb"]
+scale_min = 5.0
+scale_max = 10.0
 
-[sub_resource type="Resource" id="Resource_7p12m"]
+[sub_resource type="Resource" id="Resource_4y2qm"]
+script = ExtResource("3_xg7bx")
+amount = 50
+lifetime = 1.0
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_q13lb")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="Resource" id="Resource_nx4ij"]
 script = ExtResource("2_2phcg")
-min_lifetime = 2.0
-max_lifetime = 4.0
-bullet_damage = 50.0
+min_lifetime = 1.0
+max_lifetime = 5.0
+bullet_damage = 100.0
 bullet_speed = 1000.0
-size = 6
+size = 10
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.0
 bullet_spawn_interval_max = 0.0
-trail_gradient = SubResource("Gradient_rscwa")
-trail_length = 5
-trail_width = 15.0
+trail_length = 20
+trail_width = 20.0
 fracture_damage = Vector2(50, 50)
-fracture_force = 10000.0
+fracture_force = 15000.0
+bullet_hit_vfx = SubResource("Resource_4y2qm")
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
 
-[sub_resource type="Resource" id="Resource_bety5"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6mcbm"]
+scale_min = 5.0
+scale_max = 10.0
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_wepmc"]
-load_path = "res://.godot/imported/Glock 17.png-8736569f147dbf2e0c65af9fdc0e2643.ctex"
+[sub_resource type="Resource" id="Resource_hvhwf"]
+script = ExtResource("3_xg7bx")
+amount = 50
+lifetime = 1.0
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+process_material = SubResource("ParticleProcessMaterial_6mcbm")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_60w8o"]
-atlas = SubResource("CompressedTexture2D_wepmc")
-region = Rect2(4, 0, 24, 14)
-
-[sub_resource type="Resource" id="Resource_o5j8s"]
+[sub_resource type="Resource" id="Resource_58qa6"]
 script = ExtResource("4_nrp74")
 weapon_name = "Enemy Pistol"
-weapon_texture = SubResource("AtlasTexture_60w8o")
 fire_sound = ExtResource("5_u1hpi")
 weapon_damage_multiplier = 0.0
-ammo_details = SubResource("Resource_7p12m")
-weapon_shoot_effect = SubResource("Resource_bety5")
+ammo_details = SubResource("Resource_nx4ij")
+weapon_shoot_effect = SubResource("Resource_hvhwf")
 fire_rate = 0.5
 precharge_time = 0.0
-spread_min = 0.061
-spread_max = 0.085
-amplitude = 1.5
+spread_min = 0.0
+spread_max = 0.001
+amplitude = 3.0
 frequency = 5.0
-duration = 0.25
+duration = 0.5
 axis_ratio = 0.0
-armonic_ration = Array[int]([4, 5])
+armonic_ration = Array[int]([1, 1])
 phase_offset = 90
 samples = 10
-shake_trans = 10
+shake_trans = 0
+metadata/_custom_type_script = "uid://c3oqvnse8erag"
 
 [node name="ShooterEnemy" instance=ExtResource("1_k4fs6")]
-script = ExtResource("2_28o60")
+script = ExtResource("2_hxamy")
 can_shoot = true
-weapon = SubResource("Resource_o5j8s")
+weapon = SubResource("Resource_58qa6")
 shooting_duration_interval = Vector2(2, 3)
 shooting_cooldown_interval = Vector2(5, 10)
 invincible_time = 0.0
@@ -90,13 +108,16 @@ n3 = 0.3
 script = ExtResource("2_ubhwd")
 metadata/_custom_type_script = "uid://bmphh71yg4oct"
 
-[node name="FireWeapon" parent="ShotingMechanics" index="1" node_paths=PackedStringArray("active_weapon_component") instance=ExtResource("3_28o60")]
+[node name="FireWeapon" type="Node2D" parent="ShotingMechanics" index="1" node_paths=PackedStringArray("active_weapon_component")]
+script = ExtResource("8_i5djr")
 main_event_bus = ExtResource("10_vfbhq")
 shake_camera_on_fire = false
 active_weapon_component = NodePath("../ActiveWeaponComponent")
 is_enemy_weapon = true
 use_object_pool = true
-bullet_scene = ExtResource("11_u1hpi")
+
+[node name="FireCooldownTimer" type="Timer" parent="ShotingMechanics/FireWeapon" index="0"]
+unique_name_in_owner = true
 
 [node name="BulletFirePosition" type="Marker2D" parent="ShotingMechanics" index="2"]
 unique_name_in_owner = true
