@@ -22,6 +22,7 @@ var bullet_type: AmmoDetails.BulletType = AmmoDetails.BulletType.NORMAL
 var remaining_pierce: int = 0
 var remaining_bounce: int = 0
 var last_collision_body: Node2D = null
+var _prev_linear_velocity: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
@@ -30,8 +31,10 @@ func _ready() -> void:
 		Despawn.connect(despawn)
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	var prev_vel: Vector2 = linear_velocity
 	if state.get_contact_count() <= 0: 
 		last_collision_body = null
+		_prev_linear_velocity = prev_vel
 		return
 
 	var body = state.get_contact_collider_object(0)
@@ -42,6 +45,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var hit_pos: Vector2 = state.get_contact_collider_position(0)
 	_spawn_vfx_effect(hit_pos)
 	_handle_collision(body, hit_pos)
+	_prev_linear_velocity = linear_velocity
 
 func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	var angle: float = linear_velocity.angle() + PI
@@ -67,7 +71,7 @@ func _handle_collision(body: Node2D, pos: Vector2) -> void:
 			q_b.fracture_block_core(damage_to_deal, "Player")
 	elif body is BaseEnemy:
 			var force: Vector2 = (body.global_position - global_position).normalized() * ammo_details.fracture_force
-			body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal), global_position, force, 0.25, modulate)
+			body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.75, global_position, force, 0.25, Color.MISTY_ROSE)
 	elif body is ShieldComponent:
 			body.call_deferred("absorb_damage", damage_to_deal, global_position)
 	elif body is PlayerController:
@@ -90,14 +94,14 @@ func _process_hit(body: Node2D) -> void:
 		AmmoDetails.BulletType.NORMAL, AmmoDetails.BulletType.LASER, AmmoDetails.BulletType.EXPLOSIVE:
 			_schedule_destruction()
 		AmmoDetails.BulletType.PIERCING:
-			if remaining_pierce >= 0 and _can_pierce_through(body):
+			if remaining_pierce > 0 and _can_pierce_through(body):
 				remaining_pierce -= 1
+				linear_velocity = _prev_linear_velocity
 			else:
 				_schedule_destruction()
 			
 		AmmoDetails.BulletType.BOUNCING:
-			if remaining_bounce >= 0 and _can_bounce_off(body):
-				print_debug("FractureBullet: Bouncing off {0} from {1}, remaining bounces: {2}".format([_can_bounce_off(body), body.name, remaining_bounce]))
+			if remaining_bounce > 0 and _can_bounce_off(body):
 				remaining_bounce -= 1
 			else:
 				_schedule_destruction()

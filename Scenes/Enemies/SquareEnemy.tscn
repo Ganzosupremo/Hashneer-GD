@@ -11,10 +11,10 @@ texture_repeat = 2
 
 [node name="SquareEnemy" instance=ExtResource("1_pyqee")]
 color_default = Color(1, 1, 1, 1)
-shape_area_percent = 0.1
+shape_area_percent = 0.07
 max_speed = 100.0
 polygon_shape = 1
-rectangle_size = Vector2(25, 25)
+rectangle_size = Vector2(50, 50)
 
 [node name="FractureBodyHealthComponent" parent="." index="0"]
 advanced_regeneration = false
@@ -24,8 +24,6 @@ regeneration_amount = 0.0
 
 [node name="Polygon2D" parent="Shape3D" index="0"]
 texture = SubResource("CanvasTexture_isfyj")
-polygon = PackedVector2Array(-16, 56, -72, 56, -72, 0, -16, 0)
-uv = PackedVector2Array(0, 0, -72, 0, -24, -24, 56, -24)
 
 [node name="Line2D" parent="Shape3D" index="1"]
 default_color = Color(0, 0, 0, 1)
