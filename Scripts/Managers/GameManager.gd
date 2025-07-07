@@ -99,7 +99,6 @@ func _build_dictionary_to_save() -> Dictionary:
 		# "unlocked_abilities": unlocked_abilities
 	}
 
-
 func load_data() -> void:
 	if loaded: return
 	
