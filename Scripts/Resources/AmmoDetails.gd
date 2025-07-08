@@ -15,6 +15,16 @@ enum BulletPattern {
 	SPREAD,
 	CIRCLE,
 	ARC,
+	SPIRAL,
+	DOUBLE_SPIRAL,
+	WAVE,
+	SINE_WAVE,
+	SQUARE,
+	STAR,
+	CROSS,
+	DIAGONAL_CROSS,
+	FLOWER,
+	GRID,
 }
 
 @export_category("Ammo Details")
@@ -32,7 +42,8 @@ enum BulletPattern {
 @export var bullet_type: BulletType = BulletType.NORMAL
 ## Pattern used when firing this ammo
 @export var bullet_pattern: BulletPattern = BulletPattern.SINGLE
-@export_range(0.0, 360.0, 10.0) var pattern_arc_angle: float = 45.0
+@export_range(0.0, 360.0, 5.0) var pattern_arc_angle: float = 45.0
+@export var fire_pattern_simultaneous: bool = false
 ## Maximum number of targets this bullet can pierce
 @export var max_pierce_count: int = 0
 ## Maximum number of bounces this bullet can do

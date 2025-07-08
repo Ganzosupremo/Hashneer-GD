@@ -38,6 +38,10 @@ class_name WeaponDetails extends Resource
 
 var weapon_list_index: int = 0
 
+func get_random_spread() -> float:
+	# Returns a random spread value between minus and plus defined  spread
+	return randf_range(-spread, spread)
+
 func set_fire_rate(value: float) -> void:
 	shots_per_second = value
 
