@@ -4,7 +4,7 @@
 
 [node name="EnemyFractureBullet" instance=ExtResource("1_acc2p")]
 collision_layer = 2048
-collision_mask = 192
+collision_mask = 200
 radius = 25.0
 speed = 600.0
 

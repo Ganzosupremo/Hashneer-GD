@@ -4,9 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="2_or7oj"]
 
 [node name="TriangleEnemy" node_paths=PackedStringArray("shield") instance=ExtResource("1_qwjiq")]
-position = Vector2(444, 290)
 invincible_time = 0.0
 shield = NodePath("ShieldComponent")
+shape_area_percent = 0.15
 max_speed = 100.0
 polygon_shape = 4
 s_p_number = 3
