@@ -59,6 +59,9 @@ class_name WeaponDetails extends Resource
 ## The transition type used for the shake effect, controlling how the shake transitions over time.
 @export var shake_trans: Tween.TransitionType = Tween.TransitionType.TRANS_LINEAR
 
+
+var _upgrade_modifiers: Dictionary = {}  # Dictionary to hold upgrade modifiers for the weapon
+
 ## Returns a random spread value between minus and plus defined  spread
 func get_random_spread() -> float:
 	return randf_range(-spread, spread)
@@ -71,6 +74,10 @@ func set_fire_rate(value: float) -> void:
 ## Sets the precharge time for the weapon, controlling how long it takes before the weapon can fire again.
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
+
+func get_fire_cooldown() -> float:
+	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
+	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
 
 func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
 	weapon_name = "Default Weapon"

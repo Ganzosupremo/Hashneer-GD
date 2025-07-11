@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=3 format=3 uid="uid://cttyumyw2eyyf"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=4 format=3 uid="uid://cttyumyw2eyyf"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_sjdox"]
 
 [sub_resource type="Gradient" id="Gradient_jbavf"]
 offsets = PackedFloat32Array(0, 0.38, 1)
@@ -20,6 +21,9 @@ max_pierce_count = 0
 max_bounce_count = 0
 explosion_radius = 0.0
 explosion_layer_mask = 1
+laser_beam_scene = ExtResource("1_sjdox")
+laser_length = 300.0
+laser_collision_mask = 1
 size = 8
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1

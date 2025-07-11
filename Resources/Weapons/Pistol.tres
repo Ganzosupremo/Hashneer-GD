@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://bivptbtajsp46"]
 
-[ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
+[ext_resource type="Resource" uid="uid://djaivavcnq70b" path="res://Resources/Weapons/LaserAmmo.tres" id="1_ottnm"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_j36t6"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_4wys5"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_c4yb8"]
@@ -98,7 +98,7 @@ weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_j36t6")
 weapon_damage_multiplier = 0.0
-ammo_details = ExtResource("1_4witc")
+ammo_details = ExtResource("1_ottnm")
 weapon_shoot_effect = SubResource("Resource_ovwwj")
 shots_per_second = 2.0
 precharge_time = 0.0

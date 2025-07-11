@@ -11,3 +11,9 @@ class_name VFXEffectProperties extends Resource
 @export var particle_texture: Texture2D
 
 @export var process_material: ParticleProcessMaterial = ParticleProcessMaterial.new()
+
+
+func get_color() -> Color:
+    if process_material and process_material.has_method("get_color"):
+        return process_material.get_color()
+    return Color.WHITE

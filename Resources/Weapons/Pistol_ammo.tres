@@ -1,25 +1,28 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=17 format=3 uid="uid://cmk3cg4rlabd6"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=18 format=3 uid="uid://cmk3cg4rlabd6"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_kb2pf"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_nuhma"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_rkkgi"]
 
-[sub_resource type="Gradient" id="Gradient_rkkgi"]
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tajyi"]
+load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
+
+[sub_resource type="Gradient" id="Gradient_e2njf"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.403614, 0.807229, 0.981928)
 colors = PackedColorArray(1, 0.647059, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0.223529)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_nuhma"]
-gradient = SubResource("Gradient_rkkgi")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_3dg7m"]
+gradient = SubResource("Gradient_e2njf")
 
-[sub_resource type="Curve" id="Curve_ys3wn"]
+[sub_resource type="Curve" id="Curve_88iag"]
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="CurveTexture" id="CurveTexture_0hs1g"]
-curve = SubResource("Curve_ys3wn")
+[sub_resource type="CurveTexture" id="CurveTexture_g0ykt"]
+curve = SubResource("Curve_88iag")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r3x08"]
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_br1pt"]
 particle_flag_rotate_y = true
 angle_min = 1.07288e-05
 angle_max = 360.0
@@ -29,8 +32,8 @@ initial_velocity_max = 900.0
 gravity = Vector3(0, 1200, 0)
 scale_min = 5.0
 scale_max = 15.0
-scale_curve = SubResource("CurveTexture_0hs1g")
-color_ramp = SubResource("GradientTexture1D_nuhma")
+scale_curve = SubResource("CurveTexture_g0ykt")
+color_ramp = SubResource("GradientTexture1D_3dg7m")
 turbulence_noise_strength = 3.34
 turbulence_noise_scale = 10.0
 turbulence_noise_speed = Vector3(1, 2, 0)
@@ -47,8 +50,8 @@ one_shot = true
 speed_scale = 1.0
 explosiveness = 0.0
 randomness = 0.5
-particle_texture = ExtResource("1_nuhma")
-process_material = SubResource("ParticleProcessMaterial_r3x08")
+particle_texture = SubResource("CompressedTexture2D_tajyi")
+process_material = SubResource("ParticleProcessMaterial_br1pt")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [sub_resource type="Gradient" id="Gradient_nuhma"]
@@ -107,9 +110,9 @@ colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.60
 script = ExtResource("1_kb2pf")
 min_lifetime = 2.0
 max_lifetime = 4.0
-bullet_damage = 50.0
+bullet_damage = 25.0
 bullet_speed = 1000.0
-bullet_type = 2
+bullet_type = 1
 bullet_pattern = 0
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
@@ -117,6 +120,8 @@ max_pierce_count = 2
 max_bounce_count = 6
 explosion_radius = 100.0
 explosion_layer_mask = 2360
+laser_length = 300.0
+laser_collision_mask = 1
 size = 7
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1

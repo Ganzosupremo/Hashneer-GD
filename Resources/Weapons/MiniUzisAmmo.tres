@@ -1,0 +1,86 @@
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=12 format=3 uid="uid://csv3xbukcg0c1"]
+
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_37v23"]
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_np5ir"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_6iw8x"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6iw8x"]
+load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
+
+[sub_resource type="Gradient" id="Gradient_v7pnj"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.403614, 0.807229, 0.981928)
+colors = PackedColorArray(1, 0.647059, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0.223529)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_375nq"]
+gradient = SubResource("Gradient_v7pnj")
+
+[sub_resource type="Curve" id="Curve_31fkv"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_suu6c"]
+curve = SubResource("Curve_31fkv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_xjqfy"]
+particle_flag_rotate_y = true
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 90.0
+initial_velocity_min = 600.0
+initial_velocity_max = 900.0
+gravity = Vector3(0, 1200, 0)
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_suu6c")
+color_ramp = SubResource("GradientTexture1D_375nq")
+turbulence_noise_strength = 3.34
+turbulence_noise_scale = 10.0
+turbulence_noise_speed = Vector3(1, 2, 0)
+turbulence_noise_speed_random = 1.0
+turbulence_influence_max = 0.31
+turbulence_initial_displacement_min = 1.0
+turbulence_initial_displacement_max = 5.0
+
+[sub_resource type="Resource" id="Resource_57hpu"]
+script = ExtResource("1_37v23")
+amount = 30
+lifetime = 0.1
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+particle_texture = SubResource("CompressedTexture2D_6iw8x")
+process_material = SubResource("ParticleProcessMaterial_xjqfy")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="Gradient" id="Gradient_37v23"]
+
+[resource]
+script = ExtResource("1_np5ir")
+min_lifetime = 2.0
+max_lifetime = 4.0
+bullet_damage = 25.0
+bullet_speed = 1000.0
+bullet_type = 0
+bullet_pattern = 2
+pattern_arc_angle = 50.0
+fire_pattern_simultaneous = false
+max_pierce_count = 0
+max_bounce_count = 0
+explosion_radius = 0.0
+explosion_layer_mask = 1
+laser_beam_scene = ExtResource("2_6iw8x")
+laser_length = 300.0
+laser_collision_mask = 1
+size = 6
+bullets_per_shoot_min = 2
+bullets_per_shoot_max = 2
+bullet_spawn_interval_min = 0.029
+bullet_spawn_interval_max = 0.06
+trail_gradient = SubResource("Gradient_37v23")
+trail_length = 20
+trail_width = 20.0
+fracture_force = 10000.0
+bullet_hit_vfx = SubResource("Resource_57hpu")
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"

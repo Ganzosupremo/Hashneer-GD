@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://nrfti3hkeyq4"]
+[gd_scene load_steps=28 format=3 uid="uid://nrfti3hkeyq4"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_xg7bx"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="4_q13lb"]
 [ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="5_u1hpi"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="7_xg7bx"]
 [ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="8_i5djr"]
@@ -67,13 +68,17 @@ max_lifetime = 5.0
 bullet_damage = 100.0
 bullet_speed = 1000.0
 bullet_type = 0
-bullet_pattern = 1
+bullet_pattern = 2
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
 max_pierce_count = 0
 max_bounce_count = 0
 explosion_radius = 0.0
 explosion_layer_mask = 1
+laser_beam_scene = ExtResource("4_q13lb")
+laser_length = 300.0
+laser_damage_cooldown = 0.1
+laser_collision_mask = 1
 size = 10
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 2
@@ -137,9 +142,9 @@ fire_sound = ExtResource("5_u1hpi")
 weapon_damage_multiplier = 0.0
 ammo_details = SubResource("Resource_nx4ij")
 weapon_shoot_effect = SubResource("Resource_hvhwf")
-shots_per_second = 2.0
+shots_per_second = 1.0
 precharge_time = 0.0
-spread = 0.466
+spread = 0.357
 amplitude = 3.0
 frequency = 5.0
 duration = 0.5

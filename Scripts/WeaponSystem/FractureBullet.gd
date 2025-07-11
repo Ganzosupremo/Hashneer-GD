@@ -239,7 +239,6 @@ func _process_hit(body: Node2D) -> void:
 
 func _explode() -> void:
 	if !_can_explode():
-		print_debug("Bullet explosion failed, not enough conditions met.")
 		# Create a failed explosion visual and sound effect here
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.BLANK_EFFECT, global_transform, _ammo_details.failed_explosion_vfx)
 		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.SFX)

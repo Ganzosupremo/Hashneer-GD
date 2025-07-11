@@ -65,9 +65,18 @@ enum BulletPattern {
 @export var max_pierce_count: int = 0
 ## Maximum number of bounces this bullet can do
 @export var max_bounce_count: int = 0
+@export_subgroup("Explosive Bullet Parameters")
 ## The explosive bullet will deal damage to the targets within this radius
 @export var explosion_radius: float = 0.0
 @export_flags_2d_physics() var explosion_layer_mask: int = 1
+@export_subgroup("Laser Bullet Parameters")
+@export var laser_beam_scene: PackedScene = preload("res://Scenes/WeaponSystem/LaserBeam.tscn")
+## The length of the laser beam, only applicable if the bullet type is [BulletType.LASER].
+@export var laser_length: float = 300.0
+## The cooldown time between laser beam hits, only applicable if the bullet type is [BulletType.LASER].
+@export var laser_damage_cooldown: float = 0.1
+## The collision mask for the laser beam, only applicable if the bullet type is [BulletType.LASER].
+@export_flags_2d_physics() var laser_collision_mask: int = 1
 @export_subgroup("Bullet Size and Spawn Parameters")
 ## The radius of this bullet
 @export var size: int = 10

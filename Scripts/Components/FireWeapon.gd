@@ -34,10 +34,11 @@ var fire_rate_cooldown_timer: float = 0.0
 var current_weapon: WeaponDetails
 var quadrant_builder: QuadrantBuilder
 var current_pool: PoolFracture
+var _laser_beam: LaserBeam
 
 func _ready() -> void:
 	quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
-	initialize_bullet_pools()
+	_initialize_bullet_pools()
 	if _fire_cooldown_timer == null:
 		_fire_cooldown_timer = Timer.new()
 		add_child(_fire_cooldown_timer)
@@ -53,29 +54,86 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	fire_weapon.disconnect(on_fire_weapon)
 
-func on_fire_weapon(_has_fired: bool, _fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	weapon_fire(player_damage_multiplier, target_position)
+func on_fire_weapon(has_fired: bool, _fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	weapon_fire(has_fired, player_damage_multiplier, target_position)
 
-func weapon_fire(player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	if ready_to_fire():
-		current_weapon = active_weapon_component.get_current_weapon()
-		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
-		
-		if shake_camera_on_fire:
-			GameManager.shake_camera(current_weapon.amplitude, \
-			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio, \
-			current_weapon.armonic_ration, current_weapon.phase_offset, current_weapon.samples, current_weapon.shake_trans)
-		
-		fire_ammo(player_damage_multiplier, target_position)
-		reset_cooldown_timer()
 
-func fire_ammo(player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+## Fires the weapon based on the current state and parameters.[br]
+## [param has_fired] - Indicates if the weapon has fired this frame.[br]
+## [param player_damage_multiplier] - The damage multiplier applied to the player.[br]
+## [param target_position] - The position where the weapon is aimed at, used for targeting purposes.[br]
+## This method handles the firing logic, including cooldowns, spawning bullets, and
+## managing laser beams if applicable. It also triggers camera shake effects and visual effects
+## when firing the weapon.
+## If the weapon is not ready to fire, it will reset the cooldown timer and destroy any
+## existing laser beam if it was fired previously.
+## If the weapon is ready to fire, it will spawn the appropriate ammo based on the current
+## weapon and ammo details. It supports different bullet patterns and firing modes, including
+## simultaneous firing of multiple bullets.
+## It also handles the case where a laser beam is fired, updating its position and direction
+## if it already exists, or creating a new laser beam instance if it does not.
+func weapon_fire(has_fired: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	ammo.damage_final = ammo.calculate_damage(player_damage_multiplier, current_weapon.weapon_damage_multiplier)
-	fire_ammo_async(ammo, target_position)
+	
+	# Handle laser beam termination
+	if _handle_laser_beam_termination(has_fired, ammo):
+		return
+	
+	if ready_to_fire() or (_laser_beam != null and ammo.bullet_type == AmmoDetails.BulletType.LASER):
+		current_weapon = active_weapon_component.get_current_weapon()
+		_perform_firing_effects()
+		
+		if ammo.bullet_type == AmmoDetails.BulletType.LASER:
+			_fire_laser(ammo, player_damage_multiplier, target_position)
+		else:
+			_fire_ammo(ammo, player_damage_multiplier, target_position)
+			reset_cooldown_timer()
 
-# Allows to fire many bullets at once
-func fire_ammo_async(ammo: AmmoDetails, target_position: Vector2 = Vector2.ZERO):
+# Handles the termination of the laser beam based on the firing state and ammo type.
+func _handle_laser_beam_termination(has_fired: bool, ammo: AmmoDetails) -> bool:
+	if !has_fired and _laser_beam:
+		_laser_beam.destroy()
+		_laser_beam = null
+		reset_cooldown_timer()
+		return true
+	
+	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
+		_laser_beam.destroy()
+		_laser_beam = null
+		reset_cooldown_timer()
+		return true
+	
+	return false
+
+# Performs firing effects such as spawning visual effects and shaking the camera.
+# This method is called when the weapon is fired to create visual feedback for the player.
+func _perform_firing_effects() -> void:
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+	
+	if shake_camera_on_fire:
+		GameManager.shake_camera(current_weapon.amplitude,
+			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio,
+			current_weapon.armonic_ration, current_weapon.phase_offset, current_weapon.samples, current_weapon.shake_trans)
+
+# Fires a laser beam based on the provided ammo details and target position.
+func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
+	if !_laser_beam:
+		var scene_to_use: PackedScene = ammo.laser_beam_scene
+		_laser_beam = scene_to_use.instantiate()
+		get_node(".").add_child(_laser_beam)
+		var lifetime: float = randf_range(ammo.min_lifetime, ammo.max_lifetime)
+		ammo.damage_final = ammo.calculate_damage(player_damage_multiplier, current_weapon.weapon_damage_multiplier)
+		_laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
+	else:
+		# If the laser beam already exists, we just update its position and direction
+		_laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
+
+
+# Fires ammo based on the provided ammo details and target position.
+func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	ammo.damage_final = ammo.calculate_damage(player_damage_multiplier, current_weapon.weapon_damage_multiplier)
+	
 	var bullet_counter: int = 0
 	var bullets_per_shoot: int = randi_range(ammo.bullets_per_shoot_min, ammo.bullets_per_shoot_max)
 	var spawn_interval: float = 0.0
@@ -112,16 +170,21 @@ func fire_ammo_async(ammo: AmmoDetails, target_position: Vector2 = Vector2.ZERO)
 			_fire_cooldown_timer.start(spawn_interval)
 			await _fire_cooldown_timer.timeout
 
+## Checks if the weapon is ready to fire based on the cooldown timer.
+## This method returns true if the cooldown timer is less than or equal to zero,
+## indicating that the weapon can fire again. It is used to determine if the weapon
+## can be fired without waiting for the cooldown period to expire.
 func ready_to_fire() -> bool:
 	return fire_rate_cooldown_timer <= 0.0
 
+## Resets the cooldown timer for firing the weapon.
+## This method is called to reset the cooldown timer after firing a weapon or when the weapon is not ready to fire.
+## It sets the cooldown timer to the current weapon's fire cooldown value.
 func reset_cooldown_timer() -> void:
-	if current_weapon.shots_per_second != 0:
-		fire_rate_cooldown_timer = 1.0 / current_weapon.shots_per_second
-	else:
-		fire_rate_cooldown_timer = 0.0
+	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown()
 
-func is_pool_valid(pool: PoolFracture) -> bool:
+# Checks if the provided pool is valid for use.
+func _is_pool_valid(pool: PoolFracture) -> bool:
 	if is_instance_valid(pool):
 		return true
 	elif pool != null:
@@ -129,7 +192,8 @@ func is_pool_valid(pool: PoolFracture) -> bool:
 	
 	return false
 
-func initialize_bullet_pools() -> void:
+# Initializes the bullet pools based on whether the weapon is for an enemy or player.
+func _initialize_bullet_pools() -> void:
 	if is_enemy_weapon:
 		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
 		print_debug("{0}. FireWeaponComponent: Using enemy pool for firing bullets.".format([get_parent().name]))
@@ -143,22 +207,22 @@ func initialize_bullet_pools() -> void:
 		push_error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
 		return
 
-## Calculates bullet trajectory vectors based on the specified bullet pattern
-## 
-## This function determines the direction vectors for each bullet to be fired based
-## on the ammo's bullet pattern, the number of bullets per shot, and the initial direction.
-## 
-## [@param ammo: AmmoDetails] - Contains bullet pattern and other ammo properties.
-## [@param bullet_per_shot: int] - Number of bullets to be fired in a single shot.
-## [@param initial_vector: Vector2] - Base direction vector for the shot.
-## 
-## [@return Array] - Array of Vector2 representing normalized direction vectors for each bullet.
-##
-## Bullet patterns:
-## [- SINGLE]: Returns just the normalized initial vector.
-## [- RANDOM_SPREAD]: Adds random angle variation within the weapon's spread range.
-## [- SPREAD/ARC]: Creates a fan pattern with evenly distributed angles across the specified arc.
-## [- CIRCLE]: Creates a circular pattern with bullets evenly distributed in 360 degrees.
+# Calculates bullet trajectory vectors based on the specified bullet pattern
+# [br]
+# This function determines the direction vectors for each bullet to be fired based
+# on the ammo's bullet pattern, the number of bullets per shot, and the initial direction.[br]
+# 
+# [param ammo] - Contains bullet pattern and other ammo properties.[br]
+# [param bullet_per_shot] - Number of bullets to be fired in a single shot.[br]
+# [param initial_vector] - Base direction vector for the shot.[br]
+# 
+# [return Array] - Array of Vector2 representing normalized direction vectors for each bullet.
+#
+# Bullet patterns:
+# [- SINGLE]: Returns just the normalized initial vector.
+# [- RANDOM_SPREAD]: Adds random angle variation within the weapon's spread range.
+# [- SPREAD/ARC]: Creates a fan pattern with evenly distributed angles across the specified arc.
+# [- CIRCLE]: Creates a circular pattern with bullets evenly distributed in 360 degrees.
 func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: int, initial_vector: Vector2) -> Array:
 	var launch_vectors: Array = []
 	match ammo.bullet_pattern:
