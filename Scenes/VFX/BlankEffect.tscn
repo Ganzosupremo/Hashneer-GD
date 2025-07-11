@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpplew5lay68k"]
+
+[ext_resource type="Script" uid="uid://c53amyrfwsnjq" path="res://Scripts/VFX/VFXEffect.gd" id="1_p54rq"]
+
+[node name="BlankEffect" type="GPUParticles2D"]
+amount = 50
+script = ExtResource("1_p54rq")

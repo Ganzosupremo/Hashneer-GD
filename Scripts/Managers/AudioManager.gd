@@ -74,8 +74,28 @@ func _on_music_clip_changed(clip: MusicDetails, time_to_fade: float) -> void:
 	var to_play: AudioStream = clip.music_clip if !clip.has_playlist else clip.playlist
 	await fade_music(to_play, clip.volume_linear, time_to_fade)
 
-## Creates a sound effect at a specific location if the limit has not been reached. 
-## Pass [param location] for the global position of the audio effect, and [param type] for the SoundEffectDetails to be queued.
+## Creates a sound effect at a specific location if the limit has not been reached.
+## This function will create a 2D audio player that will play the sound effect at the location.
+## The audio player will be destroyed when the sound effect is finished playing.
+## The audio bus will be set to the correct one based on the [param destination_audio_bus].
+## If the sound effect limit has been reached, the function will not create a new audio player.
+## If the sound effect type is not found in the sound_effect_dict, an error will be logged.
+## [br]
+## Parameters:[br]
+## [param location] is the global position of the audio effect, as a Vector2.[br]
+## [param type] is the SoundEffectDetails.SoundEffectType to be played.
+## The available sound effect types are defined in SoundEffectDetails.SoundEffectType.[br]
+## [param destination_audio_bus] is the audio bus to play the sound effect on, defaulting to MASTER.
+## The available audio buses are defined in SoundEffectDetails.DestinationAudioBus.
+## The audio bus can be set to MASTER, SFX, PLAYER_SFX, or WEAPONS.[br]
+## Example usage:[br]
+## [codeblock]
+## create_2d_audio_at_location(Vector2(100, 100), SoundEffectDetails.SoundEffectType.EXPLOSION, SoundEffectDetails.DestinationAudioBus.SFX)
+## [/codeblock]
+## This will create a 2D audio player at the position (100, 100)
+## that plays the EXPLOSION sound effect on the SFX audio bus.
+## [br]
+## Note: The sound effect must have an open limit to be played.
 func create_2d_audio_at_location(location: Vector2, type: SoundEffectDetails.SoundEffectType, destination_audio_bus: SoundEffectDetails.DestinationAudioBus = SoundEffectDetails.DestinationAudioBus.MASTER) -> void:
 	if sound_effect_dict.has(SoundEffectDetails.enum_to_string(type)):
 		var sound_effect: SoundEffectDetails = sound_effect_dict[SoundEffectDetails.enum_to_string(type)]
@@ -97,6 +117,7 @@ func create_2d_audio_at_location(location: Vector2, type: SoundEffectDetails.Sou
 		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.enum_to_string(type))
 
 var persistence_audio_player: AudioStreamPlayer2D
+
 ## Creates a sound effect at a specific location if the limit has not been reached.
 ## Pass [param location] for the global position of the audio effect, and [param type] for the SoundEffectDetails to be queued.
 ## This function will create a persistent audio player that will play the sound effect at the location.

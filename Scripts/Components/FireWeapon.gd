@@ -1,6 +1,19 @@
 extends Node2D
 class_name FireWeaponComponent
+## This component is responsible for firing weapons in the game.
+## 
+## It handles the firing logic, cooldowns, and bullet spawning.
+## It is designed to be used with the [ActiveWeaponComponent] to manage the current weapon and ammo.
+## It also handles the camera shake effect when firing a weapon.
 
+
+## Signal emitted when a weapon is fired.[br]
+## Parameters:[br]
+## [param has_fired] - Indicates if the weapon has fired this frame.[br]
+## [param fired_previous_frame] - Indicates if the weapon was fired in the previous frame.[br]
+## [param player_damage_multiplier] - The damage multiplier applied to the player.[br]
+## [param target_position] - The position where the weapon is aimed at, used for targeting purposes.[br]
+## This signal is connected to the [method on_fire_weapon] function to handle the firing logic.
 signal fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2)
 
 @export var main_event_bus: MainEventBus

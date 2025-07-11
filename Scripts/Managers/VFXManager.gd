@@ -12,15 +12,17 @@ enum EffectType {
 	ENEMY_HIT,
 	ENEMY_DEATH,
 	PLAYER_DEATH,
+	BLANK_EFFECT, # Used for placeholder effects or no effect
 	}
 
-@export var explosion_effect: PackedScene = preload("res://Scenes/VFX/ExplosionHitEffect.tscn")
-@export var debris_effect: PackedScene = preload("res://Scenes/VFX/DebrisEffect.tscn")
-@export var sparks_effect: PackedScene = preload("res://Scenes/VFX/SparksEffect.tscn")
-@export var screen_flash_scene: PackedScene = preload("res://Scenes/VFX/ScreenFlash.tscn")
-@export var weapon_fire_effect: PackedScene = preload("res://Scenes/VFX/WeaponFireEffect.tscn")
-@export var hit_effect: PackedScene = preload("res://Scenes/VFX/HitEffect.tscn")
-@export var death_effect: PackedScene = preload("res://Scenes/VFX/DeathEffect.tscn")
+@export var _explosion_effect: PackedScene = preload("res://Scenes/VFX/ExplosionHitEffect.tscn")
+@export var _debris_effect: PackedScene = preload("res://Scenes/VFX/DebrisEffect.tscn")
+@export var _sparks_effect: PackedScene = preload("res://Scenes/VFX/SparksEffect.tscn")
+@export var _screen_flash_scene: PackedScene = preload("res://Scenes/VFX/ScreenFlash.tscn")
+@export var _weapon_fire_effect: PackedScene = preload("res://Scenes/VFX/WeaponFireEffect.tscn")
+@export var _hit_effect: PackedScene = preload("res://Scenes/VFX/HitEffect.tscn")
+@export var _death_effect: PackedScene = preload("res://Scenes/VFX/DeathEffect.tscn")
+@export var _blank_effect: PackedScene = preload("res://Scenes/VFX/BlankEffect.tscn")
 
 
 var active_effects: Array[Node] = []
@@ -55,7 +57,7 @@ func _spawn_particles(scene: PackedScene, transform_effect: Transform2D, params:
 # Entry point for spawning effects based on an effect type
 func spawn_effect(effect_type: EffectType, 
 	transform_effect: Transform2D = Transform2D.IDENTITY, 
-	 props: VFXEffectProperties = null, duration: float = 0.1, color: Color = Color(1,1,1,0.8), ) -> Node:
+	props: VFXEffectProperties = null, duration: float = 0.1, color: Color = Color(1,1,1,0.8), ) -> Node:
 	
 	match effect_type:
 		EffectType.EXPLOSION:
@@ -72,28 +74,30 @@ func spawn_effect(effect_type: EffectType,
 			return _spawn_hit(transform_effect, props)
 		EffectType.ENEMY_DEATH, EffectType.PLAYER_DEATH:
 			return _spawn_death(transform_effect, props)
+		EffectType.BLANK_EFFECT:
+			return _spawn_particles(_blank_effect, transform_effect, props)
 	return null
 
 func _spawn_explosion(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(explosion_effect, transform_effect, props)
+	return _spawn_particles(_explosion_effect, transform_effect, props)
 
 func _spawn_debris(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(debris_effect, transform_effect, props)
+	return _spawn_particles(_debris_effect, transform_effect, props)
 
 func _spawn_sparks(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(sparks_effect, transform_effect, props)
+	return _spawn_particles(_sparks_effect, transform_effect, props)
 
 func _spawn_weapon_fire(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(weapon_fire_effect, transform_effect, props)
+	return _spawn_particles(_weapon_fire_effect, transform_effect, props)
 
 func _spawn_hit(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(hit_effect, transform_effect, props)
+	return _spawn_particles(_hit_effect, transform_effect, props)
 
 func _spawn_death(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
-	return _spawn_particles(death_effect, transform_effect, props)
+	return _spawn_particles(_death_effect, transform_effect, props)
 
 func _spawn_screen_flash(duration: float = 0.1, color: Color = Color(1,1,1,0.8)) -> Node:
-	var flash: ScreenFlash = screen_flash_scene.instantiate()
+	var flash: ScreenFlash = _screen_flash_scene.instantiate()
 	add_child(flash)
 	flash.start_flash(duration, color)
 	_register_effect(flash, duration)

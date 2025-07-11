@@ -23,4 +23,4 @@ func _set_weapon_image(texture: Texture2D) -> void:
 	weapon_texture.texture = texture
 
 func _set_weapon_name(weapon: WeaponDetails) -> void:
-	weapon_name.text = "({0}) {1}".format([weapon.weapon_list_index, weapon.weapon_name])
+	weapon_name.text = "{0}".format([weapon.weapon_name])

@@ -1,5 +1,14 @@
 extends CharacterBody2D
 class_name PlayerController
+## This is the player controller script that handles player movement, firing weapons, and applying damage.
+## 
+## It extends the [CharacterBody2D] class and uses various components to manage health, weapons, and abilities.
+## This script is responsible for player input, movement, firing weapons, and handling player health.
+## It also manages the player's abilities and interactions with gravity sources.
+## It is designed to be flexible and extensible, allowing for easy addition of new weapons and abilities.
+## It uses the [MainEventBus] for event handling and the [PlayerDetails] resource for player configuration.
+## It also uses the [AudioManager] for sound effects and the [VFXManager] for visual effects.
+
 
 @export_category("Events")
 @export var main_event_bus: MainEventBus
@@ -94,9 +103,9 @@ func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
 ## Applies damage to the player and plays hit sound and visual effects.
-## @param _damage: The amount of damage to apply.
-## @param hit_position: The position where the hit occurred, used for visual effects.
-## If not provided, defaults to Vector2.ZERO.
+## [param _damage]: The amount of damage to apply.[br]
+## [param hit_position]: The position where the hit occurred, used for visual effects.
+## If not provided, defaults to [Vector2.ZERO].
 func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0

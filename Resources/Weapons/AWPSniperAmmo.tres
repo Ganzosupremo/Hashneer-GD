@@ -19,6 +19,7 @@ fire_pattern_simultaneous = false
 max_pierce_count = 0
 max_bounce_count = 0
 explosion_radius = 0.0
+explosion_layer_mask = 1
 size = 10
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1

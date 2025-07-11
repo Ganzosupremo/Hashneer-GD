@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=11 format=3 uid="uid://cmk3cg4rlabd6"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=17 format=3 uid="uid://cmk3cg4rlabd6"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_kb2pf"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_nuhma"]
@@ -51,6 +51,54 @@ particle_texture = ExtResource("1_nuhma")
 process_material = SubResource("ParticleProcessMaterial_r3x08")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
+[sub_resource type="Gradient" id="Gradient_nuhma"]
+offsets = PackedFloat32Array(0, 0.329412, 0.776471, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0.827496, 0.827496, 0.827496, 1, 0.711765, 0.711765, 0.711765, 1, 0, 0, 0, 0.792157)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_ys3wn"]
+gradient = SubResource("Gradient_nuhma")
+
+[sub_resource type="Curve" id="Curve_0hs1g"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_r3x08"]
+curve = SubResource("Curve_0hs1g")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_nbwp3"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 10.0
+emission_ring_radius = 5.0
+emission_ring_inner_radius = 2.5
+emission_ring_cone_angle = 90.0
+spread = 180.0
+initial_velocity_min = 300.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 98, 0)
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_r3x08")
+color_ramp = SubResource("GradientTexture1D_ys3wn")
+turbulence_enabled = true
+turbulence_noise_strength = 3.02
+turbulence_noise_speed = Vector3(0, 20, 0)
+turbulence_noise_speed_random = 0.4
+turbulence_influence_min = 0.165
+turbulence_influence_max = 0.303
+
+[sub_resource type="Resource" id="Resource_46w7s"]
+script = ExtResource("1_rkkgi")
+amount = 30
+lifetime = 1.0
+one_shot = true
+speed_scale = 1.0
+explosiveness = 1.0
+randomness = 0.0
+particle_texture = ExtResource("1_nuhma")
+process_material = SubResource("ParticleProcessMaterial_nbwp3")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
 [sub_resource type="Gradient" id="Gradient_x0ieh"]
 offsets = PackedFloat32Array(0, 0.534653, 0.727723, 1)
 colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.607843, 0.913725, 0.470588, 0.572549, 0.807843, 0.956863, 0.470588, 1, 1, 1, 0.470588)
@@ -61,13 +109,14 @@ min_lifetime = 2.0
 max_lifetime = 4.0
 bullet_damage = 50.0
 bullet_speed = 1000.0
-bullet_type = 0
+bullet_type = 2
 bullet_pattern = 0
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
 max_pierce_count = 2
 max_bounce_count = 6
-explosion_radius = 0.0
+explosion_radius = 100.0
+explosion_layer_mask = 2360
 size = 7
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
@@ -78,3 +127,4 @@ trail_length = 5
 trail_width = 15.0
 fracture_force = 10000.0
 bullet_hit_vfx = SubResource("Resource_nuhma")
+failed_explosion_vfx = SubResource("Resource_46w7s")

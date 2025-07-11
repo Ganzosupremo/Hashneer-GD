@@ -23,8 +23,8 @@ func add_weapon_to_list(weapon: WeaponDetails) -> void:
 	_weapons_list.append(weapon)
 		
 	# Update the index on the weapon details
-	for i in _weapons_list.size():
-		_weapons_list[i].weapon_list_index = i
+	#for i in _weapons_list.size():
+		#_weapons_list[i].weapon_list_index = i
 
 
 func select_next_weapon():
