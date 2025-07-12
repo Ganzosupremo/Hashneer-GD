@@ -160,10 +160,11 @@ func switch_weapon() -> void:
 
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
 		fired_previous_frame = true
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
 	else:
 		fired_previous_frame = false
+		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):

@@ -92,7 +92,7 @@ func update_beam(origin: Vector2, launch_vector: Vector2 = _direction) -> void:
 		_apply_damage(collider, hit_pos)
 		_spawn_vfx_effect(hit_pos)
 
-func _apply_damage(body: Node2D, pos: Vector2) -> void:
+func _apply_damage(body: Node2D, hit_pos: Vector2) -> void:
 	var now: float = Time.get_ticks_msec()
 	var last: float = _hit_timestamps.get(body, 0.0)
 	if now - last < _damage_cooldown * 1000.0:
@@ -101,21 +101,21 @@ func _apply_damage(body: Node2D, pos: Vector2) -> void:
 	var damage_to_deal = _ammo_details.damage_final
 	
 	if body is FracturableStaticBody2D and body is not BlockCore and _quadrant_builder:
-		_quadrant_builder.call_deferred("fracture_quadrant_on_collision", pos, body, _launch_velocity, damage_to_deal, _ammo_details.bullet_speed)
+		_quadrant_builder.call_deferred("fracture_quadrant_on_collision", hit_pos, body, _launch_velocity, damage_to_deal, _ammo_details.bullet_speed)
 	elif body is BlockCore and _quadrant_builder:
 		_quadrant_builder.call_deferred("fracture_block_core", damage_to_deal, "Player")
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * _ammo_details.fracture_force
-		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.5, global_position, force, 0.25, modulate)
+		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.25, hit_pos, force, 0.25, modulate)
 	elif body is ShieldComponent:
-		body.call_deferred("absorb_damage", damage_to_deal, global_position)
+		body.call_deferred("absorb_damage", damage_to_deal, hit_pos)
 	elif body is PlayerController:
 		body.damage(damage_to_deal)
 
 func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	# Calculate the direction the laser is traveling (from laser origin to hit point)
 	var hit_direction = (hit_pos - global_position).normalized()
-	var hit_angle = hit_direction.angle() * PI
+	var hit_angle = hit_direction.angle() + PI
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.LASER_BEAM, Transform2D(hit_angle, hit_pos), _ammo_details.bullet_hit_vfx)
 	AudioManager.create_2d_audio_at_location(hit_pos, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.WEAPONS)
 

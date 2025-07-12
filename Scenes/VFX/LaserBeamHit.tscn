@@ -33,7 +33,7 @@ spread = 0.0
 gravity = Vector3(0, 0, 0)
 scale_min = 5.0
 scale_max = 10.0
-color = Color(0.91, 1, 1, 0.8)
+color = Color(1, 0, 0, 0.784314)
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_glow"]
 lifetime_randomness = 0.1
@@ -52,7 +52,7 @@ script = ExtResource("1_script")
 emitting = false
 amount = 30
 texture = ExtResource("1_spark")
-lifetime = 0.5
+lifetime = 0.1
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_sparks")

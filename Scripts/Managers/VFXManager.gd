@@ -110,25 +110,24 @@ func _spawn_screen_flash(duration: float = 0.1, color: Color = Color(1,1,1,0.8))
 func _spawn_laser_beam_hit(transform_effect: Transform2D, props: VFXEffectProperties) -> Node2D:
 	var laser_hit_effect: LaserBeamHitEffect = _laser_beam_hit_effect.instantiate()
 	add_child(laser_hit_effect)
-	laser_hit_effect.global_transform = transform_effect
 	
-	# Calculate the opposite direction for sparks (they should fly away from the laser beam)
-	var laser_angle_degrees = rad_to_deg(transform_effect.get_rotation())
-	var sparks_direction = laser_angle_degrees + 180.0  # Add 180 degrees for opposite direction
+	# Set only position, avoid inheriting rotation from parent transforms
+	laser_hit_effect.global_position = transform_effect.get_origin()
+	laser_hit_effect.rotation = 0.0  # Reset rotation to avoid player movement influence
 	
-	# Normalize angle to 0-360 range
-	if sparks_direction >= 360.0:
-		sparks_direction -= 360.0
+	# Calculate the direction sparks should fly (opposite to laser direction)
+	# Add 180 degrees to make sparks fly away from the impact point
+	var laser_angle_degrees = rad_to_deg(transform_effect.get_rotation()) + 180.0
 	
-	laser_hit_effect.set_hit_direction(sparks_direction)
+	laser_hit_effect.set_hit_direction(laser_angle_degrees)
 	
 	# Use properties for customization if provided
-	if props and props.has_method("get_color"):
+	if props:
 		laser_hit_effect.set_effect_colors(props.get_color(), Color.WHITE)
-	
+		laser_hit_effect.set_effect_properties(props)
+
 	# Play the effect
-	if laser_hit_effect.has_method("play_effect"):
-		laser_hit_effect.play_effect()
+	laser_hit_effect.play_effect()
 	
 	# Register for cleanup
 	_register_effect(laser_hit_effect, 1.0)  # Max lifetime of the effect

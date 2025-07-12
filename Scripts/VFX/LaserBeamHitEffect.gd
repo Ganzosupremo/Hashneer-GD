@@ -65,6 +65,23 @@ func set_effect_colors(primary_color: Color, secondary_color: Color = Color.WHIT
 		if flash_material:
 			flash_material.color = secondary_color
 
+## Sets properties for the sparks effect.
+## This is useful for customizing the effect based on game events.[br]
+## [param props]: An instance of VFXEffectProperties containing the desired properties.
+func set_effect_properties(props: VFXEffectProperties) -> void:
+	if props == null:
+		return
+	
+	sparks.amount = props.amount
+	sparks.lifetime = props.lifetime
+	sparks.one_shot = props.one_shot
+	sparks.speed_scale = props.speed_scale
+	sparks.explosiveness = props.explosiveness
+	sparks.randomness = props.randomness
+	sparks.texture = props.particle_texture
+	sparks.process_material = props.process_material
+
+
 ## Returns true if any particles are still emitting
 func is_playing() -> bool:
 	var sparks_playing: bool = sparks and sparks.emitting

@@ -23,6 +23,7 @@ explosion_radius = 0.0
 explosion_layer_mask = 1
 laser_beam_scene = ExtResource("1_bhow2")
 laser_length = 300.0
+laser_damage_cooldown = 0.1
 laser_collision_mask = 1
 size = 10
 bullets_per_shoot_min = 1

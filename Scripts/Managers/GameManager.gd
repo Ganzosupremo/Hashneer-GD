@@ -63,6 +63,9 @@ func init_timer(delay: float) -> SceneTreeTimer:
 func shake_camera(amplitude: float, frequency: float, duration: float, axis_ratio: float, armonic_ratio: Array[int], phase_offset_degrees: int, samples: int, tween_trans: Tween.TransitionType) -> void:
 	player_camera.shake(amplitude, frequency, duration, axis_ratio, armonic_ratio, phase_offset_degrees, samples, tween_trans)
 
+func shake_camera_with_magnitude(magnitude: Constants.ShakeMagnitude) -> void:
+	player_camera.shake_with_preset(magnitude)
+
 #endregion
 
 #region Level Management

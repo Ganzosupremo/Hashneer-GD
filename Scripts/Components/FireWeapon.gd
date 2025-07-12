@@ -54,8 +54,8 @@ func _enter_tree() -> void:
 func _exit_tree() -> void:
 	fire_weapon.disconnect(on_fire_weapon)
 
-func on_fire_weapon(has_fired: bool, _fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	weapon_fire(has_fired, player_damage_multiplier, target_position)
+func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	weapon_fire(has_fired, fired_previous_frame, player_damage_multiplier, target_position)
 
 
 ## Fires the weapon based on the current state and parameters.[br]
@@ -72,44 +72,41 @@ func on_fire_weapon(has_fired: bool, _fired_previous_frame: bool, player_damage_
 ## simultaneous firing of multiple bullets.
 ## It also handles the case where a laser beam is fired, updating its position and direction
 ## if it already exists, or creating a new laser beam instance if it does not.
-func weapon_fire(has_fired: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	
-	# Handle laser beam termination
-	if _handle_laser_beam_termination(has_fired, ammo):
+	# Handle laser beam termination on release or ammo change
+	if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo):
 		return
-	
-	if ready_to_fire() or (_laser_beam != null and ammo.bullet_type == AmmoDetails.BulletType.LASER):
+	if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null and ammo.bullet_type == AmmoDetails.BulletType.LASER):
 		current_weapon = active_weapon_component.get_current_weapon()
-		_perform_firing_effects()
-		
 		if ammo.bullet_type == AmmoDetails.BulletType.LASER:
 			_fire_laser(ammo, player_damage_multiplier, target_position)
 		else:
+			_trigger_camera_shake()
 			_fire_ammo(ammo, player_damage_multiplier, target_position)
 			reset_cooldown_timer()
 
 # Handles the termination of the laser beam based on the firing state and ammo type.
-func _handle_laser_beam_termination(has_fired: bool, ammo: AmmoDetails) -> bool:
-	if !has_fired and _laser_beam:
+func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool, ammo: AmmoDetails) -> bool:
+	# Stop on release
+	if !has_fired and fired_previous_frame and _laser_beam:
+		GameManager.player_camera.stop_constant_shake()
 		_laser_beam.destroy()
 		_laser_beam = null
 		reset_cooldown_timer()
 		return true
-	
+	# Stop if ammo type changed
 	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
+		GameManager.player_camera.stop_constant_shake()
 		_laser_beam.destroy()
 		_laser_beam = null
 		reset_cooldown_timer()
 		return true
-	
 	return false
 
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
-func _perform_firing_effects() -> void:
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
-	
+func _trigger_camera_shake() -> void:
 	if shake_camera_on_fire:
 		GameManager.shake_camera(current_weapon.amplitude,
 			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio,
@@ -117,6 +114,7 @@ func _perform_firing_effects() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
 	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
 	if !_laser_beam:
 		var scene_to_use: PackedScene = ammo.laser_beam_scene
@@ -132,6 +130,8 @@ func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_posi
 
 # Fires ammo based on the provided ammo details and target position.
 func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
+	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+	
 	ammo.damage_final = ammo.calculate_damage(player_damage_multiplier, current_weapon.weapon_damage_multiplier)
 	
 	var bullet_counter: int = 0
@@ -174,8 +174,16 @@ func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_posit
 ## This method returns true if the cooldown timer is less than or equal to zero,
 ## indicating that the weapon can fire again. It is used to determine if the weapon
 ## can be fired without waiting for the cooldown period to expire.
-func ready_to_fire() -> bool:
-	return fire_rate_cooldown_timer <= 0.0
+func ready_to_fire(has_fired: bool, fired_previous_frame: bool) -> bool:
+	# Only fire when the trigger is pressed
+	if has_fired:
+		# Initial press always fires immediately
+		if not fired_previous_frame:
+			return true
+		# Holding the trigger requires cooldown
+		return fire_rate_cooldown_timer <= 0.0
+	# Not pressing trigger: cannot fire
+	return false
 
 ## Resets the cooldown timer for firing the weapon.
 ## This method is called to reset the cooldown timer after firing a weapon or when the weapon is not ready to fire.
