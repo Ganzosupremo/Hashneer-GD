@@ -47,7 +47,7 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var fracture_force: float = 200.0
 
 @export_category("Collision")
-@export var collision_damage := Vector2(5, 10)
+@export var collision_damage := Vector2(10, 20)
 @export var collision_knockback_force: float = 10000
 @export var collision_knockback_time: float = 0.15
 

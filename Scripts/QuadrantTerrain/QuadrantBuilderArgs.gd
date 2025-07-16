@@ -43,7 +43,7 @@ var level_index: int = 0
 @export var kills_to_spawn_boss: int = 40
 ## This is used to determine how many drops the enemies will drop
 @export var enemy_drops_count: int = 5
-## This value will exponentially multiply the damage of the enemies
+## This value multiplies the enemy damage each level
 @export var enemy_damage_multiplier: float = 1.3
 ## The drops table used to determine the type of enemies to spawn
 ## for each level
