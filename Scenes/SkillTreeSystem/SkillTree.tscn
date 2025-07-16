@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=69 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -29,17 +29,14 @@
 [ext_resource type="Texture2D" uid="uid://cta5ueb8nxfcu" path="res://Textures/Player/Abilities/Magnet.png" id="22_5t31m"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="22_jhrlo"]
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
-[ext_resource type="PackedScene" uid="uid://cblr1jidfo5cn" path="res://Scenes/Player/Abilities/RegenHealthOverTime.tscn" id="23_5t31m"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
 [ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Weapons/AK47Unlock.tres" id="23_lm8ko"]
 [ext_resource type="Resource" uid="uid://bjrfc5yj77v5q" path="res://Resources/Upgrades/Abilities/Magnet.tres" id="24_r00sj"]
-[ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="25_glihh"]
-[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="26_kmf73"]
 [ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]
 [ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/Abilities/BlockCoreFinder.tres" id="29_5uag3"]
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]
-[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="34_oevro"]
-[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/Player/MiniUzis.tres" id="35_k7n60"]
+[ext_resource type="Resource" uid="uid://dgre5rwbotifk" path="res://Resources/Upgrades/Abilities/SlowGenOverTime.tres" id="33_oevro"]
+[ext_resource type="Resource" uid="uid://dmhj12bd5owxg" path="res://Resources/Upgrades/Weapons/MiniUzisUnlock.tres" id="35_k7n60"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
 shuffle = true
@@ -197,30 +194,6 @@ shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
 
-[sub_resource type="Resource" id="Resource_glihh"]
-script = ExtResource("25_glihh")
-ability_type = 3
-ability_to_unlock = ExtResource("23_5t31m")
-metadata/_custom_type_script = "uid://ukdtmxps3f8a"
-
-[sub_resource type="Resource" id="Resource_14fyc"]
-script = ExtResource("26_kmf73")
-feature_type = 2
-upgrade_name = "Slow Gen"
-upgrade_description = "Regenerates 50 HP every 5 seconds."
-upgrade_tier = 3
-is_upgrade = false
-is_percentage = false
-stat_type = 0
-ability_data = SubResource("Resource_glihh")
-upgrade_base_power = 0.0
-upgrade_power_multiplier = 1.0
-upgrade_cost_base = 650000.0
-upgrade_cost_multiplier = 1.0
-upgrade_cost_base_btc = 50000.0
-upgrade_cost_multiplier_btc = 1.0
-upgrade_max_level = 1
-
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_14fyc"]
 shader = ExtResource("8_co7u8")
 shader_parameter/circle_center = Vector2(-0.35, 0)
@@ -228,30 +201,6 @@ shader_parameter/time = 0.0
 shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
-
-[sub_resource type="Resource" id="Resource_r00sj"]
-script = ExtResource("34_oevro")
-weapon_type = 4
-weapon_to_unlock = ExtResource("35_k7n60")
-metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
-
-[sub_resource type="Resource" id="Resource_g7g25"]
-script = ExtResource("26_kmf73")
-feature_type = 1
-upgrade_name = "Meet the deadliest Twins"
-upgrade_description = "I gotta stop with  goofy ass names..."
-upgrade_tier = 0
-is_upgrade = false
-is_percentage = false
-stat_type = 0
-weapon_data = SubResource("Resource_r00sj")
-upgrade_base_power = 0.0
-upgrade_power_multiplier = 0.0
-upgrade_cost_base = 625000.0
-upgrade_cost_multiplier = 0.0
-upgrade_cost_base_btc = 50000.0
-upgrade_cost_multiplier_btc = 1.0
-upgrade_max_level = 1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_k7n60"]
 shader = ExtResource("8_co7u8")
@@ -515,7 +464,7 @@ progress_event_bus = ExtResource("15_hsn28")
 next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = ExtResource("19_pm0d4")
 skill_icon = ExtResource("19_pm0d4")
-skillnode_data = SubResource("Resource_14fyc")
+skillnode_data = ExtResource("33_oevro")
 save_name = "RegenHealthOverTimeUnlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/RegenHealthOverTime" instance=ExtResource("7_hhrbb")]
@@ -528,7 +477,7 @@ mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
 icon_on_maxed_out = ExtResource("33_14fyc")
 skill_icon = ExtResource("33_14fyc")
-skillnode_data = SubResource("Resource_g7g25")
+skillnode_data = ExtResource("35_k7n60")
 save_name = "MiniUzisUnlock"
 
 [node name="RippleComponentUI" parent="UpgradesHolder/MiniUzisUnlock" instance=ExtResource("7_hhrbb")]
