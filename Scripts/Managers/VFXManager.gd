@@ -133,3 +133,16 @@ func _spawn_laser_beam_hit(transform_effect: Transform2D, props: VFXEffectProper
 	_register_effect(laser_hit_effect, 1.0)  # Max lifetime of the effect
 	
 	return laser_hit_effect
+
+## Smoothly tween into and out of slow-motion.[br]
+## [param duration]: How long to maintain the slowed time scale.[br]
+## [param target_scale]: The slow-motion time scale (e.g., 0.5).[br]
+## [param ramp_time]: Time to ramp down/up into/from slow-motion.
+func slow_time(duration: float, target_scale: float = 0.5, ramp_time: float = 0.1) -> void:
+	# Ramp down to slow motion
+	var tween: Tween = create_tween()
+	tween.tween_property(Engine, "time_scale", target_scale, ramp_time)
+	# Hold slow-motion for duration
+	tween.tween_interval(duration)
+	# Ramp back to normal time
+	tween.tween_property(Engine, "time_scale", 1.0, ramp_time)

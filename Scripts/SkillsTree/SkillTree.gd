@@ -32,10 +32,10 @@ func _get_skill_nodes() -> Array:
 
 func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game()
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, SoundEffectDetails.DestinationAudioBus.SFX)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
 	level_selector_new.open()
 
 func _on_quit_game_pressed() -> void:
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, SoundEffectDetails.DestinationAudioBus.SFX)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)
 	get_tree().quit()

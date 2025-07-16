@@ -113,6 +113,7 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		_block_core_particles.emitting = false
 		Engine.time_scale = 0.21
 		
+		GameManager.player_camera.shake_with_preset(Constants.ShakeMagnitude.Large)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.EXPLOSION, global_transform)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.DEBRIS, global_transform)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SCREEN_FLASH, Transform2D.IDENTITY, null, 0.15)

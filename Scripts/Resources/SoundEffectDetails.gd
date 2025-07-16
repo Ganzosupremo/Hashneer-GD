@@ -29,21 +29,13 @@ enum SoundEffectType {
 	UI_VOLUME_SLIDER_TEST,
 }
 
-enum DestinationAudioBus {
-	MASTER = 0,
-	PLAYER_SFX = 1,
-	SFX = 2,
-	MUSIC = 3,
-	WEAPONS = 4,
-}
-
 ## Maximum number of this SoundEffect to play simultaneously before culled.
 @export_range(0, 10, 1, "or_greater") var limit: int = 5
 ## The unique sound effect in the [enum SoundEffectType] to associate with this effect. Each SoundEffectDetails resource should have it's own unique [enum SoundEffectType] setting.
 @export var sound_type: SoundEffectType
 ## The audio bus to play this sound effect on.
 ## This is used to set the bus of the [member audio_stream] when it is played.
-@export var destination_audio_bus: DestinationAudioBus = DestinationAudioBus.MASTER
+@export var destination_audio_bus: SFXManager.DestinationAudioBus = SFXManager.DestinationAudioBus.MASTER
 ## The volume of the [member audio_stream] in decibels.
 @export_range(-80.0, 24.0) var sound_volume: float = 1.0
 @export var audio_stream: AudioStream
@@ -91,6 +83,3 @@ static func enum_to_string(type: SoundEffectType) -> String:
 		SoundEffectType.BOSS_DEATH: return "BOSS_DEATH"
 		SoundEffectType.BOSS_HIT: return "BOSS_HIT"
 	return "UNKNOWN"
-
-static func destination_audio_bus_to_string(destination: DestinationAudioBus) -> String:
-	return AudioServer.get_bus_name(destination)

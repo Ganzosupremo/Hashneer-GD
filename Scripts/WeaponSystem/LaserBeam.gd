@@ -117,7 +117,7 @@ func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	var hit_direction = (hit_pos - global_position).normalized()
 	var hit_angle = hit_direction.angle() + PI
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.LASER_BEAM, Transform2D(hit_angle, hit_pos), _ammo_details.bullet_hit_vfx)
-	AudioManager.create_2d_audio_at_location(hit_pos, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.WEAPONS)
+	AudioManager.create_2d_audio_at_location(hit_pos, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.WEAPONS)
 
 func _on_timer_timeout() -> void:
 	destroy()

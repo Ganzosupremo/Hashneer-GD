@@ -204,7 +204,10 @@ func _deal_damage(body: Node2D, pos: Vector2) -> void:
 	elif body is ShieldComponent:
 			body.call_deferred("absorb_damage", damage_to_deal, global_position)
 	elif body is PlayerController:
-			body.damage(damage_to_deal)
+		body.damage(damage_to_deal)
+		GameManager.player_camera.shake_with_preset(Constants.ShakeMagnitude.Large)
+		# Slow down time briefly when player is hit by enemy bullet
+		GameManager.vfx_manager.slow_time(0.25, 0.35, 0.15)
 
 # Processes what happens to the bullet after hitting something
 # [param body]: The Node2D that was hit.
@@ -241,7 +244,7 @@ func _explode() -> void:
 	if !_can_explode():
 		# Create a failed explosion visual and sound effect here
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.BLANK_EFFECT, global_transform, _ammo_details.failed_explosion_vfx)
-		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.SFX)
+		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 		# If it can't explode, just destroy the bullet
 		_schedule_destruction()
 		return
@@ -249,7 +252,7 @@ func _explode() -> void:
 	# Spawn explosion VFX at the bullet position
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.EXPLOSION, global_transform)
 	# Play explosion sound using a generic sound effect, change to a explosion sound when available
-	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.SFX)
+	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 
 	var circle: CircleShape2D = CircleShape2D.new()
 	circle.radius = _ammo_details.explosion_radius

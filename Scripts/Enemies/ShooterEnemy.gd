@@ -36,10 +36,11 @@ func _process(delta: float) -> void:
 
 func _fire() -> void:
 	if isReadyToFire():
-		_fire_weapon.fire_weapon.emit(true, _fired_previous_frame, 1.0, _fire_target.global_position)
 		_fired_previous_frame = true
+		_fire_weapon.fire_weapon.emit(true, _fired_previous_frame, 1.0, _fire_target.global_position)
 	else:
 		_fired_previous_frame = false
+		_fire_weapon.fire_weapon.emit(false, _fired_previous_frame, 1.0, _fire_target.global_position)
 
 func _on_level_completed(_args: MainEventBus.LevelCompletedArgs) -> void:
 	_fired_previous_frame = true

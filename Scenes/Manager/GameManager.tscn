@@ -37,9 +37,15 @@ drop_path = "uid://cqab4qj7pmytx"
 odds = 0.6
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
+[sub_resource type="Resource" id="Resource_38mn4"]
+script = ExtResource("6_1wrq4")
+drop_path = "uid://nrfti3hkeyq4"
+odds = 0.7
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
 [sub_resource type="Resource" id="Resource_f24ny"]
 script = ExtResource("7_lbc0e")
-possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_lbc0e"), SubResource("Resource_1glqy")])
+possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_lbc0e"), SubResource("Resource_1glqy"), SubResource("Resource_38mn4")])
 guaranteed_drops = 5
 combined_odds = true
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
@@ -379,12 +385,6 @@ drop_path = "uid://dhsf3uibxlt6l"
 odds = 0.303
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
-[sub_resource type="Resource" id="Resource_38mn4"]
-script = ExtResource("6_1wrq4")
-drop_path = "uid://dhsf3uibxlt6l"
-odds = 0.7
-metadata/_custom_type_script = "uid://daksr3jumc0af"
-
 [sub_resource type="Resource" id="Resource_rifc4"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://nrfti3hkeyq4"
@@ -393,7 +393,7 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_k17wg"]
 script = ExtResource("7_lbc0e")
-possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m1qi8"), SubResource("Resource_38mn4"), SubResource("Resource_rifc4")])
+possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m1qi8"), SubResource("Resource_rifc4")])
 guaranteed_drops = 2
 combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"

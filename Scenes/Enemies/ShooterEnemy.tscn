@@ -1,164 +1,16 @@
-[gd_scene load_steps=28 format=3 uid="uid://nrfti3hkeyq4"]
+[gd_scene load_steps=7 format=3 uid="uid://nrfti3hkeyq4"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_k4fs6"]
-[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_2phcg"]
 [ext_resource type="Script" uid="uid://biox0lsa6gbep" path="res://Scripts/Enemies/ShooterEnemy.gd" id="2_hxamy"]
 [ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="2_ubhwd"]
-[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_xg7bx"]
-[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_nrp74"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="4_q13lb"]
-[ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="5_u1hpi"]
-[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="7_xg7bx"]
+[ext_resource type="Resource" uid="uid://dxgjejnnjd8a6" path="res://Resources/Weapons/Enemy/EnemyPistol.tres" id="3_hxamy"]
 [ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="8_i5djr"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xg7bx"]
-load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
-
-[sub_resource type="Gradient" id="Gradient_nx4ij"]
-offsets = PackedFloat32Array(0, 0.37013, 0.75974, 1)
-colors = PackedColorArray(1, 0, 0, 1, 0.627451, 0.12549, 0.941176, 1, 0.545098, 0, 0, 1, 0.678431, 0.847059, 0.901961, 0.380392)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_6mcbm"]
-gradient = SubResource("Gradient_nx4ij")
-
-[sub_resource type="Curve" id="Curve_hvhwf"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_58qa6"]
-curve = SubResource("Curve_hvhwf")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r5nha"]
-particle_flag_align_y = true
-particle_flag_rotate_y = true
-angle_min = 1.07288e-05
-angle_max = 180.0
-spread = 90.0
-initial_velocity_min = 600.0
-initial_velocity_max = 800.0
-gravity = Vector3(0, 0, 0)
-linear_accel_min = 26.37
-linear_accel_max = 41.76
-scale_min = 5.0
-scale_max = 15.0
-scale_curve = SubResource("CurveTexture_58qa6")
-color_ramp = SubResource("GradientTexture1D_6mcbm")
-hue_variation_min = 0.15
-hue_variation_max = 0.5
-
-[sub_resource type="Resource" id="Resource_ayku6"]
-script = ExtResource("3_xg7bx")
-amount = 25
-lifetime = 0.1
-one_shot = true
-speed_scale = 1.0
-explosiveness = 1.0
-randomness = 0.5
-particle_texture = SubResource("CompressedTexture2D_xg7bx")
-process_material = SubResource("ParticleProcessMaterial_r5nha")
-metadata/_custom_type_script = "uid://doc7qvahbxu0j"
-
-[sub_resource type="Gradient" id="Gradient_q13lb"]
-
-[sub_resource type="Resource" id="Resource_nx4ij"]
-script = ExtResource("2_2phcg")
-min_lifetime = 1.0
-max_lifetime = 5.0
-bullet_damage = 100.0
-bullet_speed = 1000.0
-bullet_type = 0
-bullet_pattern = 2
-pattern_arc_angle = 45.0
-fire_pattern_simultaneous = false
-max_pierce_count = 0
-max_bounce_count = 0
-explosion_radius = 0.0
-explosion_layer_mask = 1
-laser_beam_scene = ExtResource("4_q13lb")
-laser_length = 300.0
-laser_damage_cooldown = 0.1
-laser_collision_mask = 1
-size = 10
-bullets_per_shoot_min = 1
-bullets_per_shoot_max = 2
-bullet_spawn_interval_min = 0.0
-bullet_spawn_interval_max = 0.0
-trail_gradient = SubResource("Gradient_q13lb")
-trail_length = 30
-trail_width = 20.0
-fracture_force = 15000.0
-bullet_hit_vfx = SubResource("Resource_ayku6")
-metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
-
-[sub_resource type="Gradient" id="Gradient_4y2qm"]
-offsets = PackedFloat32Array(0, 0.327161, 0.697531, 1)
-colors = PackedColorArray(0, 0, 1, 1, 0.627451, 0.12549, 0.941176, 1, 0, 0, 0.545098, 1, 0.678431, 0.847059, 0.901961, 0.380392)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_nx4ij"]
-gradient = SubResource("Gradient_4y2qm")
-
-[sub_resource type="Curve" id="Curve_6mcbm"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_hvhwf"]
-curve = SubResource("Curve_6mcbm")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6mcbm"]
-particle_flag_align_y = true
-particle_flag_rotate_y = true
-angle_min = 1.07288e-05
-angle_max = 180.0
-spread = 90.0
-initial_velocity_min = 600.0
-initial_velocity_max = 800.0
-gravity = Vector3(0, 0, 0)
-linear_accel_min = 26.37
-linear_accel_max = 41.76
-scale_min = 5.0
-scale_max = 15.0
-scale_curve = SubResource("CurveTexture_hvhwf")
-color_ramp = SubResource("GradientTexture1D_nx4ij")
-hue_variation_min = 0.15
-hue_variation_max = 0.5
-
-[sub_resource type="Resource" id="Resource_hvhwf"]
-script = ExtResource("3_xg7bx")
-amount = 21
-lifetime = 0.35
-one_shot = true
-speed_scale = 1.0
-explosiveness = 1.0
-randomness = 0.5
-particle_texture = ExtResource("7_xg7bx")
-process_material = SubResource("ParticleProcessMaterial_6mcbm")
-metadata/_custom_type_script = "uid://doc7qvahbxu0j"
-
-[sub_resource type="Resource" id="Resource_58qa6"]
-script = ExtResource("4_nrp74")
-weapon_name = "Enemy Pistol"
-fire_sound = ExtResource("5_u1hpi")
-weapon_damage_multiplier = 0.0
-ammo_details = SubResource("Resource_nx4ij")
-weapon_shoot_effect = SubResource("Resource_hvhwf")
-shots_per_second = 1.0
-precharge_time = 0.0
-spread = 0.357
-amplitude = 3.0
-frequency = 5.0
-duration = 0.5
-axis_ratio = 0.0
-armonic_ration = Array[int]([1, 1])
-phase_offset = 90
-samples = 10
-shake_trans = 0
-metadata/_custom_type_script = "uid://c3oqvnse8erag"
 
 [node name="ShooterEnemy" instance=ExtResource("1_k4fs6")]
 script = ExtResource("2_hxamy")
 can_shoot = true
-weapon = SubResource("Resource_58qa6")
+weapon = ExtResource("3_hxamy")
 shooting_duration_interval = Vector2(2, 3)
 shooting_cooldown_interval = Vector2(5, 10)
 invincible_time = 0.0

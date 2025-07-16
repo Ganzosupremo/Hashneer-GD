@@ -8,9 +8,9 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 
 @export var progress_event_bus: PlayerProgressEventBus
 @export var weapon_details_dictionary: Dictionary = {
-	"AK47": preload("res://Resources/Weapons/AK47.tres"),
-	"AWP Sniper": preload("res://Resources/Weapons/AWPSniper.tres"),
-	"Mini Uzi": preload("res://Resources/Weapons/MiniUzis.tres"),
+	"AK47": preload("res://Resources/Weapons/Player/AK47.tres"),
+	"AWP Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
+	"Mini Uzi": preload("res://Resources/Weapons/Player/MiniUzis.tres"),
 }
 @export var ability_scenes_dictionary: Dictionary = {
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),

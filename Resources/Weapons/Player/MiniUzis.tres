@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="WeaponDetails" load_steps=19 format=3 uid="uid://dm5wtcvtcwc3r"]
 
-[ext_resource type="Resource" uid="uid://csv3xbukcg0c1" path="res://Resources/Weapons/MiniUzisAmmo.tres" id="1_jn1f3"]
+[ext_resource type="Resource" uid="uid://csv3xbukcg0c1" path="res://Resources/Weapons/Player/MiniUzisAmmo.tres" id="1_jn1f3"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_vm5p3"]
 [ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="2_jn1f3"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="4_juh0y"]

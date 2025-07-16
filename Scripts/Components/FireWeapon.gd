@@ -74,14 +74,16 @@ func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_m
 ## if it already exists, or creating a new laser beam instance if it does not.
 func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	# Handle laser beam termination on release or ammo change
-	if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo):
-		return
-	if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null and ammo.bullet_type == AmmoDetails.BulletType.LASER):
-		current_weapon = active_weapon_component.get_current_weapon()
-		if ammo.bullet_type == AmmoDetails.BulletType.LASER:
+	current_weapon = active_weapon_component.get_current_weapon()
+	
+	if ammo.bullet_type == AmmoDetails.BulletType.LASER:
+		# Handle laser beam termination on release or ammo change
+		if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
+		if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
+			# If the weapon is ready to fire, we can proceed with firing
 			_fire_laser(ammo, player_damage_multiplier, target_position)
-		else:
+	else:
+		if ready_to_fire(has_fired, fired_previous_frame):
 			_trigger_camera_shake()
 			_fire_ammo(ammo, player_damage_multiplier, target_position)
 			reset_cooldown_timer()
@@ -178,7 +180,7 @@ func ready_to_fire(has_fired: bool, fired_previous_frame: bool) -> bool:
 	# Only fire when the trigger is pressed
 	if has_fired:
 		# Initial press always fires immediately
-		if not fired_previous_frame:
+		if !fired_previous_frame:
 			return true
 		# Holding the trigger requires cooldown
 		return fire_rate_cooldown_timer <= 0.0

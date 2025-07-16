@@ -42,6 +42,7 @@ BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
+NotificationManager="*res://Scripts/Utils/NotificationManager.gd"
 
 [display]
 

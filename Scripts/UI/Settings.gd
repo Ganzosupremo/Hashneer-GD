@@ -97,7 +97,7 @@ func _on_fullscreen_toggled(button_pressed: bool) -> void:
 func _on_sfx_slider_value_changed(value: float) -> void:
 	AudioManager.set_sfx_volume(value)
 	if !loaded: return
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_VOLUME_SLIDER_TEST, SoundEffectDetails.DestinationAudioBus.SFX)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_VOLUME_SLIDER_TEST, AudioManager.DestinationAudioBus.SFX)
 
 func _on_music_slider_value_changed(value: float) -> void:
 	AudioManager.set_music_volume(value)
@@ -108,12 +108,12 @@ func _on_master_slider_value_changed(value: float) -> void:
 func _on_player_sfx_slider_value_changed(value: float) -> void:
 	AudioManager.set_player_sfx_volume(value)
 	if !loaded: return
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.PLAYER_HIT, SoundEffectDetails.DestinationAudioBus.PLAYER_SFX)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.PLAYER_HIT, AudioManager.DestinationAudioBus.PLAYER_SFX)
 
 func _on_weapons_slider_value_changed(value: float) -> void:
 	AudioManager.set_weapons_volume(value)
 	if !loaded: return
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.AK47_RIFLE_FIRE, SoundEffectDetails.DestinationAudioBus.WEAPONS)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.AK47_RIFLE_FIRE, AudioManager.DestinationAudioBus.WEAPONS)
 
 func save_data() -> void:
 	var settings = {
