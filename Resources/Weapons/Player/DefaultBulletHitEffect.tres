@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="VFXEffectProperties" load_steps=8 format=3 uid="uid://s1urxs0syyaf"]
+
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_jkgnd"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cck4r"]
+load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
+
+[sub_resource type="Gradient" id="Gradient_ftr2o"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.403614, 0.807229, 0.981928)
+colors = PackedColorArray(1, 0.647059, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0.223529)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6b566"]
+gradient = SubResource("Gradient_ftr2o")
+
+[sub_resource type="Curve" id="Curve_756fe"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_a4waw"]
+curve = SubResource("Curve_756fe")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_q6ugj"]
+particle_flag_rotate_y = true
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 90.0
+initial_velocity_min = 600.0
+initial_velocity_max = 900.0
+gravity = Vector3(0, 1200, 0)
+scale_min = 5.0
+scale_max = 15.0
+scale_curve = SubResource("CurveTexture_a4waw")
+color_ramp = SubResource("GradientTexture1D_6b566")
+turbulence_noise_strength = 3.34
+turbulence_noise_scale = 10.0
+turbulence_noise_speed = Vector3(1, 2, 0)
+turbulence_noise_speed_random = 1.0
+turbulence_influence_max = 0.31
+turbulence_initial_displacement_min = 1.0
+turbulence_initial_displacement_max = 5.0
+
+[resource]
+script = ExtResource("1_jkgnd")
+amount = 30
+lifetime = 0.1
+one_shot = true
+speed_scale = 1.0
+explosiveness = 0.0
+randomness = 0.5
+particle_texture = SubResource("CompressedTexture2D_cck4r")
+process_material = SubResource("ParticleProcessMaterial_q6ugj")
+metadata/_custom_type_script = "uid://doc7qvahbxu0j"

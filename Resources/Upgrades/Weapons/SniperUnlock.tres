@@ -1,20 +1,30 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://c6lryfoxdvlix"]
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://c6lryfoxdvlix"]
 
 [ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_yfeta"]
+[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="2_o3h4n"]
+[ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/Player/AWPSniper.tres" id="3_e0af7"]
+
+[sub_resource type="Resource" id="Resource_8rwfr"]
+script = ExtResource("2_o3h4n")
+weapon_type = 5
+weapon_to_unlock = ExtResource("3_e0af7")
+metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
 
 [resource]
 script = ExtResource("1_yfeta")
-feature_type = 0
-upgrade_name = ""
-upgrade_description = ""
+feature_type = 1
+upgrade_name = "Sniper rifle is here"
+upgrade_description = "Unlocks the powerful sniper rifle.
+Can pierce through objects"
 upgrade_tier = 0
 is_upgrade = false
 is_percentage = false
 stat_type = 0
-upgrade_base_power = 5.0
-upgrade_power_multiplier = 1.2
-upgrade_cost_base = 10.0
-upgrade_cost_multiplier = 1.2
-upgrade_cost_base_btc = 1.0
-upgrade_cost_multiplier_btc = 1.1
-upgrade_max_level = 10
+weapon_data = SubResource("Resource_8rwfr")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 0.0
+upgrade_cost_base = 1.25e+06
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 150000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1

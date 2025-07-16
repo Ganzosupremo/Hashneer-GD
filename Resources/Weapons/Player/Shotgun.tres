@@ -1,11 +1,14 @@
 [gd_resource type="Resource" script_class="WeaponDetails" load_steps=10 format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_7fgsi"]
+
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_a8ja3"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_ki0sl"]
 [ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="3_kfa2b"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
+[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="5_7fgsi"]
 
 [sub_resource type="Gradient" id="Gradient_ubo30"]
 offsets = PackedFloat32Array(0, 0.571721, 1)
@@ -14,8 +17,8 @@ colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238
 [sub_resource type="Resource" id="Resource_1gnsf"]
 script = ExtResource("2_ki0sl")
 min_lifetime = 1.0
-max_lifetime = 2.0
-bullet_damage = 25.0
+max_lifetime = 1.5
+bullet_damage = 15.0
 bullet_speed = 800.0
 bullet_type = 0
 bullet_pattern = 0
@@ -38,15 +41,54 @@ trail_gradient = SubResource("Gradient_ubo30")
 trail_length = 5
 trail_width = 9.0
 fracture_force = 25000.0
+bullet_hit_vfx = ExtResource("1_7fgsi")
+
+[sub_resource type="Gradient" id="Gradient_1c5fr"]
+offsets = PackedFloat32Array(0, 0.282353, 0.588235, 0.788235)
+colors = PackedColorArray(1, 0.647059, 0, 1, 1, 0, 0, 1, 0.915741, 0.339946, 7.70092e-07, 1, 0.745098, 0.745098, 0.745098, 0.376471)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_hgibs"]
+gradient = SubResource("Gradient_1c5fr")
+
+[sub_resource type="Curve" id="Curve_1jj3x"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jc05o"]
+curve = SubResource("Curve_1jj3x")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rf6gg"]
+lifetime_randomness = 0.35
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 5.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+initial_velocity_min = 700.0
+initial_velocity_max = 900.0
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 20.0
+scale_curve = SubResource("CurveTexture_jc05o")
+color_ramp = SubResource("GradientTexture1D_hgibs")
+turbulence_enabled = true
+turbulence_noise_strength = 3.1
+turbulence_noise_speed_random = 0.37
+turbulence_influence_max = 0.209
 
 [sub_resource type="Resource" id="Resource_eukx2"]
 script = ExtResource("1_1feeq")
-amount = 50
-lifetime = 1.0
-one_shot = false
+amount = 21
+lifetime = 0.35
+one_shot = true
 speed_scale = 1.0
-explosiveness = 0.0
+explosiveness = 1.0
 randomness = 0.5
+particle_texture = ExtResource("5_7fgsi")
+process_material = SubResource("ParticleProcessMaterial_rf6gg")
 
 [resource]
 script = ExtResource("4_6sosy")

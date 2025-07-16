@@ -80,7 +80,7 @@ turbulence_influence_over_life = SubResource("CurveTexture_uwok5")
 [sub_resource type="Resource" id="Resource_55a3t"]
 script = ExtResource("4_juh0y")
 amount = 30
-lifetime = 0.25
+lifetime = 0.2
 one_shot = true
 speed_scale = 1.0
 explosiveness = 1.0

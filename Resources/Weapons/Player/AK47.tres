@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=6 format=3 uid="uid://dolvblimdgg0b"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=7 format=3 uid="uid://dolvblimdgg0b"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_6hkbf"]
 [ext_resource type="Resource" uid="uid://cttyumyw2eyyf" path="res://Resources/Weapons/Player/AK-47Ammo.tres" id="1_vd2v8"]
 [ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="2_gphs5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_vxpuo"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_gua3f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j52in"]
 atlas = ExtResource("2_vxpuo")
@@ -16,6 +17,7 @@ weapon_texture = SubResource("AtlasTexture_j52in")
 fire_sound = ExtResource("2_gphs5")
 weapon_damage_multiplier = 0.0
 ammo_details = ExtResource("1_vd2v8")
+weapon_shoot_effect = ExtResource("4_gua3f")
 shots_per_second = 4.0
 precharge_time = 0.0
 spread = 0.32
