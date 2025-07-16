@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=5 format=3 uid="uid://uns2b1g6hisu"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=6 format=3 uid="uid://uns2b1g6hisu"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_ejixv"]
 [ext_resource type="Resource" uid="uid://j0b1rc1iki68" path="res://Resources/Weapons/Player/AWPSniperAmmo.tres" id="1_fq4yy"]
 [ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="2_pqhfw"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_kv2l2"]
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_o7c4p"]
 
 [resource]
@@ -12,9 +13,10 @@ weapon_texture = ExtResource("4_o7c4p")
 fire_sound = ExtResource("2_pqhfw")
 weapon_damage_multiplier = 1.0
 ammo_details = ExtResource("1_fq4yy")
+weapon_shoot_effect = ExtResource("4_kv2l2")
 shots_per_second = 1.0
 precharge_time = 0.0
-spread = 0.033
+spread = 0.01
 amplitude = 3.0
 frequency = 10.0
 duration = 0.7

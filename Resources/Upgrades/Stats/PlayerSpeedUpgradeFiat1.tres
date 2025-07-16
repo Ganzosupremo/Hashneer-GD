@@ -18,4 +18,4 @@ upgrade_cost_base = 6900.0
 upgrade_cost_multiplier = 1.15
 upgrade_cost_base_btc = 1999.0
 upgrade_cost_multiplier_btc = 1.1
-upgrade_max_level = 7
+upgrade_max_level = 10

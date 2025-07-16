@@ -1,92 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://bivptbtajsp46"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=7 format=3 uid="uid://bivptbtajsp46"]
 
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
-[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="4_662ec"]
-[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="5_u7rvp"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
-
-[sub_resource type="Curve" id="Curve_f1m5t"]
-_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_td3m7"]
-curve = SubResource("Curve_f1m5t")
-
-[sub_resource type="Gradient" id="Gradient_ntw6v"]
-interpolation_mode = 2
-offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
-colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_m0v6q"]
-gradient = SubResource("Gradient_ntw6v")
-
-[sub_resource type="Curve" id="Curve_oqk8h"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_vpkkv"]
-curve = SubResource("Curve_oqk8h")
-
-[sub_resource type="Curve" id="Curve_yepqe"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_7oww4"]
-curve = SubResource("Curve_yepqe")
-
-[sub_resource type="Curve" id="Curve_f4m08"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_etvnl"]
-curve = SubResource("Curve_f4m08")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k6clo"]
-lifetime_randomness = 0.17
-particle_flag_align_y = true
-particle_flag_rotate_y = true
-emission_shape = 1
-emission_sphere_radius = 5.0
-direction = Vector3(0, 0, 0)
-spread = 180.0
-initial_velocity_min = 40.0
-initial_velocity_max = 100.0
-angular_velocity_min = 180.0
-angular_velocity_max = 360.0
-angular_velocity_curve = SubResource("CurveTexture_td3m7")
-gravity = Vector3(0, 0, 0)
-linear_accel_min = 40.0
-linear_accel_max = 100.0
-radial_accel_min = 50.0
-radial_accel_max = 100.0
-damping_min = 2.0
-damping_max = 5.0
-damping_curve = SubResource("CurveTexture_vpkkv")
-scale_min = 10.0
-scale_max = 21.0
-scale_curve = SubResource("CurveTexture_7oww4")
-color_ramp = SubResource("GradientTexture1D_m0v6q")
-turbulence_enabled = true
-turbulence_noise_strength = 2.0
-turbulence_noise_speed = Vector3(10, 10, 0)
-turbulence_noise_speed_random = 0.54
-turbulence_influence_min = 0.2
-turbulence_influence_max = 0.34
-turbulence_initial_displacement_max = 9.0
-turbulence_influence_over_life = SubResource("CurveTexture_etvnl")
-
-[sub_resource type="Resource" id="Resource_ovwwj"]
-script = ExtResource("5_u7rvp")
-amount = 21
-lifetime = 0.35
-one_shot = true
-speed_scale = 1.0
-explosiveness = 1.0
-randomness = 0.3
-particle_texture = ExtResource("4_662ec")
-process_material = SubResource("ParticleProcessMaterial_k6clo")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_soxot"]
 atlas = ExtResource("6_uonrp")
@@ -99,7 +17,7 @@ weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_psf4r")
 weapon_damage_multiplier = 0.0
 ammo_details = ExtResource("1_wgbrq")
-weapon_shoot_effect = SubResource("Resource_ovwwj")
+weapon_shoot_effect = ExtResource("4_hdk3o")
 shots_per_second = 10.0
 precharge_time = 0.0
 spread = 0.25

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=4 format=3 uid="uid://cttyumyw2eyyf"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=5 format=3 uid="uid://cttyumyw2eyyf"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_rtcjc"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_sjdox"]
 
 [sub_resource type="Gradient" id="Gradient_jbavf"]
@@ -11,14 +12,14 @@ colors = PackedColorArray(0.991592, 0.615962, 0.524339, 1, 0.897717, 0.560379, 0
 script = ExtResource("1_n11uh")
 min_lifetime = 3.0
 max_lifetime = 6.0
-bullet_damage = 100.0
+bullet_damage = 50.0
 bullet_speed = 1000.0
-bullet_type = 0
+bullet_type = 4
 bullet_pattern = 0
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
 max_pierce_count = 0
-max_bounce_count = 0
+max_bounce_count = 1
 explosion_radius = 0.0
 explosion_layer_mask = 1
 laser_beam_scene = ExtResource("1_sjdox")
@@ -31,6 +32,7 @@ bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.0
 bullet_spawn_interval_max = 0.0
 trail_gradient = SubResource("Gradient_jbavf")
-trail_length = 11
+trail_length = 12
 trail_width = 12.0
 fracture_force = 10000.0
+bullet_hit_vfx = ExtResource("1_rtcjc")

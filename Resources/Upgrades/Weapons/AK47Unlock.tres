@@ -1,20 +1,29 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=2 format=3 uid="uid://bidjra86l58ip"]
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://bidjra86l58ip"]
 
 [ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_mqehs"]
+[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="2_e15yy"]
+[ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/Player/AK47.tres" id="3_ch8o4"]
+
+[sub_resource type="Resource" id="Resource_rqv4w"]
+script = ExtResource("2_e15yy")
+weapon_type = 6
+weapon_to_unlock = ExtResource("3_ch8o4")
+metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
 
 [resource]
 script = ExtResource("1_mqehs")
-feature_type = 0
-upgrade_name = ""
-upgrade_description = ""
+feature_type = 1
+upgrade_name = "AK-47 has arrived"
+upgrade_description = "The AK-47 rifle joins your arsenal"
 upgrade_tier = 0
 is_upgrade = false
 is_percentage = false
 stat_type = 0
-upgrade_base_power = 5.0
-upgrade_power_multiplier = 1.2
-upgrade_cost_base = 10.0
-upgrade_cost_multiplier = 1.2
-upgrade_cost_base_btc = 1.0
-upgrade_cost_multiplier_btc = 1.1
-upgrade_max_level = 10
+weapon_data = SubResource("Resource_rqv4w")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 0.0
+upgrade_cost_base = 1e+06
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 100000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1

@@ -1,0 +1,87 @@
+[gd_resource type="Resource" script_class="VFXEffectProperties" load_steps=14 format=3 uid="uid://dc2dkl7no6bnt"]
+
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_o3i6u"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sin88"]
+load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
+
+[sub_resource type="Curve" id="Curve_8m3vi"]
+_data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_pegw0"]
+curve = SubResource("Curve_8m3vi")
+
+[sub_resource type="Gradient" id="Gradient_ti2hc"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.255245, 0.458042, 0.716783, 1)
+colors = PackedColorArray(1, 1, 0, 1, 1, 0.443137, 0.243137, 1, 0.968627, 0, 0, 1, 0.745098, 0.745098, 0.745098, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_6526j"]
+gradient = SubResource("Gradient_ti2hc")
+
+[sub_resource type="Curve" id="Curve_pv403"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 100), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_etfsk"]
+curve = SubResource("Curve_pv403")
+
+[sub_resource type="Curve" id="Curve_ffsbm"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7eqa6"]
+curve = SubResource("Curve_ffsbm")
+
+[sub_resource type="Curve" id="Curve_deecv"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_qof0j"]
+curve = SubResource("Curve_deecv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_dsgub"]
+lifetime_randomness = 0.17
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+emission_shape = 1
+emission_sphere_radius = 5.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 40.0
+initial_velocity_max = 100.0
+angular_velocity_min = 180.0
+angular_velocity_max = 360.0
+angular_velocity_curve = SubResource("CurveTexture_pegw0")
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 40.0
+linear_accel_max = 100.0
+radial_accel_min = 50.0
+radial_accel_max = 100.0
+damping_min = 2.0
+damping_max = 5.0
+damping_curve = SubResource("CurveTexture_etfsk")
+scale_min = 10.0
+scale_max = 21.0
+scale_curve = SubResource("CurveTexture_7eqa6")
+color_ramp = SubResource("GradientTexture1D_6526j")
+turbulence_enabled = true
+turbulence_noise_strength = 2.0
+turbulence_noise_speed = Vector3(10, 10, 0)
+turbulence_noise_speed_random = 0.54
+turbulence_influence_min = 0.2
+turbulence_influence_max = 0.34
+turbulence_initial_displacement_max = 9.0
+turbulence_influence_over_life = SubResource("CurveTexture_qof0j")
+
+[resource]
+script = ExtResource("1_o3i6u")
+amount = 21
+lifetime = 0.35
+one_shot = true
+speed_scale = 1.0
+explosiveness = 1.0
+randomness = 0.3
+particle_texture = SubResource("CompressedTexture2D_sin88")
+process_material = SubResource("ParticleProcessMaterial_dsgub")
