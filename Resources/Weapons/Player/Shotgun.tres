@@ -1,8 +1,7 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=10 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=17 format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_7fgsi"]
-
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_a8ja3"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_ki0sl"]
 [ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="3_kfa2b"]
@@ -21,7 +20,7 @@ max_lifetime = 1.5
 bullet_damage = 15.0
 bullet_speed = 800.0
 bullet_type = 0
-bullet_pattern = 0
+bullet_pattern = 2
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
 max_pierce_count = 0

@@ -9,8 +9,6 @@ extends Control
 func _ready() -> void:
 	start_game.grab_focus()
 	AudioManager.change_music_clip(main_menu_music, 2.5)
-	await NotificationManager.show_notification("Welcome to Hashneer!", 2.0)
-	await NotificationManager.show_notification("Use the buttons below to start or quit the game.", 2.0)
 
 func _on_button_pressed() -> void:
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)

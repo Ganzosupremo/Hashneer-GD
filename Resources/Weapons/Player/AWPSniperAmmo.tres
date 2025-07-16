@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_bhow2"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_h4fyi"]
-[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_h5r0u"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_h5r0u"]
 
 [sub_resource type="Gradient" id="Gradient_xsvdn"]
 offsets = PackedFloat32Array(0, 0.495413, 1)

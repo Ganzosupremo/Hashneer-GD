@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="AmmoDetails" load_steps=5 format=3 uid="uid://cttyumyw2eyyf"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
-[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_rtcjc"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_rtcjc"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_sjdox"]
 
 [sub_resource type="Gradient" id="Gradient_jbavf"]
@@ -15,7 +15,7 @@ max_lifetime = 6.0
 bullet_damage = 90.0
 bullet_speed = 1000.0
 bullet_type = 4
-bullet_pattern = 0
+bullet_pattern = 2
 pattern_arc_angle = 45.0
 fire_pattern_simultaneous = false
 max_pierce_count = 0
