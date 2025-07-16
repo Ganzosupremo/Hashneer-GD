@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://bivptbtajsp46"]
 
-[ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Pistol_ammo.tres" id="1_4witc"]
-[ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_j36t6"]
-[ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_4wys5"]
-[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_c4yb8"]
-[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="4_ottnm"]
-[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="5_4vek8"]
+[ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
+[ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
+[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="4_662ec"]
+[ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="5_u7rvp"]
+[ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
 
 [sub_resource type="Curve" id="Curve_f1m5t"]
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
@@ -78,36 +78,35 @@ turbulence_initial_displacement_max = 9.0
 turbulence_influence_over_life = SubResource("CurveTexture_etvnl")
 
 [sub_resource type="Resource" id="Resource_ovwwj"]
-script = ExtResource("5_4vek8")
+script = ExtResource("5_u7rvp")
 amount = 21
 lifetime = 0.35
 one_shot = true
 speed_scale = 1.0
 explosiveness = 1.0
 randomness = 0.3
-particle_texture = ExtResource("4_ottnm")
+particle_texture = ExtResource("4_662ec")
 process_material = SubResource("ParticleProcessMaterial_k6clo")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_soxot"]
-atlas = ExtResource("3_4wys5")
+atlas = ExtResource("6_uonrp")
 region = Rect2(4, 0, 24, 14)
 
 [resource]
-script = ExtResource("3_c4yb8")
+script = ExtResource("3_a8fhq")
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
-fire_sound = ExtResource("2_j36t6")
+fire_sound = ExtResource("2_psf4r")
 weapon_damage_multiplier = 0.0
-ammo_details = ExtResource("1_4witc")
+ammo_details = ExtResource("1_wgbrq")
 weapon_shoot_effect = SubResource("Resource_ovwwj")
-fire_rate = 0.33
+shots_per_second = 10.0
 precharge_time = 0.0
-spread_min = 0.0
-spread_max = 0.014
+spread = 0.25
 amplitude = 1.5
 frequency = 5.0
 duration = 0.25
-axis_ratio = 0.0
+axis_ratio = 90.0
 armonic_ration = Array[int]([4, 5])
 phase_offset = 90
 samples = 10

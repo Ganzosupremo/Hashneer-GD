@@ -1,9 +1,9 @@
 shader_type canvas_item;
-render_mode blend_add; // Remove this if you want to use HDR glow instead (use "Glow" and "Outline Glow" sliders)
+
 
 uniform int beams = 2; // How many beams the energy field should have
-
-uniform float energy = 3.0; // How much the beams will travel up and down
+/// How much the beams will travel up and down.
+uniform float energy = 3.0; // 
 uniform int roughness : hint_range(1, 10) = 3; // How compact the noise texture will be
 uniform int frequency = 10; // Amount of "ripples" in the beams
 

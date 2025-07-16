@@ -42,6 +42,7 @@ BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
+NotificationManager="*res://Scripts/Utils/NotificationManager.gd"
 
 [display]
 
@@ -190,7 +191,6 @@ anti_aliasing/quality/msaa_2d=2
 textures/default_filters/texture_mipmap_bias=-0.5
 textures/decals/filter=2
 textures/light_projectors/filter=2
-environment/glow/upscale_mode.mobile=1
 environment/screen_space_reflection/roughness_quality=2
 environment/defaults/default_clear_color=Color(0, 0, 0, 1)
 viewport/transparent_background=true

@@ -7,7 +7,11 @@ signal weapon_unlocked(event: PlayerProgressEventBus.WeaponUnlockEvent)
 signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 
 @export var progress_event_bus: PlayerProgressEventBus
-@export var weapon_details_dictionary: Dictionary = {}
+@export var weapon_details_dictionary: Dictionary = {
+	"AK47": preload("res://Resources/Weapons/Player/AK47.tres"),
+	"AWP Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
+	"Mini Uzi": preload("res://Resources/Weapons/Player/MiniUzis.tres"),
+}
 @export var ability_scenes_dictionary: Dictionary = {
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
 	"Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
@@ -121,7 +125,7 @@ func _build_save_data() -> Dictionary:
 func load_data() -> void:
 		if !SaveSystem.has(SaveName): return
 		var data: Dictionary = SaveSystem.get_var(SaveName)
-		upgrade_bonuses = data["upgrade_bonuses"]
+		upgrade_bonuses = data.get("upgrade_bonuses", upgrade_bonuses)
 		percent_bonuses = data.get("percent_bonuses", percent_bonuses)
 		_load_saved_bonuses(upgrade_bonuses, false)
 		_load_saved_bonuses(percent_bonuses, true)

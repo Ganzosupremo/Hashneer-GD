@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://bsj51dud0foww"]
+[gd_scene load_steps=8 format=3 uid="uid://bsj51dud0foww"]
 
-[ext_resource type="Script" uid="uid://bvs4sqhexy8xh" path="res://Scripts/QuadrantTerrain/FractureBullet.gd" id="1_fp570"]
+[ext_resource type="PhysicsMaterial" uid="uid://dyfpuqku2o27j" path="res://Resources/WeaponResourcesUtils/FractureBulletPhysicsMaterial.tres" id="1_d68xy"]
+[ext_resource type="Script" uid="uid://bvs4sqhexy8xh" path="res://Scripts/WeaponSystem/FractureBullet.gd" id="1_fp570"]
 [ext_resource type="PackedScene" uid="uid://vvdbfpgwq6m6" path="res://Scenes/Components/HitBoxComponent.tscn" id="2_70ux4"]
 [ext_resource type="PackedScene" uid="uid://d2n78e7hlfmp4" path="res://Scenes/Components/BulletTrailComponent.tscn" id="3_dhedh"]
 
@@ -21,12 +22,14 @@ modulate = Color(1.5, 1.5, 1.5, 1)
 light_mask = 32
 visibility_layer = 32
 collision_layer = 64
-collision_mask = 2352
+collision_mask = 2360
+physics_material_override = ExtResource("1_d68xy")
 gravity_scale = 0.0
-can_sleep = false
 contact_monitor = true
 max_contacts_reported = 1
-angular_velocity = 0.785398
+linear_damp_mode = 1
+angular_velocity = 1.5708
+angular_damp_mode = 1
 script = ExtResource("1_fp570")
 use_object_pool = true
 radius = 10.0
@@ -72,4 +75,3 @@ texture = SubResource("GradientTexture2D_v6nxv")
 texture_scale = 2.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
-[connection signal="body_entered" from="CollisionBoxComponent" to="." method="_on_collision_detection_body_entered"]

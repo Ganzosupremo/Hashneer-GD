@@ -39,7 +39,7 @@
 [ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/Abilities/BlockCoreFinder.tres" id="29_5uag3"]
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="34_oevro"]
-[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/MiniUzis.tres" id="35_k7n60"]
+[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/Player/MiniUzis.tres" id="35_k7n60"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
 shuffle = true

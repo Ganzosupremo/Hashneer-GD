@@ -42,7 +42,7 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 
 @export_category("Fracture")
 ## shape_area < start_area * shape_area_percent -> shape will be fractured
-@export_range(0.0, 1.0, 0.1, "or_greater") var shape_area_percent : float = 0.25 
+@export_range(0.0, 1.0, 0.01, "or_greater") var shape_area_percent : float = 0.25 
 @export var fractures: int = 2
 @export var fracture_force: float = 200.0
 
@@ -278,30 +278,12 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		return {"percent_cut" : 0.0, "dead" : false} 
 	
  # Handle shield damage first
-	var remaining_damage = damage_to_apply
-	# var shield_component = _health_component.get_shield()
-	
-	# if shield_component and shield_component.is_active():
-	# 	# Use the total magnitude of the damage vector for the shield
-	# 	var damage_magnitude = (damage_to_apply.x + damage_to_apply.y) * 0.5
-		
-	# 	# Pass the impact point to the shield's absorb_damage function
-	# 	var remaining_damage_scalar = shield_component.absorb_damage(damage_magnitude, point)
-		
-	# 	# Convert scalar remaining damage back to vector format
-	# 	# If shield absorbs everything, both components will be 0
-	# 	if remaining_damage_scalar <= 0:
-	# 		_hit_flash_anim_player.play("shield-hit")
-	# 		return {"percent_cut": 0.0, "dead": false}
-		
-	# 	# Scale original damage vector by remaining percentage
-	# 	var damage_percent_remaining = remaining_damage_scalar / damage_magnitude
-	# 	remaining_damage = damage_to_apply * damage_percent_remaining
+	var remaining_damage: Vector2 = damage_to_apply
    
 	var percent_cut : float = 0.0
 	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(
 		remaining_damage, 
-		Vector2(21,23), 
+		Vector2(18,30), 
 		Vector2.ZERO
 		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)

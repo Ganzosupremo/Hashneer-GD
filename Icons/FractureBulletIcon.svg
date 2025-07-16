@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="14.304003"
+   height="8.7361193"
+   viewBox="0 0 3.7846006 2.3114315"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <g
+     id="layer1"
+     transform="translate(-0.2383857,-0.81353033)">
+    <rect
+       style="fill:#0466c8;stroke:#1a1a1a;stroke-width:0.264999;stroke-opacity:0"
+       id="rect2968"
+       width="0.65707517"
+       height="2.0424745"
+       x="0.37088519"
+       y="0.94998801"
+       rx="0.22166386"
+       ry="0.20187256" />
+    <rect
+       style="fill:#0466c8;stroke:#1a1a1a;stroke-width:0.264999;stroke-opacity:0"
+       id="rect3080"
+       width="1.6381546"
+       height="2.0305996"
+       x="1.2024122"
+       y="0.94602978"
+       rx="0.15833141"
+       ry="0.12270682" />
+    <path
+       style="fill:#0466c8;stroke:#1a1a1a;stroke-width:0.264999;stroke-opacity:0"
+       id="path3136"
+       d="M 2.9501007,2.9957778 A 0.97911716,0.89429587 0 0 1 2.4594148,3.7708543 0.97911716,0.89429587 0 0 1 1.479173,3.7690696 0.97911716,0.89429587 0 0 1 0.99187413,2.9922126"
+       transform="matrix(0,1,1,0,0,0)" />
+    <path
+       d="M 3.4650747,1.0971803 3.3923023,1.3714754 3.4986617,1.4218561 3.285943,1.5897919 3.4874661,1.5170197 3.605021,1.4218561 3.481868,1.3602797 3.5546404,1.1867461 Z"
+       id="path5237"
+       style="fill:#ffd5d5"
+       class="UnoptimicedTransforms" />
+    <path
+       style="fill:#ffffff;fill-opacity:0;fill-rule:nonzero;stroke:none;stroke-width:0.264999;stroke-opacity:0"
+       d="M 3.3475197,1.0971803 3.2747473,1.3714754 3.3811067,1.4218561 3.168388,1.5897919 3.3699111,1.5170197 3.487466,1.4218561 3.364313,1.3602797 3.4370854,1.1867461 Z"
+       id="path5231"
+       class="UnoptimicedTransforms"
+       transform="translate(0.11755504)" />
+    <path
+       d="m 3.2803451,2.8493101 -0.083968,-0.1007613 0.07837,-0.061577 -0.2015228,-0.083968 0.279893,0.022392 -0.044783,0.123153 0.044783,0.072772 z"
+       id="path5653"
+       style="fill:#ffffff"
+       class="UnoptimicedTransforms"
+       transform="translate(0.11755504)" />
+    <path
+       style="fill:#ffffff;fill-opacity:0;fill-rule:nonzero;stroke:none;stroke-width:0.264999;stroke-opacity:0"
+       d="m 3.2803451,2.8493101 -0.083968,-0.1007613 0.07837,-0.061577 -0.2015228,-0.083968 0.279893,0.022392 -0.044783,0.123153 0.044783,0.072772 z"
+       id="path5647"
+       class="UnoptimicedTransforms"
+       transform="translate(0.11755504)" />
+  </g>
+</svg>

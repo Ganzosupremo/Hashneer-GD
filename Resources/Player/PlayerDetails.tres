@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://btnlbrr52ggm" path="res://Scripts/Player/PlayerDetails.gd" id="1_6qe4h"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="2_ori8x"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Audio/PlayerDeadSoundEffect.tres" id="2_s2elr"]
-[ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Pistol.tres" id="3_s2elr"]
+[ext_resource type="Resource" uid="uid://bivptbtajsp46" path="res://Resources/Weapons/Player/Pistol.tres" id="3_s2elr"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="3_sybgm"]
 [ext_resource type="Resource" uid="uid://bpmg8awb0dpxs" path="res://Resources/Audio/PlayerWalkSoundEffect.tres" id="5_v2ko2"]
 [ext_resource type="Resource" uid="uid://bkkyj440tbud" path="res://Resources/Audio/PlayerHitSoundEffect.tres" id="7_fqb2i"]

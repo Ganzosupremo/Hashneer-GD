@@ -2,6 +2,7 @@ class_name VFXEffect extends GPUParticles2D
 
 
 func start_effect() -> void:
+	restart()
 	emitting = true
 
 func set_effect_properties(props: VFXEffectProperties) -> void:

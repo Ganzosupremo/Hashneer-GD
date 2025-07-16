@@ -1,27 +1,40 @@
 class_name QuadrantBuilder extends Node2D
+## This script is responsible for building the terrain of the game world.
+## 
+## It initializes the terrain with a grid of blocks, handles gravity effects, and manages the fracturing of blocks when damaged.
+## It also manages the _player's position and the block core, which is the main objective of the game.
+## It uses the [BlockCore] for the core block, [QuadrantTerrain] for the terrain, and [GameManager] for game state management.
+
 
 #region Exports
 
 @export_category("Settings")
 @export_group("General")
+## The music to play in the background.
 @export var music: MusicDetails
 
 @export_group("Size and Color")
+## The size of each quadrant in the grid.
 @export var quadrant_size: Vector2i = Vector2i(250, 250)
+## The size of the grid in terms of quadrants.
 @export var grid_size: Vector2i = Vector2i(16, 16)
+## The color of the fracture bodies.
 @export var fracture_body_color: Color
 
 
 @export_group("Gravity Settings")
+## Whether to enable center gravity.
 @export var enable_center_gravity: bool = true
+## The strength of the gravity applied to the _player.
 @export var gravity_strength: float = 600.0
-@export var gravity_falloff: float = 2.0  # Exponent for gravity falloff
+## The exponent for the gravity falloff.
+@export var gravity_falloff: float = 2.0
 
 #endregion
 
-@onready var player: PlayerController = %Player
-@onready var block_nodes: Node2D = %Quadrants
-@onready var staticbody_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
+@onready var _player: PlayerController = %Player
+@onready var _quadrant_nodes: Node2D = %Quadrants
+@onready var _static_body_template: PackedScene = preload("res://Scenes/QuadrantTerrain/StaticBody2DTemplate.tscn")
 
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 @onready var _rigid_bodies_parent: Node2D = %RigidBodiesParent
@@ -32,17 +45,17 @@ class_name QuadrantBuilder extends Node2D
 @onready var map_boundaries: StaticBody2D = %MapBoundaries
 @onready var center: Area2D = %Center
 
-var polygon_fracture: PolygonFracture
+var _polygon_fracture: PolygonFracture
 var _fracture_disabled: bool = false
 var _cur_fracture_color: Color = fracture_body_color
 var builder_args: LevelBuilderArgs
 var _map_bounds: Rect2
 var _grid_center: Vector2
-var map_shape: Constants.MapShape = Constants.MapShape.Square
+var _map_shape: Constants.MapShape = Constants.MapShape.Square
 var _quadrant_positions: Array = []
 
 
-#region Private Methods
+#region Public API
 
 func _ready() -> void:
 	GameManager.current_quadrant_builder = self
@@ -52,9 +65,46 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if not enable_center_gravity: return
 
-	if player and is_instance_valid(player):
-		var gravity_force = _calculate_gravity_force(player.global_position)
-		player.apply_gravity(gravity_force)
+	if _player and is_instance_valid(_player):
+		var gravity_force = _calculate_gravity_force(_player.global_position)
+		_player.apply_gravity(gravity_force)
+
+## Handles the fracturing of the source polygon (Quadrant) at the given position.[br]
+## [param source] The source polygon to be fractured.[br]
+## [param cut_pos] The position where the cut occurred.[br]
+## [param cut_shape] The shape of the cut.[br]
+## [param cut_rot] The rotation of the cut.[br]
+## [param fade_speed] The speed at which the visualizer fades.
+func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStaticBody2D, bullet_launch_velocity:float = 410.0, bullet_damage: float = 25.0, bullet_speed: float = 500.0) -> void:
+	var p = bullet_launch_velocity / bullet_speed
+	var cut_shape: PackedVector2Array = _polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
+	_spawn_cut_visualizers(pos, cut_shape, 10.0)
+	
+	if !other_body.take_damage(bullet_damage):
+		return
+	
+	if _fracture_disabled: return
+	_fracture_disabled = true
+	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
+	other_body.random_drops.spawn_drops(1)
+	
+	set_deferred("_fracture_disabled", false)
+
+## Fractures the block core at the given position with the specified parameters.[br]
+## [param bullet_damage]: The damage to deal to the block core.[br]
+## [param miner]: The miner that will mine the block.[br]
+## [param instakill]: Whether the block core should be instakilled.[br]
+func fracture_block_core(bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
+	if _fracture_disabled: return
+	_fracture_disabled = true
+	
+	block_core.fracture(builder_args.block_core_cuts_delaunay, builder_args.block_core_cut_min_area, bullet_damage, _cur_fracture_color, instakill, miner)
+	
+	set_deferred("_fracture_disabled", false)
+
+#endregion
+
+#region Private Functions
 
 func _calculate_gravity_force(target_position: Vector2) -> Vector2:
 	var direction = (_grid_center - target_position).normalized()
@@ -140,16 +190,16 @@ func _create_boundary_walls() -> void:
 		map_boundaries.add_child(wall)
 
 
-## Initializes the builder with the given arguments.
+## Initializes the builder with the arguments from the current level.
 func _init_builder() -> void:
 	var builder_data: LevelBuilderArgs = GameManager.current_level_args
 	builder_args = builder_data
 
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
 	grid_size = builder_data.grid_size
-	map_shape = builder_data.map_shape
+	_map_shape = builder_data.map_shape
 	
-	polygon_fracture = PolygonFracture.new()
+	_polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
 	
 	var color := Color.WHITE
@@ -157,7 +207,7 @@ func _init_builder() -> void:
 	color.v = fracture_body_color.v
 	color.h = _rng.randf()
 	_cur_fracture_color = color
-	block_nodes.modulate = _cur_fracture_color
+	_quadrant_nodes.modulate = _cur_fracture_color
 	_rigid_bodies_parent.modulate = _cur_fracture_color
 
 	_calculate_grid_center()
@@ -171,45 +221,9 @@ func _calculate_grid_center() -> void:
 	)
 	center.global_position = _grid_center
 
-#endregion
-
-## Handles the fracturing of the source polygon at the given position.
-## @param source The source polygon to be fractured.
-## @param cut_pos The position where the cut occurred.
-## @param cut_shape The shape of the cut.
-## @param cut_rot The rotation of the cut.
-## @param fade_speed The speed at which the visualizer fades.
-func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStaticBody2D, bullet_launch_velocity:float = 410.0, bullet_damage: float = 25.0, bullet_speed: float = 500.0) -> void:
-	var p = bullet_launch_velocity / bullet_speed
-	var cut_shape: PackedVector2Array = polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
-	_spawn_cut_visualizers(pos, cut_shape, 10.0)
-	
-	if !other_body.take_damage(bullet_damage):
-		return
-	
-	if _fracture_disabled: return
-	_fracture_disabled = true
-	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
-	other_body.random_drops.spawn_drops(1)
-	
-	set_deferred("_fracture_disabled", false)
-
-## Fractures the quadrant block core,
-## which at the same time will mine a bitcoin block.
-## @param bullet_damage The damage to deal to the block core.
-## @param miner The miner that will mine the block.
-## @param instakill Whether the block core should be instakilled.
-func fracture_block_core(bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
-	if _fracture_disabled: return
-	_fracture_disabled = true
-	
-	block_core.fracture(builder_args.block_core_cuts_delaunay, builder_args.block_core_cut_min_area, bullet_damage, _cur_fracture_color, instakill, miner)
-	
-	set_deferred("_fracture_disabled", false)
-
 func _is_cell_in_shape(cell: Vector2i) -> bool:
 	var cell_center = (Vector2(cell) + Vector2(0.5, 0.5)) * Vector2(quadrant_size)
-	match map_shape:
+	match _map_shape:
 		Constants.MapShape.Circle:
 			var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
 			return cell_center.distance_to(_grid_center) <= radius
@@ -241,8 +255,8 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			if not _is_cell_in_shape(cell):
 				continue
 			
-			var block: FracturableStaticBody2D = staticbody_template.instantiate()
-			block_nodes.add_child(block)
+			var block: FracturableStaticBody2D = _static_body_template.instantiate()
+			_quadrant_nodes.add_child(block)
 			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
 			block.placed_in_level = true
 			var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
@@ -254,8 +268,8 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 	_initialize_block_core()
 
 func _set_player_position() -> void:
-	## Set the player position to a random position within the grid of blocks with a little offset
-	## This is to avoid the player to be spawned in the same position as the block core or inside a block
+	## Set the _player position to a random position within the grid of blocks with a little offset
+	## This is to avoid the _player to be spawned in the same position as the block core or inside a block
 	var offset: Vector2 = Vector2(20, 20)
 	var spawn_point: Vector2 = Vector2.ZERO
 
@@ -281,7 +295,7 @@ func _set_player_position() -> void:
 				_map_bounds.position.x + offset.x,
 				_rng.randf_range(_map_bounds.position.y, _map_bounds.end.y)
 			)
-	player.global_position = spawn_point
+	_player.global_position = spawn_point
 
 func _initialize_block_core():
 	var bounds: Rect2 = block_core.get_bounding_square()
@@ -293,7 +307,7 @@ func _initialize_block_core():
 	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _point_inside_shape(point: Vector2) -> bool:
-	match map_shape:
+	match _map_shape:
 		Constants.MapShape.Circle:
 			var radius = min(grid_size.x, grid_size.y) * quadrant_size.x / 2.0
 			return point.distance_to(_grid_center) <= radius
@@ -340,7 +354,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 	
 	var s_mass : float = 1.0
 	
-	var cut_fracture_info: Dictionary = polygon_fracture.cutFracture(source_polygon, cut_shape, source_transform, cut_transform, 1000.0, 500.0, 100.0, 21)
+	var cut_fracture_info: Dictionary = _polygon_fracture.cutFracture(source_polygon, cut_shape, source_transform, cut_transform, 1000.0, 500.0, 100.0, 21)
 	
 	if cut_fracture_info.shapes.size() <= 0 and cut_fracture_info.fractures.size() <= 0:
 		print('empty dictionary')
@@ -357,12 +371,12 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 	
 	source.queue_free()
 
-## Spawns little polygons shards (for visual effects) at the position where the collision happened.
-## The shards will have a random lifetime and mass based on the area of the original polygon that was fractured.
-## The shards will shrink and disappear after the lifetime is over.
-## @param texture_info The dictionary containing the texture information.
-## @param new_mass The new mass of the shard.
-## @param life_time The lifetime of the shard.
+# Spawns little polygons shards (for visual effects) at the position where the collision happened.
+# The shards will have a random lifetime and mass based on the area of the original polygon that was fractured.
+# The shards will shrink and disappear after the lifetime is over.
+# @param texture_info The dictionary containing the texture information.
+# @param new_mass The new mass of the shard.
+# @param life_time The lifetime of the shard.
 func _spawn_fracture_shards(fracture_shard : Dictionary, texture_info : Dictionary, new_mass : float, life_time : float) -> void:
 	var instance_fbody = _pool_fracture_shards.getInstance()
 	if not instance_fbody:
@@ -372,18 +386,18 @@ func _spawn_fracture_shards(fracture_shard : Dictionary, texture_info : Dictiona
 	instance_fbody.setPolygon(fracture_shard.centered_shape, _cur_fracture_color, PolygonLib.setTextureOffset(texture_info, fracture_shard.centroid))
 	instance_fbody.setMass(new_mass)
 
-## Spawns a little polygon cut that serves as feedback to the player on where the collision happened.
-## @param pos The position where the cut occurred.
-## @param poly The shape of the cut.
-## @param fade_speed The speed at which the visualizer fades.
+# Spawns a little polygon cut that serves as feedback to the _player on where the collision happened.
+# @param pos The position where the cut occurred.
+# @param poly The shape of the cut.
+# @param fade_speed The speed at which the visualizer fades.
 func _spawn_cut_visualizers(pos : Vector2, poly : PackedVector2Array, fade_speed : float) -> void:
 	var instance_visualizers = _pool_cut_visualizer.getInstance()
 	instance_visualizers.spawn(pos, fade_speed)
 	instance_visualizers.setPolygon(poly)
 
-## Spawn a static body at the collision position with the ramaining shape of the original polygon
+# Spawn a static body at the collision position with the ramaining shape of the original polygon
 func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Dictionary) -> void:
-	var instance_staticbody: FracturableStaticBody2D = staticbody_template.instantiate()
+	var instance_staticbody: FracturableStaticBody2D = _static_body_template.instantiate()
 	_rigid_bodies_parent.add_child(instance_staticbody)
 	instance_staticbody.global_position = shape_info.spawn_pos
 	instance_staticbody.global_rotation = shape_info.spawn_rot
@@ -391,3 +405,5 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.self_modulate = color
 	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info, builder_args.hit_sound)
 	instance_staticbody.reset_health()
+
+#endregion

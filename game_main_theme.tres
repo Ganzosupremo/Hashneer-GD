@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=125 format=3 uid="uid://dylriqvd0gggf"]
+[gd_resource type="Theme" load_steps=126 format=3 uid="uid://dylriqvd0gggf"]
 
 [ext_resource type="Texture2D" uid="uid://bf0jne128i4qm" path="res://Textures/UI/Panels/Banner_v6.png" id="1_k0jwi"]
 [ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="4_2qa8s"]
@@ -236,6 +236,18 @@ texture_margin_right = 12.0
 texture_margin_bottom = 22.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ns6t6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_notification"]
+bg_color = Color(0, 0, 0, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.766155, 0.933274, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_n3i65"]
 load_path = "res://.godot/imported/MainButtonsHasheneer.png-c64c342a12958b1c95b49f1a2b3d4654.ctex"
@@ -774,6 +786,8 @@ NormalText/constants/shadow_offset_x = 5
 NormalText/constants/shadow_offset_y = 4
 NormalText/constants/shadow_outline_size = 0
 NormalText/font_sizes/font_size = 32
+NotificationPanel/base_type = &"Panel"
+NotificationPanel/styles/panel = SubResource("StyleBoxFlat_notification")
 OptionButton/icons/arrow = null
 OptionButton/styles/disabled = SubResource("StyleBoxTexture_uw7m1")
 OptionButton/styles/focus = SubResource("StyleBoxTexture_8awn4")

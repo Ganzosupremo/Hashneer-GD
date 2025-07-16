@@ -1,5 +1,14 @@
 extends CharacterBody2D
 class_name PlayerController
+## This is the player controller script that handles player movement, firing weapons, and applying damage.
+## 
+## It extends the [CharacterBody2D] class and uses various components to manage health, weapons, and abilities.
+## This script is responsible for player input, movement, firing weapons, and handling player health.
+## It also manages the player's abilities and interactions with gravity sources.
+## It is designed to be flexible and extensible, allowing for easy addition of new weapons and abilities.
+## It uses the [MainEventBus] for event handling and the [PlayerDetails] resource for player configuration.
+## It also uses the [AudioManager] for sound effects and the [VFXManager] for visual effects.
+
 
 @export_category("Events")
 @export var main_event_bus: MainEventBus
@@ -27,7 +36,7 @@ var dead_sound_effect: SoundEffectDetails
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
-var damage_multiplier: float = 1.0
+var player_damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
 var abilities: Array = []
@@ -63,7 +72,7 @@ func set_player() -> void:
 	
 	_unlock_saved_abilities()
 	speed = player_details.speed
-	damage_multiplier = player_details.damage_multiplier
+	player_damage_multiplier = player_details.damage_multiplier
 	_health.set_max_health(player_details.max_health)
 	
 	_apply_stats()
@@ -94,9 +103,9 @@ func apply_gravity(force: Vector2) -> void:
 	gravity_force = force
 
 ## Applies damage to the player and plays hit sound and visual effects.
-## @param _damage: The amount of damage to apply.
-## @param hit_position: The position where the hit occurred, used for visual effects.
-## If not provided, defaults to Vector2.ZERO.
+## [param _damage]: The amount of damage to apply.[br]
+## [param hit_position]: The position where the hit occurred, used for visual effects.
+## If not provided, defaults to [Vector2.ZERO].
 func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0
@@ -119,7 +128,7 @@ func _apply_stats() -> void:
 	var stats = player_details.apply_stats()
 	
 	speed = stats.Speed
-	damage_multiplier = stats.Damage
+	player_damage_multiplier = stats.Damage
 	_health.set_max_health(stats.Health)
 
 #region Input
@@ -151,10 +160,11 @@ func switch_weapon() -> void:
 
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, damage_multiplier, get_global_mouse_position())
 		fired_previous_frame = true
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
 	else:
 		fired_previous_frame = false
+		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
