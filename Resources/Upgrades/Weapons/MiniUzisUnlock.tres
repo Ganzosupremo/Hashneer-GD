@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://dmhj12bd5owxg"]
+
+[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_mla5i"]
+[ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="2_sttgn"]
+[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/Player/MiniUzis.tres" id="3_dax8s"]
+
+[sub_resource type="Resource" id="Resource_r00sj"]
+script = ExtResource("2_sttgn")
+weapon_type = 4
+weapon_to_unlock = ExtResource("3_dax8s")
+metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
+
+[resource]
+script = ExtResource("1_mla5i")
+feature_type = 1
+upgrade_name = "Meet the deadliest Twins"
+upgrade_description = "I gotta stop with  goofy ass names..."
+upgrade_tier = 0
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+weapon_data = SubResource("Resource_r00sj")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 0.0
+upgrade_cost_base = 625000.0
+upgrade_cost_multiplier = 0.0
+upgrade_cost_base_btc = 50000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1

@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=9 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=10 format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_a8ja3"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_ki0sl"]
 [ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="3_kfa2b"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
@@ -18,10 +19,19 @@ bullet_damage = 25.0
 bullet_speed = 800.0
 bullet_type = 0
 bullet_pattern = 0
-max_hits = 1
+pattern_arc_angle = 45.0
+fire_pattern_simultaneous = false
+max_pierce_count = 0
+max_bounce_count = 0
+explosion_radius = 0.0
+explosion_layer_mask = 1
+laser_beam_scene = ExtResource("1_a8ja3")
+laser_length = 300.0
+laser_damage_cooldown = 0.1
+laser_collision_mask = 1
 size = 4
-bullets_per_shoot_min = 3
-bullets_per_shoot_max = 7
+bullets_per_shoot_min = 4
+bullets_per_shoot_max = 8
 bullet_spawn_interval_min = 0.015
 bullet_spawn_interval_max = 0.025
 trail_gradient = SubResource("Gradient_ubo30")

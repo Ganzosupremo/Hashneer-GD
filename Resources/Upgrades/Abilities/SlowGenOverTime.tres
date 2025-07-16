@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://dgre5rwbotifk"]
+
+[ext_resource type="PackedScene" uid="uid://cblr1jidfo5cn" path="res://Scenes/Player/Abilities/RegenHealthOverTime.tscn" id="1_0qevs"]
+[ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="2_ulosx"]
+[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="3_ltuoq"]
+
+[sub_resource type="Resource" id="Resource_glihh"]
+script = ExtResource("2_ulosx")
+ability_type = 3
+ability_to_unlock = ExtResource("1_0qevs")
+metadata/_custom_type_script = "uid://ukdtmxps3f8a"
+
+[resource]
+script = ExtResource("3_ltuoq")
+feature_type = 2
+upgrade_name = "Slow Gen"
+upgrade_description = "Regenerates 50 HP every 5 seconds."
+upgrade_tier = 3
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+ability_data = SubResource("Resource_glihh")
+upgrade_base_power = 0.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 650000.0
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 50000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
