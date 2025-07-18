@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_soxot"]

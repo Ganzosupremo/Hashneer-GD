@@ -55,7 +55,7 @@ func _ready() -> void:
 	progress_event_bus.ability_unlocked.connect(_on_ability_unlocked)
 
 func _on_stat_upgraded(event: PlayerProgressEventBus.StatUpgradeEvent):
-	var stat_name := Utils.player_stat_type_to_string(event.stat_type)
+	var stat_name: String= Utils.player_stat_type_to_string(event.stat_type)
 	add_upgrade_bonus(stat_name, event.upgrade_power, event.is_percentage, event)
 
 func _on_weapon_unlocked(event: PlayerProgressEventBus.WeaponUnlockEvent):

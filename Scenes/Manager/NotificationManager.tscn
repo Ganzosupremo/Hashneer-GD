@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://5hiq1kue7j75"]
+
+[ext_resource type="Script" uid="uid://b2ye8lsut3qyn" path="res://Scripts/Utils/NotificationManager.gd" id="1_vfw7s"]
+[ext_resource type="PackedScene" uid="uid://cefimi5wlr8gl" path="res://Scenes/UI/NotificationPanel.tscn" id="2_4jp1i"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_k72qu"]
+[ext_resource type="PackedScene" uid="uid://i2e61eq5k5l0" path="res://Scenes/UI/NotificationPopupPanel.tscn" id="3_d3b5c"]
+
+[node name="NotificationManager" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_vfw7s")
+_main_event_bus = ExtResource("2_k72qu")
+
+[node name="NotificationPanel" parent="." instance=ExtResource("2_4jp1i")]
+unique_name_in_owner = true
+layout_mode = 0
+
+[node name="NotificationPopupPanel" parent="." instance=ExtResource("3_d3b5c")]
+unique_name_in_owner = true

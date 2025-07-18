@@ -108,4 +108,5 @@ enum AbilityNames {
 enum CurrencyType {
 	FIAT,
 	BITCOIN,
+	BOTH,
 }

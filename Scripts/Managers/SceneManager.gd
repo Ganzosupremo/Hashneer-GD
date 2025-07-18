@@ -15,7 +15,6 @@ func _ready() -> void:
 	bg.visible = false
 
 func switch_scene_with_packed(sceneto_load: PackedScene) -> void:
-	#get_tree().change_scene_to_packed(sceneto_load)
 	call_deferred("_deferred_switch_scene_with_packed", sceneto_load)
 
 func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
@@ -27,14 +26,12 @@ func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
 	
 	await _tween_bg()
 	
-	#get_tree().change_scene_to_packed(scene_to_load)
-	
 	current_scene = scene_to_load.instantiate()
 	get_tree().root.add_child(current_scene)
 	get_tree().current_scene = current_scene
 	screen_transition_background.visible = false
 	bg.visible = false
-	emit_signal("scene_switched")
+	scene_switched.emit()
 
 func switch_scene(res_path: String, _level_index: int = -1):
 	call_deferred("_deferred_switch_scene", res_path)
@@ -55,12 +52,11 @@ func _deferred_switch_scene(res_path: String):
 	get_tree().current_scene = current_scene
 	bg.visible = false
 	screen_transition_background.visible = false
-	emit_signal("scene_switched")
+	scene_switched.emit()
 
 func _tween_bg():
-	await  get_tree().process_frame
 	var tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	tween.tween_property(
 		screen_transition_background.material, "shader_parameter/progress", 
-		1.0, 0.8).from(0.0)
+		1.0, 0.6).from(0.0)
 	await tween.finished

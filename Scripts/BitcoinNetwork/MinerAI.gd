@@ -1,4 +1,9 @@
 class_name AIMiner extends Node2D
+## AIMiner is a simple AI that mines blocks in the game.
+## 
+## It is used to demonstrate the mining functionality and can be replaced with a more complex AI later.[br]
+## It is not intended to be a fully functional AI, but rather a placeholder for future development.
+
 
 @onready var ai_timer: Timer = %AITimer
 @onready var time_left_ui = %TimeLeftUI
