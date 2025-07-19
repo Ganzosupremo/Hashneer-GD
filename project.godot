@@ -44,6 +44,7 @@ FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
+EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
 
 [display]
 

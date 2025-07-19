@@ -5,13 +5,13 @@ class_name SkillTreeManager extends Control
 
 @onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
 @onready var _level_selector_new: LevelSelectorMenu = $LevelSelectorNew
-@onready var _random_economic_event_picker: RandomEconomicEventPicker = %RandomEconomicEventPicker
 
 var _skill_nodes: Array = []
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_READY:
 		PersistenceDataManager.load_game()
+		EconomicEventsManager.pick_random_event()
 
 func _enter_tree() -> void:
 	main_event_bus.economy_event_picked.connect(_on_random_economic_event_picked)
@@ -26,7 +26,8 @@ func _ready() -> void:
 		node.pressed.connect(Callable(node, "_on_skill_pressed"))
 		node.set_node_identifier(id)
 		id += 1
-	_random_economic_event_picker.pick_random_event()
+
+	DebugLogger.info("SkillTreeManager initialized.")
 
 func _on_random_economic_event_picked(economic_event: EconomicEvent) -> void:
 	for node in _skill_nodes:
@@ -44,7 +45,7 @@ func _get_skill_nodes() -> Array:
 	return nodes
 
 func _on_start_game_pressed() -> void:
-	PersistenceDataManager.save_game()
+	PersistenceDataManager.save_game(true)
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
 	_level_selector_new.open()
 

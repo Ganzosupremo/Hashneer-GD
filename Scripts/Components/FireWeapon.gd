@@ -206,15 +206,15 @@ func _is_pool_valid(pool: PoolFracture) -> bool:
 func _initialize_bullet_pools() -> void:
 	if is_enemy_weapon:
 		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
-		print_debug("{0}. FireWeaponComponent: Using enemy pool for firing bullets.".format([get_parent().name]))
+		DebugLogger.info("{0}. FireWeaponComponent: Using enemy pool for firing bullets.".format([get_parent().name]))
 	else:
 		current_pool = get_tree().get_first_node_in_group("PBulletsPool")
-		print_debug("{0}. FireWeaponComponent: Using player pool for firing bullets.".format([get_parent().name]))
+		DebugLogger.info("{0}. FireWeaponComponent: Using player pool for firing bullets.".format([get_parent().name]))
 	if not current_pool:
-		push_error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+		DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
 		return
 	if use_object_pool and not current_pool:
-		push_error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+		DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
 		return
 
 # Calculates bullet trajectory vectors based on the specified bullet pattern

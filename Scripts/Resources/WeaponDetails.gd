@@ -77,7 +77,6 @@ func set_precharge_time(value: float) -> void:
 
 func get_fire_cooldown() -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
-	print_debug("Returning fire cooldown: ", 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0)))
 	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
 
 func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:

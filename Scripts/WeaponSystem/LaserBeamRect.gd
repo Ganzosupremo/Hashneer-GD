@@ -101,7 +101,7 @@ func _apply_damage(body: Node2D, pos: Vector2) -> void:
 
 func _spawn_vfx_effect(hit_pos: Vector2) -> void:
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SPARKS, Transform2D(rotation, hit_pos), _ammo_details.bullet_hit_vfx)
-	AudioManager.create_2d_audio_at_location(hit_pos, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, SoundEffectDetails.DestinationAudioBus.WEAPONS)
+	AudioManager.create_2d_audio_at_location(hit_pos, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.WEAPONS)
 
 func _on_timer_timeout() -> void:
 	destroy()

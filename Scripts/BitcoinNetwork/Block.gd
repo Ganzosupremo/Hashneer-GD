@@ -1,9 +1,14 @@
 class_name BitcoinBlock extends Resource
+## This class represents a Bitcoin block in the blockchain.
+##
+## Each block contains a set of transactions (in this case, just dummy data), a timestamp, and a reference to the previous block.
+## Blocks are mined by miners, who compete to solve complex mathematical problems.
+## When a block is successfully mined, it is added to the blockchain, and the miner is rewarded with newly created bitcoins.
 
 @export var miner: String = ""
 @export var height: int = 0
 @export var timestamp: String = ""
-@export var data: String = "BLOCK TEMPLATE"
+@export var data: String = ""
 @export var previous_hash: String = ""
 @export var block_hash: String = ""
 @export var block_subsidy: float = 0.0
@@ -27,4 +32,4 @@ func calculate_block_hash() -> String:
 	return res.hex_encode()
 	
 func _to_string() -> String:
-	return "Height-%d" % height + "\n\nTimestamp-%s" % timestamp + "\n\nHash-%s" % block_hash + "\n\nPrevious Hash-%s" % previous_hash + "\n\nData-%s" % data + "\n\nBlock Subsidy-%.2f" % block_subsidy
+	return "Height-%d" % height + "\n\nTimestamp-%s" % timestamp + "\n\nHash-%s" % block_hash + "\n\nPrevious Hash-%s" % previous_hash + "\n\nBlock Subsidy-%.2f" % block_subsidy

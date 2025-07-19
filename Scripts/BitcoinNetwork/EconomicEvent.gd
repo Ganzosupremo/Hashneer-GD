@@ -30,3 +30,6 @@ enum EventType {
 @export var currency_affected: Constants.CurrencyType
 ## The duration of the event in bitcoin blocks, which determines how long the event will last.
 @export var duration_in_blocks: int = 0
+## The remaining duration of the event in blocks, used to track how long the event has left.
+## This is set when the event is picked and decremented each block until it expires.
+var remaining_duration: int = 0

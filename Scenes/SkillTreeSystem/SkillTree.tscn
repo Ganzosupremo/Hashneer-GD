@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=71 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -38,8 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]
 [ext_resource type="Resource" uid="uid://dgre5rwbotifk" path="res://Resources/Upgrades/Abilities/SlowGenOverTime.tres" id="33_oevro"]
 [ext_resource type="Resource" uid="uid://dmhj12bd5owxg" path="res://Resources/Upgrades/Weapons/MiniUzisUnlock.tres" id="35_k7n60"]
-[ext_resource type="Script" uid="uid://pmv6yjqsfo76" path="res://Scripts/BitcoinNetwork/RandomEconomicEventPicker.gd" id="38_oevro"]
-[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="39_k7n60"]
+[ext_resource type="Script" uid="uid://kw1klri7wheu" path="res://Scripts/BitcoinNetwork/EconomicEventExample.gd" id="41_g7g25"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
 shuffle = true
@@ -228,66 +227,6 @@ shader_parameter/time = 0.0
 shader_parameter/size = Vector2(64, 64)
 shader_parameter/color = Color(0.592157, 0.615686, 0.67451, 1)
 shader_parameter/margin = Vector2(0, 0)
-
-[sub_resource type="Resource" id="Resource_r00sj"]
-script = ExtResource("39_k7n60")
-name = "Inflation Increases"
-description = "Inflation increases by 10% aditionally. Because the FED printed more money in Q2."
-event_type = 0
-impact = 0.1
-currency_affected = 0
-duration_in_blocks = 2
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
-
-[sub_resource type="Resource" id="Resource_g7g25"]
-script = ExtResource("39_k7n60")
-name = "An earthquake "
-description = "An eathquake hitted the supply chain and prices went up by 15%."
-event_type = 6
-impact = 0.15
-currency_affected = 2
-duration_in_blocks = 5
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
-
-[sub_resource type="Resource" id="Resource_oc2wu"]
-script = ExtResource("39_k7n60")
-name = "The IRS increased taxes by 5%"
-description = "Prices went up by 5%."
-event_type = 4
-impact = 0.05
-currency_affected = 0
-duration_in_blocks = 2
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
-
-[sub_resource type="Resource" id="Resource_xfqgc"]
-script = ExtResource("39_k7n60")
-name = "Bitcoin price increased by 10%"
-description = "Purchasing power went up by 10% in consecuence"
-event_type = 3
-impact = 0.05
-currency_affected = 1
-duration_in_blocks = 3
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
-
-[sub_resource type="Resource" id="Resource_6ck1a"]
-script = ExtResource("39_k7n60")
-name = "Bitcoin dies (once again)"
-description = "Bitcoin price went down by 25%"
-event_type = 2
-impact = 0.25
-currency_affected = 1
-duration_in_blocks = 3
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
-
-[sub_resource type="Resource" id="Resource_8vthq"]
-script = ExtResource("39_k7n60")
-name = "Some dude (hero) burned millions of fiat money"
-description = "The purchasing power of the fiat is restored by 15%"
-event_type = 1
-impact = 0.15
-currency_affected = 0
-duration_in_blocks = 4
-metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
 
 [node name="SkillTree" type="Control" groups=["SkillsTree"]]
 process_mode = 1
@@ -561,11 +500,8 @@ save_name = "BlockCoreFinderUnlock"
 material = SubResource("ShaderMaterial_5odtn")
 layout_mode = 1
 
-[node name="RandomEconomicEventPicker" type="Node2D" parent="." groups=["PersistentNodes"]]
-unique_name_in_owner = true
-script = ExtResource("38_oevro")
-main_event_bus = ExtResource("2_r00sj")
-economic_events = Array[ExtResource("39_k7n60")]([SubResource("Resource_r00sj"), SubResource("Resource_g7g25"), SubResource("Resource_oc2wu"), SubResource("Resource_xfqgc"), SubResource("Resource_6ck1a"), SubResource("Resource_8vthq")])
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("41_g7g25")
 
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]

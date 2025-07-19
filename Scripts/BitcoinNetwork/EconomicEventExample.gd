@@ -7,26 +7,18 @@ extends Node
 ## - Manually control events for testing
 ## - Monitor event status
 
-# Reference to the economic event picker
-@export var event_picker: RandomEconomicEventPicker
-
 ## Helper function for conditional debug logging
 func _debug_log(message: String) -> void:
 	if OS.is_debug_build():
 		print_debug("[EconomicEventExample] " + message)
 
-func _ready() -> void:
-	if !event_picker:
-		_debug_log("No event picker assigned")
-		return
-	
+func _ready() -> void:	
 	# Connect to event signals
-	event_picker.event_picked.connect(_on_event_picked)
-	event_picker.event_expired.connect(_on_event_expired)
-	
+	# event_picker.event_picked.connect(_on_event_picked)
+	# event_picker.event_expired.connect(_on_event_expired)
 	# Print current status
 	_debug_log("Economic Event System initialized")
-	_debug_log(event_picker.get_debug_info())
+	_debug_log(EconomicEventsManager.get_debug_info())
 
 func _on_event_picked(economic_event: EconomicEvent) -> void:
 	_debug_log("🎲 New economic event picked: " + economic_event.name)
@@ -41,29 +33,32 @@ func _on_event_expired(economic_event: EconomicEvent) -> void:
 
 # Example functions you can call for testing
 func force_economic_event() -> void:
-	event_picker.force_pick_event()
+	EconomicEventsManager.force_pick_event()
 
 func force_market_crash() -> void:
 	"""Force a market crash event for testing."""
-	event_picker.force_pick_event("Market Crash")
+	EconomicEventsManager.force_pick_event("Market Crash")
 
 func show_current_status() -> void:
 	"""Print the current event status."""
-	_debug_log(event_picker.get_debug_info())
+	_debug_log(EconomicEventsManager.get_debug_info())
 
 func expire_current_event() -> void:
 	"""Expire the current event manually."""
-	event_picker.force_expire_event()
+	EconomicEventsManager.force_expire_event()
 
 func revert_all_effects() -> void:
 	"""Manually revert all economic event effects for testing."""
-	event_picker.force_revert_all_effects()
-	event_picker.force_expire_event()
+	EconomicEventsManager.force_expire_event()
 
 func set_event_chance(chance: float) -> void:
 	"""Set the chance of events occurring (0.0 to 1.0)."""
-	event_picker.set_chance_of_event(chance)
+	EconomicEventsManager.set_chance_of_event(chance)
 	print_debug("Event chance set to: " + str(chance * 100) + "%")
+
+func set_remaining_duration(new_duration: int) -> void:
+	"""Set the remaining duration of the current event manually."""
+	EconomicEventsManager.set_remaining_duration(new_duration)
 
 # Example of how to integrate with other systems
 func apply_event_to_system(system_name: String, event: EconomicEvent) -> void:
@@ -98,3 +93,7 @@ func _input(event: InputEvent) -> void:
 				set_event_chance(0.5)  # Back to 50%
 			KEY_F6:
 				revert_all_effects()  # New: manually revert all effects
+			KEY_F7:
+				set_remaining_duration(randi() % 10 + 1)  # Set remaining duration to 1-10 blocks for testing
+			KEY_F9:
+				EconomicEventsManager.force_decrease_remaining_duration()

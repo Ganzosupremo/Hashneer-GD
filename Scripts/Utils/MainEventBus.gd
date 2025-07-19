@@ -22,9 +22,11 @@ func emit_currency_changed(_currency: Constants.CurrencyType) -> void:
 	currency_changed.emit(_currency)
 
 func emit_economy_event_picked(_event: EconomicEvent) -> void:
+	DebugLogger.info("Emitting economic event picked: " + _event.name)
 	economy_event_picked.emit(_event)
 
 func emit_economy_event_expired(_event: EconomicEvent) -> void:
+	DebugLogger.info("Emitting economic event expired: " + _event.name)
 	economy_event_expired.emit(_event)
 
 class LevelCompletedArgs:

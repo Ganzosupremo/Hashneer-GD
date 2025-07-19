@@ -206,9 +206,9 @@ func revert_economic_event_effects() -> void:
 	upgrade_cost_base = _original_upgrade_cost_base
 	upgrade_cost_base_btc = _original_upgrade_cost_base_btc
 	
-	_debug_log("Reverted economic event effects for upgrade: " + upgrade_name)
-	_debug_log("  Fiat cost restored to: " + str(upgrade_cost_base))
-	_debug_log("  Bitcoin cost restored to: " + str(upgrade_cost_base_btc))
+	# _debug_log("Reverted economic event effects for upgrade: " + upgrade_name)
+	# _debug_log("  Fiat cost restored to: " + str(upgrade_cost_base))
+	# _debug_log("  Bitcoin cost restored to: " + str(upgrade_cost_base_btc))
 	
 	# Clear the stored values flag so new events can store fresh values
 	_has_stored_original_values = false
@@ -225,9 +225,9 @@ func _store_original_cost_values() -> void:
 	_original_upgrade_cost_base_btc = upgrade_cost_base_btc
 	_has_stored_original_values = true
 	
-	_debug_log("Stored original cost values for upgrade: " + upgrade_name)
-	_debug_log("  Original fiat cost: " + str(_original_upgrade_cost_base))
-	_debug_log("  Original bitcoin cost: " + str(_original_upgrade_cost_base_btc))
+	# _debug_log("Stored original cost values for upgrade: " + upgrade_name)
+	# _debug_log("  Original fiat cost: " + str(_original_upgrade_cost_base))
+	# _debug_log("  Original bitcoin cost: " + str(_original_upgrade_cost_base_btc))
 
 #region Economic Event Handlers
 

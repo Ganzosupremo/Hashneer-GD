@@ -370,9 +370,6 @@ func load_data() -> void:
 		# Restore the modified costs (in case an event was active when saved)
 		skillnode_data.set_upgrade_cost_base(data.get("current_upgrade_cost_base", skillnode_data.upgrade_cost_base))
 		skillnode_data.set_upgrade_cost_base_btc(data.get("current_upgrade_cost_base_btc", skillnode_data.upgrade_cost_base_btc))
-		
-		if OS.is_debug_build():
-			print_debug("[SkillNode] Restored economic event data for: " + skillnode_data.upgrade_name)
 	
 	is_next_tier_unlocked()
 	is_this_skill_maxed_out()

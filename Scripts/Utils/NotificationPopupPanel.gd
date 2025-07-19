@@ -32,7 +32,6 @@ func _ready():
 func show_economic_event(event):
 	_scroll_container.show()
 	_economic_event_passed.hide()
-	_tween_popup_size()
 
 	_title_label.animate_label_custom_text(event.name, 0.05)
 	_description_label.animate_label_custom_text(event.description, 0.05)
@@ -44,15 +43,20 @@ func show_economic_event(event):
 	_currency_label.animate_label(0.1)
 	_duration_label.animate_label(0.1)
 
+	await _tween_popup_size()
+
+
 func show_economic_event_passed(_event: EconomicEvent):
 	_scroll_container.hide()
 	_economic_event_passed.show()
-	_tween_popup_size(Vector2i(600, 360), 0.5)
 
 	_non_editable_title_label.animate_label(0.1)
 	_event_passed_notification_description.animate_label_custom_text(
 		"Event '%s' has passed. All effects reverted." % _event.name, 0.1
 	)
+
+	await _tween_popup_size(Vector2i(600, 360), 0.5)
+
 
 func _tween_popup_size(target_size: Vector2i = Vector2i(600, 360), duration: float = 0.8):
 	# Start from initial size
@@ -61,6 +65,7 @@ func _tween_popup_size(target_size: Vector2i = Vector2i(600, 360), duration: flo
 	var tween = create_tween()
 	tween.tween_property(self, "size", target_size, duration).set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_IN_OUT)
 
+	await tween.finished
 
 ## Shows the panel with custom info
 func show_custom(_title: String, info: Dictionary):

@@ -28,7 +28,7 @@ signal event_expired(economic_event: EconomicEvent)
 
 var _current_event: EconomicEvent = null
 var _event_duration: int = 0
-var _chance_of_event: float = 0.5  # 50% chance of an event occurring each block. 50% testing value, can be adjusted later
+var _chance_of_event: float = 0.35  # 35% chance of an event occurring each block. 35% testing value, can be adjusted later
 var _economic_events_dict: Dictionary = {}
 
 const SaveName: String = "economic_event_picker"
@@ -42,20 +42,19 @@ func _debug_log(message: String) -> void:
 		print_debug("[EconomicEvents] " + message)
 
 func _ready() -> void:
+	# Connect to the bitcoin network to track new blocks
+	BitcoinNetwork.block_found.connect(_on_block_found)
+	
 	if economic_events.is_empty():
-		push_error("No economic events defined. Please add events to the economic_events array.")
+		DebugLogger.error("No economic events defined. Please add events to the economic_events array.")
 		return
 	
 	for event in economic_events:
 		if event.name in _economic_events_dict:
-			push_warning("Duplicate economic event name found: " + event.name + ". Only the first occurrence will be used.")
+			DebugLogger.warning("Duplicate economic event name found: " + event.name + ". Only the first occurrence will be used.")
 		else:
 			_economic_events_dict[event.name] = event
-	
-	# Connect to the bitcoin network to track new blocks
-	BitcoinNetwork.block_found.connect(_on_block_found)
-	# Load saved data if exists
-	load_data()
+	DebugLogger.info("RandomEconomicEventPicker initialized.")
 
 func _exit_tree() -> void:
 	# Disconnect from bitcoin network if connected
@@ -68,11 +67,12 @@ func _exit_tree() -> void:
 ## If no events are available, it will log an error.
 func pick_random_event() -> void:
 	if _economic_events_dict.is_empty():
-		push_error("No economic events available to pick.")
+		DebugLogger.error("No economic events available to pick.")
 		return
 	
 	# Don't pick a new event if one is already active
 	if is_event_active():
+
 		_debug_log("Economic event already active. Skipping new event selection.")
 		return
 	
@@ -82,10 +82,11 @@ func pick_random_event() -> void:
 	var event_names = _economic_events_dict.keys()
 	var random_index: int = randi() % event_names.size()
 	var random_event_name = event_names[random_index]
+	
 	_current_event = _economic_events_dict[random_event_name]
 	_event_duration = _current_event.duration_in_blocks
 	event_picked.emit(_current_event)
-	main_event_bus.economy_event_picked.emit(_current_event)
+	main_event_bus.emit_economy_event_picked(_current_event)
 	_debug_log("Picked economic event: " + _current_event.name + " with impact: " + str(_current_event.impact) + " for currency: " + str(_current_event.currency_affected) + " type: " + str(_current_event.event_type))
 	
 	# Save the current state
@@ -107,19 +108,23 @@ func _on_block_found(_block: BitcoinBlock) -> void:
 	save_data()
 	
 	if _event_duration <= 0:
-		_expire_current_event()
+		_expire_current_event(false)
 		# After expiring, try to pick a new event
 		pick_random_event()
 
-func _expire_current_event() -> void:
+func _expire_current_event(force_expiry: bool = false) -> void:
 	if _current_event == null:
 		return
 	
+	if !force_expiry:
+		await SceneManager.scene_switched
+	
 	event_expired.emit(_current_event)
-	main_event_bus.economy_event_expired.emit(_current_event)
+	main_event_bus.emit_economy_event_expired(_current_event)
 	_current_event = null
 	_event_duration = 0
 	
+	DebugLogger.info("Economic event expired: " + _current_event.name if _current_event else "None")
 	# Save the cleared state
 	save_data()
 
@@ -131,6 +136,26 @@ func get_current_event() -> EconomicEvent:
 func get_remaining_duration() -> int:
 	return _event_duration
 
+func set_remaining_duration(new_duration: int) -> void:
+	"""Set the remaining duration of the current event manually."""
+	if _current_event != null:
+		_event_duration = max(0, new_duration)
+		DebugLogger.info("Remaining duration set to: " + str(_event_duration) + " blocks")
+	else:
+		DebugLogger.warn("Cannot set duration, no active event.", "RandomEconomicEventPicker")
+	
+	save_data()
+
+## @experimental: Note: Only for debugging purposes. Decrement the remaining duration by 1 block.
+## This method is used to simulate block progression and test event expiration.
+func force_decrease_remaining_duration() -> void:
+	if _event_duration > 0:
+		_event_duration -= 1
+		_expire_current_event(true)
+		DebugLogger.info("Decreased remaining duration to: " + str(_event_duration) + " blocks")
+	else:
+		DebugLogger.warn("Cannot decrease duration, already at 0 blocks.", "RandomEconomicEventPicker")
+
 ## Check if an economic event is currently active.
 ## Returns true if there is an active event with remaining duration.
 ## Returns false if no event is active or duration has expired.
@@ -140,7 +165,7 @@ func is_event_active() -> bool:
 ## @experimental: Force expire the current event. Only meant for debugging.
 func force_expire_event() -> void:
 	if _current_event != null:
-		_expire_current_event()
+		_expire_current_event(true)
 
 ## Set the chance of an event occurring each block (0.0 to 1.0).
 func set_chance_of_event(new_chance: float) -> void:
@@ -177,7 +202,6 @@ func force_pick_event(event_name: String = "") -> bool:
 	main_event_bus.economy_event_picked.emit(_current_event)
 	_debug_log("Force picked economic event: " + _current_event.name)
 	
-	# Save the current state
 	save_data()
 	return true
 
@@ -200,11 +224,6 @@ func get_debug_info() -> String:
 	else:
 		info += "No active event\n"
 	return info
-
-## @experimental: Revert all economic event effects on all skill nodes. ONLY meant for debugging.
-func force_revert_all_effects() -> void:
-	_debug_log("Force reverting all economic event effects")
-	main_event_bus.economy_event_expired.emit(_current_event)
 
 #region Persistence Data System
 
@@ -239,14 +258,17 @@ func load_data() -> void:
 			
 			# Re-emit the event to apply its effects
 			event_picked.emit(_current_event)
-			main_event_bus.economy_event_picked.emit(_current_event)
+			main_event_bus.emit_economy_event_picked(_current_event)
 		else:
 			push_warning("Saved economic event '" + saved_event_name + "' not found in current events list. Clearing saved data.")
 			_current_event = null
 			_event_duration = 0
+			event_expired.emit(_current_event)  # Emit expired event to clear effects
+			main_event_bus.emit_economy_event_expired(_current_event)
 			save_data()
 	else:
 		_current_event = null
 		_event_duration = 0
+	DebugLogger.info("Economic event data loaded. Current event: " + (_current_event.name if _current_event else "None") + ", Duration: " + str(_event_duration) + " blocks")
 
 #endregion
