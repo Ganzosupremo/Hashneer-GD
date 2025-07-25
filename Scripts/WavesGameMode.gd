@@ -48,6 +48,7 @@ func _ready() -> void:
 	spawn_enemies_timer.wait_time = level_args.spawn_time
 	spawn_enemies_timer.one_shot = true
 	spawn_enemies_timer.timeout.connect(on_spawn_enemies_timer_timeout)
+	spawn_enemies_timer.start()
 
 	_start_new_wave()
 
@@ -86,6 +87,7 @@ func _process_despawn_queue() -> void:
 
 		enemy_to_despawn.kill(true)
 		despawn_count += 1
+		current_wave_kills += 1
 
 func _spawn_enemies(count: int) -> Array[Node]:
 	var enemies: Array[Node] = []
@@ -114,6 +116,7 @@ func _spawn_enemies(count: int) -> Array[Node]:
 	return enemies
 
 func _start_new_wave() -> void:
+	spawn_enemies_timer.start()
 	enemies_in_current_wave = level_args.spawn_count
 	current_wave_kills = 0
 	_spawned_enemies_array.append_array(_spawn_enemies(enemies_in_current_wave))

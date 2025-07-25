@@ -132,6 +132,19 @@ static func string_to_enum(s_name: String, enum_type: Dictionary) -> int:
 			return enum_type[s_name]
 	return -1
 
+static func return_currency_suffix(amount: float) -> String:
+	if amount < 1000.0:
+		return ""
+	
+	var suffixes: Array = ["K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D", "UN", "DD", "TD", "QD", "QQD", "SD", "SSD", "OD", "ND"]
+	var suffix_index: int = 0
+
+	while amount >= 1000 and suffix_index < suffixes.size():
+		amount /= 1000
+		suffix_index += 1
+	
+	return suffixes[suffix_index - 1] if suffix_index > 0 else ""
+
 static func format_currency(amount: float, use_short_format: bool = false) -> String:
 	if use_short_format:
 		return format_short_currency(amount)

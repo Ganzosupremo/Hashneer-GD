@@ -21,12 +21,16 @@ func emit_level_completed(_code: String) -> void:
 func emit_currency_changed(_currency: Constants.CurrencyType) -> void:
 	currency_changed.emit(_currency)
 
-func emit_economy_event_picked(_event: EconomicEvent) -> void:
+func emit_economy_event_picked(_event: EconomicEvent, wait_for_scene_switch: bool = true) -> void:
 	DebugLogger.info("Emitting economic event picked: " + _event.name)
+	if wait_for_scene_switch:
+		await SceneManager.scene_switched
 	economy_event_picked.emit(_event)
 
-func emit_economy_event_expired(_event: EconomicEvent) -> void:
+func emit_economy_event_expired(_event: EconomicEvent, wait_for_scene_switch: bool = true) -> void:
 	DebugLogger.info("Emitting economic event expired: " + _event.name)
+	if wait_for_scene_switch:
+		await SceneManager.scene_switched
 	economy_event_expired.emit(_event)
 
 class LevelCompletedArgs:

@@ -115,12 +115,9 @@ func _on_block_found(_block: BitcoinBlock) -> void:
 func _expire_current_event(force_expiry: bool = false) -> void:
 	if _current_event == null:
 		return
-	
-	if !force_expiry:
-		await SceneManager.scene_switched
-	
+		
 	event_expired.emit(_current_event)
-	main_event_bus.emit_economy_event_expired(_current_event)
+	main_event_bus.emit_economy_event_expired(_current_event, !force_expiry)
 	_current_event = null
 	_event_duration = 0
 	
@@ -258,13 +255,13 @@ func load_data() -> void:
 			
 			# Re-emit the event to apply its effects
 			event_picked.emit(_current_event)
-			main_event_bus.emit_economy_event_picked(_current_event)
+			main_event_bus.emit_economy_event_picked(_current_event, true)
 		else:
 			push_warning("Saved economic event '" + saved_event_name + "' not found in current events list. Clearing saved data.")
 			_current_event = null
 			_event_duration = 0
 			event_expired.emit(_current_event)  # Emit expired event to clear effects
-			main_event_bus.emit_economy_event_expired(_current_event)
+			main_event_bus.emit_economy_event_expired(_current_event, true)
 			save_data()
 	else:
 		_current_event = null

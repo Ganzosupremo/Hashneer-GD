@@ -68,17 +68,17 @@ The system implements `IPersistenceData` interface:
 
 ```gdscript
 func _ready():
-    event_picker.event_picked.connect(_on_event_picked)
-    event_picker.event_expired.connect(_on_event_expired)
+	event_picker.event_picked.connect(_on_event_picked)
+	event_picker.event_expired.connect(_on_event_expired)
 
 func _on_event_picked(event: EconomicEvent):
-    print("New event: " + event.name)
-    # Apply event effects to your systems
+	print("New event: " + event.name)
+	# Apply event effects to your systems
 
 func _on_event_expired(event: EconomicEvent):
-    print("Event expired: " + event.name)
-    print("All systems should now return to normal values")
-    # Effects are automatically reverted - no manual cleanup needed
+	print("Event expired: " + event.name)
+	print("All systems should now return to normal values")
+	# Effects are automatically reverted - no manual cleanup needed
 ```
 
 ### Manual Event Control (for testing)
@@ -89,9 +89,9 @@ event_picker.force_pick_event("Inflation")
 
 # Check current status
 if event_picker.is_event_active():
-    var event = event_picker.get_current_event()
-    var remaining = event_picker.get_remaining_duration()
-    print(event.name + " - " + str(remaining) + " blocks left")
+	var event = event_picker.get_current_event()
+	var remaining = event_picker.get_remaining_duration()
+	print(event.name + " - " + str(remaining) + " blocks left")
 
 # Adjust event chance
 event_picker.set_chance_of_event(0.8)  # 80% chance per block

@@ -44,7 +44,7 @@ currency_affected = 2
 duration_in_blocks = 3
 metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
 
-[node name="EconomicsEventsManager" type="Node2D"]
+[node name="EconomicsEventsManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_xniml")
 main_event_bus = ExtResource("2_x06ye")
 economic_events = Array[ExtResource("3_odfl1")]([SubResource("Resource_g7g25"), SubResource("Resource_oc2wu"), SubResource("Resource_xfqgc"), SubResource("Resource_6ck1a")])
