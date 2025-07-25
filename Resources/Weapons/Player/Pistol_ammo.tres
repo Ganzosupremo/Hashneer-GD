@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_kb2pf"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_nuhma"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_rkkgi"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_ynk2i"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_ynk2i"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="3_5p3y8"]
 
 [sub_resource type="Gradient" id="Gradient_nuhma"]
@@ -62,7 +62,7 @@ colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.60
 script = ExtResource("1_kb2pf")
 min_lifetime = 2.0
 max_lifetime = 4.0
-bullet_damage = 25.0
+bullet_damage = 500000.0
 bullet_speed = 1000.0
 bullet_type = 0
 bullet_pattern = 2

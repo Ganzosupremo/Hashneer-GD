@@ -240,6 +240,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_type_variation = &"HeaderMedium"
 text = "Choose a Slu... I Mean Slot"
+anim_speed = 0.1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

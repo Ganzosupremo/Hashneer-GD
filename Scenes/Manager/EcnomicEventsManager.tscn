@@ -1,0 +1,50 @@
+[gd_scene load_steps=8 format=3 uid="uid://dwk2usr6gwk74"]
+
+[ext_resource type="Script" uid="uid://pmv6yjqsfo76" path="res://Scripts/BitcoinNetwork/RandomEconomicEventPicker.gd" id="1_xniml"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_x06ye"]
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="3_odfl1"]
+
+[sub_resource type="Resource" id="Resource_g7g25"]
+script = ExtResource("3_odfl1")
+name = "Money Printer go brrr"
+description = "Inflation goes rampamt!"
+event_type = 0
+impact = 0.5
+currency_affected = 0
+duration_in_blocks = 2
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
+
+[sub_resource type="Resource" id="Resource_oc2wu"]
+script = ExtResource("3_odfl1")
+name = "Bitcoin's bull run"
+description = "The price has gone up by 50% overnight"
+event_type = 1
+impact = 0.25
+currency_affected = 1
+duration_in_blocks = 2
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
+
+[sub_resource type="Resource" id="Resource_xfqgc"]
+script = ExtResource("3_odfl1")
+name = "The IRS stikes again"
+description = "The IRS increased taxes by 10%"
+event_type = 4
+impact = 0.1
+currency_affected = 0
+duration_in_blocks = 2
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
+
+[sub_resource type="Resource" id="Resource_6ck1a"]
+script = ExtResource("3_odfl1")
+name = "The market goes down"
+description = "The market crashed because... "
+event_type = 2
+impact = 0.5
+currency_affected = 2
+duration_in_blocks = 3
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"
+
+[node name="EconomicsEventsManager" type="Node2D" groups=["PersistentNodes"]]
+script = ExtResource("1_xniml")
+main_event_bus = ExtResource("2_x06ye")
+economic_events = Array[ExtResource("3_odfl1")]([SubResource("Resource_g7g25"), SubResource("Resource_oc2wu"), SubResource("Resource_xfqgc"), SubResource("Resource_6ck1a")])

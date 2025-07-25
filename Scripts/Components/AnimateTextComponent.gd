@@ -16,12 +16,11 @@ func _ready() -> void:
 	if label_node == null:
 		print_debug("No Label node assigned. Please assign a Label node to `label_node`.")
 
-func animate_text(speed: float = 0.5) -> void:
-	"""
-	Animate the text on the label with a typing effect.
-	:param text: The text to animate.
-	:param speed: Time in seconds between displaying each character.
-	"""
+
+## Starts the text animation. Animate the text on the label with a typing effect.[br]
+## [param speed]: Time in seconds between displaying each character.[br]
+## This method will set the text of the label and start the animation to reveal it character by character.
+func animate_text(speed: float = 0.05) -> void:
 	if _is_animating:
 		stop_typing() # Stop current animation if one is running
 	
@@ -36,11 +35,26 @@ func animate_text(speed: float = 0.5) -> void:
 
 func _start_typing_animation(speed: float) -> void:
 	"""
-	Gradually increase the visible_ratio to display the text.
+	Gradually increase the visible_ratio to display the text character by character.
 	"""
-	while label_node.visible_ratio < 1.0:
-		label_node.visible_ratio += speed
-		await GameManager.init_timer(0.05).timeout
+	var text_length = label_node.text.length()
+	if text_length == 0:
+		_is_animating = false
+		animation_finished.emit()
+		if on_complete_callback.is_valid():
+			on_complete_callback.call()
+		return
+	
+	# Calculate increment per character
+	var increment_per_char = 1.0 / text_length
+	
+	while label_node.visible_ratio < 1.0 and _is_animating:
+		label_node.visible_ratio += increment_per_char
+		# Clamp to prevent overshooting
+		label_node.visible_ratio = min(label_node.visible_ratio, 1.0)
+		
+		# Wait for the specified time between characters
+		await GameManager.init_timer(speed).timeout
 	
 	label_node.visible_ratio = 1.0
 	_is_animating = false

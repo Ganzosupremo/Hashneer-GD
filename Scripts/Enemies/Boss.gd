@@ -43,9 +43,9 @@ func _on_target_pos_reached(_pos: Vector3) -> void:
 func _on_body_entered(body: Node) -> void:
 	if _state == State.CHARGE and body is PlayerController:
 		var args: LevelBuilderArgs = GameManager.get_level_args()
-               var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
-               var multiplier = args.enemy_damage_multiplier if args else 1.0
-               body.damage(dmg * multiplier, global_position)
+		var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
+		var multiplier = args.enemy_damage_multiplier if args else 1.0
+		body.damage(dmg * multiplier, global_position)
 
 func _on_state_timer_timeout() -> void:
 	if _state == State.CHARGE:

@@ -26,9 +26,9 @@ func _physics_process(delta: float) -> void:
 func _on_body_entered(body: Node) -> void:
 	if _charging and body is PlayerController:
 		var args: LevelBuilderArgs = GameManager.get_level_args()
-               var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
-               var multiplier = args.enemy_damage_multiplier if args else 1.0
-               body.damage(dmg * multiplier, global_position)
+		var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
+		var multiplier = args.enemy_damage_multiplier if args else 1.0
+		body.damage(dmg * multiplier, global_position)
 
 func _on_charge_timer_timeout() -> void:
 	if _charging:

@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://cttyumyw2eyyf" path="res://Resources/Weapons/Player/AK-47Ammo.tres" id="1_vd2v8"]
 [ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="2_gphs5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_vxpuo"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_gua3f"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_gua3f"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j52in"]
 atlas = ExtResource("2_vxpuo")

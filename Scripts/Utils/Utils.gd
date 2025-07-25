@@ -132,23 +132,45 @@ static func string_to_enum(s_name: String, enum_type: Dictionary) -> int:
 			return enum_type[s_name]
 	return -1
 
+static func return_currency_suffix(amount: float) -> String:
+	if amount < 1000.0:
+		return ""
+	
+	var suffixes: Array = ["K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D", "UN", "DD", "TD", "QD", "QQD", "SD", "SSD", "OD", "ND"]
+	var suffix_index: int = 0
+
+	while amount >= 1000 and suffix_index < suffixes.size():
+		amount /= 1000
+		suffix_index += 1
+	
+	return suffixes[suffix_index - 1] if suffix_index > 0 else ""
+
 static func format_currency(amount: float, use_short_format: bool = false) -> String:
 	if use_short_format:
 		return format_short_currency(amount)
 	return format_full_currency(amount)
 
 static func format_full_currency(amount: float) -> String:
+	# Convert to integer if it's a whole number
+	if amount == floor(amount):
+		amount = int(amount)
+	
 	var str_amount = str(amount)
+	var parts = str_amount.split(".", false, 1)
+	var int_part = parts[0]
 	var formatted = ""
 	var count = 0
 	
-	# Work from right to left
-	for i in range(str_amount.length() - 1, -1, -1):
+	# Format the integer part with commas
+	for i in range(int_part.length() - 1, -1, -1):
 		if count > 0 and count % 3 == 0:
 			formatted = "," + formatted
-		formatted = str_amount[i] + formatted
+		formatted = int_part[i] + formatted
 		count += 1
-	
+
+	if parts.size() > 1:
+		formatted += "." + parts[1]
+
 	return formatted
 
 static func format_short_currency(amount: float) -> String:
@@ -158,10 +180,14 @@ static func format_short_currency(amount: float) -> String:
 	var suffixes: Array = ["K", "M", "B", "T", "Q", "QQ", "S", "SS", "O", "N", "D", "UN", "DD", "TD", "QD", "QQD", "SD", "SSD", "OD", "ND"]
 	var suffix_index: int = 0
 
-	while amount >= 1000 and suffix_index < suffixes.size() - 1:
+	while amount >= 1000 and suffix_index < suffixes.size():
 		amount /= 1000
 		suffix_index += 1
 	
 	# Round to 1 decimal place
 	var rounded: float = round(amount * 10) / 10
-	return "%s%s" % [str(rounded).trim_suffix(".0"), suffixes[suffix_index-1]]
+	var num_str = str(rounded)
+	if num_str.ends_with(".0"):
+		num_str = num_str.substr(0, num_str.length() - 2)
+	
+	return "%s%s" % [num_str, suffixes[suffix_index-1]]

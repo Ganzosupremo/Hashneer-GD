@@ -3,7 +3,7 @@
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_soxot"]
@@ -18,7 +18,7 @@ fire_sound = ExtResource("2_psf4r")
 weapon_damage_multiplier = 0.0
 ammo_details = ExtResource("1_wgbrq")
 weapon_shoot_effect = ExtResource("4_hdk3o")
-shots_per_second = 2.0
+shots_per_second = 10.0
 precharge_time = 0.0
 spread = 0.28
 amplitude = 1.8
