@@ -10,7 +10,7 @@ class_name NotificationPopupPanel extends PopupPanel
 @onready var _impact_value_label: AnimatedLabel = %ImpactValueLabel
 @onready var _currency_value_label: AnimatedLabel = %CurrencyValueLabel
 @onready var _duration_value_label: AnimatedLabel = %DurationValueLabel
-@onready var _close_button: Button = %CloseButton
+
 @onready var _impact_label: AnimatedLabel = %ImpactLabel
 @onready var _currency_label: AnimatedLabel = %CurrencyLabel
 @onready var _duration_label: AnimatedLabel = %DurationLabel

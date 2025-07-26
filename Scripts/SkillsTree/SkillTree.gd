@@ -12,10 +12,6 @@ func _notification(what: int) -> void:
 		PersistenceDataManager.load_game()
 		EconomicEventsManager.pick_random_event()
 
-func _enter_tree() -> void:
-	main_event_bus.economy_event_picked.connect(_on_random_economic_event_picked)
-	main_event_bus.economy_event_expired.connect(_on_random_economic_event_expired)
-
 func _ready() -> void:
 	_skill_nodes.append_array(_get_skill_nodes())
 	AudioManager.change_music_clip(music_details)
@@ -28,13 +24,13 @@ func _ready() -> void:
 
 	DebugLogger.info("SkillTreeManager initialized.")
 
-func _on_random_economic_event_picked(economic_event: EconomicEvent) -> void:
-	for node in _skill_nodes:
-		node.apply_random_economic_event(economic_event)
+# func _on_random_economic_event_picked(economic_event: EconomicEvent) -> void:
+# 	for node in _skill_nodes:
+# 		node.apply_random_economic_event(economic_event)
 
-func _on_random_economic_event_expired(_economic_event: EconomicEvent) -> void:
-	for node in _skill_nodes:
-		node.revert_economic_event_effects()
+# func _on_random_economic_event_expired(_economic_event: EconomicEvent) -> void:
+# 	for node in _skill_nodes:
+# 		node.revert_economic_event_effects()
 
 func _get_skill_nodes() -> Array:
 	var nodes: Array = []

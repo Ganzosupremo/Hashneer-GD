@@ -247,7 +247,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="HealthUpgradeI" parent="SkillTreeContainer/UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="HealthUpgradeI" parent="SkillTreeContainer/UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -264,12 +264,13 @@ mouse_default_cursor_shape = 2
 expand_icon = false
 progress_event_bus = ExtResource("15_hsn28")
 is_unlocked = true
+next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI"), NodePath("../HealthUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_egfro")
 skill_icon = SubResource("AtlasTexture_r00sj")
 skillnode_data = ExtResource("6_26cjf")
 save_name = "PlayerHealthUpgradeFiatT1"
 
-[node name="SpeedUpgradeI" parent="SkillTreeContainer/UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="SpeedUpgradeI" parent="SkillTreeContainer/UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -284,6 +285,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../ShotgunUnlock"), NodePath("../MagnetAbility")]
 icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
 skill_icon = SubResource("AtlasTexture_xfqgc")
 skillnode_data = ExtResource("6_aog38")
@@ -304,7 +306,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../MiniUzisUnlock")]
+next_tier_nodes = [NodePath("../MiniUzisUnlock"), NodePath("../RegenHealthOverTime")]
 icon_on_maxed_out = ExtResource("22_jhrlo")
 skill_icon = ExtResource("22_jhrlo")
 skillnode_data = ExtResource("20_cet81")
@@ -331,7 +333,7 @@ skill_icon = ExtResource("22_5t31m")
 skillnode_data = ExtResource("24_r00sj")
 save_name = "MagnetUnlock"
 
-[node name="DamageUpgradeII" parent="SkillTreeContainer/UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="DamageUpgradeII" parent="SkillTreeContainer/UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -346,6 +348,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../SniperUnlock"), NodePath("../AK47Unlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
 skill_icon = SubResource("AtlasTexture_6ck1a")
 skillnode_data = ExtResource("11_6em56")
@@ -371,7 +374,7 @@ skill_icon = ExtResource("7_076p6")
 skillnode_data = ExtResource("13_a2onp")
 save_name = "AWPSniperUnlock"
 
-[node name="AK47Unlock" parent="SkillTreeContainer/UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="AK47Unlock" parent="SkillTreeContainer/UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -386,6 +389,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
 icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
 skill_icon = SubResource("AtlasTexture_8vthq")
 skillnode_data = ExtResource("23_lm8ko")
@@ -412,7 +416,7 @@ skill_icon = SubResource("AtlasTexture_g7g25")
 skillnode_data = ExtResource("7_4c22w")
 save_name = "PlayerDamageUpgradeFiatT1"
 
-[node name="HealthUpgradeII" parent="SkillTreeContainer/UpgradesHolder" instance=ExtResource("2_riue2")]
+[node name="HealthUpgradeII" parent="SkillTreeContainer/UpgradesHolder" node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -427,6 +431,7 @@ grow_horizontal = 1
 grow_vertical = 1
 mouse_default_cursor_shape = 2
 progress_event_bus = ExtResource("15_hsn28")
+next_tier_nodes = [NodePath("../DamageUpgradeII")]
 icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
 skill_icon = SubResource("AtlasTexture_oc2wu")
 skillnode_data = ExtResource("8_yacem")

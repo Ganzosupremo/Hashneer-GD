@@ -91,6 +91,9 @@ func _enter_tree() -> void:
 	if skillnode_data:
 		_upgrade_logic = SkillUpgrade.new(skillnode_data, next_tier_nodes)
 	
+	main_event_bus.economy_event_picked.connect(apply_random_economic_event)
+	main_event_bus.economy_event_expired.connect(revert_economic_event_effects)
+
 	if !_upgrade_logic.upgrade_maxed.is_connected(_on_upgrade_maxed) and !_upgrade_logic.level_changed.is_connected(_on_level_changed):
 		_upgrade_logic.upgrade_maxed.connect(_on_upgrade_maxed)
 		_upgrade_logic.level_changed.connect(_on_level_changed)
@@ -159,8 +162,9 @@ func apply_random_economic_event(_economic_event: EconomicEvent) -> void:
 	if _upgrade_logic:
 		_upgrade_logic.apply_random_economic_event(_economic_event)
 
-func revert_economic_event_effects() -> void:
-	"""Reverts the effects of economic events on this skill node."""
+## Reverts the effects of economic events on this skill node.
+## This function is called when an economic event expires.
+func revert_economic_event_effects(_event: EconomicEvent) -> void:
 	if _upgrade_logic:
 		_upgrade_logic.revert_economic_event_effects()
 
@@ -348,14 +352,14 @@ func load_data() -> void:
 	
 	# Restore economic event related data
 	if data.has("has_stored_original_values") and data["has_stored_original_values"]:
-		skillnode_data.set_original_upgrade_cost_base(data.get("original_upgrade_cost_base", skillnode_data.upgrade_cost_base))
-		skillnode_data.set_original_upgrade_cost_base_btc(data.get("original_upgrade_cost_base_btc", skillnode_data.upgrade_cost_base_btc))
+		skillnode_data.set_original_upgrade_cost_base(data.get("original_upgrade_cost_base", skillnode_data.get_original_upgrade_cost_base()))
+		skillnode_data.set_original_upgrade_cost_base_btc(data.get("original_upgrade_cost_base_btc", skillnode_data.get_original_upgrade_cost_base_btc()))
 		skillnode_data._has_stored_original_values = true
 		
 		# Restore the modified costs (in case an event was active when saved)
-		skillnode_data.set_upgrade_cost_base(data.get("current_upgrade_cost_base", skillnode_data.upgrade_cost_base))
-		skillnode_data.set_upgrade_cost_base_btc(data.get("current_upgrade_cost_base_btc", skillnode_data.upgrade_cost_base_btc))
-	
+		skillnode_data.set_upgrade_cost_base(data.get("current_upgrade_cost_base", skillnode_data.get_upgrade_cost_base()))
+		skillnode_data.set_upgrade_cost_base_btc(data.get("current_upgrade_cost_base_btc", skillnode_data.get_upgrade_cost_base_btc()))
+
 	is_next_tier_unlocked()
 	is_this_skill_maxed_out()
 	
