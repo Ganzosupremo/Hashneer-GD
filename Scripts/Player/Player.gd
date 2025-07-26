@@ -90,6 +90,7 @@ func set_weapon() -> void:
 	active_weapon.set_weapon(initial_weapon)
 	
 	for weapon in weapons_array:
+		if weapon == null: continue
 		active_weapon.add_weapon_to_list(weapon)
 
 func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:

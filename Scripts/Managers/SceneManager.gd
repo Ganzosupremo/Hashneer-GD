@@ -33,7 +33,7 @@ func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
 	bg.visible = false
 	scene_switched.emit()
 
-func switch_scene(res_path: String, _level_index: int = -1):
+func switch_scene(res_path: String):
 	call_deferred("_deferred_switch_scene", res_path)
 
 func _deferred_switch_scene(res_path: String):

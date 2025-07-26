@@ -1,11 +1,11 @@
 [gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://tekh6aoc0ka6"]
 
-[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="1_o2k2q"]
+[ext_resource type="AudioStream" uid="uid://dofcvleh7f1uj" path="res://Audio/FracturableTerrain/Impact 01.mp3" id="1_o2k2q"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_dve35"]
 
 [resource]
 script = ExtResource("2_dve35")
-limit = 5
+limit = 50
 sound_type = 24
 destination_audio_bus = 2
 sound_volume = 1.0

@@ -1,8 +1,8 @@
 class_name SkillNode extends Button
 ## SkillNode represents a node in the skill tree that can be upgraded by the player.
 ## 
-## It contains information about the skill, its _cost, and its current state.
-## It also handles the UI representation of the skill node, including its icon, _title, description, and _cost.
+## It contains information about the skill, its cost, and its current state.
+## It also handles the UI representation of the skill node, including its icon, title, description, and cost.
 
 
 ## Represents the current UI state of the node.
@@ -51,19 +51,11 @@ enum NodeState {
 
 @export_subgroup("Cost Backgroung Styles")
 ## The style to use when the skill node can be afforded.
-@export var can_afford_style: StyleBoxTexture
+@export var can_afford_style: StyleBoxFlat
 ## The style to use when the skill node cannot be afforded.
-@export var cannot_afford_style: StyleBoxTexture
+@export var cannot_afford_style: StyleBoxFlat
 ## The style to use when the skill node is maxed out.
-@export var max_upgraded_style: StyleBoxTexture
-
-@export_subgroup("On Click Sound Effects (Optional)")
-## The sound effect to play when the mouse enters the skill node.
-@export var on_mouse_entered_effect: SoundEffectDetails
-## The sound effect to play when the skill node is pressed.
-@export var on_mouse_down_effect: SoundEffectDetails
-## The sound effect to play when the skill node is released.
-@export var on_mouse_up_effect: SoundEffectDetails
+@export var max_upgraded_style: StyleBoxFlat
 
 @export_group("Skill Node Data Settings")
 ## The data resource that contains the skill node's upgrade information.
@@ -77,9 +69,8 @@ enum NodeState {
 
 @onready var _skill_line: Line2D = %SkillBranch
 @onready var _skill_label_status: Label = %SkillLabel
-@onready var _sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 @onready var _currency_icon: TextureRect = %CurrencyIcon
-@onready var _progress_bar: TextureProgressBar = %LevelProgressBar
+@onready var _progress_bar: ProgressBar = %LevelProgressBar
 
 @onready var _title: Label = %Title
 @onready var _skill_node_texture: TextureRect = %SkillNodeTexture
@@ -290,24 +281,12 @@ func set_currency_icon(currency: Constants.CurrencyType) -> void:
 
 #region Signals
 
-func _on_mouse_entered() -> void:
-	if _sound_effect_component_ui == null: return
-	_sound_effect_component_ui.set_and_play_sound(on_mouse_entered_effect)
-
 func _on_skill_pressed() -> void:
 	if not _upgrade_logic.purchase():
 		return
 
 	_update_skill_node_ui(skillnode_data.upgrade_name, skillnode_data.upgrade_description, skillnode_data.upgrade_cost(UpgradeService.current_currency))
 	_update_node_state()
-
-func _on_button_down() -> void:
-	if _sound_effect_component_ui == null: return
-	_sound_effect_component_ui.set_and_play_sound(on_mouse_down_effect)
-
-func _on_button_up() -> void:
-	if _sound_effect_component_ui == null: return
-	_sound_effect_component_ui.set_and_play_sound(on_mouse_up_effect)
 
 func _on_upgrade_maxed() -> void:
 	show()
@@ -328,6 +307,12 @@ func _on_level_changed(new_level: int, max_level: int) -> void:
 	_update_skill_status_label("{0}/{1}".format([new_level, max_level]))
 	_update_progress_bar(new_level, max_level)
 	_update_node_state()
+
+func _on_button_down() -> void:
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
+
+func _on_button_up() -> void:
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_RELEASE, AudioManager.DestinationAudioBus.SFX)
 
 #endregion
 

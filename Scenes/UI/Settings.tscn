@@ -1,36 +1,21 @@
-[gd_scene load_steps=9 format=3 uid="uid://c2hb4iulgyrsa"]
+[gd_scene load_steps=6 format=3 uid="uid://c2hb4iulgyrsa"]
 
 [ext_resource type="Script" uid="uid://bnehavawdhvp4" path="res://Scripts/UI/Settings.gd" id="1_0t1x7"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_i76vb"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="2_6s6fx"]
-[ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="3_sc1bs"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="4_custom"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pvi8v"]
-bg_color = Color(0, 0, 0, 0)
-corner_detail = 1
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hfiyb"]
-texture = ExtResource("3_sc1bs")
-texture_margin_left = 13.0
-texture_margin_top = 12.0
-texture_margin_right = 13.0
-texture_margin_bottom = 12.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-modulate_color = Color(0, 0.113725, 0.239216, 1)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sc1bs"]
-load_path = "res://.godot/imported/SkillNodeButtonTexture.png-ddb104609768de77de7b9f5786543078.ctex"
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kg15k"]
-texture = SubResource("CompressedTexture2D_sc1bs")
-texture_margin_left = 13.0
-texture_margin_top = 12.0
-texture_margin_right = 13.0
-texture_margin_bottom = 12.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-modulate_color = Color(0, 0.113725, 0.239216, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_content"]
+bg_color = Color(0.03, 0.03, 0.06, 0.85)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 0.3)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Settings" type="Control" groups=["PersistentNodes"]]
 layout_mode = 3
@@ -43,7 +28,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_0t1x7")
 
-[node name="BG" type="Panel" parent="."]
+[node name="OverlayBG" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,262 +36,312 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_i76vb")
-theme_override_styles/panel = SubResource("StyleBoxFlat_pvi8v")
+theme_type_variation = &"SettingsOverlay"
 metadata/_edit_lock_ = true
 
-[node name="TabContainer" type="TabContainer" parent="."]
+[node name="MainContainer" type="PanelContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -225.0
-offset_right = 400.0
-offset_bottom = 225.0
+offset_left = -500.0
+offset_top = -300.0
+offset_right = 500.0
+offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_i76vb")
-tab_alignment = 1
-current_tab = 1
-drag_to_rearrange_enabled = true
+theme_type_variation = &"SettingsBackground"
 
-[node name="Video" type="PanelContainer" parent="TabContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Sidebar" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="Title" parent="MainContainer/MarginContainer/HBoxContainer/Sidebar" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"TitleText"
+text = "SETTINGS"
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer/MarginContainer/HBoxContainer/Sidebar"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSeparator"
+
+[node name="VideoButton" parent="MainContainer/MarginContainer/HBoxContainer/Sidebar" instance=ExtResource("4_custom")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Video"
+
+[node name="AudioButton" parent="MainContainer/MarginContainer/HBoxContainer/Sidebar" instance=ExtResource("4_custom")]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Audio"
+
+[node name="CloseButton" parent="MainContainer/MarginContainer/HBoxContainer/Sidebar" instance=ExtResource("4_custom")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+theme_type_variation = &"ModernQuitButton"
+text = "Close"
+
+[node name="ContentArea" type="PanelContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_i76vb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_settings_content")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VideoSettings" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "VIDEO SETTINGS"
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings"]
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSeparator"
+
+[node name="SettingsGrid" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings"]
+layout_mode = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="ResolutionContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/ResolutionContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Resolution:"
+horizontal_alignment = 2
+
+[node name="Resolutions" type="OptionButton" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/ResolutionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../../../../Sidebar/VideoButton")
+focus_neighbor_top = NodePath("../../../../../../Sidebar/AudioButton")
+focus_neighbor_right = NodePath("../../../../../../Sidebar/AudioButton")
+focus_neighbor_bottom = NodePath("../../VSyncContainer/Vsync")
+focus_next = NodePath("../../VSyncContainer/Vsync")
+focus_previous = NodePath("../../../../../../Sidebar/CloseButton")
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernOptionButton"
+theme_override_font_sizes/font_size = 20
+alignment = 1
+
+[node name="VSyncContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/VSyncContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "V-Sync:"
+horizontal_alignment = 2
+
+[node name="Vsync" type="CheckButton" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/VSyncContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../../../../Sidebar/VideoButton")
+focus_neighbor_top = NodePath("../../ResolutionContainer/Resolutions")
+focus_neighbor_right = NodePath("../../../../../../Sidebar/AudioButton")
+focus_previous = NodePath("../../../../../../Sidebar/CloseButton")
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernCheckButton"
+alignment = 1
+
+[node name="FullscreenContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/FullscreenContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Fullscreen:"
+horizontal_alignment = 2
+
+[node name="Fullscreen" type="CheckButton" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/FullscreenContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../../../../Sidebar/VideoButton")
+focus_neighbor_top = NodePath("../../ResolutionContainer/Resolutions")
+focus_neighbor_right = NodePath("../../../../../../Sidebar/AudioButton")
+focus_previous = NodePath("../../../../../../Sidebar/CloseButton")
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernCheckButton"
+alignment = 1
+
+[node name="AudioSettings" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
-theme = ExtResource("1_i76vb")
-metadata/_tab_index = 0
+theme_override_constants/separation = 20
+alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Video"]
+[node name="Title" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings" instance=ExtResource("2_6s6fx")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "AUDIO SETTINGS"
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings"]
 layout_mode = 2
 theme = ExtResource("1_i76vb")
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_type_variation = &"SettingsModernHSeparator"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Video/MarginContainer"]
+[node name="SettingsGrid" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings"]
 layout_mode = 2
-theme = ExtResource("1_i76vb")
-theme_override_constants/separation = 15
+theme_override_constants/separation = 25
+alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
+[node name="MasterContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid"]
 layout_mode = 2
-theme = ExtResource("1_i76vb")
-
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("1_i76vb")
-theme_override_styles/panel = SubResource("StyleBoxTexture_hfiyb")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme = ExtResource("1_i76vb")
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="ResolutionCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MasterContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-alignment = 1
+theme_type_variation = &"NormalText"
+text = "Master Volume:"
+horizontal_alignment = 2
 
-[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Resolution"
-
-[node name="Resolutions" type="OptionButton" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/ResolutionCont"]
+[node name="MasterSlider" type="HSlider" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MasterContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 25)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-theme_override_font_sizes/font_size = 45
-alignment = 1
-
-[node name="VSyncCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "V-Sync"
-
-[node name="Vsync" type="CheckButton" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/VSyncCont"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-alignment = 1
-
-[node name="FullscreenCont" type="HBoxContainer" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Fullscreen"
-
-[node name="Fullscreen" type="CheckBox" parent="TabContainer/Video/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/FullscreenCont"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_i76vb")
-button_pressed = true
-alignment = 1
-icon_alignment = 1
-expand_icon = true
-
-[node name="HSeparator2" type="HSeparator" parent="TabContainer/Video/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSlider"
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
 
-[node name="Audio" type="PanelContainer" parent="TabContainer"]
+[node name="MusicContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid"]
 layout_mode = 2
-theme = ExtResource("1_i76vb")
-metadata/_tab_index = 1
-
-[node name="MarginContainer" type="MarginContainer" parent="TabContainer/Audio"]
-layout_mode = 2
-theme = ExtResource("1_i76vb")
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Audio/MarginContainer"]
-layout_mode = 2
-theme = ExtResource("1_i76vb")
-theme_override_constants/separation = 15
-
-[node name="HSeparator" type="HSeparator" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme = ExtResource("1_i76vb")
-
-[node name="PanelContainer" type="PanelContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme = ExtResource("1_i76vb")
-theme_override_styles/panel = SubResource("StyleBoxTexture_kg15k")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme = ExtResource("1_i76vb")
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="MasterAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MusicContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-alignment = 1
+theme_type_variation = &"NormalText"
+text = "Music Volume:"
+horizontal_alignment = 2
 
-[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Master Volume"
-
-[node name="MasterSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio"]
+[node name="MusicSlider" type="HSlider" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MusicContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-ticks_on_borders = true
-
-[node name="MusicAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 40
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Music Volume"
-
-[node name="MusicSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-ticks_on_borders = true
-
-[node name="SfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 75
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "SFX Volume"
-
-[node name="SFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-ticks_on_borders = true
-
-[node name="PlayerSfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 75
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Player SFX Volume"
-
-[node name="PlayerSFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-ticks_on_borders = true
-
-[node name="WeaponsSfxAudio" type="HBoxContainer" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 75
-alignment = 1
-
-[node name="AnimatedLabel" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio" instance=ExtResource("2_6s6fx")]
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "Weapons SFX Volume"
-
-[node name="WeaponsSFXSlider" type="HSlider" parent="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 2
-size_flags_vertical = 1
-max_value = 1.0
-step = 0.1
-ticks_on_borders = true
-
-[node name="HSeparator2" type="HSeparator" parent="TabContainer/Audio/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(200, 30)
 layout_mode = 2
 theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSlider"
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
 
-[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MasterAudio/MasterSlider" to="." method="_on_master_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/MusicAudio/MusicSlider" to="." method="_on_music_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/SfxAudio/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/PlayerSfxAudio/PlayerSFXSlider" to="." method="_on_player_sfx_slider_value_changed"]
-[connection signal="value_changed" from="TabContainer/Audio/MarginContainer/VBoxContainer/PanelContainer/VBoxContainer/WeaponsSfxAudio/WeaponsSFXSlider" to="." method="_on_weapons_slider_value_changed"]
+[node name="SFXContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/SFXContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "SFX Volume:"
+horizontal_alignment = 2
+
+[node name="SFXSlider" type="HSlider" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/SFXContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSlider"
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="PlayerSFXContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/PlayerSFXContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Player SFX:"
+horizontal_alignment = 2
+
+[node name="PlayerSFXSlider" type="HSlider" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/PlayerSFXContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSlider"
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[node name="WeaponsSFXContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/WeaponsSFXContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Weapons SFX:"
+horizontal_alignment = 2
+
+[node name="WeaponsSFXSlider" type="HSlider" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/WeaponsSFXContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 2
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernHSlider"
+max_value = 1.0
+step = 0.1
+ticks_on_borders = true
+
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/VideoButton" to="." method="_on_video_button_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/AudioButton" to="." method="_on_audio_button_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MasterContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MusicContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/SFXContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/PlayerSFXContainer/PlayerSFXSlider" to="." method="_on_player_sfx_slider_value_changed"]
+[connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/WeaponsSFXContainer/WeaponsSFXSlider" to="." method="_on_weapons_slider_value_changed"]

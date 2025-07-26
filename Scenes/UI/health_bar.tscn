@@ -4,19 +4,19 @@
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_byxxf"]
 [ext_resource type="Shader" uid="uid://ognqkrfycusw" path="res://Shaders/LiquidFillSphere.gdshader" id="6_p77wj"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_gioec"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bitcoin_health"]
 shader = ExtResource("6_p77wj")
-shader_parameter/backFillColour = Color(1, 0.717647, 0, 1)
-shader_parameter/frontFillInnerColour = Color(1, 0.866667, 0, 1)
-shader_parameter/frontFillOuterColour = Color(1, 0.533333, 0, 1)
-shader_parameter/ringColour = Color(0, 0, 0, 1)
-shader_parameter/fresnelColour = Color(1, 0.866667, 0, 1)
-shader_parameter/innerRingGlowColour = Color(1, 0.917647, 0, 1)
-shader_parameter/fillcolour = Color(1, 1, 1, 1)
-shader_parameter/ringWidth = 0.15
+shader_parameter/backFillColour = Color(0.05, 0.05, 0.08, 1)
+shader_parameter/frontFillInnerColour = Color(0.9, 0.2, 0.2, 1)
+shader_parameter/frontFillOuterColour = Color(0.7, 0.15, 0.15, 1)
+shader_parameter/ringColour = Color(1, 0.843, 0, 1)
+shader_parameter/fresnelColour = Color(1, 0.843, 0, 0.8)
+shader_parameter/innerRingGlowColour = Color(1, 0.843, 0, 0.6)
+shader_parameter/fillcolour = Color(0.9, 0.2, 0.2, 1)
+shader_parameter/ringWidth = 0.12
 shader_parameter/innerCircleRadiusOffset = 0.0
-shader_parameter/fill_per = 0.488
-shader_parameter/resolution = 32.0
+shader_parameter/fill_per = 0.479
+shader_parameter/resolution = 128.0
 
 [node name="HealthUI" type="Control"]
 custom_minimum_size = Vector2(160, 210)
@@ -38,7 +38,7 @@ alignment = 1
 
 [node name="SphereHealth" type="ColorRect" parent="VBoxContainer"]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_gioec")
+material = SubResource("ShaderMaterial_bitcoin_health")
 custom_minimum_size = Vector2(140, 140)
 layout_mode = 2
 

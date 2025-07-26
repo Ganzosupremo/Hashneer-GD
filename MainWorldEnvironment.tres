@@ -1,19 +1,10 @@
-[gd_resource type="Environment" load_steps=3 format=3 uid="uid://b0ojl28gnvtko"]
-
-[sub_resource type="Gradient" id="Gradient_nfmuy"]
-offsets = PackedFloat32Array(0, 0.271523, 0.821192, 1)
-colors = PackedColorArray(0, 0, 0, 1, 0.244776, 0.244776, 0.244776, 1, 0.82606, 0.82606, 0.82606, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_hat2t"]
-gradient = SubResource("Gradient_nfmuy")
+[gd_resource type="Environment" format=3 uid="uid://b0ojl28gnvtko"]
 
 [resource]
-background_mode = 3
-glow_enabled = true
+tonemap_mode = 1
 glow_normalized = true
 glow_intensity = 1.2
 glow_strength = 1.2
 glow_bloom = 0.12
 glow_blend_mode = 1
 glow_hdr_threshold = 0.8
-glow_map = SubResource("GradientTexture1D_hat2t")

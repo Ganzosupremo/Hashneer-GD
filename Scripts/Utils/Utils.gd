@@ -79,6 +79,39 @@ static func enum_label(enum_dict: Dictionary, value: int) -> String:
 static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 	return enum_label(Constants.WeaponNames, weapon_name)
 
+# static func weapon_string_to_weapon_enum(weapon_name: String) -> Constants.WeaponNames:
+# 	var weapon_names: Dictionary = {
+# 		"Rifle": Constants.WeaponNames.RIFLE,
+# 		"Shotgun": Constants.WeaponNames.SHOTGUN,
+# 		"AWP Sniper": Constants.WeaponNames.SNIPER,
+# 		"Pistol": Constants.WeaponNames.PISTOL,
+# 		"AK-47": Constants.WeaponNames.AK47,
+# 		"Machine Gun": Constants.WeaponNames.MACHINE_GUN,
+# 		"Rocket Launcher": Constants.WeaponNames.ROCKET_LAUNCHER,
+# 		"Flamethrower": Constants.WeaponNames.FLAMETHROWER,
+# 		"Minigun": Constants.WeaponNames.MINIGUN,
+# 		"Bow": Constants.WeaponNames.BOW,
+# 		"Crossbow": Constants.WeaponNames.CROSSBOW,
+# 		"Grenade Launcher": Constants.WeaponNames.GRENADE_LAUNCHER,
+# 		"SlingShot": Constants.WeaponNames.SLINGSHOT,
+# 		"Sword": Constants.WeaponNames.SWORD,
+# 		"Axe": Constants.WeaponNames.AXE,
+# 		"Spear": Constants.WeaponNames.SPEAR,
+# 		"Whip": Constants.WeaponNames.WHIP,
+# 		"Cannon": Constants.WeaponNames.CANNON,
+# 		"Bazooka": Constants.WeaponNames.BAZOOKA,
+# 		"Laser": Constants.WeaponNames.LASER,
+# 		"Railgun": Constants.WeaponNames.RAILGUN,
+# 		"Plasma": Constants.WeaponNames.PLASMA,
+# 		"Raygun": Constants.WeaponNames.RAYGUN,
+# 		"Mini Uzi": Constants.WeaponNames.MINI_UZI,
+# 	}
+
+# 	if weapon_names.has(weapon_name):
+# 			return weapon_names[weapon_name]
+# 	return Constants.WeaponNames.NONE
+
+
 ## Converts the [param Constants.AbilityNames] enum to a string.
 ## This is useful for displaying the ability name in the UI or for debugging purposes.
 ## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
@@ -121,6 +154,7 @@ static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 		_: return SkillNode.NodeState.UNKNOWN
 
 
+## @deprecated Use [func Utils.enum_label] instead.
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():
 			if enum_type[key] == _enum:

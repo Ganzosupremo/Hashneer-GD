@@ -1,14 +1,36 @@
-[gd_resource type="Theme" load_steps=126 format=3 uid="uid://dylriqvd0gggf"]
+[gd_resource type="Theme" load_steps=153 format=3 uid="uid://dylriqvd0gggf"]
 
-[ext_resource type="Texture2D" uid="uid://bf0jne128i4qm" path="res://Textures/UI/Panels/Banner_v6.png" id="1_k0jwi"]
 [ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="4_2qa8s"]
-[ext_resource type="Texture2D" uid="uid://c70gikjpibjo0" path="res://Textures/UI/Panels/UIBackground.png" id="4_sb2cu"]
 [ext_resource type="Texture2D" uid="uid://vn0pfisbqui4" path="res://Textures/UI/Buttons/MainButtonsHasheneer.png" id="5_sb2cu"]
-[ext_resource type="Texture2D" uid="uid://bv18rvqwyfmr0" path="res://Textures/UI/Buttons/SkillNodeTexture_v2.png" id="6_k0jwi"]
 [ext_resource type="Texture2D" uid="uid://sos620ijd2ti" path="res://Textures/UI/Slider_Hashneer_Button.png" id="6_x3w2l"]
-[ext_resource type="Texture2D" uid="uid://btn3wnvkrmck" path="res://Textures/UI/Slider_Hashneer.png" id="7_uhm5d"]
 [ext_resource type="Texture2D" uid="uid://dcvqxv14ofaqb" path="res://Textures/UI/Panels/HasheneerUIBanner.png" id="8_k0jwi"]
 [ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="8_sb2cu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_progress_bg"]
+bg_color = Color(0.03, 0.03, 0.06, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_progress_fill"]
+bg_color = Color(1, 0.843, 0, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(1, 0.843, 0, 0.4)
+shadow_size = 3
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wvgii"]
 bg_color = Color(0.03, 0.03, 0.03, 0.45)
@@ -96,12 +118,31 @@ shadow_size = 5
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hw1yg"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hormw"]
-texture = ExtResource("1_k0jwi")
-texture_margin_left = 26.0
-texture_margin_top = 10.0
-texture_margin_right = 26.0
-texture_margin_bottom = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_currency_item"]
+bg_color = Color(0.08, 0.08, 0.12, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 0.4)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_currency_main"]
+bg_color = Color(0, 0, 0, 0.980392)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843137, 0, 0.588235)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(1, 0.843137, 0, 0.196078)
+shadow_size = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c5q0n"]
 bg_color = Color(0, 0, 0, 0.069)
@@ -136,7 +177,7 @@ corner_detail = 1
 color = Color(0.0156863, 0.4, 0.784314, 1)
 thickness = 4
 
-[sub_resource type="Image" id="Image_k0jwi"]
+[sub_resource type="Image" id="Image_khk1g"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 64, 255, 255, 255, 64, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -146,33 +187,79 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_xdnnb"]
-image = SubResource("Image_k0jwi")
+image = SubResource("Image_khk1g")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mgkpy"]
-texture = ExtResource("7_uhm5d")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_progress_bg"]
+bg_color = Color(0.03, 0.03, 0.06, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.2, 0.2, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ublec"]
-texture = ExtResource("7_uhm5d")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_onak0"]
-content_margin_left = 4.0
-content_margin_top = 4.0
-content_margin_right = 4.0
-content_margin_bottom = 4.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_health_progress_fill"]
+bg_color = Color(0.9, 0.2, 0.2, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.3, 0.3, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
-corner_detail = 6
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ck1rn"]
-texture = ExtResource("4_sb2cu")
-texture_margin_left = 14.0
-texture_margin_top = 14.0
-texture_margin_right = 14.0
-texture_margin_bottom = 41.0
-modulate_color = Color(0, 0.113725, 0.239216, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ck1rn"]
+bg_color = Color(0.0196078, 0.0196078, 0.0392157, 0.94902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843137, 0, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y8anf"]
+bg_color = Color(0, 0, 0, 0.701961)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_levelcompleted_currency"]
+bg_color = Color(0.05, 0.05, 0.08, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.7)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_levelcompleted_separator"]
+color = Color(1, 0.843, 0, 0.8)
+thickness = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_levelcompleted_main"]
+bg_color = Color(0.02, 0.02, 0.04, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.843, 0, 0.9)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(1, 0.843, 0, 0.4)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_levelcompleted_overlay"]
+bg_color = Color(0, 0, 0, 0.8)
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_kn0ne"]
 load_path = "res://.godot/imported/MainButtonsHasheneer.png-c64c342a12958b1c95b49f1a2b3d4654.ctex"
@@ -236,6 +323,72 @@ texture_margin_right = 12.0
 texture_margin_bottom = 22.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ns6t6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7ub7"]
+bg_color = Color(0.15, 0.15, 0.2, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.7, 1, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hormw"]
+bg_color = Color(0.2, 0.2, 0.25, 0.9)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kn0ne"]
+bg_color = Color(0.12, 0.12, 0.15, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw1yg"]
+bg_color = Color(0.3, 0.3, 0.35, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3i65"]
+bg_color = Color(0.15, 0.15, 0.2, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5, 0.7, 1, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t78dh"]
+bg_color = Color(0.3, 0.15, 0.15, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jg3c8"]
+bg_color = Color(0.08, 0.08, 0.1, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_45nau"]
+bg_color = Color(0.4, 0.2, 0.2, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_notification"]
 bg_color = Color(0, 0, 0, 0.6)
@@ -346,14 +499,17 @@ corner_detail = 1
 shadow_color = Color(0.016, 0.4, 0.784, 0.7)
 shadow_size = 7
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_rh1ak"]
-texture = ExtResource("4_sb2cu")
-texture_margin_left = 13.0
-texture_margin_top = 12.0
-texture_margin_right = 13.0
-texture_margin_bottom = 41.0
-region_rect = Rect2(0, 0, 128, 128)
-modulate_color = Color(0, 0.207843, 0.4, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kwc32"]
+bg_color = Color(0.0196078, 0.0196078, 0.0392157, 0.94902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843137, 0, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sb2cu"]
 bg_color = Color(0, 0, 0, 1)
@@ -431,38 +587,240 @@ texture_margin_right = 12.0
 texture_margin_bottom = 22.0
 region_rect = Rect2(0, 0, 116, 76)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_136xd"]
-texture = ExtResource("6_k0jwi")
-region_rect = Rect2(0, 0, 30, 30)
-modulate_color = Color(1, 0.843137, 0, 0.313726)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_bg"]
+bg_color = Color(0.02, 0.02, 0.04, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.3)
+shadow_size = 8
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2qa8s"]
-texture = ExtResource("6_k0jwi")
-region_rect = Rect2(0, 0, 30, 30)
-modulate_color = Color(0, 0.207843, 0.4, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jo25s"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.529, 0.808, 0.922, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_khk1g"]
-texture = ExtResource("6_k0jwi")
-region_rect = Rect2(0, 0, 30, 30)
-modulate_color = Color(0, 0.207843, 0.4, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_checkbox_hover"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kwc32"]
-texture = ExtResource("6_k0jwi")
-region_rect = Rect2(0, 0, 30, 30)
-modulate_color = Color(0, 0.207843, 0.4, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_checkbox_normal"]
+bg_color = Color(0.05, 0.05, 0.08, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sb2cu"]
-texture = ExtResource("6_k0jwi")
-region_rect = Rect2(0, 0, 30, 30)
-modulate_color = Color(0.0414063, 0.117517, 0.199156, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_checkbox_pressed"]
+bg_color = Color(1, 0.843, 0, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_k7ub7"]
-texture = ExtResource("4_sb2cu")
-texture_margin_left = 13.0
-texture_margin_top = 13.0
-texture_margin_right = 14.0
-texture_margin_bottom = 34.0
-modulate_color = Color(0, 0.113725, 0.239216, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8cbx4"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.529, 0.808, 0.922, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_settings_separator"]
+color = Color(1, 0.843, 0, 0.6)
+thickness = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_fill"]
+bg_color = Color(1, 0.843, 0, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slider_bg"]
+bg_color = Color(0.03, 0.03, 0.06, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 0.4)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_optionbutton_normal"]
+bg_color = Color(0.05, 0.05, 0.08, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khk1g"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.529, 0.808, 0.922, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_optionbutton_hover"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_optionbutton_pressed"]
+bg_color = Color(0.12, 0.12, 0.15, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.674, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_overlay"]
+bg_color = Color(0, 0, 0, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vb2nw"]
+bg_color = Color(0.0509804, 0.0509804, 0.0784314, 0.701961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.3)
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skillnode_focus"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.6)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skillnode_hover"]
+bg_color = Color(0.08, 0.08, 0.12, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.5)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j032u"]
+bg_color = Color(0.0313726, 0.0313726, 0.0509804, 0.901961)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843137, 0, 0.501961)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0, 0, 0, 0.3)
+shadow_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skillnode_pressed"]
+bg_color = Color(0.12, 0.12, 0.15, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8, 0.674, 0, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.7)
+shadow_size = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r35al"]
+bg_color = Color(0.0196078, 0.0196078, 0.0392157, 0.94902)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843137, 0, 0.8)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_kwc32"]
 color = Color(0.2, 0.207843, 0.2, 1)
@@ -473,16 +831,33 @@ texture = ExtResource("8_k0jwi")
 texture_margin_left = 11.0
 texture_margin_right = 11.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jg3c8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skillnode_progress_bg"]
+bg_color = Color(0.02, 0.02, 0.04, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.3, 0.3, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jo25s"]
-bg_color = Color(0.0117647, 0.32549, 0.643137, 0.270588)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_skillnode_progress_fill"]
+bg_color = Color(1, 0.843, 0, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(1, 0.843, 0, 0.4)
+shadow_size = 3
 
-[sub_resource type="Image" id="Image_k7ub7"]
+[sub_resource type="Image" id="Image_sb2cu"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 78, 254, 255, 254, 136, 254, 255, 254, 173, 254, 255, 254, 173, 254, 255, 254, 135, 252, 255, 252, 77, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 255, 255, 255, 144, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 143, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 144, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 123, 125, 123, 223, 134, 134, 134, 220, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 143, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 78, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 116, 117, 116, 226, 92, 92, 92, 233, 123, 125, 123, 223, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 252, 255, 252, 76, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 136, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 116, 117, 116, 226, 92, 92, 92, 233, 116, 117, 116, 226, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 133, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 173, 254, 255, 254, 191, 254, 255, 254, 191, 123, 125, 123, 223, 92, 92, 92, 233, 115, 116, 115, 226, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 173, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 173, 254, 255, 254, 191, 254, 255, 254, 191, 123, 125, 123, 223, 92, 92, 92, 233, 115, 116, 115, 226, 237, 238, 237, 195, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 172, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 135, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 115, 116, 115, 226, 92, 92, 92, 233, 115, 116, 115, 226, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 133, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 252, 255, 252, 77, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 115, 116, 115, 226, 92, 92, 92, 233, 125, 126, 125, 223, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 143, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 125, 126, 125, 223, 133, 133, 133, 220, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 142, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 20, 254, 255, 254, 143, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 142, 255, 255, 255, 19, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 252, 255, 252, 76, 255, 255, 255, 133, 254, 255, 254, 173, 254, 255, 254, 172, 255, 255, 255, 133, 255, 255, 255, 75, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -492,9 +867,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_h2ab3"]
-image = SubResource("Image_k7ub7")
+image = SubResource("Image_sb2cu")
 
-[sub_resource type="Image" id="Image_hormw"]
+[sub_resource type="Image" id="Image_k0jwi"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 104, 254, 255, 254, 181, 254, 255, 254, 231, 254, 255, 254, 231, 254, 255, 254, 180, 255, 255, 255, 102, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 27, 254, 255, 254, 193, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 191, 255, 255, 255, 26, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 193, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 80, 80, 80, 255, 96, 96, 96, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 191, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 104, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 66, 66, 66, 255, 26, 26, 26, 255, 80, 80, 80, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 255, 255, 255, 101, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 181, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 66, 66, 66, 255, 26, 26, 26, 255, 66, 66, 66, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 178, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 231, 254, 255, 254, 255, 254, 255, 254, 255, 80, 80, 80, 255, 26, 26, 26, 255, 65, 65, 65, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 231, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 231, 254, 255, 254, 255, 254, 255, 254, 255, 80, 80, 80, 255, 26, 26, 26, 255, 65, 65, 65, 255, 235, 236, 235, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 230, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 180, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 67, 67, 67, 255, 26, 26, 26, 255, 65, 65, 65, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 178, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 102, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 67, 67, 67, 255, 26, 26, 26, 255, 81, 81, 81, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 255, 255, 255, 100, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 191, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 81, 81, 81, 255, 95, 95, 95, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 189, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 26, 254, 255, 254, 191, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 189, 255, 255, 255, 25, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 101, 254, 255, 254, 178, 254, 255, 254, 231, 254, 255, 254, 230, 254, 255, 254, 178, 255, 255, 255, 100, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -504,9 +879,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_fw7k1"]
-image = SubResource("Image_hormw")
+image = SubResource("Image_k0jwi")
 
-[sub_resource type="Image" id="Image_kn0ne"]
+[sub_resource type="Image" id="Image_k7ub7"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 211, 211, 211, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -516,9 +891,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_awpo0"]
-image = SubResource("Image_kn0ne")
+image = SubResource("Image_k7ub7")
 
-[sub_resource type="Image" id="Image_hw1yg"]
+[sub_resource type="Image" id="Image_hormw"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 78, 254, 255, 254, 136, 254, 255, 254, 173, 254, 255, 254, 173, 254, 255, 254, 135, 252, 255, 252, 77, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 21, 255, 255, 255, 144, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 143, 255, 255, 255, 20, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 144, 254, 255, 254, 191, 254, 255, 254, 191, 133, 133, 133, 220, 123, 125, 123, 223, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 143, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 78, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 123, 125, 123, 223, 92, 92, 92, 233, 115, 116, 115, 226, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 252, 255, 252, 76, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 136, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 115, 116, 115, 226, 92, 92, 92, 233, 115, 116, 115, 226, 238, 240, 238, 194, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 133, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 173, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 237, 238, 237, 195, 115, 116, 115, 226, 92, 92, 92, 233, 125, 126, 125, 223, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 173, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 173, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 237, 238, 237, 195, 115, 116, 115, 226, 92, 92, 92, 233, 125, 126, 125, 223, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 172, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 135, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 238, 240, 238, 194, 115, 116, 115, 226, 92, 92, 92, 233, 115, 116, 115, 226, 240, 241, 240, 194, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 133, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 252, 255, 252, 77, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 123, 125, 123, 223, 92, 92, 92, 233, 115, 116, 115, 226, 240, 241, 240, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 143, 254, 255, 254, 191, 254, 255, 254, 191, 134, 134, 134, 220, 125, 126, 125, 223, 240, 241, 240, 194, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 142, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 20, 254, 255, 254, 143, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 191, 254, 255, 254, 142, 255, 255, 255, 19, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 252, 255, 252, 76, 255, 255, 255, 133, 254, 255, 254, 173, 254, 255, 254, 172, 255, 255, 255, 133, 255, 255, 255, 75, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -528,9 +903,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_2t0j8"]
-image = SubResource("Image_hw1yg")
+image = SubResource("Image_hormw")
 
-[sub_resource type="Image" id="Image_n3i65"]
+[sub_resource type="Image" id="Image_kn0ne"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 104, 254, 255, 254, 181, 254, 255, 254, 231, 254, 255, 254, 231, 254, 255, 254, 180, 255, 255, 255, 102, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 27, 254, 255, 254, 193, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 191, 255, 255, 255, 26, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 193, 254, 255, 254, 255, 254, 255, 254, 255, 94, 94, 94, 255, 80, 80, 80, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 191, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 104, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 80, 80, 80, 255, 26, 26, 26, 255, 67, 67, 67, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 255, 255, 255, 101, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 181, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 65, 65, 65, 255, 26, 26, 26, 255, 67, 67, 67, 255, 236, 237, 236, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 178, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 231, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 235, 236, 235, 255, 65, 65, 65, 255, 26, 26, 26, 255, 81, 81, 81, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 231, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 231, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 235, 236, 235, 255, 65, 65, 65, 255, 26, 26, 26, 255, 81, 81, 81, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 230, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 254, 255, 254, 180, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 236, 237, 236, 255, 65, 65, 65, 255, 26, 26, 26, 255, 67, 67, 67, 255, 237, 238, 237, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 178, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 102, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 80, 80, 80, 255, 26, 26, 26, 255, 67, 67, 67, 255, 237, 238, 237, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 255, 255, 255, 100, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 254, 255, 254, 191, 254, 255, 254, 255, 254, 255, 254, 255, 96, 96, 96, 255, 81, 81, 81, 255, 237, 238, 237, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 189, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 26, 254, 255, 254, 191, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 255, 254, 189, 255, 255, 255, 25, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 2, 255, 255, 255, 101, 254, 255, 254, 178, 254, 255, 254, 231, 254, 255, 254, 230, 254, 255, 254, 178, 255, 255, 255, 100, 255, 255, 255, 2, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -540,9 +915,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_8e22j"]
-image = SubResource("Image_n3i65")
+image = SubResource("Image_kn0ne")
 
-[sub_resource type="Image" id="Image_t78dh"]
+[sub_resource type="Image" id="Image_hw1yg"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 179, 179, 179, 100, 179, 179, 179, 100, 181, 181, 181, 31, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 178, 178, 178, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 177, 177, 177, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 178, 178, 178, 99, 178, 178, 178, 99, 176, 176, 176, 29, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 179, 179, 179, 100, 179, 179, 179, 100, 181, 181, 181, 31, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 178, 178, 178, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 177, 177, 177, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 178, 178, 178, 99, 178, 178, 178, 99, 179, 179, 179, 30, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 179, 179, 179, 100, 178, 178, 178, 99, 179, 179, 179, 30, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 180, 180, 180, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 100, 178, 178, 178, 115, 178, 178, 178, 115, 177, 177, 177, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 181, 181, 181, 31, 178, 178, 178, 99, 178, 178, 178, 99, 179, 179, 179, 30, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -552,9 +927,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_ncu6h"]
-image = SubResource("Image_t78dh")
+image = SubResource("Image_hw1yg")
 
-[sub_resource type="Image" id="Image_jg3c8"]
+[sub_resource type="Image" id="Image_n3i65"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 182, 182, 182, 45, 179, 179, 179, 144, 179, 179, 179, 144, 176, 176, 176, 45, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 179, 179, 179, 143, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 179, 179, 179, 141, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 176, 176, 176, 45, 179, 179, 179, 143, 179, 179, 179, 143, 181, 181, 181, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 182, 182, 182, 45, 179, 179, 179, 144, 179, 179, 179, 144, 176, 176, 176, 45, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 179, 179, 179, 143, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 179, 179, 179, 141, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 176, 176, 176, 45, 179, 179, 179, 143, 179, 179, 179, 143, 178, 178, 178, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 182, 182, 182, 45, 179, 179, 179, 144, 179, 179, 179, 143, 178, 178, 178, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 178, 178, 178, 142, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 179, 179, 179, 144, 178, 178, 178, 166, 178, 178, 178, 166, 179, 179, 179, 141, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 176, 176, 176, 45, 179, 179, 179, 143, 179, 179, 179, 143, 178, 178, 178, 43, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -564,7 +939,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_jg45f"]
-image = SubResource("Image_jg3c8")
+image = SubResource("Image_n3i65")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_sb2cu"]
 
@@ -679,9 +1054,43 @@ color = Color(0.866667, 0.423529, 0.109804, 1)
 thickness = 5
 vertical = true
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_weaponui_type1"]
+bg_color = Color(0.03, 0.03, 0.06, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.7)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(1, 0.843, 0, 0.2)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_weaponui_type2"]
+bg_color = Color(0.05, 0.05, 0.08, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(1, 0.843, 0, 0.3)
+shadow_size = 4
+
 [resource]
 default_font = ExtResource("8_sb2cu")
 default_font_size = 22
+BossProgressBar/base_type = &"ProgressBar"
+BossProgressBar/colors/font_color = Color(1, 1, 1, 1)
+BossProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
+BossProgressBar/font_sizes/font_size = 18
+BossProgressBar/styles/background = SubResource("StyleBoxFlat_boss_progress_bg")
+BossProgressBar/styles/fill = SubResource("StyleBoxFlat_boss_progress_fill")
 Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 Button/colors/font_focus_color = Color(0.996078, 0.996078, 0.996078, 1)
@@ -709,7 +1118,9 @@ CheckBox/styles/normal = SubResource("StyleBoxEmpty_t78dh")
 CheckButton/styles/focus = SubResource("StyleBoxEmpty_kn0ne")
 CheckButton/styles/normal = SubResource("StyleBoxEmpty_hw1yg")
 CurrencyUIBackground/base_type = &"PanelContainer"
-CurrencyUIBackground/styles/panel = SubResource("StyleBoxTexture_hormw")
+CurrencyUIBackground/styles/panel = SubResource("StyleBoxFlat_currency_item")
+CurrencyUIMain/base_type = &"PanelContainer"
+CurrencyUIMain/styles/panel = SubResource("StyleBoxFlat_currency_main")
 FlatButton/base_type = &"Button"
 FlatButton/colors/font_disabled_color = Color(0.593, 0.593, 0.593, 0.468)
 FlatButton/constants/outline_size = 40
@@ -730,9 +1141,6 @@ HSlider/icons/grabber = ExtResource("6_x3w2l")
 HSlider/icons/grabber_disabled = ExtResource("6_x3w2l")
 HSlider/icons/grabber_highlight = ExtResource("6_x3w2l")
 HSlider/icons/tick = SubResource("ImageTexture_xdnnb")
-HSlider/styles/grabber_area = SubResource("StyleBoxTexture_mgkpy")
-HSlider/styles/grabber_area_highlight = SubResource("StyleBoxTexture_ublec")
-HSlider/styles/slider = SubResource("StyleBoxFlat_onak0")
 HeaderLarge/base_type = &"Label"
 HeaderLarge/colors/font_shadow_color = Color(0, 0, 0, 0.55)
 HeaderLarge/constants/outline_size = 50
@@ -754,6 +1162,12 @@ HeaderSmall/constants/shadow_offset_x = 10
 HeaderSmall/constants/shadow_offset_y = 8
 HeaderSmall/constants/shadow_outline_size = 0
 HeaderSmall/font_sizes/font_size = 35
+HealthProgressBar/base_type = &"ProgressBar"
+HealthProgressBar/colors/font_color = Color(1, 1, 1, 1)
+HealthProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)
+HealthProgressBar/font_sizes/font_size = 16
+HealthProgressBar/styles/background = SubResource("StyleBoxFlat_health_progress_bg")
+HealthProgressBar/styles/fill = SubResource("StyleBoxFlat_health_progress_fill")
 Label/colors/font_color = Color(0.901961, 0.909804, 0.901961, 1)
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/colors/font_shadow_color = Color(0, 0, 0, 0.597)
@@ -762,8 +1176,19 @@ Label/constants/shadow_offset_x = 5
 Label/constants/shadow_offset_y = 3
 Label/constants/shadow_outline_size = 5
 Label/font_sizes/font_size = 30
-LevelSelectorPanel/base_type = &"PanelContainer"
-LevelSelectorPanel/styles/panel = SubResource("StyleBoxTexture_ck1rn")
+LevelSelectorBackground/base_type = &"PanelContainer"
+LevelSelectorBackground/styles/panel = SubResource("StyleBoxFlat_ck1rn")
+LevelSelectorInnerPanel/base_type = &"PanelContainer"
+LevelSelectorOverlay/base_type = &"Panel"
+LevelSelectorOverlay/styles/panel = SubResource("StyleBoxFlat_y8anf")
+LvlCompletedCurrencyPanelBG/base_type = &"PanelContainer"
+LvlCompletedCurrencyPanelBG/styles/panel = SubResource("StyleBoxFlat_levelcompleted_currency")
+LvlCompletedHSeparator/base_type = &"HSeparator"
+LvlCompletedHSeparator/styles/separator = SubResource("StyleBoxLine_levelcompleted_separator")
+LvlCompletedMain/base_type = &"PanelContainer"
+LvlCompletedMain/styles/panel = SubResource("StyleBoxFlat_levelcompleted_main")
+LvlCompletedOverlay/base_type = &"Panel"
+LvlCompletedOverlay/styles/panel = SubResource("StyleBoxFlat_levelcompleted_overlay")
 MainButton/base_type = &"Button"
 MainButton/constants/outline_size = 10
 MainButton/styles/disabled = SubResource("StyleBoxTexture_jg3c8")
@@ -779,6 +1204,21 @@ MarginContainer/constants/margin_bottom = 10
 MarginContainer/constants/margin_left = 10
 MarginContainer/constants/margin_right = 10
 MarginContainer/constants/margin_top = 10
+ModernMainButton/base_type = &"Button"
+ModernMainButton/colors/font_color = Color(1, 1, 1, 1)
+ModernMainButton/colors/font_focus_color = Color(1, 1, 1, 1)
+ModernMainButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+ModernMainButton/font_sizes/font_size = 24
+ModernMainButton/styles/focus = SubResource("StyleBoxFlat_k7ub7")
+ModernMainButton/styles/hover = SubResource("StyleBoxFlat_hormw")
+ModernMainButton/styles/normal = SubResource("StyleBoxFlat_kn0ne")
+ModernMainButton/styles/pressed = SubResource("StyleBoxFlat_hw1yg")
+ModernQuitButton/base_type = &"Button"
+ModernQuitButton/font_sizes/font_size = 24
+ModernQuitButton/styles/focus = SubResource("StyleBoxFlat_n3i65")
+ModernQuitButton/styles/hover = SubResource("StyleBoxFlat_t78dh")
+ModernQuitButton/styles/normal = SubResource("StyleBoxFlat_jg3c8")
+ModernQuitButton/styles/pressed = SubResource("StyleBoxFlat_45nau")
 NormalText/base_type = &"Label"
 NormalText/colors/font_color = Color(1, 1, 1, 1)
 NormalText/constants/outline_size = 9
@@ -803,7 +1243,7 @@ OptionButton/styles/hover_mirrored = SubResource("StyleBoxTexture_6by5t")
 OptionButton/styles/normal = SubResource("StyleBoxTexture_v2df5")
 OptionButton/styles/pressed = SubResource("StyleBoxTexture_8xyf7")
 Panel/styles/panel = SubResource("StyleBoxFlat_0jsv5")
-PanelContainer/styles/panel = SubResource("StyleBoxTexture_rh1ak")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_kwc32")
 ProgressBar/constants/outline_size = 10
 ProgressBar/font_sizes/font_size = 25
 ProgressBar/styles/background = SubResource("StyleBoxFlat_sb2cu")
@@ -814,15 +1254,48 @@ SecondaryButton/styles/focus = SubResource("StyleBoxTexture_y8anf")
 SecondaryButton/styles/hover = SubResource("StyleBoxTexture_vb2nw")
 SecondaryButton/styles/normal = SubResource("StyleBoxTexture_n3i65")
 SecondaryButton/styles/pressed = SubResource("StyleBoxTexture_t78dh")
+SettingsBackground/base_type = &"PanelContainer"
+SettingsBackground/styles/panel = SubResource("StyleBoxFlat_settings_bg")
+SettingsModernCheckBox/base_type = &"CheckBox"
+SettingsModernCheckBox/colors/font_color = Color(1, 1, 1, 1)
+SettingsModernCheckBox/colors/font_hover_color = Color(1, 0.843, 0, 1)
+SettingsModernCheckBox/styles/focus = SubResource("StyleBoxFlat_jo25s")
+SettingsModernCheckBox/styles/hover = SubResource("StyleBoxFlat_checkbox_hover")
+SettingsModernCheckBox/styles/normal = SubResource("StyleBoxFlat_checkbox_normal")
+SettingsModernCheckBox/styles/pressed = SubResource("StyleBoxFlat_checkbox_pressed")
+SettingsModernCheckButton/base_type = &"CheckButton"
+SettingsModernCheckButton/colors/font_color = Color(1, 1, 1, 1)
+SettingsModernCheckButton/colors/font_hover_color = Color(1, 0.843, 0, 1)
+SettingsModernCheckButton/styles/focus = SubResource("StyleBoxFlat_8cbx4")
+SettingsModernCheckButton/styles/hover = SubResource("StyleBoxFlat_checkbox_hover")
+SettingsModernCheckButton/styles/normal = SubResource("StyleBoxFlat_checkbox_normal")
+SettingsModernCheckButton/styles/pressed = SubResource("StyleBoxFlat_checkbox_pressed")
+SettingsModernHSeparator/base_type = &"HSeparator"
+SettingsModernHSeparator/styles/separator = SubResource("StyleBoxLine_settings_separator")
+SettingsModernHSlider/base_type = &"HSlider"
+SettingsModernHSlider/styles/grabber_area = SubResource("StyleBoxFlat_slider_fill")
+SettingsModernHSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_slider_fill")
+SettingsModernHSlider/styles/slider = SubResource("StyleBoxFlat_slider_bg")
+SettingsModernOptionButton/base_type = &"OptionButton"
+SettingsModernOptionButton/colors/font_color = Color(1, 1, 1, 1)
+SettingsModernOptionButton/colors/font_hover_color = Color(1, 0.843, 0, 1)
+SettingsModernOptionButton/colors/font_pressed_color = Color(1, 1, 1, 1)
+SettingsModernOptionButton/styles/disabled = SubResource("StyleBoxFlat_optionbutton_normal")
+SettingsModernOptionButton/styles/focus = SubResource("StyleBoxFlat_khk1g")
+SettingsModernOptionButton/styles/hover = SubResource("StyleBoxFlat_optionbutton_hover")
+SettingsModernOptionButton/styles/normal = SubResource("StyleBoxFlat_optionbutton_normal")
+SettingsModernOptionButton/styles/pressed = SubResource("StyleBoxFlat_optionbutton_pressed")
+SettingsOverlay/base_type = &"Panel"
+SettingsOverlay/styles/panel = SubResource("StyleBoxFlat_settings_overlay")
 SkillNode/base_type = &"Button"
-SkillNode/font_sizes/font_size = 32
-SkillNode/styles/disabled = SubResource("StyleBoxTexture_136xd")
-SkillNode/styles/focus = SubResource("StyleBoxTexture_2qa8s")
-SkillNode/styles/hover = SubResource("StyleBoxTexture_khk1g")
-SkillNode/styles/normal = SubResource("StyleBoxTexture_kwc32")
-SkillNode/styles/pressed = SubResource("StyleBoxTexture_sb2cu")
+SkillNode/font_sizes/font_size = 28
+SkillNode/styles/disabled = SubResource("StyleBoxFlat_vb2nw")
+SkillNode/styles/focus = SubResource("StyleBoxFlat_skillnode_focus")
+SkillNode/styles/hover = SubResource("StyleBoxFlat_skillnode_hover")
+SkillNode/styles/normal = SubResource("StyleBoxFlat_j032u")
+SkillNode/styles/pressed = SubResource("StyleBoxFlat_skillnode_pressed")
 SkillNodeInfoPanelBackground/base_type = &"PanelContainer"
-SkillNodeInfoPanelBackground/styles/panel = SubResource("StyleBoxTexture_k7ub7")
+SkillNodeInfoPanelBackground/styles/panel = SubResource("StyleBoxFlat_r35al")
 SkillNodeInfoPanelSeparator/base_type = &"HSeparator"
 SkillNodeInfoPanelSeparator/styles/separator = SubResource("StyleBoxLine_kwc32")
 SkillNodeLabel/base_type = &"Label"
@@ -830,8 +1303,8 @@ SkillNodeLabel/font_sizes/font_size = 26
 SkillNodeLabelBackground/base_type = &"PanelContainer"
 SkillNodeLabelBackground/styles/panel = SubResource("StyleBoxTexture_k0jwi")
 SkillNodeProgressBar/base_type = &"ProgressBar"
-SkillNodeProgressBar/styles/background = SubResource("StyleBoxEmpty_jg3c8")
-SkillNodeProgressBar/styles/fill = SubResource("StyleBoxFlat_jo25s")
+SkillNodeProgressBar/styles/background = SubResource("StyleBoxFlat_skillnode_progress_bg")
+SkillNodeProgressBar/styles/fill = SubResource("StyleBoxFlat_skillnode_progress_fill")
 TabContainer/colors/drop_mark_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
 TabContainer/colors/font_hovered_color = Color(0.95, 0.95, 0.95, 1)
@@ -868,3 +1341,7 @@ VFlowContainer/constants/h_separation = 4
 VFlowContainer/constants/v_separation = 4
 VSeparator/constants/separation = 4
 VSeparator/styles/separator = SubResource("StyleBoxLine_6hy42")
+WeaponsUIPanelType1/base_type = &"PanelContainer"
+WeaponsUIPanelType1/styles/panel = SubResource("StyleBoxFlat_weaponui_type1")
+WeaponsUIPanelType2/base_type = &"PanelContainer"
+WeaponsUIPanelType2/styles/panel = SubResource("StyleBoxFlat_weaponui_type2")

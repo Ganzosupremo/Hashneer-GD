@@ -3,8 +3,7 @@ class_name SkillTreeManager extends Control
 @export var main_event_bus: MainEventBus
 @export var music_details: MusicDetails
 
-@onready var MAIN_GAME_UI: PackedScene = load("res://Scenes/UI/MainGameUI.tscn")
-@onready var _level_selector_new: LevelSelectorMenu = $LevelSelectorNew
+@onready var _level_selector_new: LevelSelectorMenu = %LevelSelectorNew
 
 var _skill_nodes: Array = []
 

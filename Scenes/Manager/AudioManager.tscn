@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://b5kjj1t5jwafd"]
+[gd_scene load_steps=38 format=3 uid="uid://b5kjj1t5jwafd"]
 
 [ext_resource type="Script" uid="uid://b4iwf1flt845c" path="res://Scripts/Managers/AudioManager.gd" id="1_8c7ao"]
 [ext_resource type="AudioBusLayout" uid="uid://1ibwcs1mu46p" path="res://Resources/MainAudioBus.tres" id="2_q7udv"]
@@ -12,7 +12,6 @@
 [ext_resource type="Resource" uid="uid://daacsw3qy6nj" path="res://Resources/Audio/EnemyHurt.tres" id="10_m5beh"]
 [ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="11_wob84"]
 [ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/MouseClick.tres" id="12_tqt06"]
-[ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/MouseHover.tres" id="13_ktceg"]
 [ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/MouseRelease.tres" id="14_bn8qg"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="15_dv5xf"]
 [ext_resource type="Resource" uid="uid://bpxy328wu5cei" path="res://Resources/Audio/PlayerDeadSoundEffect.tres" id="16_2ixia"]
@@ -25,11 +24,54 @@
 [ext_resource type="Resource" uid="uid://bq7engmoexioi" path="res://Resources/Audio/UIVolumeSlidersTest.tres" id="24_n58yx"]
 [ext_resource type="Resource" uid="uid://dqp2hb7622nlf" path="res://Resources/Audio/BTCPickup.tres" id="25_vcblb"]
 [ext_resource type="Resource" uid="uid://dt13c8o08ow00" path="res://Resources/Audio/FiatPickup.tres" id="26_mu847"]
+[ext_resource type="Resource" uid="uid://cp124lnfs1ynx" path="res://Resources/Audio/LevelCompletedPopUpSound.tres" id="26_wob84"]
+[ext_resource type="Resource" uid="uid://cw4kt5qqxgd4h" path="res://Resources/Audio/LevelSelectorOpenSound.tres" id="27_tqt06"]
+[ext_resource type="Resource" uid="uid://74y37m07445d" path="res://Resources/Audio/LevelSelectorCloseSound.tres" id="28_ktceg"]
+[ext_resource type="Resource" uid="uid://cqfjjsm87ot82" path="res://Resources/Audio/NotificationPopupSound.tres" id="29_bn8qg"]
+[ext_resource type="Resource" uid="uid://doweeqvn837sv" path="res://Resources/Audio/LevelCompletedNegativeSoundT1.tres" id="30_bn8qg"]
+[ext_resource type="Resource" uid="uid://p437nmfqd85c" path="res://Resources/Audio/LevelCompletedNegativeT2.tres" id="31_dv5xf"]
+[ext_resource type="Resource" uid="uid://jddbuujqfqn5" path="res://Resources/Audio/LevelCompletedNegativeT3.tres" id="32_bn8qg"]
+[ext_resource type="AudioStream" uid="uid://gc4hmxms1lmm" path="res://Audio/Pop ups/menu-button-click-pop-up.mp3" id="33_dv5xf"]
+[ext_resource type="AudioStream" uid="uid://cu8iso63ljoy0" path="res://Audio/FracturableTerrain/Epic Anvil Impact.mp3" id="34_qxoid"]
+[ext_resource type="AudioStream" uid="uid://cfvibma2sxvdi" path="res://Audio/FracturableTerrain/Impact 02.mp3" id="35_davep"]
+
+[sub_resource type="Resource" id="Resource_2ixia"]
+script = ExtResource("3_mddlq")
+limit = 5
+sound_type = 33
+destination_audio_bus = 2
+sound_volume = 1.0
+audio_stream = ExtResource("33_dv5xf")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="Resource" id="Resource_mqklg"]
+script = ExtResource("3_mddlq")
+limit = 50
+sound_type = 34
+destination_audio_bus = 2
+sound_volume = -5.0
+audio_stream = ExtResource("34_qxoid")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
+
+[sub_resource type="Resource" id="Resource_8gatj"]
+script = ExtResource("3_mddlq")
+limit = 10
+sound_type = 35
+destination_audio_bus = 2
+sound_volume = 0.0
+audio_stream = ExtResource("35_davep")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [node name="AudioManager" type="Node2D"]
 script = ExtResource("1_8c7ao")
 main_game_mixer = ExtResource("2_q7udv")
-sound_effects = Array[ExtResource("3_mddlq")]([ExtResource("4_bilgx"), ExtResource("5_3ndka"), ExtResource("6_n58yx"), ExtResource("7_hx8td"), ExtResource("8_vcblb"), ExtResource("9_mu847"), ExtResource("10_m5beh"), ExtResource("23_3ndka"), ExtResource("11_wob84"), ExtResource("12_tqt06"), ExtResource("13_ktceg"), ExtResource("14_bn8qg"), ExtResource("15_dv5xf"), ExtResource("16_2ixia"), ExtResource("17_qxoid"), ExtResource("18_davep"), ExtResource("19_mqklg"), ExtResource("20_8gatj"), ExtResource("21_ajjf1"), ExtResource("24_n58yx"), ExtResource("25_vcblb"), ExtResource("26_mu847")])
+sound_effects = Array[ExtResource("3_mddlq")]([ExtResource("4_bilgx"), ExtResource("5_3ndka"), ExtResource("6_n58yx"), ExtResource("7_hx8td"), ExtResource("8_vcblb"), ExtResource("9_mu847"), ExtResource("10_m5beh"), ExtResource("23_3ndka"), ExtResource("11_wob84"), ExtResource("12_tqt06"), ExtResource("14_bn8qg"), ExtResource("15_dv5xf"), ExtResource("16_2ixia"), ExtResource("17_qxoid"), ExtResource("18_davep"), ExtResource("19_mqklg"), ExtResource("20_8gatj"), ExtResource("21_ajjf1"), ExtResource("24_n58yx"), ExtResource("25_vcblb"), ExtResource("26_mu847"), ExtResource("26_wob84"), ExtResource("27_tqt06"), ExtResource("28_ktceg"), ExtResource("29_bn8qg"), ExtResource("30_bn8qg"), ExtResource("31_dv5xf"), ExtResource("32_bn8qg"), SubResource("Resource_2ixia"), SubResource("Resource_mqklg"), SubResource("Resource_8gatj")])
 
 [node name="FirstAudioStream" type="AudioStreamPlayer" parent="."]
 bus = &"Music"

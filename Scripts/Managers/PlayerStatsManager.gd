@@ -8,9 +8,10 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 
 @export var progress_event_bus: PlayerProgressEventBus
 @export var weapon_details_dictionary: Dictionary = {
-	"AK47": preload("res://Resources/Weapons/Player/AK47.tres"),
-	"AWP Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
-	"Mini Uzi": preload("res://Resources/Weapons/Player/MiniUzis.tres"),
+	5: preload("res://Resources/Weapons/Player/AK47.tres"),
+	4: preload("res://Resources/Weapons/Player/AWPSniper.tres"),
+	3: preload("res://Resources/Weapons/Player/MiniUzis.tres"),
+	1: preload("res://Resources/Weapons/Player/Shotgun.tres"),
 }
 @export var ability_scenes_dictionary: Dictionary = {
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
@@ -95,8 +96,8 @@ func get_unlocked_ability(ability_id: Constants.AbilityNames) -> PackedScene:
 func get_unlocked_weapons() -> Dictionary:
 	return unlocked_weapons
 
-func get_weapon_details_from_dictionary(weapon_name: Constants.WeaponNames) -> WeaponDetails:
-	return weapon_details_dictionary.get(Utils.weapon_name_to_string(weapon_name), null)
+func get_weapon_details_from_dictionary(weapon_name: int) -> WeaponDetails:
+	return weapon_details_dictionary.get(weapon_name, null)
 
 ## Returns the final value of the given stat.
 func get_stat_final_value(stat_name: String) -> float:

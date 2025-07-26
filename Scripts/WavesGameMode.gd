@@ -7,9 +7,9 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @onready var _pool_cut_visualizer: PoolFracture = $PoolFractureCutVisualizer
 @onready var _pool_fracture_shards: PoolFracture = $PoolFractureShards
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-@onready var label: Label = $UI/Control/Label
-@onready var boss_progress_bar: ProgressBar = $UI/BossTimer/MarginContainer/BossProgressBar
-@onready var level_completed: LevelCompletedUI = $UI/LevelCompletedUI
+@onready var enemies_killed_label: Label = %EnemiesKilledLabel
+@onready var boss_progress_bar: ProgressBar = %BossProgressBar
+@onready var level_completed: LevelCompletedUI = %LevelCompletedUI
 
 @onready var random_drops_holder: Node2D = $RandomDropsHolder
 @onready var boss_spawner: RandomDrops = $BossSpawner
@@ -155,7 +155,7 @@ func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
 		if !natural_death:
 				kill_count += 1
 				current_wave_kills += 1
-				label.text = "Enemies Killed: {0}".format([kill_count])
+				enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
 				boss_progress_bar.value = kill_count
 
 				if kill_count >= level_args.kills_to_spawn_boss and !boss_spawned:

@@ -2,6 +2,7 @@ class_name WeaponStateUI extends Control
 
 @onready var weapon_texture: TextureRect = %WeaponTexture
 @onready var weapon_name: Label = %WeaponName
+@onready var weapon_slot: Label = %WeaponSlot
 @onready var player: PlayerController = %Player
 
 var _current_weapon: WeaponDetails = null
@@ -24,3 +25,4 @@ func _set_weapon_image(texture: Texture2D) -> void:
 
 func _set_weapon_name(weapon: WeaponDetails) -> void:
 	weapon_name.text = "{0}".format([weapon.weapon_name])
+	weapon_slot.text = "Slot {0}".format([weapon.weapon_id])

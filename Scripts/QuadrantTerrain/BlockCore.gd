@@ -43,15 +43,30 @@ func _set_random_texture_properties() -> void:
 		_polygon2d.texture_scale = Vector2(rand_scale, rand_scale)
 		_polygon2d.texture_rotation = _rng.randf_range(0.0, PI * 2.0)
 
-"""
-This method checks if the block core's health 
-has been reduced to zero before fracturing the core.
-"""
+
+## This method checks if the block core's health 
+## has been reduced to zero before fracturing the core.
 func fracture(cuts: int, min_area: float, bullet_damage: float, fracture_color: Color = Color.WHITE_SMOKE, instakill: bool = false, miner: String = "Player") -> void:
 	if take_damage(bullet_damage, instakill):
 		_fracture_all(self, cuts, min_area, fracture_color, miner)
 	else:
 		_make_cut_in_polygon(_shatter_visualizer, fracture_color)
+
+func take_damage(damage: float, instakill: bool = false) -> bool:
+	if instakill:
+		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.SFX)
+		health.take_damage(1.79769e308)
+		
+		return true
+	
+	health.take_damage(damage)
+	if health.get_current_health() <= 0.0:
+		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.SFX)
+		return true
+	
+	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_HIT, AudioManager.DestinationAudioBus.SFX)
+	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
+	return false
 
 # Store the cut info for progressive cuts
 var cut_info_storage: Array = []

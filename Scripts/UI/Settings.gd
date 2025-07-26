@@ -4,13 +4,17 @@ signal visibility_state_changed(visible: bool)
 
 @onready var resolutions: OptionButton = %Resolutions
 @onready var vsync: CheckButton = %Vsync
-@onready var fullscreen: CheckBox = %Fullscreen
+@onready var fullscreen: CheckButton = %Fullscreen
 
 @onready var master_slider: HSlider = %MasterSlider
 @onready var music_slider: HSlider = %MusicSlider
 @onready var sfx_slider: HSlider = %SFXSlider
 @onready var player_sfx_slider: HSlider = %PlayerSFXSlider
 @onready var weapons_sfx_slider: HSlider = %WeaponsSFXSlider
+
+@onready var _video_settings: VBoxContainer = %VideoSettings
+@onready var _audio_settings: VBoxContainer = %AudioSettings
+
 
 var vsync_mode: DisplayServer.VSyncMode = DisplayServer.VSYNC_ENABLED
 var loaded: bool = false
@@ -64,9 +68,11 @@ func _process(_delta: float) -> void:
 func toggle_visibility() -> void:
 	if visible:
 		hide()
+		AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_SELECTOR_CLOSE_SOUND, AudioManager.DestinationAudioBus.SFX)
 		visibility_state_changed.emit(visible)
 	else:
 		show()
+		AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_SELECTOR_OPEN_SOUND, AudioManager.DestinationAudioBus.SFX)
 		visibility_state_changed.emit(visible)
 
 func _enable_vsync(mode: DisplayServer.VSyncMode) -> void:
@@ -155,3 +161,16 @@ func load_data() -> void:
 	vsync.button_pressed = settings["vsync"] == DisplayServer.VSYNC_ENABLED
 	fullscreen.button_pressed = settings["fullscreen"]
 	loaded = true
+
+
+func _on_video_button_pressed() -> void:
+	_video_settings.show()
+	_audio_settings.hide()
+
+func _on_audio_button_pressed() -> void:
+	_audio_settings.show()
+	_video_settings.hide()
+
+
+func _on_close_button_pressed() -> void:
+	toggle_visibility()

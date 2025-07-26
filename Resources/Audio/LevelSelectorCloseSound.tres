@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://74y37m07445d"]
+
+[ext_resource type="AudioStream" uid="uid://c3p63bimxlfn5" path="res://Audio/Pop ups/Futuristic Pop Up 02 Close.mp3" id="1_rna0c"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_uuwia"]
+
+[resource]
+script = ExtResource("2_uuwia")
+limit = 5
+sound_type = 28
+destination_audio_bus = 2
+sound_volume = 1.0
+audio_stream = ExtResource("1_rna0c")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

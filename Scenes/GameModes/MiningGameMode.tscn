@@ -1,13 +1,6 @@
-[gd_scene load_steps=48 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=40 format=3 uid="uid://bocdjbhql8qcn"]
 
-[ext_resource type="Texture2D" uid="uid://bvg1rh32rsqon" path="res://Textures/BG/Icons.png" id="1_eny06"]
 [ext_resource type="Script" uid="uid://ctm8u4rgnfagt" path="res://Scripts/MiningGameMode.gd" id="1_wooh0"]
-[ext_resource type="Texture2D" uid="uid://dnkikaarda1ys" path="res://Textures/BG/59.png" id="2_uw255"]
-[ext_resource type="Texture2D" uid="uid://dsrmf30uwh3yi" path="res://Textures/BG/61.png" id="3_ln1n0"]
-[ext_resource type="Texture2D" uid="uid://efitljxqurtq" path="res://Textures/BG/63.png" id="4_bruy0"]
-[ext_resource type="Texture2D" uid="uid://br1idrhv3c18d" path="res://Textures/BG/62.png" id="5_loxqr"]
-[ext_resource type="Texture2D" uid="uid://dn3m5f146y7oh" path="res://Textures/BG/65.png" id="6_b2lec"]
-[ext_resource type="Texture2D" uid="uid://bml2cuy7wveqm" path="res://Textures/BG/64.png" id="7_8wdnv"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="8_f83gl"]
 [ext_resource type="Texture2D" uid="uid://cj3404vefme5r" path="res://Textures/Misc/Rombo.png" id="9_yuwqb"]
 [ext_resource type="Script" uid="uid://c7wtbkd6e6xjc" path="res://Scripts/Components/SpriteRotatorComponent.gd" id="10_ud3x8"]
@@ -26,9 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="24_thavx"]
 [ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="25_0mtbo"]
 [ext_resource type="Shader" uid="uid://br8d0l18imino" path="res://Shaders/MainGameBG.gdshader" id="26_2lin2"]
-[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="27_kmimo"]
-[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="28_d88vn"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="29_gc5eq"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="29_xxpkq"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="30_ixfvk"]
 [ext_resource type="PackedScene" uid="uid://dfrt5rf2fu817" path="res://Scenes/UI/time_left_ui.tscn" id="31_5ogkh"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="32_uj0eh"]
@@ -119,101 +111,117 @@ normal = Vector2(1, 0)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
 shader_parameter/iResolution = Vector2(1920, 1080)
-shader_parameter/Scroll = -0.013
-shader_parameter/Depth = 0.25
-shader_parameter/Rotation = -0.7854
-shader_parameter/Contrast = 0.295
-shader_parameter/NoiseSpeed = 0.08
-shader_parameter/PatternScale = 12.595
-shader_parameter/BackgroundColor = Color(0.25866, 0.298355, 0.653644, 1)
-shader_parameter/ForegroundColor = Color(0.105073, 1.92523e-07, 0.600586, 1)
+shader_parameter/Scroll = -0.008
+shader_parameter/Depth = 0.15
+shader_parameter/Rotation = -0.5
+shader_parameter/Contrast = 0.25
+shader_parameter/NoiseSpeed = 0.05
+shader_parameter/PatternScale = 8.0
+shader_parameter/BackgroundColor = Color(0.05, 0.05, 0.08, 1)
+shader_parameter/ForegroundColor = Color(1, 0.843, 0, 0.1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
-bg_color = Color(0.35706, 0.702053, 0.999999, 1)
+bg_color = Color(0.02, 0.02, 0.04, 0.95)
 
 [node name="MiningGameMode" type="Node2D"]
 script = ExtResource("1_wooh0")
 
 [node name="BGParallax" type="Node2D" parent="."]
 
-[node name="Parallax2D2" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(1920, 1080)
-autoscroll = Vector2(100, 0)
-repeat_times = 5
+[node name="BitcoinParallax1" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(2560, 1440)
+autoscroll = Vector2(15, 0)
+repeat_times = 3
 
-[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D2"]
-modulate = Color(1, 0.38, 0.92, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1559, 235)
-scale = Vector2(0.461111, 0.242593)
-texture = ExtResource("1_eny06")
+[node name="BitcoinSymbol1" type="ColorRect" parent="BGParallax/BitcoinParallax1"]
+modulate = Color(1, 0.843, 0, 0.08)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -300.0
+offset_right = 400.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.843, 0, 0.06)
 
-[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D2"]
-modulate = Color(0.39, 0.098, 0.91, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(785.55, 749.45)
-scale = Vector2(0.734167, 0.654537)
-texture = ExtResource("2_uw255")
+[node name="BitcoinSymbol2" type="ColorRect" parent="BGParallax/BitcoinParallax1"]
+modulate = Color(1, 0.843, 0, 0.04)
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 200.0
+offset_right = 200.0
+offset_bottom = 600.0
+grow_horizontal = 0
+color = Color(1, 0.843, 0, 0.04)
 
-[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D2"]
-modulate = Color(0, 0.172549, 0.360784, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1664, 808)
-scale = Vector2(0.337801, 0.202616)
-texture = ExtResource("3_ln1n0")
-
-[node name="Sprite2D4" type="Sprite2D" parent="BGParallax/Parallax2D2"]
-modulate = Color(1.05888e-06, 0.298219, 0.590412, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1134, 280)
-scale = Vector2(0.1689, 0.147222)
-texture = ExtResource("4_bruy0")
-
-[node name="Parallax2D3" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(1920, 1080)
-autoscroll = Vector2(200, -50)
-repeat_times = 5
-
-[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D3"]
-modulate = Color(0.207843, 0, 0.364706, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(414, 451)
-scale = Vector2(0.62963, 0.607407)
-texture = ExtResource("5_loxqr")
-
-[node name="Sprite2D2" type="Sprite2D" parent="BGParallax/Parallax2D3"]
-modulate = Color(0.121569, 0, 0.215686, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1104, 107)
-scale = Vector2(0.424074, 0.4)
-texture = ExtResource("2_uw255")
-
-[node name="Sprite2D3" type="Sprite2D" parent="BGParallax/Parallax2D3"]
-modulate = Color(0.0937322, 0.429325, 1, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1357, 984.5)
-scale = Vector2(0.185185, 0.176852)
-texture = ExtResource("6_b2lec")
-
-[node name="Parallax2D4" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(1920, 1080)
-autoscroll = Vector2(250, 100)
+[node name="BitcoinParallax2" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(3200, 1800)
+autoscroll = Vector2(-8, 5)
 repeat_times = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="BGParallax/Parallax2D4"]
-modulate = Color(0.125069, 0.47534, 0.644048, 1)
-light_mask = 2
-visibility_layer = 2
-position = Vector2(1591, 579)
-scale = Vector2(0.107407, 0.0944444)
-texture = ExtResource("7_8wdnv")
+[node name="HashPattern1" type="ColorRect" parent="BGParallax/BitcoinParallax2"]
+modulate = Color(0.05, 0.05, 0.08, 0.3)
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -150.0
+offset_right = 500.0
+offset_bottom = 150.0
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.08, 0.25)
+
+[node name="HashPattern2" type="ColorRect" parent="BGParallax/BitcoinParallax2"]
+modulate = Color(0.05, 0.05, 0.08, 0.2)
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -600.0
+offset_top = -200.0
+offset_right = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.08, 0.2)
+
+[node name="BitcoinParallax3" type="Parallax2D" parent="BGParallax"]
+repeat_size = Vector2(4000, 2000)
+autoscroll = Vector2(3, -10)
+
+[node name="NetworkNode1" type="ColorRect" parent="BGParallax/BitcoinParallax3"]
+modulate = Color(1, 0.843, 0, 0.12)
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 300.0
+offset_top = -800.0
+offset_right = 700.0
+offset_bottom = -400.0
+grow_vertical = 0
+color = Color(1, 0.843, 0, 0.1)
+
+[node name="NetworkNode2" type="ColorRect" parent="BGParallax/BitcoinParallax3"]
+modulate = Color(1, 0.843, 0, 0.06)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -600.0
+offset_right = -100.0
+offset_bottom = -200.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(1, 0.843, 0, 0.05)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("8_f83gl")
@@ -370,102 +378,105 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_i7u0u")
 
 [node name="GameUI" type="CanvasLayer" parent="."]
+layer = 75
+follow_viewport_scale = 2.0
 
-[node name="TerminateButtonContainer" type="Control" parent="GameUI"]
+[node name="UIContainer" type="Control" parent="GameUI"]
 layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 0
-grow_vertical = 0
-mouse_filter = 2
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="GameUI/TerminateButtonContainer"]
-custom_minimum_size = Vector2(200, 100)
+[node name="TopBar" type="Control" parent="GameUI/UIContainer"]
+custom_minimum_size = Vector2(0, 230)
 layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -200.0
-offset_top = -153.0
-grow_horizontal = 0
-grow_vertical = 0
-theme = ExtResource("27_kmimo")
+offset_bottom = 100.0
+grow_horizontal = 2
+mouse_filter = 1
 
-[node name="TerminateButton" parent="GameUI/TerminateButtonContainer/MarginContainer" instance=ExtResource("28_d88vn")]
-custom_minimum_size = Vector2(220, 70)
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/UIContainer/TopBar"]
+custom_minimum_size = Vector2(0, 230)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 240.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 10
+
+[node name="TopBarContainer" type="HBoxContainer" parent="GameUI/UIContainer/TopBar/MarginContainer"]
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
-theme_type_variation = &"ThirtiaryButton"
-text = "Terminate Session"
-autowrap_mode = 3
-tween_time = 0.5
-tween_transition = 3
-tween_position = Vector2(-20, 0)
-enter_time = 0.6
-enter_transition = 10
+theme_override_constants/separation = 30
 
-[node name="HealthUI" type="Control" parent="GameUI"]
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="GameUI/HealthUI"]
+[node name="LeftSection" type="VBoxContainer" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer"]
 custom_minimum_size = Vector2(160, 210)
-layout_mode = 1
-offset_right = 165.0
-offset_bottom = 215.0
-theme = ExtResource("27_kmimo")
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
-
-[node name="HealthBar" parent="GameUI/HealthUI/MarginContainer" instance=ExtResource("29_gc5eq")]
 layout_mode = 2
-size_flags_vertical = 10
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
 
-[node name="WeaponUI" type="Control" parent="GameUI"]
-layout_mode = 3
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-mouse_filter = 2
-
-[node name="Margin" type="MarginContainer" parent="GameUI/WeaponUI"]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_vertical = 0
-size_flags_horizontal = 6
-size_flags_vertical = 6
-theme = ExtResource("27_kmimo")
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_bottom = 15
-
-[node name="WeaponUI" parent="GameUI/WeaponUI/Margin" instance=ExtResource("30_ixfvk")]
+[node name="HealthBar" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer/LeftSection" instance=ExtResource("29_gc5eq")]
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="CenterSection" type="VBoxContainer" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="TimeLeftUI" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer/CenterSection" instance=ExtResource("31_5ogkh")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="RightSection" type="VBoxContainer" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Terminate" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection" instance=ExtResource("29_xxpkq")]
+custom_minimum_size = Vector2(180, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 2
+text = "End Run"
+
+[node name="LeftSidebar" type="Control" parent="GameUI/UIContainer"]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="GameUI/UIContainer/LeftSidebar"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 350.0
+grow_vertical = 2
+theme_override_constants/margin_left = 13
+theme_override_constants/margin_right = 0
+
+[node name="WeaponUI" parent="GameUI/UIContainer/LeftSidebar/MarginContainer" instance=ExtResource("30_ixfvk")]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="TimeLeftUI" parent="GameUI" instance=ExtResource("31_5ogkh")]
-unique_name_in_owner = true
-offset_top = 8.0
-offset_bottom = 8.0
-
 [node name="LevelFinisedUI" parent="GameUI" instance=ExtResource("32_uj0eh")]
+unique_name_in_owner = true
 visible = false
 size_flags_horizontal = 6
 size_flags_vertical = 6
 
 [connection signal="body_entered" from="Center" to="Player" method="_on_center_body_entered"]
-[connection signal="pressed" from="GameUI/TerminateButtonContainer/MarginContainer/TerminateButton" to="." method="_on_terminate_button_pressed"]
+[connection signal="pressed" from="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/Terminate" to="." method="_on_terminate_button_pressed"]

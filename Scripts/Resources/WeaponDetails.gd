@@ -61,6 +61,7 @@ class_name WeaponDetails extends Resource
 
 
 var _upgrade_modifiers: Dictionary = {}  # Dictionary to hold upgrade modifiers for the weapon
+var weapon_id: int = 0
 
 ## Returns a random spread value between minus and plus defined  spread
 func get_random_spread() -> float:

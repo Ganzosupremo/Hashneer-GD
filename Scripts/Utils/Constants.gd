@@ -34,7 +34,7 @@ enum ShakeMagnitude {
 }
 
 enum WeaponNames {
-	NONE,
+	NONE = -1,
 	PISTOL,
 	SHOTGUN,
 	RIFLE,

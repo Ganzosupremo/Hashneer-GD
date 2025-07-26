@@ -1,21 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bjsnsabkmnmts"]
+[gd_scene load_steps=4 format=3 uid="uid://bjsnsabkmnmts"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_85mv8"]
 [ext_resource type="Script" uid="uid://c0bno15bnax2n" path="res://Scripts/UI/weapon_ui.gd" id="1_yet40"]
-[ext_resource type="LabelSettings" uid="uid://gtpuo32u1erv" path="res://Resources/MainLabelSettings.tres" id="3_bwso0"]
-[ext_resource type="Texture2D" uid="uid://cv2oe3wf86pff" path="res://Textures/UI/Panels/PanelBackground.png" id="3_w784i"]
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_w784i"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l5p5u"]
-texture = ExtResource("3_w784i")
-texture_margin_left = 15.0
-texture_margin_top = 15.0
-texture_margin_right = 15.0
-texture_margin_bottom = 15.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-
 [node name="WeaponUI" type="Control"]
+custom_minimum_size = Vector2(330, 170)
 layout_mode = 3
 anchors_preset = 2
 anchor_top = 1.0
@@ -24,50 +14,63 @@ grow_vertical = 0
 mouse_filter = 1
 script = ExtResource("1_yet40")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="WeaponContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
-offset_top = -150.0
-offset_right = 300.0
-offset_bottom = -21.0
+offset_top = -160.0
+offset_right = 320.0
+offset_bottom = -20.0
 grow_vertical = 0
-theme = ExtResource("1_85mv8")
-theme_override_constants/separation = 5
+theme_override_constants/separation = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
-clip_contents = true
-custom_minimum_size = Vector2(200, 100)
+[node name="WeaponPanel" type="PanelContainer" parent="WeaponContainer"]
+custom_minimum_size = Vector2(250, 120)
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("1_85mv8")
-theme_override_styles/panel = SubResource("StyleBoxTexture_l5p5u")
+theme_type_variation = &"WeaponsUIPanelType1"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="WeaponContainer/WeaponPanel"]
 layout_mode = 2
-theme = ExtResource("1_85mv8")
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 15
 
-[node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="WeaponContainer/WeaponPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="WeaponTexture" type="TextureRect" parent="WeaponContainer/WeaponPanel/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 40)
+custom_minimum_size = Vector2(80, 50)
 layout_mode = 2
 texture = ExtResource("4_w784i")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="WeaponName" type="Label" parent="VBoxContainer"]
+[node name="WeaponInfo" type="VBoxContainer" parent="WeaponContainer/WeaponPanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 5
+alignment = 1
+
+[node name="WeaponName" type="Label" parent="WeaponContainer/WeaponPanel/MarginContainer/HBoxContainer/WeaponInfo"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 20)
+custom_minimum_size = Vector2(160, 20)
 layout_mode = 2
 theme = ExtResource("1_85mv8")
-theme_override_font_sizes/font_size = 38
-text = "(1) NULL"
-label_settings = ExtResource("3_bwso0")
+theme_type_variation = &"NormalText"
+text = "AWP SNIPER"
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="WeaponSlot" type="Label" parent="WeaponContainer/WeaponPanel/MarginContainer/HBoxContainer/WeaponInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_85mv8")
+theme_type_variation = &"TooltipLabel"
+text = "SLOT 1"
+horizontal_alignment = 1
