@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=57 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -19,6 +19,7 @@
 [ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Stats/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="9_hobie"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
+[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="10_oevro"]
 [ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Stats/PlayerDamageUpgrade.tres" id="11_6em56"]
 [ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Weapons/SniperUnlock.tres" id="13_a2onp"]
 [ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="15_hsn28"]
@@ -184,14 +185,13 @@ mouse_filter = 2
 
 [node name="FrontLayer" type="CanvasLayer" parent="."]
 
+[node name="SkillTreeTabs" parent="FrontLayer" instance=ExtResource("10_oevro")]
+
 [node name="CurrencyUI" parent="FrontLayer" instance=ExtResource("10_b4lxo")]
-anchors_preset = 0
-anchor_right = 0.0
 offset_left = 14.0
-offset_top = 18.0
-offset_right = 314.0
-offset_bottom = 78.0
-grow_horizontal = 1
+offset_top = 73.0
+offset_right = 214.0
+offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 

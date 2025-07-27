@@ -127,7 +127,8 @@ func set_id(id:int = 0) -> void:
 
 func _buy_with_bitcoin() -> bool:
 	if BitcoinWallet.spend_bitcoin(upgrade_cost(Constants.CurrencyType.BITCOIN)):
-		upgrade_level = min(upgrade_level+1, upgrade_max_level)
+		# It should increase the level only one time per purchase, but may leave as a feature
+		# upgrade_level = min(upgrade_level+1, upgrade_max_level)
 		return true
 	else:
 		return false
