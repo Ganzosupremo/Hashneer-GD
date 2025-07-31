@@ -119,8 +119,12 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 #endregion
 
 func _unlock_saved_abilities() -> void:
-	for ability_id in PlayerStatsManager.get_unlocked_abilities().keys():
-		var ability: BaseAbility = PlayerStatsManager.get_unlocked_ability(ability_id).instantiate()
+	for ability_label in PlayerStatsManager.get_unlocked_abilities().keys():
+		var ability_scene: PackedScene = PlayerStatsManager.get_unlocked_abilities().get(ability_label, null)
+		if ability_scene == null:
+			DebugLogger.error("Ability with label '%s' not found in unlocked abilities." % ability_label)
+			continue
+		var ability: BaseAbility = ability_scene.instantiate()
 		add_child(ability)
 		abilities.append(ability)
 		ability.enable()

@@ -1,7 +1,5 @@
 extends Control
 
-@onready var main_game: PackedScene = preload("res://Scenes/SkillTreeSystem/SkillTree.tscn")
-@onready var main_menu: String = "res://Scenes/UI/MainMenu.tscn"
 @onready var network_layer: ColorRect = $Background/NetworkLayer
 
 @onready var slot_button_1: Button = %SlotButton1
@@ -52,7 +50,7 @@ func _on_slot_button_3_pressed() -> void:
 	_load_save_file(save_text3)
 
 func _on_back_button_pressed() -> void:
-	SceneManager.switch_scene(main_menu)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.MAIN_MENU)
 
 func _load_save_file(file_name: String) -> void:
 	SaveSystem.var_file_name = file_name
@@ -60,7 +58,7 @@ func _load_save_file(file_name: String) -> void:
 		PersistenceDataManager.load_game(true)
 	else:
 		PersistenceDataManager.save_game(true)
-	go_to_menu()
+	_navigate_to_skill_tree_scene()
 
-func go_to_menu():
-	SceneManager.switch_scene_with_packed(main_game)
+func _navigate_to_skill_tree_scene():
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)

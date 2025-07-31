@@ -95,7 +95,6 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 	
 	if chain.size() == 0:
 		block.previous_hash = block.block_hash
-		block.data = TEN
 	else:
 		block.previous_hash = get_latest_block().block_hash
 	
@@ -205,6 +204,10 @@ func get_bitcoins_spent() -> float:
 ## Gets the current block subsidy.
 func get_block_subsidy() -> float:
 	return current_block_subsidy
+
+## Returns the total coins lost in the game.
+func get_coins_lost() -> float:
+	return coins_lost
 
 #endregion
 
@@ -322,6 +325,3 @@ func load_data():
 	coins_spent = data["coins_spent"]
 	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
 	_loaded = true
-
-
-const TEN: String = "The Times: Chancellor on Brink of Second Bailout for Banks."

@@ -1,4 +1,12 @@
 class_name Utils extends Node
+## Utility functions for the game.
+## 
+## This class provides various utility functions for the game, including:
+## - Converting enums to strings and vice versa
+## - Formatting currency
+## - Creating resource instances from dictionaries
+## - Copying properties between nodes
+## - Handling player stats and abilities
 
 static func build_res_from_dictionary(data: Dictionary, type: Resource) -> Resource:
 	var res = type
@@ -46,7 +54,6 @@ static func copy_properties(parent: Node, child: Node) -> void:
 		var parent_properties = parent.call("get_properties")
 		child.call("set_properties", parent_properties)
 
-## Converts an enum value to its string name.
 static func _enum_name(enum_dict: Dictionary, value: int) -> String:
 	var values = enum_dict.values()
 	var idx = values.find(value)
@@ -62,19 +69,27 @@ static func enum_label(enum_dict: Dictionary, value: int) -> String:
 			parts[i] = parts[i].capitalize()
 	return " ".join(parts)
 
-## Converts the [param Constants.WeaponNames] enum to a string.
+## Converts a formatted enum label back to its enum value
+## This is the reverse of [method Utils.enum_label()]
+static func label_to_enum(label: String, enum_dict: Dictionary) -> int:
+	for enum_key in enum_dict.keys():
+		if Utils.enum_label(enum_dict, enum_dict[enum_key]) == label:
+			return enum_dict[enum_key]
+	return -1
+
+## Converts the [param Constants.WeaponNames] enum to a string.[br]
 ## This is useful for displaying the weapon name in the UI or for debugging purposes.
-## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
+## It uses the [method enum_label] function to get a user-friendly string representation of the enum value.[br]
 #### Example:
-## ```gdscript
+## [codeblock]
 ## var weapon_name: String = Utils.weapon_name_to_string(Constants.WeaponNames.RIFLE)
 ## print(weapon_name) # Output: "Rifle"
-## ```
-## @param weapon_name The [enum Constants.WeaponNames] enum value to convert.
-## @return A user-friendly string representation of the weapon name.
-## @see Utils.enum_label
-## @see Constants.WeaponNames
-## @see Constants.WeaponNames.RIFLE
+## [/codeblock]
+## [param weapon_name]: The [enum Constants.WeaponNames] enum value to convert.
+## [return]: A user-friendly string representation of the weapon name.[br]
+## See [method enum_label].
+## See: [Constants.WeaponNames].
+## See: [Constants.WeaponNames.RIFLE].[br]
 ## Returns the raw enum name for a given enum value.
 static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 	return enum_label(Constants.WeaponNames, weapon_name)
@@ -112,36 +127,36 @@ static func weapon_name_to_string(weapon_name: Constants.WeaponNames) -> String:
 # 	return Constants.WeaponNames.NONE
 
 
-## Converts the [param Constants.AbilityNames] enum to a string.
+## Converts the [enum Constants.AbilityNames] enum to a string.[br]
 ## This is useful for displaying the ability name in the UI or for debugging purposes.
-## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
-#### Example:
-## ```gdscript
+## It uses the [method enum_label] function to get a user-friendly string representation of the enum value.[br]
+#### Example:[br]
+## [codeblock]
 ## var ability_name: String = Utils.ability_name_to_string(Constants.AbilityNames.MAGNET)
 ## print(ability_name) # Output: "Magnet"
-## ```
-## @param ability_name The [enum Constants.AbilityNames] enum value to convert.
-## @return A user-friendly string representation of the ability name.
-## @see Utils.enum_label
-## @see Constants.AbilityNames
-## @see Constants.AbilityNames.MAGNET
-static func ability_name_to_string(ability_name: Constants.AbilityNames) -> String:
+## [/codeblock]
+## [param ability_name]: The [enum Constants.AbilityNames] enum value to convert.
+## Return A user-friendly string representation of the ability name.
+## See: [method enum_label].
+## See: [Constants.AbilityNames].
+## See: [Constants.AbilityNames.MAGNET].
+static func ability_name_to_string(ability_name: int) -> String:
 	return enum_label(Constants.AbilityNames, ability_name)
 
 
-## Converts the [param UpgradeData.StatType] enum to a string.
+## Converts the [enum UpgradeData.StatType] enum to a string.
 ## This is useful for displaying the stat type in the UI or for debugging purposes.
-## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.
+## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.[br]
 #### Example:
-## ```gdscript
+## [codeblock]
 ## var stat_type_name: String = Utils.player_stat_type_to_string(UpgradeData.StatType.HEALTH)
 ## print(stat_type_name) # Output: "Health"
-## ```
-## @param stat_type The [enum UpgradeData.StatType] enum value to convert.
-## @return A user-friendly string representation of the stat type.
-## @see Utils.enum_label
-## @see UpgradeData.StatType
-## @see UpgradeData.StatType.HEALTH
+## [/codeblock]
+## [param stat_type]: The [enum UpgradeData.StatType] enum value to convert.[br]
+## Return A user-friendly string representation of the stat type.[br]
+## See [method enum_label].
+## See [enum UpgradeData.StatType].
+## See [enum UpgradeData.StatType.HEALTH].
 static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
 	return enum_label(UpgradeData.StatType, stat_type)
 
@@ -154,7 +169,8 @@ static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 		_: return SkillNode.NodeState.UNKNOWN
 
 
-## @deprecated Use [func Utils.enum_label] instead.
+## @deprecated: Use [method enum_label] instead.
+## Converts an enum value to its string name.
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():
 			if enum_type[key] == _enum:

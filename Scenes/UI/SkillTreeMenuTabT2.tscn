@@ -1,16 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvxpgjo6dvqlg"]
+[gd_scene load_steps=4 format=3 uid="uid://dh0mn2jqldeiy"]
 
-[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_hhc8l"]
-[ext_resource type="Script" uid="uid://dm40gr11g3pq8" path="res://Scripts/UI/SkillTreeMenuTabs.gd" id="1_pogln"]
-[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="2_mmo2s"]
+[ext_resource type="Script" uid="uid://0ynsod7q01rv" path="res://Scripts/UI/SkillTreeMenuTabsT2.gd" id="1_eo70j"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_wfsd3"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_jmrsd"]
 
-[node name="SkillTreeTabs" type="Control"]
+[node name="SkillTreeTabsT2" type="Control"]
 custom_minimum_size = Vector2(0, 70)
 layout_mode = 3
-anchors_preset = 10
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-script = ExtResource("1_pogln")
+grow_vertical = 0
+script = ExtResource("1_eo70j")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 custom_minimum_size = Vector2(0, 70)
@@ -19,7 +22,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 4.0
 grow_horizontal = 2
-theme = ExtResource("1_hhc8l")
+theme = ExtResource("2_wfsd3")
 theme_type_variation = &"CurrencyUIMain"
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
@@ -33,17 +36,17 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 30
 
-[node name="SkillTreeButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_mmo2s")]
+[node name="SkillTreeButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("3_jmrsd")]
 custom_minimum_size = Vector2(250, 40)
 layout_mode = 2
 text = "Skill Tree"
 
-[node name="ArmoryButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_mmo2s")]
+[node name="ArmoryButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("3_jmrsd")]
 custom_minimum_size = Vector2(250, 40)
 layout_mode = 2
 text = "Armory"
 
-[node name="VisualizerButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_mmo2s")]
+[node name="VisualizerButton" parent="PanelContainer/MarginContainer/HBoxContainer" instance=ExtResource("3_jmrsd")]
 custom_minimum_size = Vector2(250, 40)
 layout_mode = 2
 text = "Network Visualizer"

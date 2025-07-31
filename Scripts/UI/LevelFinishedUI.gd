@@ -7,8 +7,6 @@ class_name LevelCompletedUI extends Control
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
 
-@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
-
 var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
 
@@ -42,7 +40,7 @@ func _open() -> void:
 	fiat_gained_label.animate_label(0.15)
 	
 func _on_menu_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(skill_tree_scene)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)
 
 func save():
 	PersistenceDataManager.save_game()

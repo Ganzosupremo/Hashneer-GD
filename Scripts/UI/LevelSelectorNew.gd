@@ -1,8 +1,5 @@
 class_name LevelSelectorMenu extends Control
 
-@export var scene_to_load: PackedScene
-@export var waves_game_mode: PackedScene
-
 @onready var level_name: Label = %LevelName
 
 @onready var previous_level_button: CustomButton = %PreviousLevelButton
@@ -59,11 +56,11 @@ func _update_level_info() -> void:
 	_update_button_states()
 
 func _on_enter_game_pressed() -> void:
-	SceneManager.switch_scene_with_packed(scene_to_load)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.MINING_GAME_MODE)
 
 func _on_exit_button_pressed() -> void:
 	self.hide()
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_SELECTOR_CLOSE_SOUND, AudioManager.DestinationAudioBus.SFX)
 
 func _on_waves_game_mode_pressed() -> void:
-	SceneManager.switch_scene_with_packed(waves_game_mode)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.UNLIMITED_WAVES_GAME_MODE)

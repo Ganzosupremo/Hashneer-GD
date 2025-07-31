@@ -31,6 +31,7 @@ buses/default_bus_layout="res://Resources/MainAudioBus.tres"
 
 [autoload]
 
+UserSettings="*res://Scripts/Managers/UserSettings.gd"
 SaveSystem="*res://addons/save_system/save_system.gd"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"
 GameManager="*res://Scenes/Manager/GameManager.tscn"

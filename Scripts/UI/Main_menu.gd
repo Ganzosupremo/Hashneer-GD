@@ -1,6 +1,5 @@
 extends Control
 
-@onready var save_slots_selector_packed: PackedScene = preload("res://Scenes/UI/SaveSlotsSelector.tscn")
 @onready var start_game: Button = %StartGame
 @onready var quit_game: Button = %QuitGame
 @onready var network_layer: ColorRect = $Background/NetworkLayer
@@ -24,7 +23,7 @@ func _on_animation_timer_timeout() -> void:
 		network_layer.material.set_shader_parameter("time", time_passed)
 
 func _on_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(save_slots_selector_packed)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SAVE_SLOTS_SELECTOR)
 
 func _on_quit_game_button_pressed() -> void:
 	get_tree().root.propagate_notification(NOTIFICATION_WM_CLOSE_REQUEST)

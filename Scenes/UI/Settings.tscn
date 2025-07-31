@@ -159,6 +159,42 @@ theme_type_variation = &"SettingsModernOptionButton"
 theme_override_font_sizes/font_size = 20
 alignment = 1
 
+[node name="WindowModeContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Label" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/WindowModeContainer" instance=ExtResource("2_6s6fx")]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Mode:"
+horizontal_alignment = 2
+
+[node name="WindowModes" type="OptionButton" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/WindowModeContainer"]
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_neighbor_left = NodePath("../../../../../../Sidebar/VideoButton")
+focus_neighbor_top = NodePath("../../../../../../Sidebar/AudioButton")
+focus_neighbor_right = NodePath("../../../../../../Sidebar/AudioButton")
+focus_neighbor_bottom = NodePath("../../VSyncContainer/Vsync")
+focus_next = NodePath("../../VSyncContainer/Vsync")
+focus_previous = NodePath("../../../../../../Sidebar/CloseButton")
+theme = ExtResource("1_i76vb")
+theme_type_variation = &"SettingsModernOptionButton"
+theme_override_font_sizes/font_size = 20
+alignment = 1
+selected = 0
+item_count = 4
+popup/item_0/text = "Windowed"
+popup/item_0/id = 0
+popup/item_1/text = "Fullscreen"
+popup/item_1/id = 1
+popup/item_2/text = "Exclusive Fullscreen"
+popup/item_2/id = 2
+popup/item_3/text = "Window Borderless"
+popup/item_3/id = 3
+
 [node name="VSyncContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid"]
 layout_mode = 2
 theme_override_constants/separation = 30
@@ -340,6 +376,10 @@ ticks_on_borders = true
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/VideoButton" to="." method="_on_video_button_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/AudioButton" to="." method="_on_audio_button_pressed"]
 [connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Sidebar/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/ResolutionContainer/Resolutions" to="." method="_on_resolution_selected"]
+[connection signal="item_selected" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/WindowModeContainer/WindowModes" to="." method="_on_window_modes_item_selected"]
+[connection signal="toggled" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/VSyncContainer/Vsync" to="." method="_on_vsync_toggled"]
+[connection signal="toggled" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/VideoSettings/SettingsGrid/FullscreenContainer/Fullscreen" to="." method="_on_fullscreen_toggled"]
 [connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MasterContainer/MasterSlider" to="." method="_on_master_slider_value_changed"]
 [connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/MusicContainer/MusicSlider" to="." method="_on_music_slider_value_changed"]
 [connection signal="value_changed" from="MainContainer/MarginContainer/HBoxContainer/ContentArea/MarginContainer/AudioSettings/SettingsGrid/SFXContainer/SFXSlider" to="." method="_on_sfx_slider_value_changed"]
