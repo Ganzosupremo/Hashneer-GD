@@ -1,10 +1,114 @@
-[gd_resource type="Theme" load_steps=153 format=3 uid="uid://dylriqvd0gggf"]
+[gd_resource type="Theme" load_steps=161 format=3 uid="uid://dylriqvd0gggf"]
 
 [ext_resource type="Texture2D" uid="uid://2aiakkdqdvcr" path="res://Textures/UI/Buttons/SkillNodeButtonTexture.png" id="4_2qa8s"]
 [ext_resource type="Texture2D" uid="uid://vn0pfisbqui4" path="res://Textures/UI/Buttons/MainButtonsHasheneer.png" id="5_sb2cu"]
 [ext_resource type="Texture2D" uid="uid://sos620ijd2ti" path="res://Textures/UI/Slider_Hashneer_Button.png" id="6_x3w2l"]
 [ext_resource type="Texture2D" uid="uid://dcvqxv14ofaqb" path="res://Textures/UI/Panels/HasheneerUIBanner.png" id="8_k0jwi"]
 [ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="8_sb2cu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_armory_ammo"]
+bg_color = Color(0.4, 0.2, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.5, 0.2, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.8, 0.5, 0.2, 0.3)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_armory_price"]
+bg_color = Color(0.1, 0.4, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.8, 0.2, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.2, 0.8, 0.2, 0.3)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_button_disabled"]
+bg_color = Color(0.02, 0.02, 0.04, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.3, 0.3, 0.5)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_button_focus"]
+bg_color = Color(0.05, 0.05, 0.08, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_button_hover"]
+bg_color = Color(0.1, 0.1, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(1, 0.843, 0, 0.4)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_button_normal"]
+bg_color = Color(0.05, 0.05, 0.08, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_button_pressed"]
+bg_color = Color(1, 0.843, 0, 0.2)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_armory_upgrade"]
+bg_color = Color(0.02, 0.02, 0.05, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(1, 0.843, 0, 0.25)
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_boss_progress_bg"]
 bg_color = Color(0.03, 0.03, 0.06, 0.8)
@@ -1085,6 +1189,18 @@ shadow_size = 4
 [resource]
 default_font = ExtResource("8_sb2cu")
 default_font_size = 22
+ArmoryAmmoPanel/base_type = &"PanelContainer"
+ArmoryAmmoPanel/styles/panel = SubResource("StyleBoxFlat_armory_ammo")
+ArmoryPricePanel/base_type = &"PanelContainer"
+ArmoryPricePanel/styles/panel = SubResource("StyleBoxFlat_armory_price")
+ArmoryUpgradeButton/base_type = &"Button"
+ArmoryUpgradeButton/styles/disabled = SubResource("StyleBoxFlat_upgrade_button_disabled")
+ArmoryUpgradeButton/styles/focus = SubResource("StyleBoxFlat_upgrade_button_focus")
+ArmoryUpgradeButton/styles/hover = SubResource("StyleBoxFlat_upgrade_button_hover")
+ArmoryUpgradeButton/styles/normal = SubResource("StyleBoxFlat_upgrade_button_normal")
+ArmoryUpgradeButton/styles/pressed = SubResource("StyleBoxFlat_upgrade_button_pressed")
+ArmoryUpgradePanel/base_type = &"PanelContainer"
+ArmoryUpgradePanel/styles/panel = SubResource("StyleBoxFlat_armory_upgrade")
 BossProgressBar/base_type = &"ProgressBar"
 BossProgressBar/colors/font_color = Color(1, 1, 1, 1)
 BossProgressBar/colors/font_outline_color = Color(0, 0, 0, 1)

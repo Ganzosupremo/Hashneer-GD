@@ -1,0 +1,78 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4hiwhyxwtoxl"]
+
+[ext_resource type="Script" uid="uid://bdihq03oo38um" path="res://Scripts/UI/UpgradeTemplateUI.gd" id="1_7ou1a"]
+
+[node name="UpgradeTemplateUI" type="PanelContainer"]
+theme_type_variation = &"ArmoryUpgradePanel"
+script = ExtResource("1_7ou1a")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="MarginContainer/VBoxContainer/UpgradeHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "💥 Damage Boost"
+
+[node name="UpgradeLevel" type="Label" parent="MarginContainer/VBoxContainer/UpgradeHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.1"
+
+[node name="UpgradeDescription" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "+15 base damage output"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="MarginContainer/VBoxContainer/UpgradeActionContainer"]
+custom_minimum_size = Vector2(65, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Buy"
+
+[node name="PriceContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "$1,250"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel" type="Label" parent="MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "0.025₿"
+horizontal_alignment = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/UpgradeActionContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]

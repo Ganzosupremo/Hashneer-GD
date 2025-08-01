@@ -7,6 +7,7 @@ enum MainScenes {
 	MAIN_MENU,
 	SAVE_SLOTS_SELECTOR,
 	SKILL_TREE,
+	ARMORY,
 	NETWORK_VISUALIZER,
 	MINING_GAME_MODE,
 	UNLIMITED_WAVES_GAME_MODE
@@ -21,6 +22,7 @@ var main_scenes: Dictionary = {
 	MainScenes.MAIN_MENU: preload("res://Scenes/UI/MainMenu.tscn"),
 	MainScenes.SAVE_SLOTS_SELECTOR: preload("res://Scenes/UI/SaveSlotsSelector.tscn"),
 	MainScenes.SKILL_TREE: preload("res://Scenes/SkillTreeSystem/SkillTree.tscn"),
+	MainScenes.ARMORY: preload("res://Scenes/UI/ArmoryUI.tscn"),
 	MainScenes.NETWORK_VISUALIZER: preload("res://Scenes/Miscelaneous/NetworkVisualizer.tscn"),
 	MainScenes.MINING_GAME_MODE: preload("res://Scenes/GameModes/MiningGameMode.tscn"),
 	MainScenes.UNLIMITED_WAVES_GAME_MODE: preload("res://Scenes/GameModes/UnlimitedWavesGameMode.tscn")

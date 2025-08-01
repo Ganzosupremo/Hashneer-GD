@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ckaogc2m7rh7k"]
+[gd_scene load_steps=10 format=3 uid="uid://ckaogc2m7rh7k"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_tapuc"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_b0nvn"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_ocbj5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="5_75p2d"]
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
+[ext_resource type="PackedScene" uid="uid://b4hiwhyxwtoxl" path="res://Scenes/UI/UpgradeTemplateUI.tscn" id="6_b0nvn"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_etrns"]
 atlas = ExtResource("3_y8qb1")
@@ -44,6 +45,8 @@ theme_override_constants/separation = 15
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 5
 theme_override_constants/margin_right = 0
@@ -51,17 +54,19 @@ theme_override_constants/margin_bottom = 5
 
 [node name="Header" type="Label" parent="VBoxContainer/MarginContainer"]
 layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Armory"
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 48
+text = "🔫 Bitcoin Armory"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(1152, 470)
 layout_mode = 2
-size_flags_vertical = 3
+size_flags_horizontal = 4
+size_flags_vertical = 4
 theme = ExtResource("1_tapuc")
-theme_override_constants/separation = 0
+theme_override_constants/separation = 20
 
 [node name="LeftBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(200, 0)
@@ -97,8 +102,50 @@ item_2/icon = ExtResource("4_ocbj5")
 item_3/text = "AK-47"
 item_3/icon = SubResource("AtlasTexture_k3mi3")
 
+[node name="WalletSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/LeftBar"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="WalletTitle" type="Label" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 20
+text = "💰 Wallet"
+horizontal_alignment = 1
+
+[node name="WalletContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection"]
+layout_mode = 2
+theme_type_variation = &"ArmoryPricePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection/WalletContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection/WalletContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="FiatBalanceLabel" type="Label" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection/WalletContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Fiat: $10,450"
+horizontal_alignment = 1
+
+[node name="BitcoinBalanceLabel" type="Label" parent="VBoxContainer/HBoxContainer/LeftBar/WalletSection/WalletContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Bitcoin: 0.2487₿"
+horizontal_alignment = 1
+
 [node name="CentralBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(600, 0)
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("1_tapuc")
@@ -137,13 +184,15 @@ text = "Weapon Name"
 [node name="StatsTitle" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "Weapon Stats:"
+theme_override_font_sizes/font_size = 28
+text = "📊 Weapon Statistics"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="WeaponStats" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 6
+theme_type_variation = &"WeaponsUIPanelType1"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats"]
 layout_mode = 2
@@ -157,23 +206,30 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource("1_tapuc")
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 10
 columns = 2
 
 [node name="FireRateCont" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
 layout_mode = 2
-tooltip_text = "Fire rate is calculated as bullet per second.
+tooltip_text = "Fire rate is calculated as bullets per second.
 So a value of 4 means four bullets per second."
 theme_type_variation = &"WeaponsUIPanelType2"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/FireRateCont"]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
 
 [node name="FireRateLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/FireRateCont/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_tapuc")
 theme_type_variation = &"SkillNodeLabel"
-text = "Fire Rate: 4"
+theme_override_font_sizes/font_size = 16
+text = "⚡ Fire Rate: 4.0/s"
 
 [node name="DamageMulCon" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
 layout_mode = 2
@@ -181,13 +237,18 @@ theme_type_variation = &"WeaponsUIPanelType2"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/DamageMulCon"]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
 
 [node name="DamageMultiplierLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/DamageMulCon/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_tapuc")
 theme_type_variation = &"SkillNodeLabel"
-text = "Damage Multiplier: 1.0"
+theme_override_font_sizes/font_size = 16
+text = "💥 Damage: 1.0x"
 
 [node name="SpreadCon" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
 layout_mode = 2
@@ -195,13 +256,37 @@ theme_type_variation = &"WeaponsUIPanelType2"
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/SpreadCon"]
 layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
 
 [node name="SpreadLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/SpreadCon/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_tapuc")
 theme_type_variation = &"SkillNodeLabel"
-text = "Spread: 0.35"
+theme_override_font_sizes/font_size = 16
+text = "🎯 Spread: 0.35°"
+
+[node name="RangeCon" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_type_variation = &"WeaponsUIPanelType2"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/RangeCon"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 6
+
+[node name="RangeLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/RangeCon/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"SkillNodeLabel"
+theme_override_font_sizes/font_size = 16
+text = "📏 Range: 800m"
 
 [node name="WeaponDescriptionContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -225,7 +310,7 @@ custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-text = "weapon description"
+text = "Work in Progress"
 autowrap_mode = 3
 
 [node name="RightBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -240,30 +325,435 @@ size_flags_vertical = 3
 theme = ExtResource("1_tapuc")
 theme_type_variation = &"LevelSelectorBackground"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
 
-[node name="Header" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer"]
 layout_mode = 2
-text = "Upgrade Options"
+theme_override_constants/separation = 20
+
+[node name="HeaderSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Header" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+theme_override_font_sizes/font_size = 32
+text = "⚡ Upgrade Options"
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedHSeparator"
+
+[node name="AmmoSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="AmmoTitle" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "🔫 Ammo Upgrades"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection"]
+custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 size_flags_vertical = 3
+horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="UpgradesContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 12
 
-[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="BaseDamageUpgrade" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer" instance=ExtResource("6_b0nvn")]
 layout_mode = 2
-theme = ExtResource("1_tapuc")
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+[node name="FireRateUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer"]
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "⚡ Fire Rate"
+
+[node name="UpgradeLevel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.0"
+
+[node name="UpgradeDescription2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "+20% firing speed"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton2" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Upgrade"
+
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "$800"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "0.016₿"
+horizontal_alignment = 2
+
+[node name="AccuracyUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer"]
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "🎯 Accuracy"
+
+[node name="UpgradeLevel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.0"
+
+[node name="UpgradeDescription3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "-25% bullet spread"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton3" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Upgrade"
+
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "$600"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "0.012₿"
+horizontal_alignment = 2
+
+[node name="UpgradesSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 12
+
+[node name="UpgradesTitle" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "⬆️ Upgrades"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="UpgradesContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="DamageUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "💥 Damage Boost"
+
+[node name="UpgradeLevel" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.1"
+
+[node name="UpgradeDescription" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "+15% damage output"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Upgrade"
+
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "$1,250"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/DamageUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "0.025₿"
+horizontal_alignment = 2
+
+[node name="FireRateUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "⚡ Fire Rate"
+
+[node name="UpgradeLevel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.0"
+
+[node name="UpgradeDescription2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "+20% firing speed"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton2" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Upgrade"
+
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "$800"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "0.016₿"
+horizontal_alignment = 2
+
+[node name="AccuracyUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradePanel"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 18
+text = "🎯 Accuracy"
+
+[node name="UpgradeLevel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Lv.0"
+
+[node name="UpgradeDescription3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+text = "-25% bullet spread"
+autowrap_mode = 3
+
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="UpgradeButton3" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(70, 28)
+layout_mode = 2
+theme_type_variation = &"ArmoryUpgradeButton"
+text = "Upgrade"
+
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="FiatPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "$600"
+horizontal_alignment = 2
+
+[node name="BitcoinPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "0.012₿"
+horizontal_alignment = 2
 
 [node name="Footer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2

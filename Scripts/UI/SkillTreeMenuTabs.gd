@@ -19,7 +19,7 @@ func _on_skill_tree_button_pressed() -> void:
 
 
 func _on_armory_button_pressed() -> void:
-	pass # Replace with function body.
+	switch_tab(SceneManager.MainScenes.ARMORY)
 
 
 func _on_visualizer_button_pressed() -> void:
