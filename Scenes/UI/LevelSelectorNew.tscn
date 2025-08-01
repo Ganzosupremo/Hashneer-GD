@@ -1,233 +1,203 @@
-[gd_scene load_steps=15 format=3 uid="uid://brtsijxypeeo5"]
+[gd_scene load_steps=11 format=3 uid="uid://brtsijxypeeo5"]
 
 [ext_resource type="Script" uid="uid://bqel0jwld7ui" path="res://Scripts/UI/LevelSelectorNew.gd" id="1_64jrb"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_qlfbf"]
-[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="2_pyfpb"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="2_custom"]
 [ext_resource type="PackedScene" uid="uid://bocdjbhql8qcn" path="res://Scenes/GameModes/MiningGameMode.tscn" id="2_qnmrt"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_ky1qw"]
-[ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="4_l8bnr"]
 [ext_resource type="PackedScene" uid="uid://cfs468tglaels" path="res://Scenes/GameModes/UnlimitedWavesGameMode.tscn" id="4_t7qu3"]
-[ext_resource type="Texture2D" uid="uid://47ms0oefqn5n" path="res://Textures/UI/Panels/PanelBackground_v3.png" id="6_stq2g"]
-[ext_resource type="Texture2D" uid="uid://bf0jne128i4qm" path="res://Textures/UI/Panels/Banner_v6.png" id="7_07y13"]
-[ext_resource type="StyleBox" uid="uid://5fc84nioxg3c" path="res://Themes/ButtonStylePressedTransparent.tres" id="10_v6iyg"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_stq2g"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_level_header"]
+bg_color = Color(1, 0.843, 0, 0.1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xhjs5"]
-shader = ExtResource("4_l8bnr")
-shader_parameter/polar_coordinates = true
-shader_parameter/polar_center = Vector2(0.5, 0.5)
-shader_parameter/polar_zoom = 1.0
-shader_parameter/polar_repeat = 4.0
-shader_parameter/spin_rotation = 0.0
-shader_parameter/spin_speed = 10.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0, 0.0705882, 0.2, 1)
-shader_parameter/colour_2 = Color(0.0237563, 0.381061, 0.740812, 1)
-shader_parameter/colour_3 = Color(0, 0, 0, 1)
-shader_parameter/contrast = 1.0
-shader_parameter/spin_amount = 0.12
-shader_parameter/pixel_filter = 700.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_level_content"]
+bg_color = Color(0.03, 0.03, 0.06, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1xux2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a26uo"]
+bg_color = Color(0.121569, 0.121569, 0.14902, 0.431373)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.431373)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_07y13"]
-texture = ExtResource("6_stq2g")
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1mgoc"]
+bg_color = Color(0.121569, 0.121569, 0.14902, 0.431373)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.8, 0.8, 0.8, 0.431373)
+border_blend = true
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[node name="LevelSelectorNew" type="CanvasLayer"]
-script = ExtResource("1_64jrb")
-scene_to_load = ExtResource("2_qnmrt")
-waves_game_mode = ExtResource("4_t7qu3")
-
-[node name="Panel" type="Panel" parent="."]
+[node name="LevelSelectorNew" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxEmpty_stq2g")
+script = ExtResource("1_64jrb")
+scene_to_load = ExtResource("2_qnmrt")
+waves_game_mode = ExtResource("4_t7qu3")
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-material = SubResource("ShaderMaterial_xhjs5")
-custom_minimum_size = Vector2(650, 450)
-anchors_preset = 14
-anchor_top = 0.5
+[node name="OverlayBG" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -200.0
-offset_bottom = 200.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_qlfbf")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1xux2")
+theme_type_variation = &"LevelSelectorOverlay"
 
-[node name="LevelFeaturesContainer" type="HBoxContainer" parent="PanelContainer"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+[node name="MainContainer" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -250.0
+offset_right = 450.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_qlfbf")
+theme_type_variation = &"LevelSelectorBackground"
 
-[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/LevelFeaturesContainer"]
-custom_minimum_size = Vector2(500, 400)
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_qlfbf")
-theme_type_variation = &"LevelSelectorPanel"
-theme_override_styles/panel = SubResource("StyleBoxTexture_07y13")
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/LevelFeaturesContainer/PanelContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/separation = 16
+theme_override_constants/separation = 30
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(150, 75)
+[node name="HeaderPanel" type="PanelContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 4
-texture = ExtResource("7_07y13")
+theme_override_styles/panel = SubResource("StyleBoxFlat_level_header")
 
-[node name="LevelName" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/TextureRect" instance=ExtResource("3_ky1qw")]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/VBoxContainer/HeaderPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 15
+
+[node name="Title" parent="MainContainer/MarginContainer/VBoxContainer/HeaderPanel/MarginContainer" instance=ExtResource("3_ky1qw")]
+layout_mode = 2
+theme_type_variation = &"TitleText"
+text = "LEVEL SELECTION"
+
+[node name="ContentPanel" type="PanelContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_level_content")
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 25
+alignment = 1
+
+[node name="ModeLabel" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer" instance=ExtResource("3_ky1qw")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "CHOOSE GAME MODE"
+
+[node name="GameModeButtons" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="WavesGameMode" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/GameModeButtons" instance=ExtResource("2_custom")]
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+text = "UNLIMITED WAVES"
+
+[node name="MiningGameMode" parent="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/GameModeButtons" instance=ExtResource("2_custom")]
+custom_minimum_size = Vector2(180, 60)
+layout_mode = 2
+text = "MINING MODE"
+
+[node name="NavigationContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="PreviousLevelButton" parent="MainContainer/MarginContainer/VBoxContainer/NavigationContainer" instance=ExtResource("2_custom")]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 14
-anchor_left = 0.0
-anchor_right = 1.0
-offset_left = 29.0
-offset_top = -23.0
-offset_right = -53.0
-offset_bottom = 24.0
-theme_override_font_sizes/font_size = 49
-text = "Level Name"
-horizontal_alignment = 0
-
-[node name="MarginContainer" type="VBoxContainer" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer"]
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+theme_override_colors/font_disabled_color = Color(0.419608, 0.419608, 0.419608, 0.431373)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_a26uo")
+text = "◀ PREVIOUS"
+
+[node name="LevelName" type="Label" parent="MainContainer/MarginContainer/VBoxContainer/NavigationContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 theme = ExtResource("1_qlfbf")
-alignment = 1
+theme_type_variation = &"HeaderSmall"
+text = "0"
 
-[node name="AnimatedLabel" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer" instance=ExtResource("3_ky1qw")]
+[node name="NextLevelButton" parent="MainContainer/MarginContainer/VBoxContainer/NavigationContainer" instance=ExtResource("2_custom")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 50)
 layout_mode = 2
-theme_type_variation = &"SkillNodeLabel"
-text = "Choose Game Mode:"
+theme_override_colors/font_disabled_color = Color(0.419608, 0.419608, 0.419608, 0.431373)
+theme_override_styles/disabled = SubResource("StyleBoxFlat_1mgoc")
+text = "NEXT ▶"
 
-[node name="HBoxContainer" type="Control" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer"]
-custom_minimum_size = Vector2(335, 90)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-
-[node name="WavesGameMode" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_pyfpb")]
-custom_minimum_size = Vector2(160, 0)
+[node name="ExitButton" parent="." instance=ExtResource("2_custom")]
 layout_mode = 1
-anchors_preset = 4
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 0.0
-offset_top = -44.6484
-offset_right = 160.0
-offset_bottom = 44.6484
-grow_horizontal = 1
-focus_neighbor_top = NodePath("../../../../../../../NextLevelButton")
-theme_type_variation = &"MainButton"
-theme_override_font_sizes/font_size = 25
-text = "Unlimited
-Waves"
-enter_animation = false
-
-[node name="MiningGameMode" parent="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer" instance=ExtResource("2_pyfpb")]
-custom_minimum_size = Vector2(160, 0)
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -160.0
-offset_top = -44.5
-offset_right = 0.0
-offset_bottom = 44.5
-grow_horizontal = 0
-focus_neighbor_top = NodePath("../../../../../../../NextLevelButton")
-theme_type_variation = &"SecondaryButton"
-theme_override_font_sizes/font_size = 25
-text = "Mining
-Mode"
-enter_animation = false
-
-[node name="ExitButton" parent="." instance=ExtResource("2_pyfpb")]
-custom_minimum_size = Vector2(160, 40)
 anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.0
-offset_left = -235.0
-offset_top = 44.0
-offset_right = -75.0
-offset_bottom = 137.0
+offset_left = -300.0
+offset_bottom = 60.0
 grow_horizontal = 0
-grow_vertical = 1
-focus_neighbor_bottom = NodePath("../NextLevelButton")
-theme_type_variation = &"ThirtiaryButton"
-theme_override_font_sizes/font_size = 50
-text = "X"
-autowrap_mode = 3
-enter_animation = false
-tween_time = 0.2
-tween_size = Vector2(0, 0)
+theme_type_variation = &"ModernQuitButton"
+text = "✕"
 
-[node name="PreviousLevelButton" parent="." instance=ExtResource("2_pyfpb")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 30)
-anchors_preset = 4
-anchor_left = 0.0
-anchor_right = 0.0
-offset_left = 65.0
-offset_top = -46.0
-offset_right = 225.0
-offset_bottom = 47.0
-grow_horizontal = 1
-focus_neighbor_top = NodePath("../../../MarginContainer/ExitButton")
-focus_neighbor_right = NodePath("../NextLevelButton")
-focus_neighbor_bottom = NodePath("../PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/MiningGameMode")
-focus_next = NodePath("../NextLevelButton")
-focus_previous = NodePath("../../../MarginContainer/ExitButton")
-theme_type_variation = &"ThirtiaryButton"
-theme_override_font_sizes/font_size = 50
-theme_override_styles/pressed = ExtResource("10_v6iyg")
-text = "<"
-enter_animation = false
-tween_time = 0.2
-
-[node name="NextLevelButton" parent="." instance=ExtResource("2_pyfpb")]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 30)
-anchors_preset = 6
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -235.0
-offset_top = -60.0
-offset_right = -75.0
-offset_bottom = 33.0
-grow_horizontal = 0
-size_flags_horizontal = 8
-focus_neighbor_left = NodePath("../PreviousLevelButton")
-focus_neighbor_top = NodePath("../../../MarginContainer/ExitButton")
-focus_neighbor_bottom = NodePath("../PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/MiningGameMode")
-focus_next = NodePath("../PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/MiningGameMode")
-focus_previous = NodePath("../PreviousLevelButton")
-theme_type_variation = &"ThirtiaryButton"
-theme_override_font_sizes/font_size = 50
-text = ">"
-enter_animation = false
-tween_time = 0.2
-tween_position = Vector2(20, 0)
-
-[connection signal="pressed" from="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/WavesGameMode" to="." method="_on_waves_game_mode_pressed"]
-[connection signal="pressed" from="PanelContainer/LevelFeaturesContainer/PanelContainer/VBoxContainer/MarginContainer/HBoxContainer/MiningGameMode" to="." method="_on_enter_game_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/GameModeButtons/WavesGameMode" to="." method="_on_waves_game_mode_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/ContentPanel/MarginContainer/VBoxContainer/GameModeButtons/MiningGameMode" to="." method="_on_enter_game_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/NavigationContainer/PreviousLevelButton" to="." method="_on_previous_level_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/NavigationContainer/NextLevelButton" to="." method="_on_next_level_pressed"]
 [connection signal="pressed" from="ExitButton" to="." method="_on_exit_button_pressed"]
-[connection signal="pressed" from="PreviousLevelButton" to="." method="_on_previous_level_pressed"]
-[connection signal="pressed" from="NextLevelButton" to="." method="_on_next_level_pressed"]

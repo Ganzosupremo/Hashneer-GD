@@ -50,6 +50,7 @@ func complete_level(code: String = "") -> void:
 
 func emit_level_completed(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_NEGATIVE_SOUND_T3, AudioManager.DestinationAudioBus.SFX)
 
 func player_in_completed_level(level_index: int = _current_level) -> bool:
 	return level_index < levels_unlocked - 1
@@ -97,9 +98,6 @@ func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"levels_unlocked": levels_unlocked,
 		"previous_levels_unlocked_index": previous_levels_unlocked_index,
-		# "unlocked_weapons": unlocked_weapons_keys,
-		# "upgraded_stats": upgraded_stats,
-		# "unlocked_abilities": unlocked_abilities
 	}
 
 func load_data() -> void:

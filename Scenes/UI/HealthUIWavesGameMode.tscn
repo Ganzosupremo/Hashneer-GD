@@ -1,34 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://cbugj4k7fmf02"]
+[gd_scene load_steps=3 format=3 uid="uid://cbugj4k7fmf02"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_ghd4x"]
 [ext_resource type="Script" uid="uid://u5bo66ak6yj6" path="res://Scripts/UI/HealthUIWavesGameMode.gd" id="1_tmmwn"]
 
-[sub_resource type="Theme" id="Theme_tmmwn"]
-
 [node name="HealthUIWavesGameMode" type="Control"]
 layout_mode = 3
 anchors_preset = 0
+theme = ExtResource("1_ghd4x")
 script = ExtResource("1_tmmwn")
 
-[node name="ProgressBar" type="ProgressBar" parent="."]
-custom_minimum_size = Vector2(250, 30)
-layout_mode = 2
-offset_top = 20.0
-offset_right = 250.0
-offset_bottom = 50.0
-theme = ExtResource("1_ghd4x")
-max_value = 4000.0
-step = 0.5
-value = 1000.0
-allow_lesser = true
-show_percentage = false
-
-[node name="Label" type="Label" parent="ProgressBar"]
-custom_minimum_size = Vector2(250, 30)
-layout_mode = 2
+[node name="Container" type="HBoxContainer" parent="."]
+layout_mode = 1
 offset_right = 250.0
 offset_bottom = 30.0
-theme = SubResource("Theme_tmmwn")
+alignment = 1
+
+[node name="HealthProgressBar" type="ProgressBar" parent="Container"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_ghd4x")
+theme_type_variation = &"HealthProgressBar"
+theme_override_font_sizes/font_size = 16
+value = 100.0
+rounded = true
+show_percentage = false
+
+[node name="HealthText" type="Label" parent="Container/HealthProgressBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ghd4x")
 theme_type_variation = &"TooltipLabel"
 text = "1000/4000"
 horizontal_alignment = 1

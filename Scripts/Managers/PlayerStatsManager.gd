@@ -8,14 +8,15 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 
 @export var progress_event_bus: PlayerProgressEventBus
 @export var weapon_details_dictionary: Dictionary = {
-	"AK47": preload("res://Resources/Weapons/Player/AK47.tres"),
-	"AWP Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
+	"Ak 47": preload("res://Resources/Weapons/Player/AK47.tres"),
+	"Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
 	"Mini Uzi": preload("res://Resources/Weapons/Player/MiniUzis.tres"),
+	"Shotgun": preload("res://Resources/Weapons/Player/Shotgun.tres"),
 }
 @export var ability_scenes_dictionary: Dictionary = {
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
 	"Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
-	"Regenerate Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
+	"Regen Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
 }
 ## Base stats for the player.
 var base_stats: Dictionary = {
@@ -79,24 +80,31 @@ func add_upgrade_bonus(stat_name: String, bonus: float, is_percentage: bool, eve
 	stats_updated.emit(event)
 
 func unlock_weapon(weapon_id: Constants.WeaponNames, weapon_resource: WeaponDetails, event: PlayerProgressEventBus.WeaponUnlockEvent = null) -> void:
-	unlocked_weapons[weapon_id] = weapon_resource
+	var weapon_string: String = Utils.enum_label(Constants.WeaponNames, weapon_id)
+	unlocked_weapons[weapon_string] = weapon_resource
 	weapon_unlocked.emit(event)
 
 func unlock_ability(ability_id: Constants.AbilityNames, ability_scene: PackedScene, event: PlayerProgressEventBus.AbilityUnlockEvent = null) -> void:
-	unlocked_abilities[ability_id] = ability_scene
+	var ability_string: String = Utils.enum_label(Constants.AbilityNames, ability_id)
+	unlocked_abilities[ability_string] = ability_scene
 	ability_unlocked.emit(event)
 
 func get_unlocked_abilities() -> Dictionary:
-	return unlocked_abilities
+	return unlocked_abilities.duplicate()
 
 func get_unlocked_ability(ability_id: Constants.AbilityNames) -> PackedScene:
-	return unlocked_abilities[ability_id]
+	var ability_string: String = Utils.enum_label(Constants.AbilityNames, ability_id)
+	var ability_scene = unlocked_abilities.get(ability_string, null)
+	if ability_scene == null:
+		DebugLogger.error("Ability with ID %s (string: %s) is null." % [ability_id, ability_string])
+		return null
+	return ability_scene
 
 func get_unlocked_weapons() -> Dictionary:
 	return unlocked_weapons
 
-func get_weapon_details_from_dictionary(weapon_name: Constants.WeaponNames) -> WeaponDetails:
-	return weapon_details_dictionary.get(Utils.weapon_name_to_string(weapon_name), null)
+func get_weapon_details_from_dictionary(weapon_name: String) -> WeaponDetails:
+	return weapon_details_dictionary.get(weapon_name, null)
 
 ## Returns the final value of the given stat.
 func get_stat_final_value(stat_name: String) -> float:
@@ -134,18 +142,34 @@ func load_data() -> void:
 
 func _load_saved_bonuses(data: Dictionary, is_percentage: bool = false) -> void:
 	for entry in data.keys():
-		var stat_type := Utils.string_to_enum(entry, UpgradeData.StatType)
+		var stat_type: int = Utils.string_to_enum(entry, UpgradeData.StatType)
 		var event = PlayerProgressEventBus.StatUpgradeEvent.new(stat_type, data.get(entry, 0.0), is_percentage)
 		stats_updated.emit(event)
 
 func _load_unlocked_weapons(data: Array) -> void:
-	for weapon_enum in data:
-		var weapon: WeaponDetails = get_weapon_details_from_dictionary(int(weapon_enum))
-		var event: PlayerProgressEventBus.WeaponUnlockEvent = PlayerProgressEventBus.WeaponUnlockEvent.new(int(weapon_enum), weapon)
-		unlock_weapon(int(weapon_enum), weapon, event)
+	for entry in data:
+		var weapon: WeaponDetails = weapon_details_dictionary.get(entry, null)
+		var weapon_enum: int = Utils.label_to_enum(entry, Constants.WeaponNames)
+		if weapon == null: 
+			DebugLogger.info("Weapon with name '%s' not found in weapon details dictionary." % entry)
+			DebugLogger.info("Available weapons: {0}".format([weapon_details_dictionary.keys()]))
+			DebugLogger.info("Weapon enum: %s" % weapon_enum)
+			DebugLogger.info("Skipping weapon unlock for '%s'." % entry)
+			continue
+		
+		var event: PlayerProgressEventBus.WeaponUnlockEvent = PlayerProgressEventBus.WeaponUnlockEvent.new(weapon_enum, weapon)
+		unlock_weapon(weapon_enum, weapon, event)
 
 func _load_unlocked_abilities(data: Array) -> void:
-	for ability_enum in data:
-		var ability_scene: PackedScene = ability_scenes_dictionary.get(Utils.ability_name_to_string(int(ability_enum)), null)
-		var event: PlayerProgressEventBus.AbilityUnlockEvent = PlayerProgressEventBus.AbilityUnlockEvent.new(int(ability_enum), ability_scene)
-		unlock_ability(int(ability_enum), ability_scene, event)
+	for entry in data:
+		var ability: PackedScene = ability_scenes_dictionary.get(entry, null)
+		var ability_enum: int = Utils.label_to_enum(entry, Constants.AbilityNames)
+		if ability == null: 
+			DebugLogger.info("Ability with name '%s' not found in ability scenes dictionary." % entry)
+			DebugLogger.info("Available abilities: %s" % ability_scenes_dictionary.keys())
+			DebugLogger.info("Ability enum: %s" % ability_enum)
+			DebugLogger.info("Skipping ability unlock for '%s'." % entry)
+			continue
+
+		var event: PlayerProgressEventBus.AbilityUnlockEvent = PlayerProgressEventBus.AbilityUnlockEvent.new(ability_enum, ability)
+		unlock_ability(ability_enum, ability, event)

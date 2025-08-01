@@ -14,8 +14,6 @@ class_name LevelBuilderArgs
 @export var quadrant_texture: Texture2D
 ## The texture used to draw the quadrants when they are fractured
 @export var normal_texture: Texture2D
-## Sound effect to play when the quadrant is fractured
-@export var hit_sound: SoundEffectDetails
 
 ## The initial health of the quadrants
 @export var initial_health: float = 50.0

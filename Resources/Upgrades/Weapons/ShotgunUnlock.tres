@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_e478n"]
 script = ExtResource("2_qkwdi")
-weapon_type = 2
+weapon_type = 1
 weapon_to_unlock = ExtResource("3_q8wau")
 metadata/_custom_type_script = "uid://c6p2fiuy6emj6"
 

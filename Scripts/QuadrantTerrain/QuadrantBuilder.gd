@@ -262,7 +262,7 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
 			block.position = pos
 			_quadrant_positions.append(pos)
-			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.hit_sound, builder_args.normal_texture)
+			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.normal_texture)
 	
 	_calculate_map_bounds()
 	_initialize_block_core()
@@ -304,7 +304,6 @@ func _initialize_block_core():
 	var padding: float = core_size * 0.5
 	block_core.global_position = _random_position_within_shape(padding)
 	block_core.health.set_max_health(builder_args.initial_health * 2.0) # May change to scale exponentially
-	block_core.set_hit_sound_effect(builder_args.hit_sound, false)
 
 func _point_inside_shape(point: Vector2) -> bool:
 	match _map_shape:
@@ -403,7 +402,7 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 	instance_staticbody.global_rotation = shape_info.spawn_rot
 	instance_staticbody.set_polygon(shape_info.centered_shape)
 	instance_staticbody.self_modulate = color
-	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info, builder_args.hit_sound)
+	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info)
 	instance_staticbody.reset_health()
 
 #endregion

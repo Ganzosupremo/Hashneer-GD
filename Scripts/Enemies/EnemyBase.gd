@@ -277,13 +277,13 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_hit_flash_anim_player.play("invincible-hit-flash")
 		return {"percent_cut" : 0.0, "dead" : false} 
 	
- # Handle shield damage first
+ 	# Handle shield damage first
 	var remaining_damage: Vector2 = damage_to_apply
-   
+
 	var percent_cut : float = 0.0
 	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(
 		remaining_damage, 
-		Vector2(18,30), 
+		Vector2(15,33), 
 		Vector2.ZERO
 		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)

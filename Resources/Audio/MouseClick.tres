@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://dshcft7kpcwn"]
 
-[ext_resource type="AudioStream" uid="uid://c0xrxo8htj88c" path="res://Audio/UI/Mouse Down.wav" id="1_244jp"]
+[ext_resource type="AudioStream" uid="uid://bymfgb56v6d3n" path="res://Audio/UI/Mouse click click.mp3" id="1_elk8u"]
 [ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_6q7il"]
 
 [resource]
@@ -9,6 +9,6 @@ limit = 5
 sound_type = 15
 destination_audio_bus = 2
 sound_volume = 0.0
-audio_stream = ExtResource("1_244jp")
+audio_stream = ExtResource("1_elk8u")
 sound_pitch = 1.0
 pitch_randomness = 0.0

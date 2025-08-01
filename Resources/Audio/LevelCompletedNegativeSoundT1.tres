@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://doweeqvn837sv"]
+
+[ext_resource type="AudioStream" uid="uid://d0fu1yagv00wi" path="res://Audio/Pop ups/Negative Notification 1.mp3" id="1_8f1mo"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_auojq"]
+
+[resource]
+script = ExtResource("2_auojq")
+limit = 5
+sound_type = 30
+destination_audio_bus = 2
+sound_volume = 1.0
+audio_stream = ExtResource("1_8f1mo")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

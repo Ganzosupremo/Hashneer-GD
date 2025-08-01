@@ -1,0 +1,245 @@
+[gd_scene load_steps=3 format=3 uid="uid://diha80o1usshn"]
+
+[ext_resource type="Script" uid="uid://cjr5k8eikwajp" path="res://Scripts/Miscelaneous/UIBitcoinBlock.gd" id="1_wqq7b"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_2wnjp"]
+
+[node name="UIBitcoinBlock" type="Control"]
+custom_minimum_size = Vector2(450, 506)
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -250.0
+offset_right = 225.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_wqq7b")
+
+[node name="BlockPanel" type="PanelContainer" parent="."]
+custom_minimum_size = Vector2(450, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -225.0
+offset_top = -253.0
+offset_right = 225.0
+offset_bottom = 253.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"LvlCompletedMain"
+
+[node name="MarginContainer" type="MarginContainer" parent="BlockPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BlockPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="HeaderSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitlePanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection/TitlePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection/TitlePanel/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"HeaderSmall"
+text = "₿ Block #0"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"LvlCompletedHSeparator"
+
+[node name="ContentSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 12
+
+[node name="MinerSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MinerLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "⛏️ Mined By"
+horizontal_alignment = 1
+
+[node name="MinerPanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection/MinerPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="Miner" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection/MinerPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 20
+text = "Player"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DataSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="DataLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "📊 Block Data"
+horizontal_alignment = 1
+
+[node name="DataPanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel/MarginContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+
+[node name="Data" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel/MarginContainer/ScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(380, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "Transaction data will appear here..."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="DetailsSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 10
+
+[node name="DetailsLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "🔗 Block Details"
+horizontal_alignment = 1
+
+[node name="DetailsGrid" type="GridContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/h_separation = 15
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="TimestampLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "⏰ Timestamp:"
+
+[node name="Timestamp" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "2025-01-01 12:00:00"
+
+[node name="HashLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "🔐 Hash:"
+
+[node name="Hash" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "000abc123..."
+autowrap_mode = 3
+
+[node name="PrevHashLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "🔗 Previous:"
+
+[node name="PreviousHash" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 15)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 16
+text = "000def456..."
+autowrap_mode = 3
+
+[node name="SubsidyLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "💰 Reward:"
+
+[node name="Subsidy" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("2_2wnjp")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "6.25 BTC"

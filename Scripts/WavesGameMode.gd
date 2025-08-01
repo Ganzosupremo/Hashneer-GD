@@ -7,9 +7,9 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @onready var _pool_cut_visualizer: PoolFracture = $PoolFractureCutVisualizer
 @onready var _pool_fracture_shards: PoolFracture = $PoolFractureShards
 @onready var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
-@onready var label: Label = $UI/Control/Label
-@onready var boss_progress_bar: ProgressBar = $UI/BossTimer/MarginContainer/BossProgressBar
-@onready var level_completed: LevelCompletedUI = $UI/LevelCompletedUI
+@onready var enemies_killed_label: Label = %EnemiesKilledLabel
+@onready var boss_progress_bar: ProgressBar = %BossProgressBar
+@onready var level_completed: LevelCompletedUI = %LevelCompletedUI
 
 @onready var random_drops_holder: Node2D = $RandomDropsHolder
 @onready var boss_spawner: RandomDrops = $BossSpawner
@@ -112,6 +112,9 @@ func _spawn_enemies(count: int) -> Array[Node]:
 			enemy.Damaged.connect(on_enemy_damaged)
 			enemy.Fractured.connect(on_enemy_fractured)
 			enemy.Died.connect(on_enemy_died)
+			
+			if enemy.shield:
+				enemy.shield.fractured.connect(_on_enemy_shield_fractured)
 
 	return enemies
 
@@ -150,12 +153,15 @@ func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Arra
 func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass : float, color : Color, fracture_force : float, p : float) -> void:
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
 
+func _on_enemy_shield_fractured(_ref: ShieldComponent, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float) -> void:
+	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
+
 func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
 		_spawned_enemies_array.erase(_ref)
 		if !natural_death:
 				kill_count += 1
 				current_wave_kills += 1
-				label.text = "Enemies Killed: {0}".format([kill_count])
+				enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
 				boss_progress_bar.value = kill_count
 
 				if kill_count >= level_args.kills_to_spawn_boss and !boss_spawned:

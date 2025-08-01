@@ -18,11 +18,6 @@ class_name TweenableButton extends Button
 	"self_modulate",
 ]
 
-@export_group("On Click Sound Effects (Optional)")
-@export var on_mouse_entered_effect: SoundEffectDetails
-@export var on_mouse_down_effect: SoundEffectDetails
-@export var on_mouse_up_effect: SoundEffectDetails
-
 @export_category("Properties for Tweening")
 @export_group("Hover Animation Settings")
 @export_subgroup("Tweening Settings")
@@ -95,7 +90,6 @@ class_name TweenableButton extends Button
 @export var recovery_factor: float = 2.0/3.0
 
 @onready var animation_component: AnimationComponentUI = $AnimationComponent
-@onready var sound_effect_component_ui: SoundEffectComponentUI = $SoundEffectComponentUI
 
 func _ready() -> void:
 	Utils.copy_properties(self, animation_component)
@@ -144,15 +138,8 @@ func get_properties() -> Dictionary:
 #region "Signals"
 
 func _on_button_up() -> void:
-	AudioManager.create_audio(on_mouse_up_effect.sound_type, on_mouse_up_effect.destination_audio_bus)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_RELEASE, AudioManager.DestinationAudioBus.SFX)
 
 func _on_button_down() -> void:
-	AudioManager.create_audio(on_mouse_down_effect.sound_type, on_mouse_down_effect.destination_audio_bus)
-
-func _on_mouse_entered() -> void:
-	AudioManager.create_audio(on_mouse_entered_effect.sound_type, on_mouse_entered_effect.destination_audio_bus)
-
-func _on_focus_entered() -> void:
-	AudioManager.create_audio(on_mouse_entered_effect.sound_type, on_mouse_entered_effect.destination_audio_bus)
-
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
 #endregion

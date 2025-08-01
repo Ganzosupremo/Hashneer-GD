@@ -4,11 +4,8 @@ class_name LevelCompletedUI extends Control
 @export var main_event_bus: MainEventBus
 
 @onready var title_label: AnimatedLabel = %Title
-@onready var bg: Panel = %Panel
 @onready var btc_gained_label: AnimatedLabel = %BTCGainedLabel
 @onready var fiat_gained_label: AnimatedLabel = %FiatGainedLabel
-
-@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
@@ -43,7 +40,7 @@ func _open() -> void:
 	fiat_gained_label.animate_label(0.15)
 	
 func _on_menu_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(skill_tree_scene)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)
 
 func save():
 	PersistenceDataManager.save_game()
@@ -65,10 +62,13 @@ func _on_item_picked(event : PickupEvent) -> void:
 			if GameManager.player_in_completed_level():
 				btc_gained_this_time = 0
 				GameManager.complete_level(Constants.ERROR_500)
+				AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_NEGATIVE_SOUND_T1, AudioManager.DestinationAudioBus.SFX)				
 			elif block == null or block.miner == "Player":
 				GameManager.complete_level(Constants.ERROR_200)
+				AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_SOUND, AudioManager.DestinationAudioBus.SFX)
 			else:
 				GameManager.complete_level(Constants.ERROR_401)
+				AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_NEGATIVE_SOUND_T2, AudioManager.DestinationAudioBus.SFX)
 		# No action needed for NONE type
 		_:
 			pass

@@ -1,52 +1,64 @@
-[gd_scene load_steps=6 format=3 uid="uid://xos3xcnwpqn6"]
+[gd_scene load_steps=4 format=3 uid="uid://xos3xcnwpqn6"]
 
 [ext_resource type="Script" uid="uid://c0bno15bnax2n" path="res://Scripts/UI/weapon_ui.gd" id="1_2aodo"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_ek5it"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_2aodo"]
-[ext_resource type="Texture2D" uid="uid://pww05vci7u70" path="res://Textures/UI/Panels/PanelBackground_v2.png" id="2_m3pxr"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ytkw0"]
-texture = ExtResource("2_m3pxr")
 
 [node name="WeaponUIWavesGameMode" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_2aodo")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="WeaponContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-offset_right = 140.0
-offset_bottom = 162.0
+offset_right = 160.0
+offset_bottom = 180.0
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="WeaponPanel" type="PanelContainer" parent="WeaponContainer"]
+custom_minimum_size = Vector2(160, 140)
+layout_mode = 2
+size_flags_horizontal = 4
+theme = ExtResource("1_ek5it")
+theme_type_variation = &"WeaponsUIPanelType2"
+
+[node name="MarginContainer" type="MarginContainer" parent="WeaponContainer/WeaponPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WeaponContainer/WeaponPanel/MarginContainer"]
+layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer"]
-custom_minimum_size = Vector2(140, 130)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_ytkw0")
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/PanelContainer"]
-layout_mode = 2
-theme = ExtResource("1_ek5it")
-theme_override_constants/margin_left = 21
-theme_override_constants/margin_top = 21
-theme_override_constants/margin_right = 21
-theme_override_constants/margin_bottom = 21
-
-[node name="WeaponTexture" type="TextureRect" parent="VBoxContainer/PanelContainer/MarginContainer"]
+[node name="WeaponTexture" type="TextureRect" parent="WeaponContainer/WeaponPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(80, 60)
 layout_mode = 2
 texture = ExtResource("2_2aodo")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="WeaponName" type="Label" parent="VBoxContainer"]
+[node name="WeaponSlot" type="Label" parent="WeaponContainer/WeaponPanel/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 20)
 layout_mode = 2
 theme = ExtResource("1_ek5it")
 theme_type_variation = &"TooltipLabel"
-text = "(0) NULL"
+theme_override_font_sizes/font_size = 22
+text = "SLOT 0"
+horizontal_alignment = 1
+
+[node name="WeaponName" type="Label" parent="WeaponContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+theme = ExtResource("1_ek5it")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 25
+text = "SHOTGUN"
 horizontal_alignment = 1
 autowrap_mode = 3

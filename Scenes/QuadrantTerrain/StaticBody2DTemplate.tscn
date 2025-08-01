@@ -1,11 +1,8 @@
-[gd_scene load_steps=24 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=19 format=3 uid="uid://bg51o3dcb5mrm"]
 
 [ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
 [ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
-[ext_resource type="AudioStream" uid="uid://l8vf7okafs76" path="res://Audio/FracturableTerrain/FracturablePolygonHit.wav" id="2_rdcfh"]
-[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="3_0mtpy"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="3_yxxnb"]
-[ext_resource type="AudioStream" uid="uid://b23scsgtlm1ea" path="res://Audio/FracturableTerrain/FracturableBodyDestroyed.wav" id="4_j1b78"]
 [ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_78gmd"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="7_idcnk"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_ildng"]
@@ -14,26 +11,6 @@
 [ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
 [ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="10_idcnk"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_r1qd5"]
-
-[sub_resource type="Resource" id="Resource_0ewf5"]
-script = ExtResource("3_0mtpy")
-limit = 5
-sound_type = 24
-destination_audio_bus = 2
-sound_volume = 1.0
-audio_stream = ExtResource("2_rdcfh")
-sound_pitch = 1.0
-pitch_randomness = 0.0
-
-[sub_resource type="Resource" id="Resource_u25mb"]
-script = ExtResource("3_0mtpy")
-limit = 5
-sound_type = 24
-destination_audio_bus = 2
-sound_volume = 1.0
-audio_stream = ExtResource("4_j1b78")
-sound_pitch = 1.0
-pitch_randomness = 0.0
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_ildng"]
 diffuse_texture = ExtResource("7_idcnk")
@@ -77,8 +54,6 @@ collision_mask = 248
 script = ExtResource("1_obgke")
 placed_in_level = true
 randomize_texture_properties = false
-hit_sound_effect = SubResource("Resource_0ewf5")
-sound_effect_on_destroy = SubResource("Resource_u25mb")
 polygon_shape = 1
 rectangle_size = Vector2(250, 250)
 

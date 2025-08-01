@@ -21,10 +21,9 @@ func add_weapon_to_list(weapon: WeaponDetails) -> void:
 	if _weapons_list.has(weapon): return
 	
 	_weapons_list.append(weapon)
-		
 	# Update the index on the weapon details
-	#for i in _weapons_list.size():
-		#_weapons_list[i].weapon_list_index = i
+	for i in _weapons_list.size():
+		_weapons_list[i].weapon_id = i
 
 
 func select_next_weapon():

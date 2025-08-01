@@ -107,8 +107,6 @@ func _apply_damage(body: Node2D, hit_pos: Vector2) -> void:
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * _ammo_details.fracture_force
 		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.25, hit_pos, force, 0.25, modulate)
-	elif body is ShieldComponent:
-		body.call_deferred("absorb_damage", damage_to_deal, hit_pos)
 	elif body is PlayerController:
 		body.damage(damage_to_deal)
 

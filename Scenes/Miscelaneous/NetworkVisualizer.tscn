@@ -1,0 +1,220 @@
+[gd_scene load_steps=5 format=3 uid="uid://bb7gevq6uy0ws"]
+
+[ext_resource type="Script" uid="uid://clk0t1njrsu2f" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_os7yb"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_4m4ak"]
+[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="4_8nbiv"]
+
+[node name="NetworkVisualizer" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_os7yb")
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 30
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HeaderSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="StatsSection" type="VBoxContainer" parent="MainContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="StatsTitleContainer" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedMain"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsTitleContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 5
+
+[node name="StatsTitle" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsTitleContainer/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+theme_override_font_sizes/font_size = 36
+text = "📊 ₿ Network Statistics"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsGrid" type="GridContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 15
+columns = 2
+
+[node name="CoinsLostPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLostPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="CoinsLost" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLostPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "🔥 Coins Lost: 0.00 BTC"
+horizontal_alignment = 1
+
+[node name="CoinsOnPlayerPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsOnPlayerPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="CoinsOnPlayer" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsOnPlayerPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "💰 Player Wallet: 0.00 BTC"
+horizontal_alignment = 1
+
+[node name="CoinsLeftPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLeftPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="CoinsLeft" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLeftPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "⛏️ Coins Left to Mine: 21,000,000.00 BTC"
+horizontal_alignment = 1
+
+[node name="BlocksLeftPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/BlocksLeftPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 5
+
+[node name="Blocks Left" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/BlocksLeftPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "🧱 Total Blocks: 0"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_type_variation = &"LvlCompletedHSeparator"
+
+[node name="BlockchainSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="BlockchainTitle" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+theme_override_font_sizes/font_size = 36
+text = "🔗 Blockchain Explorer"
+horizontal_alignment = 1
+
+[node name="BlockchainScrollContainer" type="ScrollContainer" parent="MainContainer/VBoxContainer/BlockchainSection"]
+custom_minimum_size = Vector2(1092, 160)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BlockContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer/BlockchainSection/BlockchainScrollContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1092, 160)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="EmptyStateContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/BlockchainSection"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="EmptyIcon" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderLarge"
+theme_override_font_sizes/font_size = 72
+text = "🏗️"
+horizontal_alignment = 1
+
+[node name="EmptyMessage" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 28
+text = "No blocks mined yet"
+horizontal_alignment = 1
+
+[node name="EmptySubMessage" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 20
+text = "Start mining to see blocks appear in the blockchain!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="FooterSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+alignment = 1
+
+[node name="ReturnButton" parent="MainContainer/VBoxContainer/FooterSection" instance=ExtResource("3_4m4ak")]
+visible = false
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+text = "Return"
+
+[node name="SkillTreeTabs" parent="MainContainer/VBoxContainer/FooterSection" instance=ExtResource("4_8nbiv")]
+layout_mode = 2
+
+[connection signal="pressed" from="MainContainer/VBoxContainer/FooterSection/ReturnButton" to="." method="_on_return_button_pressed"]

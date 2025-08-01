@@ -14,7 +14,6 @@ func init_ui() -> void:
 	update_ui(current_health, max_health)
 
 func update_ui(current_health: float, max_health: float) -> void:
-	#health_bar.value = current_health
 	text.text = "%.1f"%current_health +  "/"  + "%.1f"%max_health
 	var fill_per: float = current_health / max_health
 	sphere_health.material["shader_parameter/fill_per"] = fill_per

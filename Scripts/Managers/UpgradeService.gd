@@ -30,6 +30,7 @@ func can_afford(data: UpgradeData, currency: Constants.CurrencyType = current_cu
 func purchase_upgrade(data: UpgradeData) -> bool:
 	if data == null:
 		return false
+	
 	if !can_afford(data, current_currency):
 		return false
 	if !data.buy_upgrade(current_currency):

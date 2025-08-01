@@ -79,7 +79,7 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 func _ready() -> void:
 	_rng.randomize()
 	for sound_effect in sound_effects:
-		_sound_effect_dict[SoundEffectDetails.enum_to_string(sound_effect.sound_type)] = sound_effect
+		_sound_effect_dict[SoundEffectDetails.sound_effect_type_to_string(sound_effect.sound_type)] = sound_effect
 	music_clip_changed.connect(_on_music_clip_changed)
 	set_music_volume(music_volume)
 
@@ -119,8 +119,8 @@ func _on_music_clip_changed(clip: MusicDetails, time_to_fade: float) -> void:
 ## [br]
 ## Note: The sound effect must have an open limit to be played.
 func create_2d_audio_at_location(location: Vector2, type: SoundEffectDetails.SoundEffectType, destination_audio_bus: DestinationAudioBus = DestinationAudioBus.MASTER) -> void:
-	if _sound_effect_dict.has(SoundEffectDetails.enum_to_string(type)):
-		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.enum_to_string(type)]
+	if _sound_effect_dict.has(SoundEffectDetails.sound_effect_type_to_string(type)):
+		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.sound_effect_type_to_string(type)]
 		if sound_effect.has_open_limit():
 			sound_effect.change_audio_count(1)
 			var new_2D_audio: AudioStreamPlayer2D = AudioStreamPlayer2D.new()
@@ -136,20 +136,20 @@ func create_2d_audio_at_location(location: Vector2, type: SoundEffectDetails.Sou
 			new_2D_audio.finished.connect(new_2D_audio.queue_free)
 			new_2D_audio.play()
 	else:
-		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.enum_to_string(type))
+		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.sound_effect_type_to_string(type))
 
-## [deprecated] Use `create_2d_audio_at_location` instead.
+## @deprecated: Use `create_2d_audio_at_location` instead.
 var persistence_audio_player: AudioStreamPlayer2D 
 
-## [deprecated] use [member create_2d_audio_at_location] instead.[br]
+## @deprecated: use [member create_2d_audio_at_location] instead.[br]
 ## Creates a sound effect at a specific location if the limit has not been reached.
 ## Pass [param location] for the global position of the audio effect, and [param type] for the SoundEffectDetails to be queued.
 ## This function will create a persistent audio player that will play the sound effect at the location.
 ## This is useful for sound effects that need to be played at a specific location, such as footsteps or gunfire.
 ## The audio player won't be destroyed when the sound effect is finished playing.
 func create_2d_audio_at_location_with_persistent_player(location: Vector2, type: SoundEffectDetails.SoundEffectType, destination_audio_bus: DestinationAudioBus = DestinationAudioBus.MASTER):
-	if _sound_effect_dict.has(SoundEffectDetails.enum_to_string(type)):
-		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.enum_to_string(type)]
+	if _sound_effect_dict.has(SoundEffectDetails.sound_effect_type_to_string(type)):
+		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.sound_effect_type_to_string(type)]
 		
 		if !sound_effect.has_open_limit(): return
 		
@@ -165,7 +165,7 @@ func create_2d_audio_at_location_with_persistent_player(location: Vector2, type:
 		persistence_audio_player.pitch_scale += _rng.randf_range(-sound_effect.pitch_randomness, sound_effect.pitch_randomness)
 		persistence_audio_player.play()
 	else:
-		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.enum_to_string(type))
+		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.sound_effect_type_to_string(type))
 
 ## Creates a sound effect based on the [param type] and [param destination_audio_bus].
 ## This function will create a new AudioStreamPlayer and play the sound effect.
@@ -188,8 +188,8 @@ func create_2d_audio_at_location_with_persistent_player(location: Vector2, type:
 ## [br]
 ## Note: The sound effect must have an open limit to be played.
 func create_audio(type: SoundEffectDetails.SoundEffectType, destination_audio_bus: DestinationAudioBus = DestinationAudioBus.MASTER) -> void:
-	if _sound_effect_dict.has(SoundEffectDetails.enum_to_string(type)):
-		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.enum_to_string(type)]
+	if _sound_effect_dict.has(SoundEffectDetails.sound_effect_type_to_string(type)):
+		var sound_effect: SoundEffectDetails = _sound_effect_dict[SoundEffectDetails.sound_effect_type_to_string(type)]
 		if sound_effect.has_open_limit():
 			sound_effect.change_audio_count(1)
 			var new_audio: AudioStreamPlayer = AudioStreamPlayer.new()
@@ -203,7 +203,7 @@ func create_audio(type: SoundEffectDetails.SoundEffectType, destination_audio_bu
 			new_audio.finished.connect(new_audio.queue_free)
 			new_audio.play()
 	else:
-		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.enum_to_string(type))
+		push_error("Audio Manager failed to find setting for type ", SoundEffectDetails.sound_effect_type_to_string(type))
 
 func _fade_music(music_clip: AudioStream, volume_clip_linear: float,time_to_fade: float) -> void:
 	var time_elapsed: float = 0.0

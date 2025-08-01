@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="SoundEffectDetails" load_steps=3 format=3 uid="uid://cqfjjsm87ot82"]
+
+[ext_resource type="AudioStream" uid="uid://bws4ql4bv30n3" path="res://Audio/Pop ups/Notification.mp3" id="1_qgmqk"]
+[ext_resource type="Script" uid="uid://tjgxmgkq4pce" path="res://Scripts/Resources/SoundEffectDetails.gd" id="2_o4t1m"]
+
+[resource]
+script = ExtResource("2_o4t1m")
+limit = 5
+sound_type = 29
+destination_audio_bus = 2
+sound_volume = 1.0
+audio_stream = ExtResource("1_qgmqk")
+sound_pitch = 1.0
+pitch_randomness = 0.0
+metadata/_custom_type_script = "uid://tjgxmgkq4pce"

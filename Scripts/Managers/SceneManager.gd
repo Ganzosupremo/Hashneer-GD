@@ -3,19 +3,50 @@ class_name SceneManagement
 
 signal scene_switched()
 
-var current_level_inde: int = 0
+enum MainScenes {
+	MAIN_MENU,
+	SAVE_SLOTS_SELECTOR,
+	SKILL_TREE,
+	NETWORK_VISUALIZER,
+	MINING_GAME_MODE,
+	UNLIMITED_WAVES_GAME_MODE
+}
+
 var current_scene: Node = null
 
 @onready var screen_transition_background = %ScreenTransitionBackground
 @onready var bg = %BG
+
+var main_scenes: Dictionary = {
+	MainScenes.MAIN_MENU: preload("res://Scenes/UI/MainMenu.tscn"),
+	MainScenes.SAVE_SLOTS_SELECTOR: preload("res://Scenes/UI/SaveSlotsSelector.tscn"),
+	MainScenes.SKILL_TREE: preload("res://Scenes/SkillTreeSystem/SkillTree.tscn"),
+	MainScenes.NETWORK_VISUALIZER: preload("res://Scenes/Miscelaneous/NetworkVisualizer.tscn"),
+	MainScenes.MINING_GAME_MODE: preload("res://Scenes/GameModes/MiningGameMode.tscn"),
+	MainScenes.UNLIMITED_WAVES_GAME_MODE: preload("res://Scenes/GameModes/UnlimitedWavesGameMode.tscn")
+}
 
 func _ready() -> void:
 	var root = get_tree().root
 	current_scene = root.get_child(root.get_child_count() - 1)
 	bg.visible = false
 
+func switch_scene_with_enum(scene_enum: MainScenes) -> void:
+	if scene_enum in main_scenes:
+		switch_scene_with_packed(main_scenes[scene_enum])
+	else:
+		push_error("Invalid scene enum provided: %s" % scene_enum)
+
 func switch_scene_with_packed(sceneto_load: PackedScene) -> void:
 	call_deferred("_deferred_switch_scene_with_packed", sceneto_load)
+
+func get_current_scene() -> Node:
+	if current_scene:
+		return current_scene
+	else:
+		push_error("No current scene set.")
+		return null
+
 
 func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
 	current_scene.free()
@@ -33,7 +64,7 @@ func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
 	bg.visible = false
 	scene_switched.emit()
 
-func switch_scene(res_path: String, _level_index: int = -1):
+func switch_scene(res_path: String):
 	call_deferred("_deferred_switch_scene", res_path)
 
 func _deferred_switch_scene(res_path: String):

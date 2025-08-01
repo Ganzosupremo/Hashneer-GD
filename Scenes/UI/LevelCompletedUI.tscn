@@ -1,55 +1,30 @@
-[gd_scene load_steps=18 format=3 uid="uid://dmek3vskirk8m"]
+[gd_scene load_steps=11 format=3 uid="uid://dmek3vskirk8m"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" uid="uid://c4yonen0o5du7" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_67u4f"]
-[ext_resource type="PackedScene" uid="uid://cs4pb1qbaaode" path="res://Scenes/Components/AnimationComponentUI.tscn" id="2_re8gt"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="3_fkdm4"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="3_m870y"]
 [ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="4_ny3yf"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="6_exueb"]
-[ext_resource type="Texture2D" uid="uid://dbwl5m8xirlq4" path="res://Textures/UI/Border.png" id="7_typs6"]
-[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="8_0w0kp"]
-[ext_resource type="PackedScene" uid="uid://bth3shtncydri" path="res://Scenes/UIComponents/RippleComponentUI.tscn" id="10_32soc"]
-[ext_resource type="Shader" uid="uid://b05n3i7wetruc" path="res://Shaders/RippleButtonShader.gdshader" id="11_4y267"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="8_custom"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_s1ley"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bitcoin_celebration"]
 shader = ExtResource("3_m870y")
 shader_parameter/polar_coordinates = true
-shader_parameter/polar_center = Vector2(1, 1)
-shader_parameter/polar_zoom = 1.0
-shader_parameter/polar_repeat = 4.0
-shader_parameter/spin_rotation = 10.0
-shader_parameter/spin_speed = 10.0
+shader_parameter/polar_center = Vector2(0.5, 0.5)
+shader_parameter/polar_zoom = 1.2
+shader_parameter/polar_repeat = 8.0
+shader_parameter/spin_rotation = 0.0
+shader_parameter/spin_speed = 15.0
 shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0.0509804, 0.384314, 0.266667, 1)
-shader_parameter/colour_2 = Color(0.027451, 0.0352941, 0.321569, 1)
-shader_parameter/colour_3 = Color(0.00784314, 0.00784314, 0.0784314, 1)
-shader_parameter/contrast = 2.0
-shader_parameter/spin_amount = 0.36
-shader_parameter/pixel_filter = 700.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_f56pw"]
-bg_color = Color(1, 1, 1, 0.69)
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fkdm4"]
-texture = ExtResource("7_typs6")
-texture_margin_left = 16.0
-texture_margin_top = 16.0
-texture_margin_right = 16.0
-texture_margin_bottom = 17.0
-axis_stretch_horizontal = 1
-axis_stretch_vertical = 1
-region_rect = Rect2(1, 32, 126, 64)
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_1lrfk"]
-shader = ExtResource("11_4y267")
-shader_parameter/circle_center = Vector2(-0.15, 0)
-shader_parameter/time = 0.0
-shader_parameter/size = Vector2(300, 80)
-shader_parameter/color = Color(0.0156863, 0.4, 0.784314, 1)
-shader_parameter/margin = Vector2(0, 0)
+shader_parameter/colour_1 = Color(0.05, 0.05, 0.08, 1)
+shader_parameter/colour_2 = Color(1, 0.843, 0, 0.4)
+shader_parameter/colour_3 = Color(0.02, 0.02, 0.04, 1)
+shader_parameter/contrast = 1.5
+shader_parameter/spin_amount = 0.2
+shader_parameter/pixel_filter = 500.0
 
 [node name="LevelCompletedUI" type="Control"]
 process_mode = 3
@@ -64,33 +39,7 @@ script = ExtResource("1_dcscb")
 item_drop_bus = ExtResource("2_67u4f")
 main_event_bus = ExtResource("3_fkdm4")
 
-[node name="AnimationComponent" parent="." instance=ExtResource("2_re8gt")]
-enter_animation = true
-tween_time = 0.0
-tween_position = Vector2(0, 0)
-tween_size = Vector2(1920, 1080)
-tween_rotation = 0.0
-enter_time = 0.5
-enter_transition = 3
-enter_ease = 2
-enter_scale = Vector2(0, 0)
-enter_position = Vector2(0, 0)
-enter_size = Vector2(0, 0)
-enter_rotation = 360.0
-
-[node name="Panel" type="Panel" parent="."]
-unique_name_in_owner = true
-material = SubResource("ShaderMaterial_s1ley")
-custom_minimum_size = Vector2(260, 300)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_f56pw")
-
-[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+[node name="OverlayBG" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -98,141 +47,139 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedOverlay"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
-custom_minimum_size = Vector2(875, 500)
+[node name="MainContainer" type="PanelContainer" parent="."]
+material = SubResource("ShaderMaterial_bitcoin_celebration")
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -450.0
+offset_top = -300.0
+offset_right = 450.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedMain"
+
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 2
-theme = ExtResource("1_0si0w")
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
 alignment = 1
 
-[node name="HSeparator2" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TitleSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="HSeparator1" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection"]
 layout_mode = 2
 theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedHSeparator"
 
-[node name="Title" parent="Panel/MarginContainer/VBoxContainer" instance=ExtResource("6_dq483")]
+[node name="Title" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection" instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(810, 100)
+custom_minimum_size = Vector2(790, 30)
 layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-text = "Code 404: This block has already been mined. No reward will be given..."
+theme_type_variation = &"TitleText"
+text = "MISSION COMPLETED!"
 autowrap_mode = 3
 
-[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection"]
 layout_mode = 2
 theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedHSeparator"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="RewardsSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_0si0w")
+size_flags_vertical = 3
+theme_override_constants/separation = 20
 alignment = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2"]
+[node name="RewardsLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection" instance=ExtResource("6_dq483")]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme = ExtResource("1_0si0w")
-theme_override_constants/margin_left = 225
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 225
-theme_override_constants/margin_bottom = 10
+theme_type_variation = &"HeaderSmall"
+text = "REWARDS EARNED"
 
-[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer"]
-custom_minimum_size = Vector2(300, 160)
+[node name="CurrencyPanel" type="PanelContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme = ExtResource("1_0si0w")
-theme_override_styles/panel = SubResource("StyleBoxTexture_fkdm4")
+theme_type_variation = &"LvlCompletedCurrencyPanelBG"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer"]
-custom_minimum_size = Vector2(225, 0.01)
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
 alignment = 1
 
-[node name="BTCMarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
+[node name="BTCContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 0
+theme_override_constants/separation = 15
+alignment = 1
 
-[node name="BTCContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer"]
-custom_minimum_size = Vector2(0, 30)
-layout_mode = 2
-
-[node name="BTCIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer"]
+[node name="BTCIcon" type="TextureRect" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/BTCContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("4_ny3yf")
 stretch_mode = 5
 
-[node name="BTCGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/BTCMarginContainer/BTCContainer" instance=ExtResource("6_dq483")]
+[node name="BTCGainedLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/BTCContainer" instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "0
-"
-horizontal_alignment = 0
+text = "0.00000000 BTC"
 
-[node name="HSeparator" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(225, 0)
+[node name="HSeparator" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedHSeparator"
 
-[node name="FiatMarginContainer" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer"]
+[node name="FiatContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_override_constants/margin_left = 25
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 25
-theme_override_constants/margin_bottom = 0
+theme_override_constants/separation = 15
+alignment = 1
 
-[node name="FiatContainer" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-
-[node name="FiatIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer"]
+[node name="FiatIcon" type="TextureRect" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/FiatContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
 texture = ExtResource("6_exueb")
 stretch_mode = 5
 
-[node name="FiatGainedLabel" parent="Panel/MarginContainer/VBoxContainer/VBoxContainer2/MarginContainer/PanelContainer/VBoxContainer/FiatMarginContainer/FiatContainer" instance=ExtResource("6_dq483")]
+[node name="FiatGainedLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/FiatContainer" instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
-text = "0"
-horizontal_alignment = 0
+text = "$0.00"
 
-[node name="HSeparator3" type="HSeparator" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="ActionSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-
-[node name="VButtonContainer" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(875, 80)
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("1_0si0w")
+theme_override_constants/separation = 20
 alignment = 1
 
-[node name="MenuButton" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer" node_paths=PackedStringArray("wait_for") instance=ExtResource("8_0w0kp")]
-custom_minimum_size = Vector2(300, 70)
+[node name="HSeparator3" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/ActionSection"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_type_variation = &"ThirtiaryButton"
-text = "Go To Main Menu"
-tween_size = Vector2(0, 0)
-wait_for = NodePath("../../../../..")
-enter_time = 0.3
-enter_transition = 11
-enter_delay = 0.1
+theme = ExtResource("1_0si0w")
+theme_type_variation = &"LvlCompletedHSeparator"
 
-[node name="RippleComponentUI" parent="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" instance=ExtResource("10_32soc")]
-material = SubResource("ShaderMaterial_1lrfk")
-layout_mode = 1
+[node name="MenuButton" parent="MainContainer/MarginContainer/VBoxContainer/ActionSection" instance=ExtResource("8_custom")]
+layout_mode = 2
+text = "RETURN TO MAIN MENU"
 
-[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/VButtonContainer/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/ActionSection/MenuButton" to="." method="_on_menu_button_pressed"]

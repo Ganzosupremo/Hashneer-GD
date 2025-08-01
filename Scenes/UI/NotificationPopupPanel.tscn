@@ -1,191 +1,266 @@
-[gd_scene load_steps=8 format=3 uid="uid://i2e61eq5k5l0"]
+[gd_scene load_steps=9 format=3 uid="uid://i2e61eq5k5l0"]
 
 [ext_resource type="Script" uid="uid://djtx7jlckuu1u" path="res://Scripts/Utils/NotificationPopupPanel.gd" id="1_c2djq"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="3_8cmhl"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="3_grad8"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="4_8cmhl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tjvrl"]
-bg_color = Color(0, 0, 0.545098, 0.478431)
+bg_color = Color(0.02, 0.02, 0.04, 0.95)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
-border_color = Color(1, 1, 1, 0.615686)
+border_color = Color(1, 0.843, 0, 0.8)
 border_blend = true
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(1, 0.843, 0, 0.3)
+shadow_size = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c2djq"]
-bg_color = Color(0, 0, 0, 0.592157)
+bg_color = Color(0.05, 0.05, 0.08, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.6)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_c2djq"]
-color = Color(0, 0, 1, 1)
+color = Color(1, 0.843, 0, 0.8)
+thickness = 2
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_grad8"]
-color = Color(0, 0, 1, 1)
+color = Color(1, 0.843, 0, 0.6)
 
 [node name="NotificationPopupPanel" type="PopupPanel"]
-initial_position = 1
-size = Vector2i(520, 302)
+initial_position = 2
+size = Vector2i(600, 512)
 visible = true
 unresizable = false
-min_size = Vector2i(400, 300)
+min_size = Vector2i(500, 350)
 content_scale_mode = 1
+theme = ExtResource("3_8cmhl")
 theme_override_styles/panel = SubResource("StyleBoxFlat_tjvrl")
 script = ExtResource("1_c2djq")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-custom_minimum_size = Vector2(494, 294)
+[node name="MainContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 517.0
-offset_bottom = 299.0
+offset_left = 11.0
+offset_top = 11.0
+offset_right = 589.0
+offset_bottom = 501.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-custom_minimum_size = Vector2(494, 294)
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
+theme_override_constants/separation = 15
 
-[node name="Panel" type="PanelContainer" parent="ScrollContainer/VBoxContainer"]
-clip_contents = true
-custom_minimum_size = Vector2(494, 40)
+[node name="HeaderSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleContainer" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection"]
+layout_mode = 2
+theme_type_variation = &"NotificationPanel"
 theme_override_styles/panel = SubResource("StyleBoxFlat_c2djq")
 
-[node name="TitleLabel" parent="ScrollContainer/VBoxContainer/Panel" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/TitleContainer"]
 layout_mode = 2
-theme_type_variation = &"NormalText"
-text = "New Economic Event!"
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 10
+
+[node name="TitleLabel" parent="MainContainer/VBoxContainer/HeaderSection/TitleContainer/MarginContainer" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "📊 New Economic Event!"
 autowrap_mode = 3
 animate_on_ready = false
 
-[node name="HSeparator" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer/HeaderSection"]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_c2djq")
 
-[node name="DescriptionLabel" parent="ScrollContainer/VBoxContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 120)
+[node name="ContentSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"NotificationPopupPanelDescriptionLabel"
-text = "Description goes here!"
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="DescriptionContainer" type="ScrollContainer" parent="MainContainer/VBoxContainer/ContentSection"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="DescriptionLabel" parent="MainContainer/VBoxContainer/ContentSection/DescriptionContainer" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 98)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_type_variation = &"NormalText"
+text = "A significant economic event has occurred that will impact Bitcoin market dynamics."
 autowrap_mode = 3
 animate_on_ready = false
 
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/VBoxContainer"]
+[node name="DetailsSection" type="VBoxContainer" parent="MainContainer/VBoxContainer/ContentSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="DetailsTitle" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection" instance=ExtResource("3_grad8")]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 24
+text = "Event Details"
+
+[node name="HSeparator2" type="HSeparator" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection"]
 layout_mode = 2
 theme_override_styles/separator = SubResource("StyleBoxLine_grad8")
 
-[node name="GridContainer" type="GridContainer" parent="ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(494, 50)
+[node name="DetailsGrid" type="GridContainer" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection"]
 layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 8
 columns = 2
 
-[node name="ImpactLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="ImpactLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
 theme_type_variation = &"NormalText"
-text = "Impact:"
+theme_override_font_sizes/font_size = 20
+text = "💥 Impact:"
 
-[node name="ImpactValueLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="ImpactValueLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
 theme_type_variation = &"NormalText"
-text = "0.0"
+theme_override_font_sizes/font_size = 20
+text = "High (±15%)"
 animate_on_ready = false
 anim_speed = 0.3
 
-[node name="CurrencyLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="CurrencyLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
 theme_type_variation = &"NormalText"
-text = "Prices Affected:"
+theme_override_font_sizes/font_size = 20
+text = "Currency Affected:"
 anim_speed = 0.3
 
-[node name="CurrencyValueLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="CurrencyValueLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 15)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
 theme_type_variation = &"NormalText"
-text = "BTC"
+theme_override_font_sizes/font_size = 20
+text = "Bitcoin (BTC)"
 animate_on_ready = false
 
-[node name="DurationLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="DurationLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
 theme_type_variation = &"NormalText"
-text = "Duration:"
+theme_override_font_sizes/font_size = 20
+text = "⏱️ Duration:"
 anim_speed = 0.3
 
-[node name="DurationValueLabel" parent="ScrollContainer/VBoxContainer/GridContainer" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="DurationValueLabel" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 1
 theme_type_variation = &"NormalText"
-text = "0 blocks"
+theme_override_font_sizes/font_size = 20
+text = "50 blocks"
 animate_on_ready = false
 
-[node name="CloseButton" type="Button" parent="ScrollContainer/VBoxContainer"]
-visible = false
-custom_minimum_size = Vector2(120, 40)
+[node name="CloseButton" parent="MainContainer/VBoxContainer/ContentSection/DetailsSection" instance=ExtResource("4_8cmhl")]
+custom_minimum_size = Vector2(120, 20)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 text = "Close"
 
-[node name="EconomicEventPassed" type="VBoxContainer" parent="."]
+[node name="EconomicEventPassed" type="Control" parent="."]
+unique_name_in_owner = true
 visible = false
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 3.0
-offset_top = 3.0
-offset_right = 517.0
-offset_bottom = 299.0
+offset_left = 11.0
+offset_top = 11.0
+offset_right = 589.0
+offset_bottom = 501.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("3_8cmhl")
 
-[node name="Panel" type="PanelContainer" parent="EconomicEventPassed"]
-clip_contents = true
-custom_minimum_size = Vector2(494, 40)
+[node name="PassedContainer" type="MarginContainer" parent="EconomicEventPassed"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EconomicEventPassed/PassedContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="TitleContainer" type="PanelContainer" parent="EconomicEventPassed/PassedContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_c2djq")
 
-[node name="NonEditableTitleLabel" parent="EconomicEventPassed/Panel" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 10)
+[node name="MarginContainer" type="MarginContainer" parent="EconomicEventPassed/PassedContainer/VBoxContainer/TitleContainer"]
 layout_mode = 2
-theme_type_variation = &"NormalText"
-text = "Economic Event Passed Away!"
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="NonEditableTitleLabel" parent="EconomicEventPassed/PassedContainer/VBoxContainer/TitleContainer/MarginContainer" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "📈 Economic Event Concluded"
 autowrap_mode = 3
 anim_speed = 0.3
 
-[node name="EventPassedNotificationDescription" parent="EconomicEventPassed" instance=ExtResource("3_grad8")]
-custom_minimum_size = Vector2(0, 200)
+[node name="EventPassedNotificationDescription" parent="EconomicEventPassed/PassedContainer/VBoxContainer" instance=ExtResource("3_grad8")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"NormalText"
-text = "Everything Should Return to Normal Now..."
+theme_override_font_sizes/font_size = 24
+text = "✅ Market conditions have stabilized. 
+
+The economic event has concluded and its effects have dissipated from the market."
 autowrap_mode = 3
 anim_speed = 0.15
+
+[node name="CloseButton" parent="EconomicEventPassed/PassedContainer/VBoxContainer" instance=ExtResource("4_8cmhl")]
+custom_minimum_size = Vector2(140, 35)
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="MainContainer/VBoxContainer/ContentSection/DetailsSection/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="pressed" from="EconomicEventPassed/PassedContainer/VBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

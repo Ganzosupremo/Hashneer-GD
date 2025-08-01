@@ -1,0 +1,24 @@
+[gd_scene load_steps=6 format=3 uid="uid://dajhetili8wxi"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_r2h5a"]
+[ext_resource type="Script" uid="uid://sqp5aww7pcgk" path="res://Scripts/UI/CustomButton.gd" id="2_oi4wb"]
+[ext_resource type="Resource" uid="uid://c14e7myivksx8" path="res://Resources/Audio/MouseHover.tres" id="3_0txxx"]
+[ext_resource type="Resource" uid="uid://dshcft7kpcwn" path="res://Resources/Audio/MouseClick.tres" id="4_efm46"]
+[ext_resource type="Resource" uid="uid://rijn0omwc0gr" path="res://Resources/Audio/MouseRelease.tres" id="5_ngpuj"]
+
+[node name="CustomButton" type="Button"]
+custom_minimum_size = Vector2(300, 60)
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../QuitGame")
+focus_neighbor_bottom = NodePath("../QuitGame")
+theme = ExtResource("1_r2h5a")
+theme_type_variation = &"ModernMainButton"
+text = "Custom Button"
+script = ExtResource("2_oi4wb")
+on_mouse_hovered_effect = ExtResource("3_0txxx")
+on_mouse_down_effect = ExtResource("4_efm46")
+on_mouse_up_effect = ExtResource("5_ngpuj")
+metadata/_edit_lock_ = true
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]
+[connection signal="button_up" from="." to="." method="_on_button_up"]

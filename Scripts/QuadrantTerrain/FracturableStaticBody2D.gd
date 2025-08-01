@@ -8,7 +8,6 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @onready var _col_polygon2d: CollisionPolygon2D = $CollisionPolygon2D
 @onready var _rng: RandomNumberGenerator= RandomNumberGenerator.new()
 @onready var health: HealthComponent = %Health
-@onready var _hit_sound_component: SoundEffectComponent = %HitSoundComponent
 @onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
 @onready var random_drops: RandomDrops = $RandomDrops
 
@@ -21,10 +20,6 @@ class_name FracturableStaticBody2D extends StaticBody2D
 @export var randomize_texture_properties: bool = true
 ## The texture to be applied to the polygon
 @export var poly_texture: Texture2D
-## Sound effect to play when the body is hit
-@export var hit_sound_effect: SoundEffectDetails
-## Sound effect to play when the body is destroyed
-@export var sound_effect_on_destroy: SoundEffectDetails
 @export_range(0.0, 100.0, 0.5, "or_greater") var mass: float = 10.0
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
@@ -106,7 +101,7 @@ func reset_health() -> void:
 	health.set_current_health(health.get_max_health())
 
 func _on_zero_health() -> void:
-	AudioManager.create_2d_audio_at_location(global_position, sound_effect_on_destroy.sound_type, sound_effect_on_destroy.destination_audio_bus)
+	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 	destroyed = true
 
 func _apply_random_texture_properties() -> void:
@@ -127,23 +122,19 @@ func set_initial_health(initial_health: float) -> void:
 ## [param initial_health] Starting health value
 ## [param shape_info] Dictionary containing shape information
 ## [param texture_info] Dictionary containing texture properties
-## [param sound_details] Sound effect details for hit reactions
-func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_info: Dictionary, sound_details: SoundEffectDetails) -> void:
+func set_fracture_body(initial_health: float, shape_info: Dictionary, texture_info: Dictionary) -> void:
 	# await GameManager.get_tree().process_frame
 	
 	set_texture(PolygonLib.setTextureOffset(texture_info, shape_info.centroid))
-	set_hit_sound_effect(sound_details)
 	set_initial_health(initial_health)
 
 ## Sets up the fracturable body with given parameters
 ## [param initial_health] Starting health value
 ## [param texture] Texture to apply to the body
-## [param sound_details] Sound effect details for hit reactions
-func setFractureBody(initial_health: float, texture: Texture2D, sound_details: SoundEffectDetails, normal_texture: Texture2D = null) -> void:
+func setFractureBody(initial_health: float, texture: Texture2D, normal_texture: Texture2D = null) -> void:
 	await GameManager.get_tree().process_frame
 	
 	set_texture_with_texture(texture, normal_texture)
-	set_hit_sound_effect(sound_details)
 	set_initial_health(initial_health)
 
 func set_texture_with_texture(new_texture: Texture2D, normal_texture: Texture2D = null) -> void:
@@ -153,13 +144,6 @@ func set_texture_with_texture(new_texture: Texture2D, normal_texture: Texture2D 
 		_polygon2d.texture.normal_texture = normal_texture
 	else:
 		_polygon2d.texture = new_texture
-
-func set_hit_sound_effect(sound: SoundEffectDetails, save_it: bool = false) -> void:
-	if save_it:
-		hit_sound_effect = sound
-		_hit_sound_component.set_sound(hit_sound_effect)
-	else:
-		_hit_sound_component.set_sound(sound)
 
 func set_polygon(poly : PackedVector2Array) -> void:
 	setPolygon(poly)
@@ -204,9 +188,6 @@ func get_global_rotation_polygon() -> float:
 
 func get_polygon() -> PackedVector2Array:
 	return getPolygon()
-
-func get_sound_component() -> SoundEffectComponent:
-	return _hit_sound_component
 
 ## Returns a Rect2 representing the smallest square that contains the entire polygon
 func get_bounding_square() -> Rect2:
@@ -261,15 +242,16 @@ func get_bounding_rect() -> Rect2:
 ## Returns true if the body is destroyed, false otherwise
 func take_damage(damage: float, instakill: bool = false) -> bool:
 	if instakill:
+		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 		health.take_damage(1.79769e308)
-		_hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
+		
 		return true
 	
 	health.take_damage(damage)
 	if health.get_current_health() <= 0.0:
-		_hit_sound_component.set_and_play_sound(sound_effect_on_destroy)
+		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 		return true
 	
-	_hit_sound_component.set_and_play_sound(hit_sound_effect)
+	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_HIT, AudioManager.DestinationAudioBus.SFX)
 	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false

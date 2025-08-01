@@ -27,7 +27,7 @@
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="15_xdq2w"]
 [ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="16_w6c12"]
 [ext_resource type="PackedScene" uid="uid://cbugj4k7fmf02" path="res://Scenes/UI/HealthUIWavesGameMode.tscn" id="16_xahjo"]
-[ext_resource type="PackedScene" uid="uid://44b3lqo4rfge" path="res://Scenes/UIComponents/TweenableButton.tscn" id="19_xahjo"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="25_rg2dc"]
 
 [sub_resource type="Resource" id="Resource_rvc4p"]
 script = ExtResource("8_tscnx")
@@ -342,107 +342,164 @@ energy = 0.4
 range_item_cull_mask = 191
 height = 0.5
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="MainUI" type="CanvasLayer" parent="."]
 layer = 75
 follow_viewport_scale = 2.0
 
-[node name="ExitButton" parent="UI" instance=ExtResource("19_xahjo")]
-custom_minimum_size = Vector2(160, 40)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
+[node name="UIContainer" type="Control" parent="MainUI"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -202.0
-offset_top = -153.0
-offset_right = -19.0
-offset_bottom = -60.0
-grow_horizontal = 0
-grow_vertical = 0
-theme_type_variation = &"ThirtiaryButton"
-theme_override_font_sizes/font_size = 25
-text = "Terminate
-Session"
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="Control" type="Control" parent="UI"]
-layout_mode = 3
+[node name="TopBar" type="Control" parent="MainUI/UIContainer"]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
+offset_bottom = 130.0
 grow_horizontal = 2
 
-[node name="Label" type="Label" parent="UI/Control"]
+[node name="MarginContainer" type="MarginContainer" parent="MainUI/UIContainer/TopBar"]
+custom_minimum_size = Vector2(0, 130)
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
+anchors_preset = 15
 anchor_right = 1.0
-offset_left = -288.0
-offset_top = 20.0
-offset_right = -38.0
-offset_bottom = 50.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 25
+
+[node name="TopBarContainer" type="HBoxContainer" parent="MainUI/UIContainer/TopBar/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+
+[node name="LeftSection" type="VBoxContainer" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="HealthUIWavesGameMode" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/LeftSection" instance=ExtResource("16_xahjo")]
+custom_minimum_size = Vector2(260, 40)
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="RightSection" type="VBoxContainer" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="ScoreSection" type="VBoxContainer" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 3
+theme_override_constants/separation = 15
+
+[node name="EnemiesKilledLabel" type="Label" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 40)
+layout_mode = 2
+size_flags_horizontal = 8
 theme = ExtResource("7_4pl34")
 theme_type_variation = &"NormalText"
 text = "Enemies Killed: 0"
+horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="HealthUI" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/HealthUI"]
-layout_mode = 0
-offset_top = 50.0
-offset_right = 25.0
-offset_bottom = 70.0
-theme_override_constants/margin_left = 15
-
-[node name="HealthUIWavesGameMode" parent="UI/HealthUI/MarginContainer" instance=ExtResource("16_xahjo")]
+[node name="TerminateSessionButton" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection" instance=ExtResource("25_rg2dc")]
+custom_minimum_size = Vector2(180, 50)
 layout_mode = 2
+size_flags_horizontal = 8
+text = "End Run"
 
-[node name="WeaponUI" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-mouse_filter = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="UI/WeaponUI"]
+[node name="LeftSidebar" type="Control" parent="MainUI/UIContainer"]
+custom_minimum_size = Vector2(180, 200)
 layout_mode = 1
-offset_top = 135.0
-offset_right = 25.0
-offset_bottom = 155.0
-theme_override_constants/margin_left = 15
-
-[node name="WeaponUIWavesGameMode" parent="UI/WeaponUI/MarginContainer" instance=ExtResource("5_xahjo")]
-layout_mode = 2
-
-[node name="BossTimer" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
+anchors_preset = 9
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="UI/BossTimer"]
+[node name="WeaponUI" type="MarginContainer" parent="MainUI/UIContainer/LeftSidebar"]
+custom_minimum_size = Vector2(180, 200)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 20.0
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="WeaponUIWavesGameMode" parent="MainUI/UIContainer/LeftSidebar/WeaponUI" instance=ExtResource("5_xahjo")]
+custom_minimum_size = Vector2(160, 180)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="BottomBar" type="Control" parent="MainUI/UIContainer"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -20.0
+offset_top = -80.0
 grow_horizontal = 2
 grow_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainUI/UIContainer/BottomBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 25
 theme_override_constants/margin_bottom = 25
 
-[node name="BossProgressBar" type="ProgressBar" parent="UI/BossTimer/MarginContainer"]
+[node name="BossTimer" type="Control" parent="MainUI/UIContainer/BottomBar/MarginContainer"]
 layout_mode = 2
+
+[node name="BossSection" type="VBoxContainer" parent="MainUI/UIContainer/BottomBar/MarginContainer/BossTimer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="BossLabel" type="Label" parent="MainUI/UIContainer/BottomBar/MarginContainer/BossTimer/BossSection"]
+layout_mode = 2
+theme = ExtResource("7_4pl34")
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 18
+text = "Boss Incoming:"
+horizontal_alignment = 1
+
+[node name="BossProgressBar" type="ProgressBar" parent="MainUI/UIContainer/BottomBar/MarginContainer/BossTimer/BossSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 7)
+layout_mode = 2
+theme = ExtResource("7_4pl34")
+theme_type_variation = &"BossProgressBar"
 max_value = 120.0
 value = 28.47
+show_percentage = false
 
-[node name="LevelCompletedUI" parent="UI" instance=ExtResource("1_87mxq")]
+[node name="LevelCompletedUI" parent="MainUI" instance=ExtResource("1_87mxq")]
+unique_name_in_owner = true
 visible = false
 
-[connection signal="pressed" from="UI/ExitButton" to="." method="_on_exit_button_pressed"]
-[connection signal="value_changed" from="UI/BossTimer/MarginContainer/BossProgressBar" to="." method="_on_boss_progress_bar_value_changed"]
+[connection signal="pressed" from="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection/TerminateSessionButton" to="." method="_on_exit_button_pressed"]
+[connection signal="value_changed" from="MainUI/UIContainer/BottomBar/MarginContainer/BossTimer/BossSection/BossProgressBar" to="." method="_on_boss_progress_bar_value_changed"]

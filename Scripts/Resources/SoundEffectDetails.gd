@@ -27,6 +27,16 @@ enum SoundEffectType {
 	QUADRANT_CORE_DESTROYED,
 	QUADRANT_HIT,
 	UI_VOLUME_SLIDER_TEST,
+	LEVEL_COMPLETED_SOUND,
+	LEVEL_SELECTOR_OPEN_SOUND,
+	LEVEL_SELECTOR_CLOSE_SOUND,
+	NOTIFICATION_SOUND,
+	LEVEL_COMPLETED_NEGATIVE_SOUND_T1,
+	LEVEL_COMPLETED_NEGATIVE_SOUND_T2,
+	LEVEL_COMPLETED_NEGATIVE_SOUND_T3,
+	NOTIFICATION_ECONOMIC_EVENT,
+	QUADRANT_DESTROYED,
+	QUADRANT_CORE_HIT,
 }
 
 ## Maximum number of this SoundEffect to play simultaneously before culled.
@@ -58,28 +68,5 @@ func has_open_limit() -> bool:
 func on_audio_finished() -> void:
 	change_audio_count(-1)
 
-static func enum_to_string(type: SoundEffectType) -> String:
-	match type:
-		SoundEffectType.AK47_RIFLE_FIRE: return "AK47_RIFLE_FIRE"
-		SoundEffectType.SNIPER_RIFLE_FIRE: return "SNIPER_RIFLE_FIRE"
-		SoundEffectType.PISTOL_FIRE: return "PISTOL_FIRE"
-		SoundEffectType.SHOTGUN_FIRE: return "SHOTGUN_FIRE"
-		SoundEffectType.MINI_UZI_FIRE: return "MINI_UZI_FIRE"
-		SoundEffectType.ENEMY_FIRE: return "ENEMY_FIRE"
-		SoundEffectType.PLAYER_DEATH: return "PLAYER_DEATH"
-		SoundEffectType.PLAYER_HIT: return "PLAYER_HIT"
-		SoundEffectType.PLAYER_HEAL: return "PLAYER_HEAL"
-		SoundEffectType.PLAYER_WALK: return "PLAYER_WALK"
-		SoundEffectType.ENEMY_HIT: return "ENEMY_HIT"
-		SoundEffectType.ENEMY_DEATH: return "ENEMY_DEATH"
-		SoundEffectType.ENEMY_HEAL: return "ENEMY_HEAL"
-		SoundEffectType.FIAT_PICKUP: return "FIAT_PICKUP"
-		SoundEffectType.BTC_PICKUP: return "BTC_PICKUP"
-		SoundEffectType.UI_BUTTON_CLICK: return "UI_BUTTON_CLICK"
-		SoundEffectType.UI_BUTTON_HOVER: return "UI_BUTTON_HOVER"
-		SoundEffectType.UI_BUTTON_RELEASE: return "UI_BUTTON_RELEASE"
-		SoundEffectType.UI_UPGRADE_BROUGHT: return "UI_UPGRADE_BROUGHT"
-		SoundEffectType.BOSS_SPAWN: return "BOSS_SPAWN"
-		SoundEffectType.BOSS_DEATH: return "BOSS_DEATH"
-		SoundEffectType.BOSS_HIT: return "BOSS_HIT"
-	return "UNKNOWN"
+static func sound_effect_type_to_string(type: SoundEffectType) -> String:
+	return Utils.enum_label(SoundEffectType, type)
