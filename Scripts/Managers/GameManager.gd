@@ -98,9 +98,6 @@ func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"levels_unlocked": levels_unlocked,
 		"previous_levels_unlocked_index": previous_levels_unlocked_index,
-		# "unlocked_weapons": unlocked_weapons_keys,
-		# "upgraded_stats": upgraded_stats,
-		# "unlocked_abilities": unlocked_abilities
 	}
 
 func load_data() -> void:

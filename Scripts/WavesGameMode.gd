@@ -112,6 +112,9 @@ func _spawn_enemies(count: int) -> Array[Node]:
 			enemy.Damaged.connect(on_enemy_damaged)
 			enemy.Fractured.connect(on_enemy_fractured)
 			enemy.Died.connect(on_enemy_died)
+			
+			if enemy.shield:
+				enemy.shield.fractured.connect(_on_enemy_shield_fractured)
 
 	return enemies
 
@@ -148,6 +151,9 @@ func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Arra
 	GameManager.player.damage(scaled, enemy.global_position)
 
 func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass : float, color : Color, fracture_force : float, p : float) -> void:
+	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
+
+func _on_enemy_shield_fractured(_ref: ShieldComponent, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float) -> void:
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
 
 func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:

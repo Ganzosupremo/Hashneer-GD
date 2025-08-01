@@ -5,21 +5,21 @@
 
 [node name="TriangleEnemy" node_paths=PackedStringArray("shield") instance=ExtResource("1_qwjiq")]
 invincible_time = 0.0
+knockback_resistance_base = 0.5
 shield = NodePath("ShieldComponent")
-shape_area_percent = 0.15
 max_speed = 100.0
 polygon_shape = 4
 s_p_number = 3
-s_a = 150.0
+s_a = 100.0
 s_b = 100.0
-min_m = 25.0
-m = 25.0
-min_n1 = 1.0
-n1 = 1.0
-min_n2 = 1.0
-n2 = 1.0
-min_n3 = 1.0
-n3 = 1.0
+min_m = 15.0
+m = 15.0
+min_n1 = 0.5
+n1 = 0.5
+min_n2 = 0.5
+n2 = 0.5
+min_n3 = 0.5
+n3 = 0.5
 
 [node name="FractureBodyHealthComponent" parent="." index="0" node_paths=PackedStringArray("shield")]
 advanced_regeneration = false
@@ -30,22 +30,6 @@ has_shield = true
 shield = NodePath("../ShieldComponent")
 
 [node name="ShieldComponent" parent="." index="1" instance=ExtResource("2_or7oj")]
-shield_visibility_scale = 1.585
-shield_min_area_percent = 1.0
-randomize_texture_properties = false
-polygon_shape = 4
-s_p_number = 3
-s_a = 150.0
-s_b = 150.0
-min_m = 25.0
-m = 25.0
-min_n1 = 1.0
-n1 = 1.0
-min_n2 = 1.0
-n2 = 1.0
-min_n3 = 1.0
-n3 = 1.0
-can_regenerate = true
-heal_threshold = 0.9
+shield_min_area_percent = 0.3
+can_regenerate = false
 regeneration_delay = 1.0
-continuous_regeneration_rate = 5.0

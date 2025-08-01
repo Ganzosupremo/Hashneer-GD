@@ -12,3 +12,5 @@ MainWorldEnvironment.tres
 *.import
 /Textures/*.import
 /addons/item_drops
+
+/Logs_md/

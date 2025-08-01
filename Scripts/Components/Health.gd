@@ -28,14 +28,18 @@ func heal(amount_to_heal: float) -> void:
 	_update_health()
 
 func take_damage(damage: float) -> void:
-	if has_shield and shield:
-		damage -= shield.absorb_damage(damage, position)
-		current_health -= damage
-	else:
-		current_health -= damage
-	_update_health()
-	if current_health <= 0.0:
-		zero_health.emit()
+	var actual_damage = damage
+	
+	# If shield exists and is active, let it absorb damage first
+	if has_shield and shield and shield.is_active():
+		actual_damage = shield.absorb_damage(damage, global_position)
+	
+	# Apply remaining damage to health
+	if actual_damage > 0:
+		current_health -= actual_damage
+		_update_health()
+		if current_health <= 0.0:
+			zero_health.emit()
 
 func set_current_health(_health: float) -> void:
 	current_health = _health

@@ -96,6 +96,7 @@ func _apply_damage(body: Node2D, pos: Vector2) -> void:
 		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.5, global_position, force, 0.25, modulate)
 	elif body is ShieldComponent:
 		body.call_deferred("absorb_damage", damage_to_deal, global_position)
+		# Note: Rect lasers continue through shields but deal reduced damage
 	elif body is PlayerController:
 		body.damage(damage_to_deal)
 
