@@ -30,6 +30,8 @@ has_shield = true
 shield = NodePath("../ShieldComponent")
 
 [node name="ShieldComponent" parent="." index="1" instance=ExtResource("2_or7oj")]
+collision_layer = 32
+collision_mask = 1104
 shield_min_area_percent = 0.3
 can_regenerate = false
 regeneration_delay = 1.0

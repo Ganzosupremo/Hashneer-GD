@@ -1,0 +1,276 @@
+[gd_scene load_steps=9 format=3 uid="uid://ckaogc2m7rh7k"]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_tapuc"]
+[ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_b0nvn"]
+[ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_y8qb1"]
+[ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_ocbj5"]
+[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="5_75p2d"]
+[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_etrns"]
+atlas = ExtResource("3_y8qb1")
+region = Rect2(4, 0, 24, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k3mi3"]
+atlas = ExtResource("5_75p2d")
+region = Rect2(0, 0, 32, 17)
+
+[node name="ArmoryUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Overlay" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"LevelSelectorOverlay"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 15
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 5
+
+[node name="Header" type="Label" parent="VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderMedium"
+text = "Armory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(1152, 470)
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_tapuc")
+theme_override_constants/separation = 0
+
+[node name="LeftBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_tapuc")
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/LeftBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"LevelSelectorBackground"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/LeftBar/PanelContainer"]
+custom_minimum_size = Vector2(245, 0)
+layout_mode = 2
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer/LeftBar/PanelContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("1_tapuc")
+allow_rmb_select = true
+allow_search = false
+auto_width = true
+item_count = 4
+item_0/text = "Shotgun"
+item_0/icon = ExtResource("2_b0nvn")
+item_1/text = "Pistol"
+item_1/icon = SubResource("AtlasTexture_etrns")
+item_2/text = "Sniper"
+item_2/icon = ExtResource("4_ocbj5")
+item_3/text = "AK-47"
+item_3/icon = SubResource("AtlasTexture_k3mi3")
+
+[node name="CentralBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(600, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_tapuc")
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"SettingsBackground"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="WeaponDetailsContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer"]
+custom_minimum_size = Vector2(0, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 2
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer/GridContainer"]
+custom_minimum_size = Vector2(86, 64)
+layout_mode = 2
+texture = ExtResource("4_ocbj5")
+stretch_mode = 5
+
+[node name="WeaponName" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer/GridContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Weapon Name"
+
+[node name="StatsTitle" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+text = "Weapon Stats:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WeaponStats" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme = ExtResource("1_tapuc")
+columns = 2
+
+[node name="FireRateCont" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
+layout_mode = 2
+tooltip_text = "Fire rate is calculated as bullet per second.
+So a value of 4 means four bullets per second."
+theme_type_variation = &"WeaponsUIPanelType2"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/FireRateCont"]
+layout_mode = 2
+
+[node name="FireRateLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/FireRateCont/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"SkillNodeLabel"
+text = "Fire Rate: 4"
+
+[node name="DamageMulCon" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_type_variation = &"WeaponsUIPanelType2"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/DamageMulCon"]
+layout_mode = 2
+
+[node name="DamageMultiplierLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/DamageMulCon/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"SkillNodeLabel"
+text = "Damage Multiplier: 1.0"
+
+[node name="SpreadCon" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer"]
+layout_mode = 2
+theme_type_variation = &"WeaponsUIPanelType2"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/SpreadCon"]
+layout_mode = 2
+
+[node name="SpreadLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/SpreadCon/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"SkillNodeLabel"
+text = "Spread: 0.35"
+
+[node name="WeaponDescriptionContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDescriptionContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDescriptionContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="WeaponDescriptionLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDescriptionContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "weapon description"
+autowrap_mode = 3
+
+[node name="RightBar" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("1_tapuc")
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("1_tapuc")
+theme_type_variation = &"LevelSelectorBackground"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer"]
+layout_mode = 2
+
+[node name="Header" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Upgrade Options"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme = ExtResource("1_tapuc")
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Footer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 5
+
+[node name="SkillTreeTabs" parent="VBoxContainer/Footer" instance=ExtResource("6_86iey")]
+layout_mode = 2

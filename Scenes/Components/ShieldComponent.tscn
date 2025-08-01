@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://pcy423e5xwyu" path="res://Scripts/Components/ShieldComponent.gd" id="1_cel7m"]
 
 [node name="ShieldComponent" type="Area2D"]
-collision_layer = 32
-collision_mask = 3152
+collision_layer = 128
+collision_mask = 3088
 script = ExtResource("1_cel7m")
 max_shield = 500.0
 

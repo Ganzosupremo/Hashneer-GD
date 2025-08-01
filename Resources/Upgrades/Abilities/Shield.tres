@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://cvagqjdlwwcu4"]
+
+[ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="1_igwle"]
+[ext_resource type="Script" uid="uid://ukdtmxps3f8a" path="res://Scripts/SkillsTree/SkillNodeAbilityData.gd" id="2_jnx0r"]
+[ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="3_7hpy1"]
+
+[sub_resource type="Resource" id="Resource_xfqgc"]
+script = ExtResource("2_jnx0r")
+ability_type = 4
+ability_to_unlock = ExtResource("1_igwle")
+metadata/_custom_type_script = "uid://ukdtmxps3f8a"
+
+[resource]
+script = ExtResource("3_7hpy1")
+feature_type = 2
+upgrade_name = "Shield"
+upgrade_description = "Unlocks a shield that protects you from damage."
+upgrade_tier = 0
+is_upgrade = false
+is_percentage = false
+stat_type = 0
+ability_data = SubResource("Resource_xfqgc")
+upgrade_base_power = 1.0
+upgrade_power_multiplier = 1.0
+upgrade_cost_base = 500000.0
+upgrade_cost_multiplier = 1.0
+upgrade_cost_base_btc = 45000.0
+upgrade_cost_multiplier_btc = 1.0
+upgrade_max_level = 1
+metadata/_custom_type_script = "uid://btlradxupcwig"

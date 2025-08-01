@@ -17,6 +17,7 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
 	"Magnet": preload("res://Scenes/Player/Abilities/Magnet.tscn"),
 	"Regen Health Over Time": preload("res://Scenes/Player/Abilities/RegenHealthOverTime.tscn"),
+	"Shield": preload("res://Scenes/Components/ShieldComponent.tscn"),
 }
 ## Base stats for the player.
 var base_stats: Dictionary = {

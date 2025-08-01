@@ -79,30 +79,33 @@ enum WeaponNames {
 	CLAYMORE 
 }
 
+## Shapes for the polygons
 enum PolygonShape {
-        Circular,
-        Rectangular,
-        Beam,
-        SuperEllipse,
-        SuperShape
+		Circular, ## Circular polygon
+		Rectangular, ## Rectangular polygon
+		Beam, ## Beam polygon
+		SuperEllipse, ## A super ellipse polygon
+		SuperShape ## A super shape polygon
 }
 
-# Shapes for the overall map grid
+## Shapes for the overall map grid
 enum MapShape {
-	Square,
-	Circle,
-	Diamond,
-	Cross,
-	Ring,
-	LShape,
+	Square, ## Square grid
+	Circle, ## Circular grid
+	Diamond, ## Diamond grid
+	Cross, ## Cross grid
+	Ring, ## Ring grid
+	LShape, ## L-shaped grid
 }
 
 
+## Abilities that can be used by the player
 enum AbilityNames {
-	NONE,
-	BLOCK_CORE_FINDER,
-	MAGNET,
-	REGEN_HEALTH_OVER_TIME,
+	NONE, ## No ability
+	BLOCK_CORE_FINDER, ## Finds the core of a block
+	MAGNET, ## Attracts nearby resources
+	REGEN_HEALTH_OVER_TIME, ## Regenerates health over time
+	SHIELD, ## Provides a temporary shield
 }
 
 enum CurrencyType {

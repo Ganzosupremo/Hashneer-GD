@@ -1,8 +1,7 @@
-[gd_scene load_steps=37 format=3 uid="uid://domdfxprvi6aw"]
+[gd_scene load_steps=36 format=3 uid="uid://domdfxprvi6aw"]
 
 [ext_resource type="Script" uid="uid://bea44as0v1pbg" path="res://Scripts/Player/Player.gd" id="1_ha4ea"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_yb677"]
-[ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="4_6tu5v"]
 [ext_resource type="Texture2D" uid="uid://bofairvras8si" path="res://Textures/Player/HasheneerPlayer.png" id="4_wp2gx"]
 [ext_resource type="PackedScene" uid="uid://c34f41tllr1ql" path="res://Scenes/Components/FireWeaponComponent.tscn" id="5_r61be"]
 [ext_resource type="Resource" uid="uid://cy7f2rybcjt4v" path="res://Resources/Player/PlayerDetails.tres" id="6_6tu5v"]
@@ -197,15 +196,6 @@ color = Color(0.151712, 0.147321, 6.01634e-08, 0.49)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Player"]]
 shape = SubResource("CircleShape2D_1sxoh")
 
-[node name="ShieldComponent" parent="." instance=ExtResource("4_6tu5v")]
-collision_layer = 128
-collision_mask = 3120
-shield_visibility_scale = 1.25
-max_shield = 600.0
-shield_radius = 100.0
-regeneration_delay = 1.0
-regeneration_amount = 100.0
-
 [node name="Body" type="Sprite2D" parent="."]
 modulate = Color(1, 0.647059, 0, 1)
 light_mask = 16
@@ -253,11 +243,9 @@ process_material = SubResource("ParticleProcessMaterial_e3fm8")
 [node name="ActiveWeapon" parent="." instance=ExtResource("6_ltgru")]
 unique_name_in_owner = true
 
-[node name="Health" parent="." node_paths=PackedStringArray("shield") instance=ExtResource("7_fkivy")]
+[node name="Health" parent="." instance=ExtResource("7_fkivy")]
 unique_name_in_owner = true
 max_health = 100.0
-has_shield = true
-shield = NodePath("../ShieldComponent")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 light_mask = 16

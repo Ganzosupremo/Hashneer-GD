@@ -1,8 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://osfk14435tmw"]
+[gd_scene load_steps=7 format=3 uid="uid://osfk14435tmw"]
 
 [ext_resource type="Script" uid="uid://cbcavfaso5vrd" path="res://Scripts/Managers/PlayerStatsManager.gd" id="1_kg87y"]
 [ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="2_vbhka"]
+[ext_resource type="PackedScene" uid="uid://di5istg4hebxi" path="res://Scenes/Player/Abilities/BlockCoreFinder.tscn" id="3_wwrsy"]
+[ext_resource type="PackedScene" uid="uid://bwv6468intk6r" path="res://Scenes/Player/Abilities/Magnet.tscn" id="4_pwla2"]
+[ext_resource type="PackedScene" uid="uid://cblr1jidfo5cn" path="res://Scenes/Player/Abilities/RegenHealthOverTime.tscn" id="5_yt1xn"]
+[ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="6_itm2s"]
 
 [node name="PlayerStatsManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_kg87y")
 progress_event_bus = ExtResource("2_vbhka")
+ability_scenes_dictionary = {
+"Block Core Finder": ExtResource("3_wwrsy"),
+"Magnet": ExtResource("4_pwla2"),
+"Regen Health Over Time": ExtResource("5_yt1xn"),
+"Shield": ExtResource("6_itm2s")
+}
