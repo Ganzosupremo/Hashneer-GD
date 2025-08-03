@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=19 format=3 uid="uid://dm5wtcvtcwc3r"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://dm5wtcvtcwc3r"]
 
 [ext_resource type="Resource" uid="uid://csv3xbukcg0c1" path="res://Resources/Weapons/Player/MiniUzisAmmo.tres" id="1_jn1f3"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_vm5p3"]
 [ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="2_jn1f3"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_uu3ky"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="4_juh0y"]
 [ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="5_2begr"]
 
@@ -90,6 +91,7 @@ process_material = SubResource("ParticleProcessMaterial_lhlcm")
 
 [resource]
 script = ExtResource("1_vm5p3")
+available_upgrades = Array[ExtResource("2_uu3ky")]([])
 weapon_name = "Uzi-Twins"
 weapon_texture = ExtResource("5_2begr")
 fire_sound = ExtResource("2_jn1f3")

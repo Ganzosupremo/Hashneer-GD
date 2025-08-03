@@ -12,6 +12,7 @@ var _implements : Dictionary = {}
 enum InterfaceType {
 	PERSISTENCE_DATA,
 	DAMAGEABLE,
+	UPGRADEABLE,
 }
 
 func _ready():

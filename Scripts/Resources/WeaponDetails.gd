@@ -5,6 +5,9 @@ class_name WeaponDetails extends Resource
 ## The [AmmoDetails] is used by it to determine how this weapon fires the bullets, how many bullets to fire, and what patterns to use.
 ## The [WeaponDetails] resource is designed to be flexible and extensible, allowing for easy addition of new weapon types and behaviors.
 
+@export_category("Available Upgrades")
+## The available upgrades for this weapon, allowing players to enhance the weapon's performance or add new
+@export var available_upgrades: Array[ArmoryUpgradeData] = []
 
 @export_category("Weapon Base Details")
 ## The name of the weapon, used for identification and display purposes.
@@ -59,14 +62,104 @@ class_name WeaponDetails extends Resource
 ## The transition type used for the shake effect, controlling how the shake transitions over time.
 @export var shake_trans: Tween.TransitionType = Tween.TransitionType.TRANS_LINEAR
 
-
+const implements = [
+	preload("res://Scripts/Resources/IUpgradeable.gd"),
+]
 var _upgrade_modifiers: Dictionary = {}  # Dictionary to hold upgrade modifiers for the weapon
 var weapon_id: int = 0
 
-## Returns a random spread value between minus and plus defined  spread
-func get_random_spread() -> float:
-	return randf_range(-spread, spread)
+#region IUpgradeable Interface Implementation
+func get_upgrade_id() -> String:
+	return "weapon_" + str(weapon_id)
 
+func get_upgrade_name() -> String:
+	return weapon_name
+
+func get_upgrade_description() -> String:
+	return "Upgrade details for " + weapon_name
+
+func get_display_icon() -> Texture2D:
+	return weapon_texture
+
+func get_available_upgrades() -> Array[ArmoryUpgradeData]:
+	return available_upgrades
+
+func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrade_power_per_level: float) -> void:
+	match upgrade_type:
+		Constants.ArmoryUpgradeType.WEAPON_DAMAGE_MULTIPLIER:
+			_apply_damage_multiplier_upgrade(level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_FIRE_RATE:
+			_apply_fire_rate_upgrade(level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_SPREAD_REDUCTION:
+			_apply_spread_reduction_upgrade(level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_PRECHARGE_TIME_REDUCTION:
+			_apply_precharge_time_reduction_upgrade(level, upgrade_power_per_level)
+
+func _apply_damage_multiplier_upgrade(level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has("damage_multiplier"):
+		_upgrade_modifiers["damage_multiplier"] = 0.0
+	
+	# Store upgrade modifier instead of directly modifying the base value
+	_upgrade_modifiers["weapon_damage_multiplier"] = level * upgrade_power_per_level
+
+func _apply_fire_rate_upgrade(level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has("fire_rate"):
+		_upgrade_modifiers["fire_rate"] = 0.0
+	
+	# Store upgrade modifier instead of directly modifying the base value
+	_upgrade_modifiers["shots_per_second"] = level * upgrade_power_per_level
+
+func _apply_spread_reduction_upgrade(level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has("spread_reduction"):
+		_upgrade_modifiers["spread_reduction"] = 0.0
+	_upgrade_modifiers["spread_reduction"] = level * upgrade_power_per_level
+
+func _apply_precharge_time_reduction_upgrade(level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has("precharge_time_reduction"):
+		_upgrade_modifiers["precharge_time_reduction"] = 0.0
+	# Store upgrade modifier instead of directly modifying the base value
+	_upgrade_modifiers["precharge_time_reduction"] = level * upgrade_power_per_level
+
+func get_current_stats() -> Dictionary:
+	var stats: Dictionary = {
+		"Weapon Name": weapon_name,
+		"Damage Multiplier": str(get_damage_multiplier()),
+		"Shots Per Second": str(get_fire_rate()),
+		"Precharge Time": str(get_precharge_time()),
+		"Spread": str(get_spread()),
+		"Level": str(get_total_upgrade_level()),
+	}
+	return stats
+
+#endregion
+
+#region Setters and Getters
+## Returns the spread of the weapon, applying any spread reduction upgrades.
+func get_spread() -> float:
+	var spread_reduction: float = _upgrade_modifiers.get("spread_reduction", 0.0)
+	return max(spread - spread_reduction, 0.0)
+
+## Returns the fire rate of the weapon, applying any fire rate upgrades.
+func get_fire_rate() -> float:
+	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
+	return shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0)
+
+## Returns the damage multiplier of the weapon, applying any damage multiplier upgrades.
+func get_damage_multiplier() -> float:
+	var damage_multiplier_upgrade: float = _upgrade_modifiers.get("weapon_damage_multiplier", 0.0)
+	return weapon_damage_multiplier * max(damage_multiplier_upgrade + 1.0, 1.0)
+
+## Returns the precharge time of the weapon, applying any precharge time reduction upgrades.
+func get_precharge_time() -> float:
+	var precharge_time_reduction: float = _upgrade_modifiers.get("precharge_time_reduction", 0.0)
+	return max(precharge_time - precharge_time_reduction, 0.0)
+
+## Returns the total upgrade level across all available upgrades.
+func get_total_upgrade_level() -> int:
+	var total_level: int = 0
+	for upgrade in available_upgrades:
+		total_level += upgrade.upgrade_levels
+	return total_level
 
 ## Sets the fire rate of the weapon, controlling how many shots can be fired per second.
 func set_fire_rate(value: float) -> void:
@@ -76,17 +169,9 @@ func set_fire_rate(value: float) -> void:
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
 
+## Returns the cooldown time for firing the weapon, calculated based on the fire rate.
 func get_fire_cooldown() -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
 	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
 
-func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
-	weapon_name = "Default Weapon"
-	weapon_texture = null
-	fire_sound = null
-	weapon_damage_multiplier = 1.0
-	ammo_details = AmmoDetails.new()
-	weapon_shoot_effect = null
-	shots_per_second = 1.0
-	precharge_time = 0.0
-	spread = 0.0
+#endregion

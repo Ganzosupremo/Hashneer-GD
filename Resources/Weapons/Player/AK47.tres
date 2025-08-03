@@ -1,10 +1,47 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=7 format=3 uid="uid://dolvblimdgg0b"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=11 format=3 uid="uid://dolvblimdgg0b"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_6hkbf"]
 [ext_resource type="Resource" uid="uid://cttyumyw2eyyf" path="res://Resources/Weapons/Player/AK-47Ammo.tres" id="1_vd2v8"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_c2e5b"]
 [ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="2_gphs5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_vxpuo"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_gua3f"]
+
+[sub_resource type="Resource" id="Resource_052dw"]
+script = ExtResource("2_c2e5b")
+upgrade_type = 0
+upgrade_name = ""
+upgrade_description = ""
+upgrade_levels = 3
+upgrade_power_per_level = 0.1
+base_cost = 50000.0
+cost_multiplier = 1.5
+requires_bitcoin = false
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_g5kaf"]
+script = ExtResource("2_c2e5b")
+upgrade_type = 0
+upgrade_name = ""
+upgrade_description = ""
+upgrade_levels = 3
+upgrade_power_per_level = 0.1
+base_cost = 50000.0
+cost_multiplier = 1.5
+requires_bitcoin = false
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_vvxv4"]
+script = ExtResource("2_c2e5b")
+upgrade_type = 0
+upgrade_name = ""
+upgrade_description = ""
+upgrade_levels = 3
+upgrade_power_per_level = 0.1
+base_cost = 50000.0
+cost_multiplier = 1.5
+requires_bitcoin = false
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j52in"]
 atlas = ExtResource("2_vxpuo")
@@ -12,6 +49,7 @@ region = Rect2(0, 0, 31, 17)
 
 [resource]
 script = ExtResource("1_6hkbf")
+available_upgrades = Array[ExtResource("2_c2e5b")]([SubResource("Resource_052dw"), SubResource("Resource_g5kaf"), SubResource("Resource_vvxv4")])
 weapon_name = "AK-47"
 weapon_texture = SubResource("AtlasTexture_j52in")
 fire_sound = ExtResource("2_gphs5")

@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=7 format=3 uid="uid://bivptbtajsp46"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=8 format=3 uid="uid://bivptbtajsp46"]
 
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_wgbrq"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
@@ -12,6 +13,7 @@ region = Rect2(4, 0, 24, 14)
 
 [resource]
 script = ExtResource("3_a8fhq")
+available_upgrades = Array[ExtResource("2_wgbrq")]([])
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_psf4r")
