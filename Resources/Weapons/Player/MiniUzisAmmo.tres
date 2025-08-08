@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=12 format=3 uid="uid://csv3xbukcg0c1"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=13 format=3 uid="uid://csv3xbukcg0c1"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_37v23"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_np5ir"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_w7mvb"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_6iw8x"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6iw8x"]
@@ -58,6 +59,8 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [resource]
 script = ExtResource("1_np5ir")
+available_upgrades = Array[ExtResource("1_w7mvb")]([])
+ammo_name = "Mini Uzis Ammo"
 min_lifetime = 2.0
 max_lifetime = 4.0
 bullet_damage = 22.0
@@ -84,4 +87,5 @@ trail_length = 20
 trail_width = 20.0
 fracture_force = 10000.0
 bullet_hit_vfx = SubResource("Resource_57hpu")
+is_child = true
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"

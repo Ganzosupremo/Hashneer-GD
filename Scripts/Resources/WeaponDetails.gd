@@ -1,4 +1,4 @@
-class_name WeaponDetails extends Resource
+class_name WeaponDetails extends IUpgradeable
 ## This resource contains all the details about the weapon, such as name, texture, fire sound, ammo details, shoot effect, fire rate, precharge time, spread, and shake properties.
 ##
 ## This resource is used by the [FireWeaponComponent] to determine how the weapon behaves, how it fires, and how it interacts with the environment.
@@ -18,7 +18,7 @@ class_name WeaponDetails extends Resource
 @export var fire_sound: SoundEffectDetails
 ## The multiplier applied to the weapon's damage, allowing for scaling of damage based on upgrades or global settings.
 ## This multiplier is applied to the base damage defined in the [AmmoDetails] resource.
-@export_range(0.0, 1.0, 0.5) var weapon_damage_multiplier: float
+@export_range(0.0, 1.0, 0.05) var weapon_damage_multiplier_percent: float = 0.0
 
 @export_category("Ammo Details")
 ## The details of the ammo used by this weapon, including bullet type, damage, speed, lifetime, and other properties. See [AmmoDetails] for more details.
@@ -65,13 +65,17 @@ class_name WeaponDetails extends Resource
 const implements = [
 	preload("res://Scripts/Resources/IUpgradeable.gd"),
 ]
+
 var _upgrade_modifiers: Dictionary = {}  # Dictionary to hold upgrade modifiers for the weapon
-var weapon_id: int = 0
+var weapon_index: int = 0
+var _chached_id: String = ""
 
 #region IUpgradeable Interface Implementation
 func get_upgrade_id() -> String:
-	return "weapon_" + str(weapon_id)
-
+	if _chached_id.is_empty():
+		_chached_id = _generate_id_from_path()
+	return _chached_id
+	
 func get_upgrade_name() -> String:
 	return weapon_name
 
@@ -84,48 +88,36 @@ func get_display_icon() -> Texture2D:
 func get_available_upgrades() -> Array[ArmoryUpgradeData]:
 	return available_upgrades
 
+func get_child_available_upgrades() -> Array[ArmoryUpgradeData]:
+	return ammo_details.get_available_upgrades()
+
 func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrade_power_per_level: float) -> void:
 	match upgrade_type:
 		Constants.ArmoryUpgradeType.WEAPON_DAMAGE_MULTIPLIER:
-			_apply_damage_multiplier_upgrade(level, upgrade_power_per_level)
+			_apply_upgrade_modifier("weapon_damage_multiplier_percent", level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.WEAPON_FIRE_RATE:
-			_apply_fire_rate_upgrade(level, upgrade_power_per_level)
+			_apply_upgrade_modifier("fire_rate", level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.WEAPON_SPREAD_REDUCTION:
-			_apply_spread_reduction_upgrade(level, upgrade_power_per_level)
+			_apply_upgrade_modifier("spread_reduction", level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.WEAPON_PRECHARGE_TIME_REDUCTION:
-			_apply_precharge_time_reduction_upgrade(level, upgrade_power_per_level)
+			_apply_upgrade_modifier("precharge_time_reduction", level, upgrade_power_per_level)
+		_:
+			DebugLogger.error("Unknown upgrade type: " + str(upgrade_type))
 
-func _apply_damage_multiplier_upgrade(level: int, upgrade_power_per_level: float) -> void:
-	if !_upgrade_modifiers.has("damage_multiplier"):
-		_upgrade_modifiers["damage_multiplier"] = 0.0
+func _apply_upgrade_modifier(upgrade_name: String, level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has(upgrade_name):
+		_upgrade_modifiers[upgrade_name] = 0.0
 	
 	# Store upgrade modifier instead of directly modifying the base value
-	_upgrade_modifiers["weapon_damage_multiplier"] = level * upgrade_power_per_level
-
-func _apply_fire_rate_upgrade(level: int, upgrade_power_per_level: float) -> void:
-	if !_upgrade_modifiers.has("fire_rate"):
-		_upgrade_modifiers["fire_rate"] = 0.0
-	
-	# Store upgrade modifier instead of directly modifying the base value
-	_upgrade_modifiers["shots_per_second"] = level * upgrade_power_per_level
-
-func _apply_spread_reduction_upgrade(level: int, upgrade_power_per_level: float) -> void:
-	if !_upgrade_modifiers.has("spread_reduction"):
-		_upgrade_modifiers["spread_reduction"] = 0.0
-	_upgrade_modifiers["spread_reduction"] = level * upgrade_power_per_level
-
-func _apply_precharge_time_reduction_upgrade(level: int, upgrade_power_per_level: float) -> void:
-	if !_upgrade_modifiers.has("precharge_time_reduction"):
-		_upgrade_modifiers["precharge_time_reduction"] = 0.0
-	# Store upgrade modifier instead of directly modifying the base value
-	_upgrade_modifiers["precharge_time_reduction"] = level * upgrade_power_per_level
+	_upgrade_modifiers[upgrade_name] = level * upgrade_power_per_level
 
 func get_current_stats() -> Dictionary:
 	var stats: Dictionary = {
 		"Weapon Name": weapon_name,
-		"Damage Multiplier": str(get_damage_multiplier()),
-		"Shots Per Second": str(get_fire_rate()),
-		"Precharge Time": str(get_precharge_time()),
+		"Weapon Texture": weapon_texture,
+		"Damage": str(get_damage_multiplier()),
+		"ShotsPerSecond": str(get_fire_rate()),
+		"PrechargeTime": str(get_precharge_time()),
 		"Spread": str(get_spread()),
 		"Level": str(get_total_upgrade_level()),
 	}
@@ -139,6 +131,11 @@ func get_spread() -> float:
 	var spread_reduction: float = _upgrade_modifiers.get("spread_reduction", 0.0)
 	return max(spread - spread_reduction, 0.0)
 
+func get_random_spread() -> float:
+	# Returns a random spread value based on the weapon's spread and any upgrades applied
+	var spread_reduction: float = _upgrade_modifiers.get("spread_reduction", 0.0)
+	return max(spread - spread_reduction, 0.0) * randf_range(-PI, PI)
+
 ## Returns the fire rate of the weapon, applying any fire rate upgrades.
 func get_fire_rate() -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
@@ -146,8 +143,8 @@ func get_fire_rate() -> float:
 
 ## Returns the damage multiplier of the weapon, applying any damage multiplier upgrades.
 func get_damage_multiplier() -> float:
-	var damage_multiplier_upgrade: float = _upgrade_modifiers.get("weapon_damage_multiplier", 0.0)
-	return weapon_damage_multiplier * max(damage_multiplier_upgrade + 1.0, 1.0)
+	var damage_multiplier_upgrade: float = _upgrade_modifiers.get("weapon_damage_multiplier_percent", 0.0)
+	return clamp(weapon_damage_multiplier_percent + damage_multiplier_upgrade, 0.0, 1.0)
 
 ## Returns the precharge time of the weapon, applying any precharge time reduction upgrades.
 func get_precharge_time() -> float:
@@ -173,5 +170,25 @@ func set_precharge_time(value: float) -> void:
 func get_fire_cooldown() -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
 	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
+
+## Returns the ammo details for this weapon, providing information about the bullets fired by this weapon.
+func get_ammo_details() -> AmmoDetails:
+	return ammo_details
+
+#endregion
+
+
+#region ID
+
+func _generate_id_from_path() -> String:
+	# Generates a unique ID based on the resource path
+	var path: String = resource_path
+	if path.is_empty():
+		# Fallback for runtime-created resources
+		return "weapon_runtime_" + str(get_instance_id())
+	
+	# Extract filename without extension and use as ID
+	var filename = path.get_file().get_basename()
+	return "weapon_" + filename
 
 #endregion

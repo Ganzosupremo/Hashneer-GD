@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=13 format=3 uid="uid://cmk3cg4rlabd6"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=14 format=3 uid="uid://cmk3cg4rlabd6"]
 
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ek8o0"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_kb2pf"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_nuhma"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_rkkgi"]
@@ -60,6 +61,8 @@ colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.60
 
 [resource]
 script = ExtResource("1_kb2pf")
+available_upgrades = Array[ExtResource("1_ek8o0")]([])
+ammo_name = "Pistol Ammo"
 min_lifetime = 2.0
 max_lifetime = 4.0
 bullet_damage = 30.0
@@ -87,3 +90,4 @@ trail_width = 15.0
 fracture_force = 10000.0
 bullet_hit_vfx = ExtResource("1_ynk2i")
 failed_explosion_vfx = SubResource("Resource_46w7s")
+is_child = true

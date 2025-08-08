@@ -36,7 +36,7 @@ var dead_sound_effect: SoundEffectDetails
 var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
-var player_damage_multiplier: float = 1.0
+var player_damage_multiplier_percent: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
 var abilities: Array = []
@@ -72,7 +72,7 @@ func set_player() -> void:
 	
 	_unlock_saved_abilities()
 	speed = player_details.speed
-	player_damage_multiplier = player_details.damage_multiplier
+	player_damage_multiplier_percent = player_details.damage_multiplier_percent
 	_health.set_max_health(player_details.max_health)
 	
 	_apply_stats()
@@ -130,10 +130,10 @@ func _unlock_saved_abilities() -> void:
 		ability.enable()
 
 func _apply_stats() -> void:
-	var stats = player_details.apply_stats()
+	var stats: Dictionary = player_details.apply_stats()
 	
 	speed = stats.Speed
-	player_damage_multiplier = stats.Damage
+	player_damage_multiplier_percent = stats.Damage
 	_health.set_max_health(stats.Health)
 
 #region Input
@@ -166,10 +166,10 @@ func switch_weapon() -> void:
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
 		fired_previous_frame = true
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
 	else:
 		fired_previous_frame = false
-		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier, get_global_mouse_position())
+		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):

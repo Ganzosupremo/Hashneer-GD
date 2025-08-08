@@ -1,7 +1,8 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=12 format=3 uid="uid://djaivavcnq70b"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=13 format=3 uid="uid://djaivavcnq70b"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_g38mp"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_tajyi"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_w6vc8"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_0838d"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_tajyi"]
@@ -58,6 +59,8 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [resource]
 script = ExtResource("1_g38mp")
+available_upgrades = Array[ExtResource("1_w6vc8")]([])
+ammo_name = "Default Ammo"
 min_lifetime = 0.1
 max_lifetime = 1.0
 bullet_damage = 50.0
@@ -84,4 +87,5 @@ trail_length = 0
 trail_width = 1.0
 fracture_force = 15000.0
 bullet_hit_vfx = SubResource("Resource_xpxxo")
+is_child = true
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"

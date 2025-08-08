@@ -1,6 +1,7 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=5 format=3 uid="uid://j0b1rc1iki68"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=6 format=3 uid="uid://j0b1rc1iki68"]
 
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_bhow2"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ebvcn"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_h4fyi"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_h5r0u"]
 
@@ -10,6 +11,8 @@ colors = PackedColorArray(0.044306, 0.40851, 0.366935, 1, 0.281376, 0.561392, 0.
 
 [resource]
 script = ExtResource("1_h4fyi")
+available_upgrades = Array[ExtResource("1_ebvcn")]([])
+ammo_name = "Sniper Ammo"
 min_lifetime = 4.0
 max_lifetime = 8.0
 bullet_damage = 240.0
@@ -36,3 +39,4 @@ trail_length = 15
 trail_width = 15.0
 fracture_force = 25000.0
 bullet_hit_vfx = ExtResource("1_h5r0u")
+is_child = true

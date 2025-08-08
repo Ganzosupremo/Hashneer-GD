@@ -4,7 +4,6 @@ class_name ArmoryUpgradeData extends Resource
 ## It inherits from Resource to allow for easy serialization and editing in the Godot editor.
 ## It contains properties for the upgrade name, description, and cost.
 
-
 @export var upgrade_type: Constants.ArmoryUpgradeType
 @export var upgrade_name: String
 @export var upgrade_description: String
@@ -13,3 +12,14 @@ class_name ArmoryUpgradeData extends Resource
 @export var base_cost: float = 50000.0
 @export var cost_multiplier: float = 1.5
 @export var requires_bitcoin: bool = false
+@export var bitcoin_base_cost: float = 50.0
+@export var bitcoin_cost_multiplier: float = 1.1
+
+var level: int = 0
+
+
+func get_upgrade_name() -> String:
+	return upgrade_name
+
+func get_upgrade_description() -> String:
+	return upgrade_description

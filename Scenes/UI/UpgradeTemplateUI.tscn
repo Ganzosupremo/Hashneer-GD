@@ -50,6 +50,7 @@ theme_override_constants/separation = 8
 alignment = 1
 
 [node name="UpgradeButton" type="Button" parent="MarginContainer/VBoxContainer/UpgradeActionContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(65, 28)
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradeButton"
@@ -74,5 +75,3 @@ theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 text = "0.025₿"
 horizontal_alignment = 2
-
-[connection signal="pressed" from="MarginContainer/VBoxContainer/UpgradeActionContainer/UpgradeButton" to="." method="_on_upgrade_button_pressed"]

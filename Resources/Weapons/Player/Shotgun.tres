@@ -1,47 +1,12 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=18 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=14 format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
-[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_7fgsi"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_a8ja3"]
-[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="2_ki0sl"]
+[ext_resource type="Resource" uid="uid://bkec27w83ebdb" path="res://Resources/Weapons/Player/ShotgunAmmo.tres" id="1_a8ja3"]
 [ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="3_kfa2b"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="4_1c5fr"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="5_7fgsi"]
-
-[sub_resource type="Gradient" id="Gradient_ubo30"]
-offsets = PackedFloat32Array(0, 0.571721, 1)
-colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238, 1, 0.993, 0.649, 0, 0.666)
-
-[sub_resource type="Resource" id="Resource_1gnsf"]
-script = ExtResource("2_ki0sl")
-min_lifetime = 1.0
-max_lifetime = 1.5
-bullet_damage = 15.0
-bullet_speed = 800.0
-bullet_type = 0
-bullet_pattern = 2
-pattern_arc_angle = 45.0
-fire_pattern_simultaneous = false
-max_pierce_count = 0
-max_bounce_count = 0
-explosion_radius = 0.0
-explosion_layer_mask = 1
-laser_beam_scene = ExtResource("1_a8ja3")
-laser_length = 300.0
-laser_damage_cooldown = 0.1
-laser_collision_mask = 1
-size = 4
-bullets_per_shoot_min = 4
-bullets_per_shoot_max = 8
-bullet_spawn_interval_min = 0.015
-bullet_spawn_interval_max = 0.025
-trail_gradient = SubResource("Gradient_ubo30")
-trail_length = 5
-trail_width = 9.0
-fracture_force = 25000.0
-bullet_hit_vfx = ExtResource("1_7fgsi")
 
 [sub_resource type="Gradient" id="Gradient_1c5fr"]
 offsets = PackedFloat32Array(0, 0.282353, 0.588235, 0.788235)
@@ -97,7 +62,7 @@ weapon_name = "Shotgun"
 weapon_texture = ExtResource("4_faobk")
 fire_sound = ExtResource("3_kfa2b")
 weapon_damage_multiplier = 0.0
-ammo_details = SubResource("Resource_1gnsf")
+ammo_details = ExtResource("1_a8ja3")
 weapon_shoot_effect = SubResource("Resource_eukx2")
 shots_per_second = 1.3
 precharge_time = 0.0
@@ -110,3 +75,4 @@ armonic_ration = Array[int]([4, 5])
 phase_offset = 90
 samples = 10
 shake_trans = 10
+is_child = false

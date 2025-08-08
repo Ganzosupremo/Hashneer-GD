@@ -3,7 +3,7 @@ class_name PlayerDetails extends Resource
 @export_category("Player Basic Details")
 @export var speed: float = 250.0
 @export var max_health: float = 100.0
-@export var damage_multiplier: float = 1.0
+@export var damage_multiplier_percent: float = 1.0
 
 @export_category("Weapons")
 @export var initial_weapon: WeaponDetails
@@ -28,12 +28,12 @@ func add_weapon_to_array(weapon: WeaponDetails) -> void:
 func apply_stats() -> Dictionary:
 	_add_unlocked_weapons()
 	speed = PlayerStatsManager.get_stat_final_value("Speed")
-	damage_multiplier = PlayerStatsManager.get_stat_final_value("Damage")
+	damage_multiplier_percent = PlayerStatsManager.get_stat_final_value("Damage")
 	max_health = PlayerStatsManager.get_stat_final_value("Health")
 	
 	return {
 		"Speed": speed,
-		"Damage": damage_multiplier,
+		"Damage": damage_multiplier_percent,
 		"Health": max_health,
 	}
 
