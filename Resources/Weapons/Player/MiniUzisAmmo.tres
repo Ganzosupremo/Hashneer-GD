@@ -88,4 +88,5 @@ trail_width = 20.0
 fracture_force = 10000.0
 bullet_hit_vfx = SubResource("Resource_57hpu")
 is_child = true
+upgrade_description = "No description available"
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"

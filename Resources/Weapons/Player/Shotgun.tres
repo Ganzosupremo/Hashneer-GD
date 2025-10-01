@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=14 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=16 format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
 [ext_resource type="Resource" uid="uid://bkec27w83ebdb" path="res://Resources/Weapons/Player/ShotgunAmmo.tres" id="1_a8ja3"]
@@ -7,6 +7,34 @@
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="5_7fgsi"]
+
+[sub_resource type="Resource" id="Resource_a8ja3"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 0
+upgrade_name = "Increase fire rate"
+upgrade_description = "+0.2 bullets per second"
+upgrade_levels = 3
+upgrade_power_per_level = 0.2
+base_cost = 69000.0
+cost_multiplier = 1.4
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_7fgsi"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 1
+upgrade_name = "Increase damage"
+upgrade_description = "+20% damage output"
+upgrade_levels = 5
+upgrade_power_per_level = 0.2
+base_cost = 125000.0
+cost_multiplier = 1.6
+requires_bitcoin = true
+bitcoin_base_cost = 75.0
+bitcoin_cost_multiplier = 1.3
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Gradient" id="Gradient_1c5fr"]
 offsets = PackedFloat32Array(0, 0.282353, 0.588235, 0.788235)
@@ -57,11 +85,11 @@ process_material = SubResource("ParticleProcessMaterial_rf6gg")
 
 [resource]
 script = ExtResource("4_6sosy")
-available_upgrades = Array[ExtResource("4_1c5fr")]([])
+available_upgrades = Array[ExtResource("4_1c5fr")]([SubResource("Resource_a8ja3"), SubResource("Resource_7fgsi")])
 weapon_name = "Shotgun"
 weapon_texture = ExtResource("4_faobk")
 fire_sound = ExtResource("3_kfa2b")
-weapon_damage_multiplier = 0.0
+weapon_damage_multiplier_percent = 0.0
 ammo_details = ExtResource("1_a8ja3")
 weapon_shoot_effect = SubResource("Resource_eukx2")
 shots_per_second = 1.3
@@ -76,3 +104,4 @@ phase_offset = 90
 samples = 10
 shake_trans = 10
 is_child = false
+upgrade_description = "No description available"

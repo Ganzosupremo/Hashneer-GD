@@ -127,7 +127,7 @@ func get_upgrade_name() -> String:
 	return ammo_name
 
 func get_upgrade_description() -> String:
-	return "Upgrade details for " + ammo_name
+	return upgrade_description
 
 func get_display_icon() -> Texture2D:
 	return null

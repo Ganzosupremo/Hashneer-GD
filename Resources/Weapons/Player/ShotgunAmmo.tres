@@ -8,7 +8,7 @@
 [sub_resource type="Resource" id="Resource_1c5fr"]
 script = ExtResource("1_ou5uc")
 upgrade_type = 10
-upgrade_name = "increase bullets per shoot"
+upgrade_name = "Increase bullets per shoot"
 upgrade_description = "+1 Bullets per shoot"
 upgrade_levels = 4
 upgrade_power_per_level = 1.0
@@ -23,7 +23,7 @@ metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 script = ExtResource("1_ou5uc")
 upgrade_type = 4
 upgrade_name = "increase damage"
-upgrade_description = "+2% damage output"
+upgrade_description = "+20% damage output"
 upgrade_levels = 10
 upgrade_power_per_level = 0.2
 base_cost = 60000.0
@@ -68,3 +68,4 @@ trail_width = 9.0
 fracture_force = 25000.0
 bullet_hit_vfx = ExtResource("2_nn25n")
 is_child = true
+upgrade_description = "No description available"

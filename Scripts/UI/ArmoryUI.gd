@@ -120,7 +120,7 @@ func _display_item_upgrades(item: IUpgradeable, child_item: IUpgradeable = null)
 		var upgrade_ui: UpgradeTemplateUI = UPGRADE_TEMPLATE_UI.instantiate()
 		_upgrades_container.add_child(upgrade_ui)
 		var costs: Array[float] = _armory_manager.calculate_upgrade_cost(upgrade, _armory_manager.get_upgrade_level(item.get_upgrade_id(), upgrade.upgrade_type))
-		upgrade_ui.set_upgrade_details(upgrade.get_upgrade_name(), _armory_manager.get_upgrade_level(item.get_upgrade_id(), upgrade.upgrade_type), upgrade.get_upgrade_description(), costs[0], costs[1])
+		upgrade_ui.set_upgrade_details(upgrade.get_upgrade_name().capitalize(), _armory_manager.get_upgrade_level(item.get_upgrade_id(), upgrade.upgrade_type), upgrade.get_upgrade_description(), costs[0], costs[1])
 		if !upgrade_ui.upgrade_button.pressed.is_connected(Callable(self, &"_on_upgrade_button_pressed").bind(item, upgrade)):
 			upgrade_ui.upgrade_button.pressed.connect(Callable(self, &"_on_upgrade_button_pressed").bind(item, upgrade))
 
@@ -131,6 +131,6 @@ func _display_item_upgrades(item: IUpgradeable, child_item: IUpgradeable = null)
 		var ammo_upgrade_ui: UpgradeTemplateUI = UPGRADE_TEMPLATE_UI.instantiate()
 		_ammo_upgrades_container.add_child(ammo_upgrade_ui)
 		var ammo_costs: Array[float] = _armory_manager.calculate_upgrade_cost(upgrade, _armory_manager.get_upgrade_level(child_item.get_upgrade_id(), upgrade.upgrade_type))
-		ammo_upgrade_ui.set_upgrade_details(upgrade.get_upgrade_name(), _armory_manager.get_upgrade_level(child_item.get_upgrade_id(), upgrade.upgrade_type), upgrade.get_upgrade_description(), ammo_costs[0], ammo_costs[1])
+		ammo_upgrade_ui.set_upgrade_details(upgrade.get_upgrade_name().capitalize(), _armory_manager.get_upgrade_level(child_item.get_upgrade_id(), upgrade.upgrade_type), upgrade.get_upgrade_description(), ammo_costs[0], ammo_costs[1])
 		if !ammo_upgrade_ui.upgrade_button.pressed.is_connected(Callable(self, &"_on_upgrade_button_pressed").bind(child_item, upgrade)):
 			ammo_upgrade_ui.upgrade_button.pressed.connect(Callable(self, &"_on_upgrade_button_pressed").bind(child_item, upgrade))

@@ -80,7 +80,7 @@ func get_upgrade_name() -> String:
 	return weapon_name
 
 func get_upgrade_description() -> String:
-	return "Upgrade details for " + weapon_name
+	return upgrade_description
 
 func get_display_icon() -> Texture2D:
 	return weapon_texture

@@ -4,6 +4,7 @@ class_name IUpgradeable extends Resource
 ## This interface defines the methods that any upgradeable item must implement.
 
 @export var is_child: bool = false  ## Indicates if this item is a child of another upgradeable item
+@export_multiline var upgrade_description: String = "No description available"  ## Description of the upgrade
 
 ## Returns a unique identifier for the upgrade.
 ## This should be overridden by the implementing class.
