@@ -19,99 +19,103 @@ const ERROR_500: String = "Code 500: This block has already been mined. No rewar
 
 # Player Movement constants
 const Player_Max_Speed: float = 600.0
-const Player_Acceleration: float = 1500.0
+const Player_Acceleration: float = 2200.0
+const Player_Deceleration: float = 2800.0
+const Player_Turn_Accel: float = 3000.0
+const Player_Brake_Accel: float = 3500.0
 const Player_Friction: float = 1000.0
+const Player_Steer_Assist: float = 1.15
 
 
 enum ShakeMagnitude {
-	None,
-	Small,
-	Medium,
-	Large,
-	ExtraLarge,
-	Gigantius,
-	Enormius
+        None,
+        Small,
+        Medium,
+        Large,
+        ExtraLarge,
+        Gigantius,
+        Enormius
 }
 
 enum WeaponNames {
-	NONE = -1,
-	PISTOL,
-	SHOTGUN,
-	RIFLE,
-	MINI_UZI,
-	SNIPER,
-	AK47,
-	MACHINE_GUN,
-	ROCKET_LAUNCHER,
-	GRENADE_LAUNCHER,
-	FLAMETHROWER,
-	LASER,
-	RAILGUN,
-	PLASMA,
-	RAYGUN,
-	BAZOOKA,
-	CANNON,
-	BFG,
-	MINIGUN,
-	CHAINSAW,
-	SWORD,
-	AXE,
-	HAMMER,
-	MACE,
-	SPEAR,
-	BOW,
-	CROSSBOW,
-	SHURIKEN,
-	KUNAI,
-	NINJA_STAR,
-	BOOMERANG,
-	WHIP,
-	LASSO,
-	YOYO,
-	SLINGSHOT,
-	CATAPULT,
-	TREBUCHET,
-	BALLISTA,
-	CANNONBALL,
-	BOMB,
-	MORTAR,
-	LANDMINE,
-	CLAYMORE 
+        NONE = -1,
+        PISTOL,
+        SHOTGUN,
+        RIFLE,
+        MINI_UZI,
+        SNIPER,
+        AK47,
+        MACHINE_GUN,
+        ROCKET_LAUNCHER,
+        GRENADE_LAUNCHER,
+        FLAMETHROWER,
+        LASER,
+        RAILGUN,
+        PLASMA,
+        RAYGUN,
+        BAZOOKA,
+        CANNON,
+        BFG,
+        MINIGUN,
+        CHAINSAW,
+        SWORD,
+        AXE,
+        HAMMER,
+        MACE,
+        SPEAR,
+        BOW,
+        CROSSBOW,
+        SHURIKEN,
+        KUNAI,
+        NINJA_STAR,
+        BOOMERANG,
+        WHIP,
+        LASSO,
+        YOYO,
+        SLINGSHOT,
+        CATAPULT,
+        TREBUCHET,
+        BALLISTA,
+        CANNONBALL,
+        BOMB,
+        MORTAR,
+        LANDMINE,
+        CLAYMORE 
 }
 
 ## Shapes for the polygons
 enum PolygonShape {
-		Circular, ## Circular polygon
-		Rectangular, ## Rectangular polygon
-		Beam, ## Beam polygon
-		SuperEllipse, ## A super ellipse polygon
-		SuperShape ## A super shape polygon
+                Circular, ## Circular polygon
+                Rectangular, ## Rectangular polygon
+                Beam, ## Beam polygon
+                SuperEllipse, ## A super ellipse polygon
+                SuperShape ## A super shape polygon
 }
 
 ## Shapes for the overall map grid
 enum MapShape {
-	Square, ## Square grid
-	Circle, ## Circular grid
-	Diamond, ## Diamond grid
-	Cross, ## Cross grid
-	Ring, ## Ring grid
-	LShape, ## L-shaped grid
+        Square, ## Square grid
+        Circle, ## Circular grid
+        Diamond, ## Diamond grid
+        Cross, ## Cross grid
+        Ring, ## Ring grid
+        LShape, ## L-shaped grid
 }
 
 
 ## Abilities that can be used by the player
 enum AbilityNames {
-	NONE, ## No ability
-	BLOCK_CORE_FINDER, ## Finds the core of a block
-	MAGNET, ## Attracts nearby resources
-	REGEN_HEALTH_OVER_TIME, ## Regenerates health over time
-	SHIELD, ## Provides a temporary shield
+        NONE, ## No ability
+        BLOCK_CORE_FINDER, ## Finds the core of a block
+        MAGNET, ## Attracts nearby resources
+        REGEN_HEALTH_OVER_TIME, ## Regenerates health over time
+        SHIELD, ## Provides a temporary shield
 }
 
 enum CurrencyType {
-	FIAT,
-	BITCOIN,
-	BOTH,
+        FIAT,
+        BITCOIN,
+        BOTH,
 }
 
 enum ArmoryUpgradeType {
