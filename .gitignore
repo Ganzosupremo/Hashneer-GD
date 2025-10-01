@@ -1,5 +1,6 @@
 # Godot 4+ specific ignores
 .godot/
+<<<<<<< HEAD
 /android/
 .vscode/
 export_presets.cfg
@@ -11,5 +12,24 @@ MainWorldEnvironment.tres
 *.import
 /Textures/*.import
 /addons/item_drops
+=======
+>>>>>>> 636d2ba (Setup the project to run in the Replit environment)
 
+# Godot-specific files to exclude
+*.import
+.vscode/
+
+# Build/export results
+/android/
+/build/
+/dist/
+
+# Logs
 /Logs_md/
+
+# Replit-specific
+.replit
+.upm/
+.config/
+.cache/
+venv/
