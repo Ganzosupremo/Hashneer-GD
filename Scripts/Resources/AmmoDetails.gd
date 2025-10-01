@@ -1,5 +1,4 @@
-extends Resource
-class_name AmmoDetails
+class_name AmmoDetails extends IUpgradeable
 ## This resource contains all the details about the ammo, such as bullet type, damage, speed, lifetime, etc.
 ##
 ## This resource is used by the [FractureBullet] to determine how the bullet behaves, what damage it deals, and how it interacts with the environment.
@@ -8,9 +7,7 @@ class_name AmmoDetails
 
 ## Defines the different types of bullets that can be used in the game.[br]
 ## Each bullet type has its own unique behavior and properties.
-enum BulletType 
-{
-
+enum BulletType {
 	NORMAL, ## Standard bullet that destroys on impact.
 	LASER, ## Specialized projectile that fires a constant beam, destroying on impact.
 	EXPLOSIVE, ## Explodes dealing damage to objects in it's radius and creates an explosion effect on impact.
@@ -41,8 +38,11 @@ enum BulletPattern {
 	GRID, ## Fires bullets in a grid pattern, creating a matrix of bullets.
 }
 
+@export var available_upgrades: Array[ArmoryUpgradeData] = []
 @export_category("Ammo Details")
-@export_subgroup("Lifetime and Bullet Damage")
+@export_subgroup("Parameters")
+## The name of the ammo, used for identification and display purposes.
+@export var ammo_name: String = "Default Ammo"
 ## the min lifetime for the ammo, a random value is chosed between the min and max.
 @export var min_lifetime: float = 1.0
 ## the max lifetime for the ammo, a random value is chosed between the min and max.
@@ -109,9 +109,97 @@ enum BulletPattern {
 
 ## Dictionary storing upgrade modifiers for this ammo.
 var upgrade_modifiers: Dictionary = {}
-
+var _chached_id: String = ""  # Cached ID for the ammo, generated from the resource path
 ## Calculated final damage after applying multipliers.
 var damage_final: float = 0.0
+
+const implements = [
+	preload("res://Scripts/Resources/IUpgradeable.gd"),
+]
+
+#region IUpgradeable Interface Implementation
+func get_upgrade_id() -> String:
+	if _chached_id.is_empty():
+		_chached_id = _generate_id_from_path()
+	return _chached_id
+	
+func get_upgrade_name() -> String:
+	return ammo_name
+
+func get_upgrade_description() -> String:
+	return upgrade_description
+
+func get_display_icon() -> Texture2D:
+	return null
+
+func get_available_upgrades() -> Array[ArmoryUpgradeData]:
+	return available_upgrades
+
+func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrade_power_per_level: float) -> void:
+	match upgrade_type:
+		Constants.ArmoryUpgradeType.AMMO_DAMAGE, Constants.ArmoryUpgradeType.AMMO_LASER_DAMAGE, Constants.ArmoryUpgradeType.AMMO_EXPLOSION_DAMAGE:
+			_apply_upgrade_modifier("damage_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_SPEED:
+			_apply_upgrade_modifier("ammo_speed_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_PIERCE_COUNT:
+			_apply_upgrade_modifier("pierce_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_BOUNCE_COUNT:
+			_apply_upgrade_modifier("bounce_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_EXPLOSION_RADIUS:
+			_apply_upgrade_modifier("explosion_radius_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_BULLET_COUNT:
+			_apply_upgrade_modifier("bullet_count_upgrade", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.AMMO_LASER_LENGTH:
+			_apply_upgrade_modifier("laser_length_upgrade", level, upgrade_power_per_level)
+		_:
+			DebugLogger.error("Unknown ammo upgrade type: " + str(upgrade_type))
+
+func _apply_upgrade_modifier(upgrade_name: String, level: int, upgrade_power_per_level: float) -> void:
+	if !upgrade_modifiers.has(upgrade_name):
+		upgrade_modifiers[upgrade_name] = 0.0
+	upgrade_modifiers[upgrade_name] += upgrade_power_per_level * level
+
+func get_current_stats() -> Dictionary:
+	var stats: Dictionary = {
+		"Bullet Type": Utils.enum_label(BulletType, bullet_type),
+		"Bullet Pattern": Utils.enum_label(BulletPattern, bullet_pattern),
+		"Min Lifetime": str(min_lifetime),
+		"Max Lifetime": str(max_lifetime),
+		"Base Bullet Damage": str(bullet_damage),
+		"Bullet Damage Final": str(damage_final),
+		"Bullet Speed": str(bullet_speed),
+		"Explosion Radius": str(explosion_radius),
+		"Laser Length": str(laser_length),
+		"Laser Damage Cooldown": str(laser_damage_cooldown),
+		"Laser Collision Mask": str(laser_collision_mask),
+		"Size": str(size),
+		"Bullets Per Shoot Min": str(bullets_per_shoot_min),
+		"Bullets Per Shoot Max": str(bullets_per_shoot_max),
+		"Bullet Spawn Interval Min": str(bullet_spawn_interval_min),
+		"Bullet Spawn Interval Max": str(bullet_spawn_interval_max),
+		"Trail Length": str(trail_length),
+		"Trail Width": str(trail_width),
+		"Fracture Force": str(fracture_force),
+		"Max Pierce Count": str(max_pierce_count),
+		"Max Bounce Count": str(max_bounce_count),
+		"Level": str(get_total_upgrade_level()),
+	}
+	return stats
+
+func _generate_id_from_path() -> String:
+	# Generates a unique ID based on the resource path
+	var path: String = resource_path
+	if path.is_empty():
+		# Fallback for runtime-created resources
+		return "ammo_runtime_" + str(get_instance_id())
+
+	# Extract filename without extension and use as ID
+	var filename = path.get_file().get_basename()
+	return "ammo_" + filename
+
+#endregion
+
+#region Getters and Setters
 
 ## Returns the total number of pierces this ammo can perform, including upgrades.
 func get_total_pierce() -> int:
@@ -123,11 +211,61 @@ func get_total_bounce() -> int:
 	var bounce_upgrade: int = upgrade_modifiers.get("bounce_upgrade", 0)
 	return max_bounce_count + bounce_upgrade
 
+## Returns the total upgrade level across all available upgrades.
+func get_total_upgrade_level() -> int:
+	var total_level: int = 0
+	for upgrade in available_upgrades:
+		total_level += upgrade.upgrade_levels
+	return total_level
+
 ## Calculates the final damage dealt by the bullet based on global and weapon multipliers.[br]
 ## [param global_multiplier]: The global damage multiplier applied to all ammo.[br]
 ## [param weapon_multiplier]: The weapon-specific damage multiplier applied to this ammo.[br]
 ## Returns the final damage value after applying all multipliers and upgrades.
-func calculate_damage(global_multiplier: float, weapon_multiplier: float) -> float:
-	var damage_upgrade: float = upgrade_modifiers.get("damage_upgrade", 1.0)
-	damage_final = bullet_damage * global_multiplier * (1.0 + weapon_multiplier) * damage_upgrade
+func get_final_damage(global_multiplier_percent: float = 1.0, weapon_multiplier_percent: float = 0.0) -> float:
+	var damage_upgrade: float = upgrade_modifiers.get("damage_upgrade", 0.0)
+	damage_final = bullet_damage * global_multiplier_percent * (1.0 + weapon_multiplier_percent) * (1.0 + damage_upgrade)
 	return damage_final
+
+## Returns the speed of the bullet, applying any speed upgrades.
+func get_ammo_speed() -> float:
+	var speed_upgrade: float = upgrade_modifiers.get("ammo_speed_upgrade", 0.0)
+	return bullet_speed * (1.0 + speed_upgrade)
+
+## Returns the max bounce count, applying any bounce upgrades.
+func get_bounces() -> int:
+	var bounce_upgrade: int = upgrade_modifiers.get("bounce_upgrade", 0)
+	return max_bounce_count + bounce_upgrade
+
+## Returns the max pierce count, applying any pierce upgrades.
+func get_pierces() -> int:
+	var pierce_upgrade: int = upgrade_modifiers.get("pierce_upgrade", 0)
+	return max_pierce_count + pierce_upgrade
+
+## Returns the number of bullets to spawn per shoot, applying any bullet count upgrades.
+## A random value is chosen between [param bullets_per_shoot_min] and [param bullets_per_shoot_max].
+## This allows for variability in the number of bullets fired, enhancing gameplay dynamics.
+func get_ammo_count() -> int:
+	var bullet_count_upgrade: int = upgrade_modifiers.get("bullet_count_upgrade", 0)
+	return randi_range(bullets_per_shoot_min, bullets_per_shoot_max) + bullet_count_upgrade
+
+## Returns the laser length, applying any laser length upgrades.
+func get_laser_length() -> float:
+	var laser_length_upgrade: float = upgrade_modifiers.get("laser_length_upgrade", 0.0)
+	return laser_length * (1.0 + laser_length_upgrade)
+
+## Returns the explosion radius, applying any explosion radius upgrades.
+## This is used for explosive bullets to determine the area of effect damage.
+func get_explosion_radius() -> float:
+	var explosion_radius_upgrade: float = upgrade_modifiers.get("explosion_radius_upgrade", 0.0)
+	return explosion_radius * (1.0 + explosion_radius_upgrade)
+
+## Returns a random bullet spawn interval based on the min and max values
+func get_bullet_spawn_interval() -> float:
+	return randf_range(bullet_spawn_interval_min, bullet_spawn_interval_max)
+
+## Returns a random lifetime between min and max lifetime
+func get_bullet_lifetime() -> float:
+	return randf_range(min_lifetime, max_lifetime)
+
+#endregion

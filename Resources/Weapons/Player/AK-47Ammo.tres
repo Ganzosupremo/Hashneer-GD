@@ -1,8 +1,65 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=5 format=3 uid="uid://cttyumyw2eyyf"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=10 format=3 uid="uid://cttyumyw2eyyf"]
 
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_cq7nn"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_rtcjc"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_sjdox"]
+
+[sub_resource type="Resource" id="Resource_yg1e6"]
+script = ExtResource("1_cq7nn")
+upgrade_type = 4
+upgrade_name = "Increase Ammo damage"
+upgrade_description = "+10% bullet damage"
+upgrade_levels = 21
+upgrade_power_per_level = 0.1
+base_cost = 50000.0
+cost_multiplier = 1.5
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_0ci5h"]
+script = ExtResource("1_cq7nn")
+upgrade_type = 5
+upgrade_name = "Increase Bullet Speed"
+upgrade_description = "+10 bullet speed"
+upgrade_levels = 3
+upgrade_power_per_level = 10.0
+base_cost = 31000.0
+cost_multiplier = 1.35
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_1uhbw"]
+script = ExtResource("1_cq7nn")
+upgrade_type = 9
+upgrade_name = "Increase bounce"
+upgrade_description = "+1 bounce count"
+upgrade_levels = 5
+upgrade_power_per_level = 1.0
+base_cost = 40000.0
+cost_multiplier = 1.25
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_vs3he"]
+script = ExtResource("1_cq7nn")
+upgrade_type = 10
+upgrade_name = "Increase bullets per shoot"
+upgrade_description = "+1 bullets per shoot"
+upgrade_levels = 3
+upgrade_power_per_level = 1.0
+base_cost = 100000.0
+cost_multiplier = 1.75
+requires_bitcoin = true
+bitcoin_base_cost = 120.0
+bitcoin_cost_multiplier = 1.5
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Gradient" id="Gradient_jbavf"]
 offsets = PackedFloat32Array(0, 0.38, 1)
@@ -10,6 +67,8 @@ colors = PackedColorArray(0.991592, 0.615962, 0.524339, 1, 0.897717, 0.560379, 0
 
 [resource]
 script = ExtResource("1_n11uh")
+available_upgrades = Array[ExtResource("1_cq7nn")]([SubResource("Resource_yg1e6"), SubResource("Resource_0ci5h"), SubResource("Resource_1uhbw"), SubResource("Resource_vs3he")])
+ammo_name = "AK-47 Ammo"
 min_lifetime = 3.0
 max_lifetime = 6.0
 bullet_damage = 90.0
@@ -36,3 +95,5 @@ trail_length = 12
 trail_width = 12.0
 fracture_force = 10000.0
 bullet_hit_vfx = ExtResource("1_rtcjc")
+is_child = true
+upgrade_description = "No description available"

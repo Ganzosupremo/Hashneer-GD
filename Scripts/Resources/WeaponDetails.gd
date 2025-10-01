@@ -1,10 +1,13 @@
-class_name WeaponDetails extends Resource
+class_name WeaponDetails extends IUpgradeable
 ## This resource contains all the details about the weapon, such as name, texture, fire sound, ammo details, shoot effect, fire rate, precharge time, spread, and shake properties.
 ##
 ## This resource is used by the [FireWeaponComponent] to determine how the weapon behaves, how it fires, and how it interacts with the environment.
 ## The [AmmoDetails] is used by it to determine how this weapon fires the bullets, how many bullets to fire, and what patterns to use.
 ## The [WeaponDetails] resource is designed to be flexible and extensible, allowing for easy addition of new weapon types and behaviors.
 
+@export_category("Available Upgrades")
+## The available upgrades for this weapon, allowing players to enhance the weapon's performance or add new
+@export var available_upgrades: Array[ArmoryUpgradeData] = []
 
 @export_category("Weapon Base Details")
 ## The name of the weapon, used for identification and display purposes.
@@ -15,7 +18,7 @@ class_name WeaponDetails extends Resource
 @export var fire_sound: SoundEffectDetails
 ## The multiplier applied to the weapon's damage, allowing for scaling of damage based on upgrades or global settings.
 ## This multiplier is applied to the base damage defined in the [AmmoDetails] resource.
-@export_range(0.0, 1.0, 0.5) var weapon_damage_multiplier: float
+@export_range(0.0, 1.0, 0.05) var weapon_damage_multiplier_percent: float = 0.0
 
 @export_category("Ammo Details")
 ## The details of the ammo used by this weapon, including bullet type, damage, speed, lifetime, and other properties. See [AmmoDetails] for more details.
@@ -59,14 +62,101 @@ class_name WeaponDetails extends Resource
 ## The transition type used for the shake effect, controlling how the shake transitions over time.
 @export var shake_trans: Tween.TransitionType = Tween.TransitionType.TRANS_LINEAR
 
+const implements = [
+	preload("res://Scripts/Resources/IUpgradeable.gd"),
+]
 
 var _upgrade_modifiers: Dictionary = {}  # Dictionary to hold upgrade modifiers for the weapon
-var weapon_id: int = 0
+var weapon_index: int = 0
+var _chached_id: String = ""
 
-## Returns a random spread value between minus and plus defined  spread
+#region IUpgradeable Interface Implementation
+func get_upgrade_id() -> String:
+	if _chached_id.is_empty():
+		_chached_id = _generate_id_from_path()
+	return _chached_id
+	
+func get_upgrade_name() -> String:
+	return weapon_name
+
+func get_upgrade_description() -> String:
+	return upgrade_description
+
+func get_display_icon() -> Texture2D:
+	return weapon_texture
+
+func get_available_upgrades() -> Array[ArmoryUpgradeData]:
+	return available_upgrades
+
+func get_child_available_upgrades() -> Array[ArmoryUpgradeData]:
+	return ammo_details.get_available_upgrades()
+
+func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrade_power_per_level: float) -> void:
+	match upgrade_type:
+		Constants.ArmoryUpgradeType.WEAPON_DAMAGE_MULTIPLIER:
+			_apply_upgrade_modifier("weapon_damage_multiplier_percent", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_FIRE_RATE:
+			_apply_upgrade_modifier("fire_rate", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_SPREAD_REDUCTION:
+			_apply_upgrade_modifier("spread_reduction", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.WEAPON_PRECHARGE_TIME_REDUCTION:
+			_apply_upgrade_modifier("precharge_time_reduction", level, upgrade_power_per_level)
+		_:
+			DebugLogger.error("Unknown upgrade type: " + str(upgrade_type))
+
+func _apply_upgrade_modifier(upgrade_name: String, level: int, upgrade_power_per_level: float) -> void:
+	if !_upgrade_modifiers.has(upgrade_name):
+		_upgrade_modifiers[upgrade_name] = 0.0
+	
+	# Store upgrade modifier instead of directly modifying the base value
+	_upgrade_modifiers[upgrade_name] = level * upgrade_power_per_level
+
+func get_current_stats() -> Dictionary:
+	var stats: Dictionary = {
+		"Weapon Name": weapon_name,
+		"Weapon Texture": weapon_texture,
+		"Damage": str(get_damage_multiplier()),
+		"ShotsPerSecond": str(get_fire_rate()),
+		"PrechargeTime": str(get_precharge_time()),
+		"Spread": str(get_spread()),
+		"Level": str(get_total_upgrade_level()),
+	}
+	return stats
+
+#endregion
+
+#region Setters and Getters
+## Returns the spread of the weapon, applying any spread reduction upgrades.
+func get_spread() -> float:
+	var spread_reduction: float = _upgrade_modifiers.get("spread_reduction", 0.0)
+	return max(spread - spread_reduction, 0.0)
+
 func get_random_spread() -> float:
-	return randf_range(-spread, spread)
+	# Returns a random spread value based on the weapon's spread and any upgrades applied
+	var spread_reduction: float = _upgrade_modifiers.get("spread_reduction", 0.0)
+	return max(spread - spread_reduction, 0.0) * randf_range(-PI, PI)
 
+## Returns the fire rate of the weapon, applying any fire rate upgrades.
+func get_fire_rate() -> float:
+	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
+	return shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0)
+
+## Returns the damage multiplier of the weapon, applying any damage multiplier upgrades.
+func get_damage_multiplier() -> float:
+	var damage_multiplier_upgrade: float = _upgrade_modifiers.get("weapon_damage_multiplier_percent", 0.0)
+	return clamp(weapon_damage_multiplier_percent + damage_multiplier_upgrade, 0.0, 1.0)
+
+## Returns the precharge time of the weapon, applying any precharge time reduction upgrades.
+func get_precharge_time() -> float:
+	var precharge_time_reduction: float = _upgrade_modifiers.get("precharge_time_reduction", 0.0)
+	return max(precharge_time - precharge_time_reduction, 0.0)
+
+## Returns the total upgrade level across all available upgrades.
+func get_total_upgrade_level() -> int:
+	var total_level: int = 0
+	for upgrade in available_upgrades:
+		total_level += upgrade.upgrade_levels
+	return total_level
 
 ## Sets the fire rate of the weapon, controlling how many shots can be fired per second.
 func set_fire_rate(value: float) -> void:
@@ -76,17 +166,29 @@ func set_fire_rate(value: float) -> void:
 func set_precharge_time(value: float) -> void:
 	precharge_time = value
 
+## Returns the cooldown time for firing the weapon, calculated based on the fire rate.
 func get_fire_cooldown() -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
 	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
 
-func _init(_weapon_name: String = "Default", _weapon_texture = null) -> void:
-	weapon_name = "Default Weapon"
-	weapon_texture = null
-	fire_sound = null
-	weapon_damage_multiplier = 1.0
-	ammo_details = AmmoDetails.new()
-	weapon_shoot_effect = null
-	shots_per_second = 1.0
-	precharge_time = 0.0
-	spread = 0.0
+## Returns the ammo details for this weapon, providing information about the bullets fired by this weapon.
+func get_ammo_details() -> AmmoDetails:
+	return ammo_details
+
+#endregion
+
+
+#region ID
+
+func _generate_id_from_path() -> String:
+	# Generates a unique ID based on the resource path
+	var path: String = resource_path
+	if path.is_empty():
+		# Fallback for runtime-created resources
+		return "weapon_runtime_" + str(get_instance_id())
+	
+	# Extract filename without extension and use as ID
+	var filename = path.get_file().get_basename()
+	return "weapon_" + filename
+
+#endregion

@@ -12,6 +12,7 @@ var _implements : Dictionary = {}
 enum InterfaceType {
 	PERSISTENCE_DATA,
 	DAMAGEABLE,
+	UPGRADEABLE,
 }
 
 func _ready():
@@ -40,18 +41,18 @@ func _validate_all_implementations() -> void:
 func _only_scripts(file : String) -> bool:
 	return file.ends_with(".gd")
 
-## Validate that an entity implements an interface
-##
-## implementation [Object]: Any GDscript or a node with script attached
-## interfaces [GDScript|Array]: The interface(s) to validate against
-## validate [bool]: Whether validation should run or if only the
-##                  implements constant should be checked
-## assert_on_fail [bool]: Instead of returning false, cause an assertion.
+## Validate that an entity implements an interface.[br]
+## Parameters:
+## [param implementation] [Object]: Any GDscript or a node with script attached.[br]
+## [param interfaces] [GDScript|Array]: The interface(s) to validate against.[br]
+## [param validate] [bool]: Whether validation should run or if only the
+##                  implements constant should be checked.[br]
+## [param assert_on_fail] [bool]: Instead of returning false, cause an assertion.
 ##                        This is an option that gets set automatically
-##                        enabling runtime validation.
+##                        enabling runtime validation.[br]
 ##
 ## Returns a [bool] indicating the result of the validation
-func implements(implementation, interfaces, validate = strict_validation, assert_on_fail = runtime_validation) -> bool:
+func implements(implementation, interfaces, validate: bool = strict_validation, assert_on_fail: bool = runtime_validation) -> bool:
 	if not (interfaces is Array):
 		interfaces = [interfaces]
 		

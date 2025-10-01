@@ -25,4 +25,4 @@ func _set_weapon_image(texture: Texture2D) -> void:
 
 func _set_weapon_name(weapon: WeaponDetails) -> void:
 	weapon_name.text = "{0}".format([weapon.weapon_name])
-	weapon_slot.text = "Slot {0}".format([weapon.weapon_id])
+	weapon_slot.text = "Slot {0}".format([weapon.weapon_index])

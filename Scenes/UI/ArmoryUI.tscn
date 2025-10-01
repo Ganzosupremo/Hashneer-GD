@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://ckaogc2m7rh7k"]
+[gd_scene load_steps=12 format=3 uid="uid://ckaogc2m7rh7k"]
 
+[ext_resource type="Script" uid="uid://dxw6i0mxnc6nw" path="res://Scripts/UI/ArmoryUI.gd" id="1_ocbj5"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_tapuc"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="2_b0nvn"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="3_y8qb1"]
@@ -7,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="5_75p2d"]
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
 [ext_resource type="PackedScene" uid="uid://b4hiwhyxwtoxl" path="res://Scenes/UI/UpgradeTemplateUI.tscn" id="6_b0nvn"]
+[ext_resource type="Script" uid="uid://ctjeq4gdevwd2" path="res://Scripts/Managers/ArmoryManager.gd" id="8_y8qb1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_etrns"]
 atlas = ExtResource("3_y8qb1")
@@ -23,6 +25,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_ocbj5")
 
 [node name="Overlay" type="Panel" parent="."]
 layout_mode = 1
@@ -84,7 +87,8 @@ theme_type_variation = &"LevelSelectorBackground"
 custom_minimum_size = Vector2(245, 0)
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="VBoxContainer/HBoxContainer/LeftBar/PanelContainer/ScrollContainer"]
+[node name="IUpgradeableList" type="ItemList" parent="VBoxContainer/HBoxContainer/LeftBar/PanelContainer/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -170,13 +174,15 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 columns = 2
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer/GridContainer"]
+[node name="WeaponIcon" type="TextureRect" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(86, 64)
 layout_mode = 2
 texture = ExtResource("4_ocbj5")
 stretch_mode = 5
 
 [node name="WeaponName" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponDetailsContainer/GridContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 text = "Weapon Name"
@@ -280,13 +286,13 @@ theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 6
 
-[node name="RangeLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/RangeCon/MarginContainer"]
+[node name="LevelLabel" type="Label" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer/WeaponStats/MarginContainer/GridContainer/RangeCon/MarginContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme = ExtResource("1_tapuc")
 theme_type_variation = &"SkillNodeLabel"
 theme_override_font_sizes/font_size = 16
-text = "📏 Range: 800m"
+text = "📏 Level: 1"
 
 [node name="WeaponDescriptionContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer/CentralBar/PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -368,46 +374,49 @@ layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="UpgradesContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer"]
+[node name="AmmoUpgradesContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
-[node name="BaseDamageUpgrade" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer" instance=ExtResource("6_b0nvn")]
+[node name="BaseDamageUpgrade" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer" instance=ExtResource("6_b0nvn")]
+visible = false
 layout_mode = 2
 
-[node name="FireRateUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer"]
+[node name="FireRateUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 18
 text = "⚡ Fire Rate"
 
-[node name="UpgradeLevel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+[node name="UpgradeLevel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 16
 text = "Lv.0"
 
-[node name="UpgradeDescription2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeDescription2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 theme_type_variation = &"NormalText"
@@ -415,67 +424,68 @@ theme_override_font_sizes/font_size = 14
 text = "+20% firing speed"
 autowrap_mode = 3
 
-[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="UpgradeButton2" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+[node name="UpgradeButton2" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
 custom_minimum_size = Vector2(70, 28)
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradeButton"
 text = "Upgrade"
 
-[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="FiatPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+[node name="FiatPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 12
 text = "$800"
 horizontal_alignment = 2
 
-[node name="BitcoinPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+[node name="BitcoinPriceLabel2" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/FireRateUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 12
 text = "0.016₿"
 horizontal_alignment = 2
 
-[node name="AccuracyUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer"]
+[node name="AccuracyUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeHeader" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+[node name="UpgradeName" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 18
 text = "🎯 Accuracy"
 
-[node name="UpgradeLevel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
+[node name="UpgradeLevel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeHeader"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 16
 text = "Lv.0"
 
-[node name="UpgradeDescription3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeDescription3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 theme_type_variation = &"NormalText"
@@ -483,29 +493,29 @@ theme_override_font_sizes/font_size = 14
 text = "-25% bullet spread"
 autowrap_mode = 3
 
-[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
+[node name="UpgradeActionContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="UpgradeButton3" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+[node name="UpgradeButton3" type="Button" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
 custom_minimum_size = Vector2(70, 28)
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradeButton"
 text = "Upgrade"
 
-[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
+[node name="PriceContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer"]
 layout_mode = 2
 theme_override_constants/separation = 2
 
-[node name="FiatPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+[node name="FiatPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 12
 text = "$600"
 horizontal_alignment = 2
 
-[node name="BitcoinPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/UpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+[node name="BitcoinPriceLabel3" type="Label" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/AmmoSection/ScrollContainer/AmmoUpgradesContainer/AccuracyUpgrade/MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 12
@@ -537,6 +547,7 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 12
 
 [node name="DamageUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
@@ -610,6 +621,7 @@ text = "0.025₿"
 horizontal_alignment = 2
 
 [node name="FireRateUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
@@ -683,6 +695,7 @@ text = "0.016₿"
 horizontal_alignment = 2
 
 [node name="AccuracyUpgrade" type="PanelContainer" parent="VBoxContainer/HBoxContainer/RightBar/PanelContainer/MarginContainer/VBoxContainer/UpgradesSection/ScrollContainer/UpgradesContainer"]
+visible = false
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
@@ -764,3 +777,6 @@ theme_override_constants/margin_bottom = 5
 
 [node name="SkillTreeTabs" parent="VBoxContainer/Footer" instance=ExtResource("6_86iey")]
 layout_mode = 2
+
+[node name="ArmoryManager" type="Node2D" parent="."]
+script = ExtResource("8_y8qb1")

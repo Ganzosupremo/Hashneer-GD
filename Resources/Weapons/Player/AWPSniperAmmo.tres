@@ -1,8 +1,51 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=5 format=3 uid="uid://j0b1rc1iki68"]
+[gd_resource type="Resource" script_class="AmmoDetails" load_steps=9 format=3 uid="uid://j0b1rc1iki68"]
 
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_bhow2"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ebvcn"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_h4fyi"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_h5r0u"]
+
+[sub_resource type="Resource" id="Resource_ebvcn"]
+script = ExtResource("1_ebvcn")
+upgrade_type = 8
+upgrade_name = "Penetrate every hole!!"
+upgrade_description = "+1 Bullet pierce"
+upgrade_levels = 5
+upgrade_power_per_level = 1.0
+base_cost = 125000.0
+cost_multiplier = 1.4
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_h8oxh"]
+script = ExtResource("1_ebvcn")
+upgrade_type = 4
+upgrade_name = "Even more damage!!"
+upgrade_description = "+15%  damage output"
+upgrade_levels = 10
+upgrade_power_per_level = 0.15
+base_cost = 175000.0
+cost_multiplier = 1.55
+requires_bitcoin = false
+bitcoin_base_cost = 50.0
+bitcoin_cost_multiplier = 1.1
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_pb7pl"]
+script = ExtResource("1_ebvcn")
+upgrade_type = 10
+upgrade_name = "More bullets, more chaos!"
+upgrade_description = "+1 Bullets per shoot"
+upgrade_levels = 3
+upgrade_power_per_level = 1.0
+base_cost = 275000.0
+cost_multiplier = 1.75
+requires_bitcoin = true
+bitcoin_base_cost = 175.0
+bitcoin_cost_multiplier = 1.6
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Gradient" id="Gradient_xsvdn"]
 offsets = PackedFloat32Array(0, 0.495413, 1)
@@ -10,6 +53,8 @@ colors = PackedColorArray(0.044306, 0.40851, 0.366935, 1, 0.281376, 0.561392, 0.
 
 [resource]
 script = ExtResource("1_h4fyi")
+available_upgrades = Array[ExtResource("1_ebvcn")]([SubResource("Resource_ebvcn"), SubResource("Resource_h8oxh"), SubResource("Resource_pb7pl")])
+ammo_name = "Sniper Ammo"
 min_lifetime = 4.0
 max_lifetime = 8.0
 bullet_damage = 240.0
@@ -29,10 +74,12 @@ laser_collision_mask = 1
 size = 10
 bullets_per_shoot_min = 1
 bullets_per_shoot_max = 1
-bullet_spawn_interval_min = 0.0
-bullet_spawn_interval_max = 0.0
+bullet_spawn_interval_min = 0.025
+bullet_spawn_interval_max = 0.05
 trail_gradient = SubResource("Gradient_xsvdn")
 trail_length = 15
 trail_width = 15.0
 fracture_force = 25000.0
 bullet_hit_vfx = ExtResource("1_h5r0u")
+is_child = true
+upgrade_description = "No description available"
