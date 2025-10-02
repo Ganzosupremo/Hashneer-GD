@@ -261,21 +261,31 @@ func _apply_squash_stretch() -> void:
 				
 		# Determine if accelerating or braking
 		var velocity_change = velocity.length() - previous_velocity.length()
-				
+		var move_direction: Vector2 = velocity.normalized()
+
+		# Calculate directional scale based on movement angle
+		# For top-down view, we adjust scale based on movement direction
+		var horizontal_factor = abs(move_direction.x)
+		var vertical_factor = abs(move_direction.y)
+
+
 		if velocity_change > 0:
 			# Accelerating: squash in direction of movement
-			var move_direction = velocity.normalized()
-			target_scale = Vector2(1.0 - squash_amount, 1.0 + squash_amount)
+			var squash_x = squash_amount * horizontal_factor
+			var squash_y = squash_amount * vertical_factor
+			target_scale = Vector2(1.0 - squash_x + squash_y * .5 , 1.0 - squash_y + squash_x * .5)
 		else:
 			# Braking: stretch in direction of movement
-			target_scale = Vector2(1.0 + squash_amount, 1.0 - squash_amount)
+			var stretch_x = squash_amount * horizontal_factor
+			var stretch_y = squash_amount * vertical_factor
+			target_scale = Vector2(1.0 + stretch_x - stretch_y * .5, 1.0 + stretch_y - stretch_x * .5)
+
+		if squash_tween:
+			squash_tween.kill()
 				
-			if squash_tween:
-				squash_tween.kill()
-				
-			squash_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-			squash_tween.tween_property(self, "scale", target_scale, 0.15)
-			squash_tween.tween_property(self, "scale", Vector2.ONE, 0.1)
+		squash_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+		squash_tween.tween_property(self, "scale", target_scale, 0.15)
+		squash_tween.tween_property(self, "scale", Vector2.ONE, 0.1)
 
 
 #endregion

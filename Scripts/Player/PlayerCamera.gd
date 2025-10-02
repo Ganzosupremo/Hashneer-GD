@@ -74,7 +74,7 @@ func _process(delta: float) -> void:
 	if trauma > 0.0:
 		trauma = max(trauma - trauma_decay_rate * delta, 0.0)
 		
-		# Decay recoil kick
+	# Decay recoil kick
 	if recoil_offset.length() > 0.1:
 		recoil_offset = recoil_offset.lerp(Vector2.ZERO, recoil_decay_rate * delta)
 	else:
@@ -91,7 +91,9 @@ func _process(delta: float) -> void:
 
 	# Handle constant shake
 	if is_constant_shake_active:
-		offset = _get_constant_shake_offset()
+		offset = _get_constant_shake_offset() + trauma_shake + recoil_offset
+	else:
+		offset = trauma_shake + recoil_offset
 
 func shake(_amplitude: float = 3.0, _frequency: float = 5.0, _duration: float = 0.5, _axis_ratio: float = 0.0, _armonic_ratio: Array[int] = [1,1], _phase_offset_degrees: int  = 90, _samples: int = 10, _tween_trans: Tween.TransitionType = Tween.TransitionType.TRANS_SPRING) -> void:
 	amplitude = _amplitude

@@ -232,8 +232,9 @@ boss_music = SubResource("Resource_w41ci")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_b5yyy")
 
-[node name="AdvancedCamera" parent="." instance=ExtResource("5_5761m")]
+[node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_5761m")]
 position = Vector2(566, 321)
+target = NodePath("../Player")
 smooth_speed = 2.0
 
 [node name="Player" parent="." instance=ExtResource("1_73um3")]
