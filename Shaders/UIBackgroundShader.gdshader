@@ -14,12 +14,12 @@ float noise(vec2 p) {
     vec2 i = floor(p);
     vec2 f = fract(p);
     f = f * f * (3.0 - 2.0 * f);
-    
+
     float a = hash(i);
     float b = hash(i + vec2(1.0, 0.0));
     float c = hash(i + vec2(0.0, 1.0));
     float d = hash(i + vec2(1.0, 1.0));
-    
+
     return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
 }
 
@@ -36,15 +36,15 @@ float hexPattern(vec2 p) {
 void fragment() {
     vec2 uv = UV;
     vec2 screen_uv = uv * 8.0 * density;
-    
+
     float t = time * speed * 0.1;
-    
+
     // Network nodes with Bitcoin gold color
     float nodes = 0.0;
     for(int i = 0; i < 20; i++) {
         vec2 pos = vec2(hash(vec2(float(i), 0.0)), hash(vec2(float(i), 1.0)));
         pos += sin(t + float(i)) * 0.1;
-        
+
         float dist = distance(uv, pos);
         nodes += smoothstep(0.05, 0.0, dist) * 0.8;
     }

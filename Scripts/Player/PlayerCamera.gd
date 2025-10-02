@@ -67,33 +67,33 @@ func _process(delta: float) -> void:
                 target_position.x = clamp(target_position.x, -max_distance + target_position.x, max_distance + target_position.x)
                 target_position.y = clamp(target_position.y, -max_distance + target_position.y, max_distance + target_position.y)
 
-        if target_position != Vector2.INF:
-                position = lerp(position, target_position, smooth_speed * delta)
-        
-        # Decay trauma over time
-        if trauma > 0.0:
-                trauma = max(trauma - trauma_decay_rate * delta, 0.0)
-        
-        # Decay recoil kick
-        if recoil_offset.length() > 0.1:
-                recoil_offset = recoil_offset.lerp(Vector2.ZERO, recoil_decay_rate * delta)
-        else:
-                recoil_offset = Vector2.ZERO
-        
-        # Apply trauma-based shake
-        var trauma_shake = Vector2.ZERO
-        if trauma > 0.0:
-                var shake_amount = pow(trauma, trauma_power)
-                trauma_shake = Vector2(
-                        randf_range(-1.0, 1.0) * shake_amount * 10.0,
-                        randf_range(-1.0, 1.0) * shake_amount * 10.0
-                )
-        
-        # Handle constant shake
-        if is_constant_shake_active:
-                offset = _get_constant_shake_offset() + trauma_shake + recoil_offset
-        else:
-                offset = trauma_shake + recoil_offset
+	if target_position != Vector2.INF:
+		position = lerp(position, target_position, smooth_speed * delta)
+	
+	# Decay trauma over time
+	if trauma > 0.0:
+		trauma = max(trauma - trauma_decay_rate * delta, 0.0)
+		
+	# Decay recoil kick
+	if recoil_offset.length() > 0.1:
+		recoil_offset = recoil_offset.lerp(Vector2.ZERO, recoil_decay_rate * delta)
+	else:
+		recoil_offset = Vector2.ZERO
+		
+	# Apply trauma-based shake
+	var trauma_shake = Vector2.ZERO
+	if trauma > 0.0:
+		var shake_amount = pow(trauma, trauma_power)
+		trauma_shake = Vector2(
+			randf_range(-1.0, 1.0) * shake_amount * 10.0,
+			randf_range(-1.0, 1.0) * shake_amount * 10.0
+		)
+
+	# Handle constant shake
+	if is_constant_shake_active:
+		offset = _get_constant_shake_offset() + trauma_shake + recoil_offset
+	else:
+		offset = trauma_shake + recoil_offset
 
 func shake(_amplitude: float = 3.0, _frequency: float = 5.0, _duration: float = 0.5, _axis_ratio: float = 0.0, _armonic_ratio: Array[int] = [1,1], _phase_offset_degrees: int  = 90, _samples: int = 10, _tween_trans: Tween.TransitionType = Tween.TransitionType.TRANS_SPRING) -> void:
         amplitude = _amplitude
@@ -242,51 +242,52 @@ func is_constant_shake_running() -> bool:
 
 ## Calculates the offset for constant shake
 func _get_constant_shake_offset() -> Vector2:
-        # Calculate elapsed time in seconds with high resolution
-        # Calculate elapsed time in seconds
-        var current_time_usec = Time.get_unix_time_from_system()
-        var elapsed_time = float(current_time_usec - constant_shake_start_time) / 1000000.0
-        
-        var Ax: float = constant_shake_amplitude * constant_shake_horizontal_weight
-        var Ay: float = constant_shake_amplitude * constant_shake_vertical_weight
-        var t: float = elapsed_time * 2.0 * PI
-        
-        var Wx: float = constant_shake_horizontal_frequency
-        var Wy: float = constant_shake_vertical_frequency
+	# Calculate elapsed time in seconds with high resolution
+	# Calculate elapsed time in seconds
+	var current_time_usec = Time.get_unix_time_from_system()
+	var elapsed_time = float(current_time_usec - constant_shake_start_time) / 1000000.0
+	
+	var Ax: float = constant_shake_amplitude * constant_shake_horizontal_weight
+	var Ay: float = constant_shake_amplitude * constant_shake_vertical_weight
+	var t: float = elapsed_time * 2.0 * PI
+	
+	var Wx: float = constant_shake_horizontal_frequency
+	var Wy: float = constant_shake_vertical_frequency
 
-        var horizontal_component: float = Ax * sin(Wx * t)
-        var vertical_component: float = Ay * sin(Wy * t + constant_shake_phase_offset)
-        
-        return Vector2(horizontal_component, -vertical_component)
+	var horizontal_component: float = Ax * sin(Wx * t)
+	var vertical_component: float = Ay * sin(Wy * t + constant_shake_phase_offset)
+	
+	return Vector2(horizontal_component, -vertical_component)
 
-## Adds trauma to the camera for procedural shake
-## @param amount: Amount of trauma to add (0.0 to 1.0)
+
+## Adds trauma to the camera for procedural shake.[br]
+## [param amount] Amount of trauma to add (0.0 to 1.0)
 func add_trauma(amount: float) -> void:
-        trauma = min(trauma + amount, max_trauma)
+	trauma = min(trauma + amount, max_trauma)
 
 ## Adds trauma with preset magnitudes
 func add_trauma_preset(_magnitude: Constants.ShakeMagnitude) -> void:
-        match _magnitude:
-                Constants.ShakeMagnitude.Small:
-                        add_trauma(0.15)
-                Constants.ShakeMagnitude.Medium:
-                        add_trauma(0.35)
-                Constants.ShakeMagnitude.Large:
-                        add_trauma(0.6)
-                Constants.ShakeMagnitude.ExtraLarge:
-                        add_trauma(0.8)
-                Constants.ShakeMagnitude.Gigantius:
-                        add_trauma(1.0)
+	match _magnitude:
+		Constants.ShakeMagnitude.Small:
+			add_trauma(0.15)
+		Constants.ShakeMagnitude.Medium:
+			add_trauma(0.35)
+		Constants.ShakeMagnitude.Large:
+			add_trauma(0.6)
+		Constants.ShakeMagnitude.ExtraLarge:
+			add_trauma(0.8)
+		Constants.ShakeMagnitude.Gigantius:
+			add_trauma(1.0)
 
-## Kicks the camera in a specific direction (for recoil)
-## @param direction: Angle in radians for the kick direction
-## @param strength: Strength of the kick in pixels
+## Kicks the camera in a specific direction (for recoil).[br]
+## [param direction] Angle in radians for the kick direction.[br]
+## [param strength] Strength of the kick in pixels.
 func kick(direction: float, strength: float = 5.0) -> void:
-        var kick_vector = Vector2(cos(direction), sin(direction)) * strength
-        recoil_offset += kick_vector
+	var kick_vector = Vector2(cos(direction), sin(direction)) * strength
+	recoil_offset += kick_vector
 
-## Quick recoil kick opposite to aim direction (for weapon fire)
-## @param aim_angle: Current aim angle in radians
-## @param strength: Recoil strength
+## Quick recoil kick opposite to aim direction (for weapon fire).[br]
+## [param aim_angle] Current aim angle in radians.[br]
+## [param strength] Recoil strength.
 func recoil_kick(aim_angle: float, strength: float = 3.0) -> void:
-        kick(aim_angle + PI, strength)  # Kick opposite to aim direction
+	kick(aim_angle + PI, strength)  # Kick opposite to aim direction

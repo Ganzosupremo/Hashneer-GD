@@ -109,18 +109,17 @@ func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool,
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
 func _trigger_camera_shake() -> void:
-        if shake_camera_on_fire and GameManager.player_camera:
-                # Add trauma-based shake (small amount for firing)
-                GameManager.player_camera.add_trauma(0.08)
-                
-                # Add directional recoil kick to camera
-                var aim_angle = (bullet_spawn_position.global_position.direction_to(GameManager.player.get_global_mouse_position())).angle()
-                GameManager.player_camera.recoil_kick(aim_angle, 2.5)
-                
-                # Apply weapon recoil to player velocity (if not enemy weapon)
-                if !is_enemy_weapon and GameManager.player:
-                        var recoil_direction = GameManager.player.get_global_mouse_position() - GameManager.player.global_position
-                        GameManager.player.apply_weapon_recoil(recoil_direction, current_weapon.spread * 100.0)
+	if shake_camera_on_fire and GameManager.get_main_camera():
+		GameManager.get_main_camera().add_trauma(current_weapon.trauma_shake_amount)
+
+		# Add directional recoil kick to camera
+		var aim_angle: float = (bullet_spawn_position.global_position.direction_to(GameManager.player.get_global_mouse_position())).angle()
+		GameManager.get_main_camera().recoil_kick(aim_angle, current_weapon.recoil_kick_strength)
+
+		# Apply weapon recoil to player velocity (if not enemy weapon)
+		if !is_enemy_weapon and GameManager.player:
+			var recoil_direction: Vector2 = GameManager.player.get_global_mouse_position() - GameManager.player.global_position
+			GameManager.player.apply_weapon_recoil(recoil_direction, current_weapon.spread * current_weapon.recoil_strength)
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
@@ -142,13 +141,14 @@ func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_posi
 
 # Fires ammo based on the provided ammo details and target position.
 func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-        GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
-        
-        ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
-        
-        var bullet_counter: int = 0
-        var bullets_per_shoot: int = ammo.get_ammo_count()
-        var spawn_interval: float = 0.0
+	#GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+	
+	_spawn_muzzle_flash_light()
+	ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
+	
+	var bullet_counter: int = 0
+	var bullets_per_shoot: int = ammo.get_ammo_count()
+	var spawn_interval: float = 0.0
 
         if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
                 spawn_interval = ammo.get_bullet_spawn_interval()
@@ -243,90 +243,92 @@ func _initialize_bullet_pools() -> void:
 # [- SPREAD/ARC]: Creates a fan pattern with evenly distributed angles across the specified arc.[br]
 # [- CIRCLE]: Creates a circular pattern with bullets evenly distributed in 360 degrees.
 func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: int, initial_vector: Vector2) -> Array:
-        var launch_vectors: Array = []
-        match ammo.bullet_pattern:
-                AmmoDetails.BulletPattern.SINGLE:
-                        # For SINGLE pattern, just return the initial vector normalized
-                        launch_vectors.append(initial_vector.normalized())
-                AmmoDetails.BulletPattern.RANDOM_SPREAD:
-                        var angle: float = randf_range(-PI, PI) * current_weapon.get_spread()
-                        launch_vectors.append(initial_vector.normalized().rotated(angle))
-                AmmoDetails.BulletPattern.ARC:
-                        var step: float = 0.0
-                        var arc_spread: float = ammo.pattern_arc_angle
-                        if bullet_per_shot > 1:
-                                step = deg_to_rad(arc_spread) / float(bullet_per_shot - 1)
+	var launch_vectors: Array = []
+	match ammo.bullet_pattern:
+		AmmoDetails.BulletPattern.SINGLE:
+			# For SINGLE pattern, just return the initial vector normalized
+			launch_vectors.append(initial_vector.normalized())
+		AmmoDetails.BulletPattern.RANDOM_SPREAD:
+			var angle: float = randf_range(-PI, PI) * current_weapon.get_spread()
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.ARC:
+			var step: float = 0.0
+			var arc_spread: float = ammo.pattern_arc_angle
+			if bullet_per_shot > 1:
+				step = deg_to_rad(arc_spread) / float(bullet_per_shot - 1)
 
-                        var angle: float = - arc_spread + step * index
-                        launch_vectors.append(initial_vector.normalized().rotated(angle))
-                AmmoDetails.BulletPattern.SPREAD:
-                        var angle: float = randf_range(-current_weapon.get_spread(), current_weapon.get_spread())
-                        launch_vectors.append(initial_vector.normalized().rotated(angle))
-                AmmoDetails.BulletPattern.CIRCLE:
-                        var angle_step: float = TAU / float(bullet_per_shot)
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle_step * index))
-                AmmoDetails.BulletPattern.SPIRAL:
-                        var step = deg_to_rad(ammo.pattern_arc_angle)
-                        var angle: float = step * (index - 1) + current_weapon.get_random_spread()
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle))
-                AmmoDetails.BulletPattern.DOUBLE_SPIRAL:
-                        var step = deg_to_rad(ammo.pattern_arc_angle)
-                        var pair_index: int = int((index - 1) / 2)
-                        var dir = 1 if index % 2 == 0 else -1
-                        var angle: float = step * pair_index * dir + current_weapon.get_random_spread()
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle))
-                AmmoDetails.BulletPattern.WAVE:
-                        var wave_step = TAU / max(bullet_per_shot, 1)
-                        var amplitude = deg_to_rad(ammo.pattern_arc_angle)
+			var angle: float = - arc_spread + step * index
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.SPREAD:
+			var angle: float = randf_range(-current_weapon.get_spread(), current_weapon.get_spread())
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.CIRCLE:
+			var angle_step: float = TAU / float(bullet_per_shot)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle_step * index))
+		AmmoDetails.BulletPattern.SPIRAL:
+			var step = deg_to_rad(ammo.pattern_arc_angle)
+			var angle: float = step * (index - 1) + current_weapon.get_random_spread()
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.DOUBLE_SPIRAL:
+			var step = deg_to_rad(ammo.pattern_arc_angle)
 
-                        var angle: float = sin(wave_step * (index - 1)) * amplitude
-                        launch_vectors.append(initial_vector.normalized().rotated(angle))
-                AmmoDetails.BulletPattern.SINE_WAVE:
-                        var amplitude = deg_to_rad(ammo.pattern_arc_angle)
+			var pair_index: int = int((index - 1) / 2)
+			var dir = 1 if index % 2 == 0 else -1
+			var angle: float = step * pair_index * dir + current_weapon.get_random_spread()
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.WAVE:
+			var wave_step = TAU / max(bullet_per_shot, 1)
+			var amplitude = deg_to_rad(ammo.pattern_arc_angle)
 
-                        var angle: float = sin(float(index - 1)) * amplitude
-                        launch_vectors.append(initial_vector.normalized().rotated(angle))
-                AmmoDetails.BulletPattern.SQUARE:
-                        var angle_square = PI / 2 * ((index - 1) % 4)
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle_square))
-                AmmoDetails.BulletPattern.STAR:
-                        var points = 5
-                        var step_star = TAU / points
+			var angle: float = sin(wave_step * (index - 1)) * amplitude
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.SINE_WAVE:
+			var amplitude = deg_to_rad(ammo.pattern_arc_angle)
 
-                        var angle: float = step_star * (((index - 1) * 2) % points)
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle))
-                AmmoDetails.BulletPattern.CROSS:
-                        var cross_angles = [0.0, PI / 2, PI, 3 * PI / 2]
+			var angle: float = sin(float(index - 1)) * amplitude
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.SQUARE:
+			var angle_square = PI / 2 * ((index - 1) % 4)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle_square))
+		AmmoDetails.BulletPattern.STAR:
+			var points = 5
+			var step_star = TAU / points
 
-                        launch_vectors.append(Vector2.RIGHT.rotated(cross_angles[index % 4]))
-                AmmoDetails.BulletPattern.DIAGONAL_CROSS:
-                        var diag_angles = [PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]
+			var angle: float = step_star * (((index - 1) * 2) % points)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.CROSS:
+			var cross_angles = [0.0, PI / 2, PI, 3 * PI / 2]
 
-                        launch_vectors.append(Vector2.RIGHT.rotated(diag_angles[index % 4]))
-                AmmoDetails.BulletPattern.FLOWER:
-                        var petal_step = TAU / max(bullet_per_shot, 1)
+			launch_vectors.append(Vector2.RIGHT.rotated(cross_angles[index % 4]))
+		AmmoDetails.BulletPattern.DIAGONAL_CROSS:
+			var diag_angles = [PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]
 
-                        var angle: float = sin((index - 1) * 2.0) * deg_to_rad(ammo.pattern_arc_angle) + petal_step * (index - 1)
-                        launch_vectors.append(Vector2.RIGHT.rotated(angle))
-                AmmoDetails.BulletPattern.GRID:
-                        var step_angle = TAU / max(bullet_per_shot, 1)
+			launch_vectors.append(Vector2.RIGHT.rotated(diag_angles[index % 4]))
+		AmmoDetails.BulletPattern.FLOWER:
+			var petal_step = TAU / max(bullet_per_shot, 1)
 
-                        var angle: float = step_angle * index
-                        launch_vectors.append(Vector2.LEFT.rotated(angle))
-                _:
-                        launch_vectors.append(initial_vector.normalized())
-        return launch_vectors
+			var angle: float = sin((index - 1) * 2.0) * deg_to_rad(ammo.pattern_arc_angle) + petal_step * (index - 1)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.GRID:
+			var step_angle = TAU / max(bullet_per_shot, 1)
+
+			var angle: float = step_angle * index
+			launch_vectors.append(Vector2.LEFT.rotated(angle))
+		_:
+			launch_vectors.append(initial_vector.normalized())
+	return launch_vectors
+
 
 # Spawns a brief muzzle flash light effect for visual impact
 func _spawn_muzzle_flash_light() -> void:
-        var muzzle_light = PointLight2D.new()
-        muzzle_light.enabled = true
-        muzzle_light.energy = 1.5
-        muzzle_light.texture_scale = 2.0
-        muzzle_light.color = Color(1.0, 0.9, 0.6)  # Warm yellow-orange flash
-        shoot_effect_position.add_child(muzzle_light)
-        
-        # Flicker and fade out the light
-        var tween = create_tween()
-        tween.tween_property(muzzle_light, "energy", 0.0, 0.08)
-        tween.tween_callback(func(): muzzle_light.queue_free())
+		var muzzle_light = PointLight2D.new()
+		muzzle_light.enabled = true
+		muzzle_light.energy = 1.5
+		muzzle_light.texture_scale = 2.0
+		muzzle_light.color = Color(1.0, 0.9, 0.6)  # Warm yellow-orange flash
+		shoot_effect_position.add_child(muzzle_light)
+		
+		# Flicker and fade out the light
+		var tween = create_tween()
+		tween.tween_property(muzzle_light, "energy", 0.0, 0.08)
+		tween.tween_callback(func(): muzzle_light.queue_free())
