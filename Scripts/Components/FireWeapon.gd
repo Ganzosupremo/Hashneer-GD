@@ -109,10 +109,17 @@ func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool,
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
 func _trigger_camera_shake() -> void:
-	if shake_camera_on_fire:
-		GameManager.shake_camera(current_weapon.amplitude,
-			current_weapon.frequency, current_weapon.duration, current_weapon.axis_ratio,
-			current_weapon.armonic_ration, current_weapon.phase_offset, current_weapon.samples, current_weapon.shake_trans)
+	if shake_camera_on_fire and GameManager.get_main_camera():
+		GameManager.get_main_camera().add_trauma(0.08)
+
+		# Add directional recoil kick to camera
+		var aim_angle: float = (bullet_spawn_position.global_position.direction_to(GameManager.player.get_global_mouse_position())).angle()
+		GameManager.get_main_camera().recoil_kick(aim_angle, 2.5)
+
+		# Apply weapon recoil to player velocity (if not enemy weapon)
+		if !is_enemy_weapon and GameManager.player:
+			var recoil_direction: Vector2 = GameManager.player.get_global_mouse_position() - GameManager.player.global_position
+			GameManager.player.apply_weapon_recoil(recoil_direction, current_weapon.spread * 100.0)
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
@@ -134,8 +141,9 @@ func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_posi
 
 # Fires ammo based on the provided ammo details and target position.
 func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+	#GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
 	
+	_spawn_muzzle_flash_light()
 	ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
 	
 	var bullet_counter: int = 0
@@ -308,3 +316,18 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 		_:
 			launch_vectors.append(initial_vector.normalized())
 	return launch_vectors
+
+
+# Spawns a brief muzzle flash light effect for visual impact
+func _spawn_muzzle_flash_light() -> void:
+		var muzzle_light = PointLight2D.new()
+		muzzle_light.enabled = true
+		muzzle_light.energy = 1.5
+		muzzle_light.texture_scale = 2.0
+		muzzle_light.color = Color(1.0, 0.9, 0.6)  # Warm yellow-orange flash
+		shoot_effect_position.add_child(muzzle_light)
+		
+		# Flicker and fade out the light
+		var tween = create_tween()
+		tween.tween_property(muzzle_light, "energy", 0.0, 0.08)
+		tween.tween_callback(func(): muzzle_light.queue_free())

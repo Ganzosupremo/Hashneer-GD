@@ -41,6 +41,14 @@ var weapons_array: Array = []
 var gravity_sources: Array = []
 var abilities: Array = []
 
+# Footstep system
+var footstep_timer: float = 0.0
+var base_step_interval: float = 0.45  # ~2.2 Hz at walking speed
+
+# Squash and stretch
+var squash_tween: Tween
+var previous_velocity: Vector2 = Vector2.ZERO
+
 
 func _ready() -> void:
 	gravity_sources.clear()
@@ -114,8 +122,23 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 		angle = (global_position - hit_position).angle()
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.PLAYER_HIT, Transform2D(angle, global_position), hit_vfx)
 	animation_player.play("hit-flash")
+
+	# Add camera trauma and hitstop on hit
+	if GameManager.get_main_camera():
+		GameManager.get_main_camera().add_trauma(0.25)
+	apply_hitstop(0.06, 0.3)
+
+
 	get_health_node().take_damage(_damage)
 
+
+## Applies a brief time slowdown effect (hitstop/freeze frame).[br]
+## [param duration]: How long the hitstop lasts in seconds.[br]
+## [param time_scale]: The time scale to apply (0.0 = full freeze, 1.0 = normal)
+func apply_hitstop(duration: float = 0.08, time_scale: float = 0.15) -> void:
+	Engine.time_scale = time_scale
+	await get_tree().create_timer(duration * time_scale, true, false, true).timeout
+	Engine.time_scale = 1.0
 #endregion
 
 func _unlock_saved_abilities() -> void:
@@ -140,20 +163,66 @@ func _apply_stats() -> void:
 
 func move(delta: float) -> void:
 	input = get_input()
-
+		
 	var total_gravity = calculate_total_gravity()
-
+	velocity += total_gravity * delta
+	
 	if input == Vector2.ZERO:
-		velocity += total_gravity * delta
+		# Apply friction when no input
 		if velocity.length() > (Constants.Player_Friction * delta):
 			velocity -= velocity.normalized() * (Constants.Player_Friction * delta)
 		else:
 			velocity = Vector2.ZERO
+		footstep_timer = 0.0  # Reset footstep timer when stopped
 	else:
-		# Calculate movement velocity based on input
-		velocity += (input * Constants.Player_Acceleration * delta)
+		# Steer-based movement for better responsiveness
+		var desired_velocity = input * Constants.Player_Max_Speed
+			
+		# Apply aim-aligned strafe assist
+		var aim_direction = (get_global_mouse_position() - global_position).normalized()
+		var input_aim_alignment = input.dot(aim_direction)
+		var steer_bonus = 1.0
+		if input_aim_alignment > 0.7:
+			steer_bonus = Constants.Player_Steer_Assist
+			
+		# Determine acceleration based on movement context
+		var accel_rate = Constants.Player_Acceleration
+			
+		# Check if we're turning or braking
+		var current_direction = velocity.normalized()
+		var input_dot = current_direction.dot(input)
+			
+		if velocity.length() > 10.0:
+			if input_dot < -0.3:
+				# Braking/reversing
+				accel_rate = Constants.Player_Brake_Accel
+			elif input_dot < 0.7:
+				# Turning
+				accel_rate = Constants.Player_Turn_Accel
+			else:
+				# Normal movement
+				accel_rate = Constants.Player_Deceleration if velocity.length() > desired_velocity.length() else Constants.Player_Acceleration
+			
+		# Steer toward desired velocity
+		var accel_factor = min(1.0, (accel_rate * steer_bonus * delta) / Constants.Player_Max_Speed)
+		velocity = velocity.lerp(desired_velocity, accel_factor)
+			
+		# Clamp to max speed
 		velocity = velocity.limit_length(Constants.Player_Max_Speed)
-		AudioManager.create_2d_audio_at_location_with_persistent_player(global_position, move_sound_effect.sound_type, move_sound_effect.destination_audio_bus)
+			
+		# Footstep cadence system
+		var speed_ratio = velocity.length() / Constants.Player_Max_Speed
+		var step_interval = base_step_interval / max(speed_ratio, 0.5)  # Faster steps when moving faster
+			
+		footstep_timer += delta
+		if footstep_timer >= step_interval:
+			footstep_timer = 0.0
+			AudioManager.create_2d_audio_at_location(global_position, move_sound_effect.sound_type, move_sound_effect.destination_audio_bus)
+			
+		# Apply squash/stretch based on acceleration
+		_apply_squash_stretch()
+	
+	previous_velocity = velocity
 	move_and_slide()
 
 func switch_weapon() -> void:
@@ -161,6 +230,12 @@ func switch_weapon() -> void:
 		active_weapon.select_previous_weapon()
 	elif Input.is_action_just_pressed("Mouse_Wheel_Up"):
 		active_weapon.select_next_weapon()
+
+## Applies weapon recoil to player velocity
+## [param recoil_direction]: Direction of the recoil (usually opposite to firing direction)
+## [param recoil_strength]: Strength of the recoil knockback
+func apply_weapon_recoil(recoil_direction: Vector2, recoil_strength: float = 80.0) -> void:
+	velocity -= recoil_direction.normalized() * recoil_strength
 
 
 func fire() -> void:
@@ -175,6 +250,33 @@ func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
 		weapons_array.append(weapon_to_add)
 		active_weapon._weapons_list = weapons_array
+
+# Applies subtle squash and stretch based on acceleration/deceleration
+func _apply_squash_stretch() -> void:
+	var acceleration = (velocity - previous_velocity).length()
+		
+	if acceleration > 100.0:  # Only apply if accelerating significantly
+		var squash_amount = clamp(acceleration / 5000.0, 0.0, 0.08)
+		var target_scale = Vector2.ONE
+				
+		# Determine if accelerating or braking
+		var velocity_change = velocity.length() - previous_velocity.length()
+				
+		if velocity_change > 0:
+			# Accelerating: squash in direction of movement
+			var move_direction = velocity.normalized()
+			target_scale = Vector2(1.0 - squash_amount, 1.0 + squash_amount)
+		else:
+			# Braking: stretch in direction of movement
+			target_scale = Vector2(1.0 + squash_amount, 1.0 - squash_amount)
+				
+			if squash_tween:
+				squash_tween.kill()
+				
+			squash_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
+			squash_tween.tween_property(self, "scale", target_scale, 0.15)
+			squash_tween.tween_property(self, "scale", Vector2.ONE, 0.1)
+
 
 #endregion
 

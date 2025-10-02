@@ -19,8 +19,13 @@ const ERROR_500: String = "Code 500: This block has already been mined. No rewar
 
 # Player Movement constants
 const Player_Max_Speed: float = 600.0
-const Player_Acceleration: float = 1500.0
+const Player_Acceleration: float = 2200.0
+const Player_Deceleration: float = 2800.0
+const Player_Turn_Accel: float = 3000.0
+const Player_Brake_Accel: float = 3500.0
 const Player_Friction: float = 1000.0
+const Player_Steer_Assist: float = 1.15
+
 
 
 enum ShakeMagnitude {

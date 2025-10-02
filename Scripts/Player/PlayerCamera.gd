@@ -29,6 +29,16 @@ var shake_points: Array[Vector2]
 var magnitude: Constants.ShakeMagnitude = Constants.ShakeMagnitude.None
 var target_position: Vector2 = Vector2.INF
 
+# Trauma-based shake system
+var trauma: float = 0.0
+var trauma_decay_rate: float = 1.0  # Trauma decreases per second
+var max_trauma: float = 1.0
+var trauma_power: float = 2.0  # Exponential for shake strength
+
+# Recoil kick system
+var recoil_offset: Vector2 = Vector2.ZERO
+var recoil_decay_rate: float = 8.0
+
 ## Constant shake variables
 var is_constant_shake_active: bool = false
 var constant_shake_amplitude: float = 0.0
@@ -60,6 +70,25 @@ func _process(delta: float) -> void:
 	if target_position != Vector2.INF:
 		position = lerp(position, target_position, smooth_speed * delta)
 	
+	# Decay trauma over time
+	if trauma > 0.0:
+		trauma = max(trauma - trauma_decay_rate * delta, 0.0)
+		
+		# Decay recoil kick
+	if recoil_offset.length() > 0.1:
+		recoil_offset = recoil_offset.lerp(Vector2.ZERO, recoil_decay_rate * delta)
+	else:
+		recoil_offset = Vector2.ZERO
+		
+	# Apply trauma-based shake
+	var trauma_shake = Vector2.ZERO
+	if trauma > 0.0:
+		var shake_amount = pow(trauma, trauma_power)
+		trauma_shake = Vector2(
+			randf_range(-1.0, 1.0) * shake_amount * 10.0,
+			randf_range(-1.0, 1.0) * shake_amount * 10.0
+		)
+
 	# Handle constant shake
 	if is_constant_shake_active:
 		offset = _get_constant_shake_offset()
@@ -227,3 +256,36 @@ func _get_constant_shake_offset() -> Vector2:
 	var vertical_component: float = Ay * sin(Wy * t + constant_shake_phase_offset)
 	
 	return Vector2(horizontal_component, -vertical_component)
+
+
+## Adds trauma to the camera for procedural shake.[br]
+## [param amount] Amount of trauma to add (0.0 to 1.0)
+func add_trauma(amount: float) -> void:
+	trauma = min(trauma + amount, max_trauma)
+
+## Adds trauma with preset magnitudes
+func add_trauma_preset(_magnitude: Constants.ShakeMagnitude) -> void:
+	match _magnitude:
+		Constants.ShakeMagnitude.Small:
+			add_trauma(0.15)
+		Constants.ShakeMagnitude.Medium:
+			add_trauma(0.35)
+		Constants.ShakeMagnitude.Large:
+			add_trauma(0.6)
+		Constants.ShakeMagnitude.ExtraLarge:
+			add_trauma(0.8)
+		Constants.ShakeMagnitude.Gigantius:
+			add_trauma(1.0)
+
+## Kicks the camera in a specific direction (for recoil).[br]
+## [param direction] Angle in radians for the kick direction.[br]
+## [param strength] Strength of the kick in pixels.
+func kick(direction: float, strength: float = 5.0) -> void:
+	var kick_vector = Vector2(cos(direction), sin(direction)) * strength
+	recoil_offset += kick_vector
+
+## Quick recoil kick opposite to aim direction (for weapon fire).[br]
+## [param aim_angle] Current aim angle in radians.[br]
+## [param strength] Recoil strength.
+func recoil_kick(aim_angle: float, strength: float = 3.0) -> void:
+	kick(aim_angle + PI, strength)  # Kick opposite to aim direction

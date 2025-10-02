@@ -111,3 +111,11 @@ func load_data() -> void:
 	loaded = true
 
 #endregion
+
+
+#region Getters
+
+func get_main_camera() -> AdvanceCamera:
+	if player_camera != null:
+		return player_camera
+	return null
