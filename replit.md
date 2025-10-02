@@ -36,6 +36,25 @@ Enhanced all backgrounds with Bitcoin-themed styling:
   - Shader: `Shaders/GameBackgroundUnified.gdshader`
   - Clean, non-distracting design that complements gameplay
 
+#### Enemy Variety Expansion (Oct 2, 2025)
+**Fixed ChargingEnemy Issues:**
+- Implemented proper state machine (IDLE, WINDING_UP, CHARGING, COOLDOWN)
+- Added visual telegraph with color changes during wind-up
+- Fixed physics conflicts between charging and base movement
+- Added per-charge hit tracking to prevent multiple hits on same target
+
+**8 New Enemy Types Added:**
+1. **FastDartEnemy** - Fast, agile enemy with perpendicular dodging behavior
+2. **TankEnemy** - Slow, armored enemy with shield mechanic and damage reduction
+3. **ExplodingEnemy** - Suicide bomber that rushes and explodes on death
+4. **SplitterEnemy** - Splits into 3 smaller enemies when killed
+5. **SniperEnemy** - Long-range shooter that maintains distance from player
+6. **TeleporterEnemy** - Blinks around the map with fade effects
+7. **HealerEnemy** - Heals nearby enemies while fleeing from player
+8. **SpinnerEnemy** - Rotates and fires spiral bullet patterns
+
+**Total Enemy Count:** 13 types (5 original + 8 new) providing diverse gameplay challenges
+
 #### Tunable Game Feel Parameters (Scripts/Utils/Constants.gd)
 ```gdscript
 # Movement
