@@ -37,25 +37,25 @@ var current_pool: PoolFracture
 var _laser_beam: LaserBeam
 
 func _ready() -> void:
-	quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
-	_initialize_bullet_pools()
-	if _fire_cooldown_timer == null:
-		_fire_cooldown_timer = Timer.new()
-		add_child(_fire_cooldown_timer)
-		_fire_cooldown_timer.autostart = false
-		_fire_cooldown_timer.one_shot = false
+        quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
+        _initialize_bullet_pools()
+        if _fire_cooldown_timer == null:
+                _fire_cooldown_timer = Timer.new()
+                add_child(_fire_cooldown_timer)
+                _fire_cooldown_timer.autostart = false
+                _fire_cooldown_timer.one_shot = false
 
 func _process(delta: float) -> void:
-	fire_rate_cooldown_timer -= delta
+        fire_rate_cooldown_timer -= delta
 
 func _enter_tree() -> void:
-	fire_weapon.connect(on_fire_weapon)
+        fire_weapon.connect(on_fire_weapon)
 
 func _exit_tree() -> void:
-	fire_weapon.disconnect(on_fire_weapon)
+        fire_weapon.disconnect(on_fire_weapon)
 
 func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	weapon_fire(has_fired, fired_previous_frame, player_damage_multiplier, target_position)
+        weapon_fire(has_fired, fired_previous_frame, player_damage_multiplier, target_position)
 
 
 ## Fires the weapon based on the current state and parameters.[br]
@@ -73,38 +73,38 @@ func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_m
 ## It also handles the case where a laser beam is fired, updating its position and direction
 ## if it already exists, or creating a new laser beam instance if it does not.
 func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-	current_weapon = active_weapon_component.get_current_weapon()
-	
-	if ammo.bullet_type == AmmoDetails.BulletType.LASER:
-		# Handle laser beam termination on release or ammo change
-		if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
-		if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
-			# If the weapon is ready to fire, we can proceed with firing
-			_fire_laser(ammo, player_damage_multiplier, target_position)
-	else:
-		if ready_to_fire(has_fired, fired_previous_frame):
-			_trigger_camera_shake()
-			_fire_ammo(ammo, player_damage_multiplier, target_position)
-			reset_cooldown_timer()
+        var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
+        current_weapon = active_weapon_component.get_current_weapon()
+        
+        if ammo.bullet_type == AmmoDetails.BulletType.LASER:
+                # Handle laser beam termination on release or ammo change
+                if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
+                if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
+                        # If the weapon is ready to fire, we can proceed with firing
+                        _fire_laser(ammo, player_damage_multiplier, target_position)
+        else:
+                if ready_to_fire(has_fired, fired_previous_frame):
+                        _trigger_camera_shake()
+                        _fire_ammo(ammo, player_damage_multiplier, target_position)
+                        reset_cooldown_timer()
 
 # Handles the termination of the laser beam based on the firing state and ammo type.
 func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool, ammo: AmmoDetails) -> bool:
-	# Stop on release
-	if !has_fired and fired_previous_frame and _laser_beam:
-		GameManager.player_camera.stop_constant_shake()
-		_laser_beam.destroy()
-		_laser_beam = null
-		reset_cooldown_timer()
-		return true
-	# Stop if ammo type changed
-	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
-		GameManager.player_camera.stop_constant_shake()
-		_laser_beam.destroy()
-		_laser_beam = null
-		reset_cooldown_timer()
-		return true
-	return false
+        # Stop on release
+        if !has_fired and fired_previous_frame and _laser_beam:
+                GameManager.player_camera.stop_constant_shake()
+                _laser_beam.destroy()
+                _laser_beam = null
+                reset_cooldown_timer()
+                return true
+        # Stop if ammo type changed
+        if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
+                GameManager.player_camera.stop_constant_shake()
+                _laser_beam.destroy()
+                _laser_beam = null
+                reset_cooldown_timer()
+                return true
+        return false
 
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
@@ -123,20 +123,20 @@ func _trigger_camera_shake() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
-	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
-	
-	if !_laser_beam:
-		var scene_to_use: PackedScene = ammo.laser_beam_scene
-		_laser_beam = scene_to_use.instantiate()
-		get_node(".").add_child(_laser_beam)
-		
-		var lifetime: float = ammo.get_bullet_lifetime()
-		ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
-		_laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
-	else:
-		# If the laser beam already exists, we just update its position and direction
-		_laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
+        GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+        var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
+        
+        if !_laser_beam:
+                var scene_to_use: PackedScene = ammo.laser_beam_scene
+                _laser_beam = scene_to_use.instantiate()
+                get_node(".").add_child(_laser_beam)
+                
+                var lifetime: float = ammo.get_bullet_lifetime()
+                ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
+                _laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
+        else:
+                # If the laser beam already exists, we just update its position and direction
+                _laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
 
 
 # Fires ammo based on the provided ammo details and target position.
@@ -150,80 +150,81 @@ func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_posit
 	var bullets_per_shoot: int = ammo.get_ammo_count()
 	var spawn_interval: float = 0.0
 
-	if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
-		spawn_interval = ammo.get_bullet_spawn_interval()
+        if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
+                spawn_interval = ammo.get_bullet_spawn_interval()
 
-	AudioManager.create_2d_audio_at_location(shoot_effect_position.global_position, current_weapon.fire_sound.sound_type, current_weapon.fire_sound.destination_audio_bus)
+        # Play fire sound (pitch variation will be added in audio enhancement pass)
+        AudioManager.create_2d_audio_at_location(shoot_effect_position.global_position, current_weapon.fire_sound.sound_type, current_weapon.fire_sound.destination_audio_bus)
 
-	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
-	var launch_vectors: Array = []
+        var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
+        var launch_vectors: Array = []
 
-	while bullet_counter < bullets_per_shoot:
-		bullet_counter += 1
-		launch_vectors.append_array(_calculate_bullet_spread(ammo, bullet_counter, bullets_per_shoot, initial_vector))
+        while bullet_counter < bullets_per_shoot:
+                bullet_counter += 1
+                launch_vectors.append_array(_calculate_bullet_spread(ammo, bullet_counter, bullets_per_shoot, initial_vector))
 
-		var bullet: FractureBullet
-		if use_object_pool:
-			bullet = current_pool.getInstance()
-		else:
-			bullet = bullet_scene.instantiate()
-			get_node("..").add_child(bullet)
+                var bullet: FractureBullet
+                if use_object_pool:
+                        bullet = current_pool.getInstance()
+                else:
+                        bullet = bullet_scene.instantiate()
+                        get_node("..").add_child(bullet)
 
-		if not bullet: return
+                if not bullet: return
 
-		var launch_vector: Vector2 = launch_vectors[bullet_counter - 1]
-		var launch_magnitude: float = ammo.bullet_speed
+                var launch_vector: Vector2 = launch_vectors[bullet_counter - 1]
+                var launch_magnitude: float = ammo.bullet_speed
 
-		bullet.spawn(bullet_spawn_position.position, launch_vector * launch_magnitude, randf_range(ammo.min_lifetime, ammo.max_lifetime), quadrant_builder, ammo)
-		bullet.transform = bullet_spawn_position.global_transform
+                bullet.spawn(bullet_spawn_position.position, launch_vector * launch_magnitude, randf_range(ammo.min_lifetime, ammo.max_lifetime), quadrant_builder, ammo)
+                bullet.transform = bullet_spawn_position.global_transform
 
-		if spawn_interval > 0.0:
-			# If we have a spawn interval, we need to wait before firing the next bullet
-			_fire_cooldown_timer.start(spawn_interval)
-			await _fire_cooldown_timer.timeout
+                if spawn_interval > 0.0:
+                        # If we have a spawn interval, we need to wait before firing the next bullet
+                        _fire_cooldown_timer.start(spawn_interval)
+                        await _fire_cooldown_timer.timeout
 
 ## Checks if the weapon is ready to fire based on the cooldown timer.
 ## This method returns true if the cooldown timer is less than or equal to zero,
 ## indicating that the weapon can fire again. It is used to determine if the weapon
 ## can be fired without waiting for the cooldown period to expire.
 func ready_to_fire(has_fired: bool, fired_previous_frame: bool) -> bool:
-	# Only fire when the trigger is pressed
-	if has_fired:
-		# Initial press always fires immediately
-		if !fired_previous_frame:
-			return true
-		# Holding the trigger requires cooldown
-		return fire_rate_cooldown_timer <= 0.0
-	# Not pressing trigger: cannot fire
-	return false
+        # Only fire when the trigger is pressed
+        if has_fired:
+                # Initial press always fires immediately
+                if !fired_previous_frame:
+                        return true
+                # Holding the trigger requires cooldown
+                return fire_rate_cooldown_timer <= 0.0
+        # Not pressing trigger: cannot fire
+        return false
 
 ## Resets the cooldown timer for firing the weapon.
 ## This method is called to reset the cooldown timer after firing a weapon or when the weapon is not ready to fire.
 ## It sets the cooldown timer to the current weapon's fire cooldown value.
 func reset_cooldown_timer() -> void:
-	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown()
+        fire_rate_cooldown_timer = current_weapon.get_fire_cooldown()
 
 # Checks if the provided pool is valid for use.
 func _is_pool_valid(pool: PoolFracture) -> bool:
-	if is_instance_valid(pool):
-		return true
-	elif pool != null:
-		return true
-	
-	return false
+        if is_instance_valid(pool):
+                return true
+        elif pool != null:
+                return true
+        
+        return false
 
 # Initializes the bullet pools based on whether the weapon is for an enemy or player.
 func _initialize_bullet_pools() -> void:
-	if is_enemy_weapon:
-		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
-	else:
-		current_pool = get_tree().get_first_node_in_group("PBulletsPool")
-	if not current_pool:
-		DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
-	if use_object_pool and not current_pool:
-		DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
+        if is_enemy_weapon:
+                current_pool = get_tree().get_first_node_in_group("EBulletsPool")
+        else:
+                current_pool = get_tree().get_first_node_in_group("PBulletsPool")
+        if not current_pool:
+                DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
+        if use_object_pool and not current_pool:
+                DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
 
 # Calculates bullet trajectory vectors based on the specified bullet pattern
 # [br]

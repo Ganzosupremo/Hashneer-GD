@@ -1,0 +1,33 @@
+[agent]
+expertMode = true
+
+[nix]
+channel = "stable-25_05"
+packages = ["godot_4"]
+
+[workflows]
+runButton = "Project"
+
+[[workflows.workflow]]
+name = "Project"
+mode = "parallel"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Godot Game"
+
+[[workflows.workflow]]
+name = "Godot Game"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "godot4 --path . --rendering-driver opengl3 --display-driver x11"
+
+[workflows.workflow.metadata]
+outputType = "vnc"
+
+[[ports]]
+localPort = 38037
+externalPort = 80

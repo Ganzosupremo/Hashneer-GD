@@ -13,7 +13,7 @@ glow_blend_mode = 0
 [sub_resource type="Gradient" id="Gradient_bitcoin"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
-colors = PackedColorArray(0.02, 0.02, 0.05, 1, 0.05, 0.05, 0.08, 1, 0.08, 0.08, 0.12, 1, 0.12, 0.08, 0.02, 1)
+colors = PackedColorArray(0.02, 0.02, 0.08, 1, 0.06, 0.04, 0.12, 1, 0.08, 0.06, 0.14, 1, 0.15, 0.08, 0.05, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
 gradient = SubResource("Gradient_bitcoin")
@@ -26,8 +26,8 @@ shader = ExtResource("3_72sra")
 shader_parameter/time = 0.0
 shader_parameter/speed = 1.5
 shader_parameter/density = 1.0
-shader_parameter/node_color = Color(1, 0.6, 0, 0.15)
-shader_parameter/connection_color = Color(0.2, 0.5, 1, 0.1)
+shader_parameter/node_color = Color(1, 0.65, 0, 0.25)
+shader_parameter/connection_color = Color(0.2, 0.6, 1, 0.15)
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
