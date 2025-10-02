@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://dexplode1boom"]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Scripts/Enemies/ExplodingEnemy.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="3_tex"]
+[ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="4_norm"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_explode"]
+diffuse_texture = ExtResource("3_tex")
+normal_texture = ExtResource("4_norm")
+texture_repeat = 2
+
+[node name="ExplodingEnemy" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+explosion_radius = 150.0
+explosion_damage_range = Vector2(30, 50)
+explosion_color = Color(1, 0.5, 0, 1)
+pulse_speed = 3.0
+color_default = Color(1, 0.6, 0.2, 1)
+shape_area_percent = 0.12
+max_speed = 180.0
+polygon_shape = 0
+cir_radius = 40.0
+cir_smoothing = 3
+
+[node name="FractureBodyHealthComponent" parent="." index="0"]
+advanced_regeneration = false
+regeneration_interval_range = Vector2(0, 0)
+
+[node name="Polygon2D" parent="Shape3D" index="0"]
+texture = SubResource("CanvasTexture_explode")
+
+[node name="Line2D" parent="Shape3D" index="1"]
+default_color = Color(1, 0.3, 0, 1)
