@@ -18,7 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/QuadrantTerrain/FractureBodyDelaunay.tscn" id="23_44xgw"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="24_thavx"]
 [ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="25_0mtbo"]
-[ext_resource type="Shader" uid="uid://br8d0l18imino" path="res://Shaders/MainGameBG.gdshader" id="26_2lin2"]
+[ext_resource type="Shader" path="res://Shaders/GameBackgroundUnified.gdshader" id="26_2lin2"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="29_gc5eq"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="29_xxpkq"]
 [ext_resource type="PackedScene" uid="uid://bjsnsabkmnmts" path="res://Scenes/UI/weapon_ui.tscn" id="30_ixfvk"]
@@ -110,15 +110,11 @@ normal = Vector2(1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
-shader_parameter/iResolution = Vector2(1920, 1080)
-shader_parameter/Scroll = -0.008
-shader_parameter/Depth = 0.15
-shader_parameter/Rotation = -0.5
-shader_parameter/Contrast = 0.25
-shader_parameter/NoiseSpeed = 0.05
-shader_parameter/PatternScale = 8.0
-shader_parameter/BackgroundColor = Color(0.05, 0.05, 0.08, 1)
-shader_parameter/ForegroundColor = Color(1, 0.843, 0, 0.1)
+shader_parameter/time = 0.0
+shader_parameter/bg_color_dark = Color(0.03, 0.04, 0.08, 1)
+shader_parameter/bg_color_light = Color(0.06, 0.08, 0.14, 1)
+shader_parameter/grid_scale = 50.0
+shader_parameter/movement_speed = 0.4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
 bg_color = Color(0.02, 0.02, 0.04, 0.95)
