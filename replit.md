@@ -14,15 +14,27 @@ Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Player
 - ✅ Game feel improvements fully implemented (Oct 1, 2025)
 - ❌ Polygon fracture addon missing core files (PoolFracture.gd, CutShapeVisualizer.gd, ShardFracture.gd)
 
-### Recent Improvements (Oct 1, 2025)
+### Recent Improvements (Oct 1-2, 2025)
+
+#### Game Feel Improvements (Oct 1, 2025)
 All "game juice" features successfully implemented:
 - **Steer-based movement** - Smooth responsive controls with separate accel/decel/turn constants
 - **Camera trauma system** - Screen shake with directional kick and weapon recoil
 - **Hitstop/freeze frames** - Time dilation on hits (0.06s at 0.3 timescale)
 - **Muzzle flash lighting** - Dynamic Light2D flicker on weapon fire
-- **Footstep cadence** - Speed-based step timing with squash/stretch animations
+- **Footstep cadence** - Speed-based step timing with directional squash/stretch animations
 - **Weapon kickback** - Player velocity recoil on firing
-- **Bug fixes** - UserSettings.gd Vector2i.split() error resolved
+- **Bug fixes** - UserSettings.gd Vector2i.split() error, FireWeapon.gd tab/space indentation
+
+#### Visual Polish - Background Enhancements (Oct 2, 2025)
+Enhanced all backgrounds with Bitcoin-themed styling:
+- **UI Backgrounds** - Added falling "hash blocks" effect, enhanced gold/orange Bitcoin colors, subtle blockchain pulse
+  - Applied to Main Menu and Save Slot Selector
+  - Shader: `Shaders/UIBackgroundShader.gdshader`
+- **Game Backgrounds** - Unified subtle animated background with moving grid and multi-octave noise
+  - Applied to Mining Mode and Unlimited Waves Mode
+  - Shader: `Shaders/GameBackgroundUnified.gdshader`
+  - Clean, non-distracting design that complements gameplay
 
 #### Tunable Game Feel Parameters (Scripts/Utils/Constants.gd)
 ```gdscript
@@ -131,4 +143,4 @@ The project includes export configurations for:
 - Web (HTML5)
 
 ## Last Updated
-October 1, 2025
+October 2, 2025

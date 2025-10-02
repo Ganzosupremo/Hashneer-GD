@@ -260,8 +260,9 @@ func _get_constant_shake_offset() -> Vector2:
 		
 		return Vector2(horizontal_component, -vertical_component)
 
-## Adds trauma to the camera for procedural shake
-## @param amount: Amount of trauma to add (0.0 to 1.0)
+
+## Adds trauma to the camera for procedural shake.[br]
+## [param amount] Amount of trauma to add (0.0 to 1.0)
 func add_trauma(amount: float) -> void:
 		trauma = min(trauma + amount, max_trauma)
 
@@ -279,15 +280,15 @@ func add_trauma_preset(_magnitude: Constants.ShakeMagnitude) -> void:
 				Constants.ShakeMagnitude.Gigantius:
 						add_trauma(1.0)
 
-## Kicks the camera in a specific direction (for recoil)
-## @param direction: Angle in radians for the kick direction
-## @param strength: Strength of the kick in pixels
+## Kicks the camera in a specific direction (for recoil).[br]
+## [param direction] Angle in radians for the kick direction.[br]
+## [param strength] Strength of the kick in pixels.
 func kick(direction: float, strength: float = 5.0) -> void:
 		var kick_vector = Vector2(cos(direction), sin(direction)) * strength
 		recoil_offset += kick_vector
 
-## Quick recoil kick opposite to aim direction (for weapon fire)
-## @param aim_angle: Current aim angle in radians
-## @param strength: Recoil strength
+## Quick recoil kick opposite to aim direction (for weapon fire).[br]
+## [param aim_angle] Current aim angle in radians.[br]
+## [param strength] Recoil strength.
 func recoil_kick(aim_angle: float, strength: float = 3.0) -> void:
 		kick(aim_angle + PI, strength)  # Kick opposite to aim direction

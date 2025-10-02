@@ -124,34 +124,35 @@ func _trigger_camera_shake() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
-	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
-	
-	if !_laser_beam:
-		var scene_to_use: PackedScene = ammo.laser_beam_scene
-		_laser_beam = scene_to_use.instantiate()
-		get_node(".").add_child(_laser_beam)
-		
-		var lifetime: float = ammo.get_bullet_lifetime()
-		ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
-		_laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
-	else:
-		# If the laser beam already exists, we just update its position and direction
-		_laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
+        GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+        var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
+        
+        if !_laser_beam:
+                var scene_to_use: PackedScene = ammo.laser_beam_scene
+                _laser_beam = scene_to_use.instantiate()
+                get_node(".").add_child(_laser_beam)
+                
+                var lifetime: float = ammo.get_bullet_lifetime()
+                ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
+                _laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
+        else:
+                # If the laser beam already exists, we just update its position and direction
+                _laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
 
 
 # Fires ammo based on the provided ammo details and target position.
 func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+	#GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
 	
+	_spawn_muzzle_flash_light()
 	ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
 	
 	var bullet_counter: int = 0
 	var bullets_per_shoot: int = ammo.get_ammo_count()
 	var spawn_interval: float = 0.0
 
-	if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
-		spawn_interval = ammo.get_bullet_spawn_interval()
+        if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
+                spawn_interval = ammo.get_bullet_spawn_interval()
 
 	# Play fire sound (pitch variation will be added in audio enhancement pass)
 	AudioManager.create_2d_audio_at_location(shoot_effect_position.global_position, current_weapon.fire_sound.sound_type, current_weapon.fire_sound.destination_audio_bus)
@@ -214,16 +215,16 @@ func _is_pool_valid(pool: PoolFracture) -> bool:
 
 # Initializes the bullet pools based on whether the weapon is for an enemy or player.
 func _initialize_bullet_pools() -> void:
-	if is_enemy_weapon:
-		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
-	else:
-		current_pool = get_tree().get_first_node_in_group("PBulletsPool")
-	if not current_pool:
-		DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
-	if use_object_pool and not current_pool:
-		DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
+        if is_enemy_weapon:
+                current_pool = get_tree().get_first_node_in_group("EBulletsPool")
+        else:
+                current_pool = get_tree().get_first_node_in_group("PBulletsPool")
+        if not current_pool:
+                DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
+        if use_object_pool and not current_pool:
+                DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
 
 # Calculates bullet trajectory vectors based on the specified bullet pattern
 # [br]
@@ -282,7 +283,19 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.SINE_WAVE:
 			var amplitude = deg_to_rad(ammo.pattern_arc_angle)
+			var angle: float = sin(wave_step * (index - 1)) * amplitude
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.SINE_WAVE:
+			var amplitude = deg_to_rad(ammo.pattern_arc_angle)
 
+			var angle: float = sin(float(index - 1)) * amplitude
+			launch_vectors.append(initial_vector.normalized().rotated(angle))
+		AmmoDetails.BulletPattern.SQUARE:
+			var angle_square = PI / 2 * ((index - 1) % 4)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle_square))
+		AmmoDetails.BulletPattern.STAR:
+			var points = 5
+			var step_star = TAU / points
 			var angle: float = sin(float(index - 1)) * amplitude
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.SQUARE:
@@ -296,7 +309,14 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			launch_vectors.append(Vector2.RIGHT.rotated(angle))
 		AmmoDetails.BulletPattern.CROSS:
 			var cross_angles = [0.0, PI / 2, PI, 3 * PI / 2]
+			var angle: float = step_star * (((index - 1) * 2) % points)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.CROSS:
+			var cross_angles = [0.0, PI / 2, PI, 3 * PI / 2]
 
+			launch_vectors.append(Vector2.RIGHT.rotated(cross_angles[index % 4]))
+		AmmoDetails.BulletPattern.DIAGONAL_CROSS:
+			var diag_angles = [PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]
 			launch_vectors.append(Vector2.RIGHT.rotated(cross_angles[index % 4]))
 		AmmoDetails.BulletPattern.DIAGONAL_CROSS:
 			var diag_angles = [PI / 4, 3 * PI / 4, 5 * PI / 4, 7 * PI / 4]
@@ -304,7 +324,14 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			launch_vectors.append(Vector2.RIGHT.rotated(diag_angles[index % 4]))
 		AmmoDetails.BulletPattern.FLOWER:
 			var petal_step = TAU / max(bullet_per_shot, 1)
+			launch_vectors.append(Vector2.RIGHT.rotated(diag_angles[index % 4]))
+		AmmoDetails.BulletPattern.FLOWER:
+			var petal_step = TAU / max(bullet_per_shot, 1)
 
+			var angle: float = sin((index - 1) * 2.0) * deg_to_rad(ammo.pattern_arc_angle) + petal_step * (index - 1)
+			launch_vectors.append(Vector2.RIGHT.rotated(angle))
+		AmmoDetails.BulletPattern.GRID:
+			var step_angle = TAU / max(bullet_per_shot, 1)
 			var angle: float = sin((index - 1) * 2.0) * deg_to_rad(ammo.pattern_arc_angle) + petal_step * (index - 1)
 			launch_vectors.append(Vector2.RIGHT.rotated(angle))
 		AmmoDetails.BulletPattern.GRID:
@@ -315,6 +342,12 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 		_:
 			launch_vectors.append(initial_vector.normalized())
 	return launch_vectors
+			var angle: float = step_angle * index
+			launch_vectors.append(Vector2.LEFT.rotated(angle))
+		_:
+			launch_vectors.append(initial_vector.normalized())
+	return launch_vectors
+
 
 # Spawns a brief muzzle flash light effect for visual impact
 func _spawn_muzzle_flash_light() -> void:
