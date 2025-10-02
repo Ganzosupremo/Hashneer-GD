@@ -27,3 +27,7 @@ args = "godot4 --path . --rendering-driver opengl3 --display-driver x11"
 
 [workflows.workflow.metadata]
 outputType = "vnc"
+
+[[ports]]
+localPort = 38037
+externalPort = 80
