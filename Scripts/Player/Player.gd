@@ -76,14 +76,14 @@ func _physics_process(delta) -> void:
 #region Public Functions
 
 func set_player() -> void:
-	if !player_details: return
-	
-	_unlock_saved_abilities()
-	speed = player_details.speed
-	player_damage_multiplier_percent = player_details.damage_multiplier_percent
-	_health.set_max_health(player_details.max_health)
-	
-	_apply_stats()
+        if !player_details: return
+        
+        _unlock_saved_abilities()
+        speed = player_details.speed
+        player_damage_multiplier_percent = player_details.damage_multiplier_percent
+        _health.set_max_health(player_details.max_health)
+        
+        _apply_stats()
 
         initial_weapon = player_details.initial_weapon
         weapons_array = player_details.weapons_array.duplicate(true)
@@ -144,11 +144,11 @@ func _unlock_saved_abilities() -> void:
                 ability.enable()
 
 func _apply_stats() -> void:
-	var stats: Dictionary = player_details.apply_stats()
-	
-	speed = stats.Speed
-	player_damage_multiplier_percent = stats.Damage
-	_health.set_max_health(stats.Health)
+        var stats: Dictionary = player_details.apply_stats()
+        
+        speed = stats.Speed
+        player_damage_multiplier_percent = stats.Damage
+        _health.set_max_health(stats.Health)
 
 #region Input
 
@@ -224,12 +224,12 @@ func switch_weapon() -> void:
 
 
 func fire() -> void:
-	if Input.is_action_pressed("Fire"):
-		fired_previous_frame = true
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
-	else:
-		fired_previous_frame = false
-		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
+        if Input.is_action_pressed("Fire"):
+                fired_previous_frame = true
+                fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
+        else:
+                fired_previous_frame = false
+                fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
 
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
@@ -334,14 +334,23 @@ func _apply_squash_stretch() -> void:
                 
                 # Determine if accelerating or braking
                 var velocity_change = velocity.length() - previous_velocity.length()
+                var move_direction = velocity.normalized()
+                
+                # Calculate directional scale based on movement angle
+                # For top-down view, we adjust scale based on movement direction
+                var horizontal_factor = abs(move_direction.x)  # More horizontal movement
+                var vertical_factor = abs(move_direction.y)    # More vertical movement
                 
                 if velocity_change > 0:
-                        # Accelerating: squash in direction of movement
-                        var move_direction = velocity.normalized()
-                        target_scale = Vector2(1.0 - squash_amount, 1.0 + squash_amount)
+                        # Accelerating: squash in direction of movement, stretch perpendicular
+                        var x_squash = squash_amount * horizontal_factor
+                        var y_squash = squash_amount * vertical_factor
+                        target_scale = Vector2(1.0 - x_squash + y_squash * 0.5, 1.0 - y_squash + x_squash * 0.5)
                 else:
-                        # Braking: stretch in direction of movement
-                        target_scale = Vector2(1.0 + squash_amount, 1.0 - squash_amount)
+                        # Braking: stretch in direction of movement, squash perpendicular
+                        var x_stretch = squash_amount * horizontal_factor
+                        var y_stretch = squash_amount * vertical_factor
+                        target_scale = Vector2(1.0 + x_stretch - y_stretch * 0.5, 1.0 + y_stretch - x_stretch * 0.5)
                 
                 if squash_tween:
                         squash_tween.kill()

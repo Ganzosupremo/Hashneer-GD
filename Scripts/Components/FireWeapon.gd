@@ -124,34 +124,34 @@ func _trigger_camera_shake() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
-	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
-	
-	if !_laser_beam:
-		var scene_to_use: PackedScene = ammo.laser_beam_scene
-		_laser_beam = scene_to_use.instantiate()
-		get_node(".").add_child(_laser_beam)
-		
-		var lifetime: float = ammo.get_bullet_lifetime()
-		ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
-		_laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
-	else:
-		# If the laser beam already exists, we just update its position and direction
-		_laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
+        GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+        var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
+        
+        if !_laser_beam:
+                var scene_to_use: PackedScene = ammo.laser_beam_scene
+                _laser_beam = scene_to_use.instantiate()
+                get_node(".").add_child(_laser_beam)
+                
+                var lifetime: float = ammo.get_bullet_lifetime()
+                ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
+                _laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
+        else:
+                # If the laser beam already exists, we just update its position and direction
+                _laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
 
 
 # Fires ammo based on the provided ammo details and target position.
 func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
-	
-	ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
-	
-	var bullet_counter: int = 0
-	var bullets_per_shoot: int = ammo.get_ammo_count()
-	var spawn_interval: float = 0.0
+        GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.WEAPON_FIRE, shoot_effect_position.global_transform, current_weapon.weapon_shoot_effect)
+        
+        ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
+        
+        var bullet_counter: int = 0
+        var bullets_per_shoot: int = ammo.get_ammo_count()
+        var spawn_interval: float = 0.0
 
-	if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
-		spawn_interval = ammo.get_bullet_spawn_interval()
+        if bullets_per_shoot > 1 and !ammo.fire_pattern_simultaneous:
+                spawn_interval = ammo.get_bullet_spawn_interval()
 
         # Play fire sound (pitch variation will be added in audio enhancement pass)
         AudioManager.create_2d_audio_at_location(shoot_effect_position.global_position, current_weapon.fire_sound.sound_type, current_weapon.fire_sound.destination_audio_bus)
@@ -215,16 +215,16 @@ func _is_pool_valid(pool: PoolFracture) -> bool:
 
 # Initializes the bullet pools based on whether the weapon is for an enemy or player.
 func _initialize_bullet_pools() -> void:
-	if is_enemy_weapon:
-		current_pool = get_tree().get_first_node_in_group("EBulletsPool")
-	else:
-		current_pool = get_tree().get_first_node_in_group("PBulletsPool")
-	if not current_pool:
-		DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
-	if use_object_pool and not current_pool:
-		DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
-		return
+        if is_enemy_weapon:
+                current_pool = get_tree().get_first_node_in_group("EBulletsPool")
+        else:
+                current_pool = get_tree().get_first_node_in_group("PBulletsPool")
+        if not current_pool:
+                DebugLogger.error("Bullet pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
+        if use_object_pool and not current_pool:
+                DebugLogger.error("Object pool is not set for FireWeaponComponent. Please check the Node Group for mispellings.")
+                return
 
 # Calculates bullet trajectory vectors based on the specified bullet pattern
 # [br]
@@ -243,34 +243,34 @@ func _initialize_bullet_pools() -> void:
 # [- SPREAD/ARC]: Creates a fan pattern with evenly distributed angles across the specified arc.[br]
 # [- CIRCLE]: Creates a circular pattern with bullets evenly distributed in 360 degrees.
 func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: int, initial_vector: Vector2) -> Array:
-	var launch_vectors: Array = []
-	match ammo.bullet_pattern:
-		AmmoDetails.BulletPattern.SINGLE:
-			# For SINGLE pattern, just return the initial vector normalized
-			launch_vectors.append(initial_vector.normalized())
-		AmmoDetails.BulletPattern.RANDOM_SPREAD:
-			var angle: float = randf_range(-PI, PI) * current_weapon.get_spread()
-			launch_vectors.append(initial_vector.normalized().rotated(angle))
-		AmmoDetails.BulletPattern.ARC:
-			var step: float = 0.0
-			var arc_spread: float = ammo.pattern_arc_angle
-			if bullet_per_shot > 1:
-				step = deg_to_rad(arc_spread) / float(bullet_per_shot - 1)
+        var launch_vectors: Array = []
+        match ammo.bullet_pattern:
+                AmmoDetails.BulletPattern.SINGLE:
+                        # For SINGLE pattern, just return the initial vector normalized
+                        launch_vectors.append(initial_vector.normalized())
+                AmmoDetails.BulletPattern.RANDOM_SPREAD:
+                        var angle: float = randf_range(-PI, PI) * current_weapon.get_spread()
+                        launch_vectors.append(initial_vector.normalized().rotated(angle))
+                AmmoDetails.BulletPattern.ARC:
+                        var step: float = 0.0
+                        var arc_spread: float = ammo.pattern_arc_angle
+                        if bullet_per_shot > 1:
+                                step = deg_to_rad(arc_spread) / float(bullet_per_shot - 1)
 
-			var angle: float = - arc_spread + step * index
-			launch_vectors.append(initial_vector.normalized().rotated(angle))
-		AmmoDetails.BulletPattern.SPREAD:
-			var angle: float = randf_range(-current_weapon.get_spread(), current_weapon.get_spread())
-			launch_vectors.append(initial_vector.normalized().rotated(angle))
-		AmmoDetails.BulletPattern.CIRCLE:
-			var angle_step: float = TAU / float(bullet_per_shot)
-			launch_vectors.append(Vector2.RIGHT.rotated(angle_step * index))
-		AmmoDetails.BulletPattern.SPIRAL:
-			var step = deg_to_rad(ammo.pattern_arc_angle)
-			var angle: float = step * (index - 1) + current_weapon.get_random_spread()
-			launch_vectors.append(Vector2.RIGHT.rotated(angle))
-		AmmoDetails.BulletPattern.DOUBLE_SPIRAL:
-			var step = deg_to_rad(ammo.pattern_arc_angle)
+                        var angle: float = - arc_spread + step * index
+                        launch_vectors.append(initial_vector.normalized().rotated(angle))
+                AmmoDetails.BulletPattern.SPREAD:
+                        var angle: float = randf_range(-current_weapon.get_spread(), current_weapon.get_spread())
+                        launch_vectors.append(initial_vector.normalized().rotated(angle))
+                AmmoDetails.BulletPattern.CIRCLE:
+                        var angle_step: float = TAU / float(bullet_per_shot)
+                        launch_vectors.append(Vector2.RIGHT.rotated(angle_step * index))
+                AmmoDetails.BulletPattern.SPIRAL:
+                        var step = deg_to_rad(ammo.pattern_arc_angle)
+                        var angle: float = step * (index - 1) + current_weapon.get_random_spread()
+                        launch_vectors.append(Vector2.RIGHT.rotated(angle))
+                AmmoDetails.BulletPattern.DOUBLE_SPIRAL:
+                        var step = deg_to_rad(ammo.pattern_arc_angle)
                         var pair_index: int = int((index - 1) / 2)
                         var dir = 1 if index % 2 == 0 else -1
                         var angle: float = step * pair_index * dir + current_weapon.get_random_spread()
