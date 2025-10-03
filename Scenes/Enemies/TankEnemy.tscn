@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://btank1heavy2en"]
+[gd_scene load_steps=6 format=3 uid="uid://c1dadqf0kdojp"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
 [ext_resource type="Script" path="res://Scripts/Enemies/TankEnemy.gd" id="2_script"]

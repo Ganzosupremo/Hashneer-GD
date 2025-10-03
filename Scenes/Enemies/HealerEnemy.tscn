@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://chealer1medic2"]
+[gd_scene load_steps=5 format=3 uid="uid://bxi16pktniuxj"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
 [ext_resource type="Script" path="res://Scripts/Enemies/HealerEnemy.gd" id="2_script"]

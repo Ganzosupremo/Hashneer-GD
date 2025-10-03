@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2fast1dart2en"]
+[gd_scene load_steps=5 format=3 uid="uid://cnhwooa77y17b"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
 [ext_resource type="Script" path="res://Scripts/Enemies/FastDartEnemy.gd" id="2_script"]

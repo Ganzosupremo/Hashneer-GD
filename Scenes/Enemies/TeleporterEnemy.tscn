@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://cteleport1blink"]
+[gd_scene load_steps=5 format=3 uid="uid://b1v2tjq2oo26s"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
 [ext_resource type="Script" path="res://Scripts/Enemies/TeleporterEnemy.gd" id="2_script"]
