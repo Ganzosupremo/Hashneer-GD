@@ -14,7 +14,22 @@ Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Player
 - ✅ Game feel improvements fully implemented (Oct 1, 2025)
 - ❌ Polygon fracture addon missing core files (PoolFracture.gd, CutShapeVisualizer.gd, ShardFracture.gd)
 
-### Recent Improvements (Oct 1-2, 2025)
+### Recent Improvements (Oct 1-3, 2025)
+
+#### Unlimited Waves Mode Overhaul (Oct 3, 2025)
+Enhanced wave-based gameplay with larger map and progressive difficulty:
+- **Map Expansion** - Increased from 6x6 to 10x10 grid (2000x2000 pixels total play area)
+- **Wave Spawning System** - New WaveSpawner.gd replaces item drop-based enemy spawning
+  - Progressive difficulty scaling across 12+ wave configurations
+  - Wave 1-2: 10 enemies (basic types for learning)
+  - Wave 3-5: 15 enemies (introduces intermediate types)
+  - Wave 6-8: 20 enemies (adds tanks, exploders)
+  - Wave 9-12: 21 enemies (all 13 enemy types featured)
+  - Wave 13+: Dynamic scaling with base_count = 3 + floor(wave/5)
+- **Boss Spawning** - Boss appears after reaching 100 kills (increased from 40 for larger map)
+- **UI Updates** - Wave number label shows current wave progress
+- **Enemy Spawning** - Enemies spawn around map edges for better gameplay flow
+- **Core Files:** `Scripts/WaveSpawner.gd`, `Scripts/WavesGameMode.gd`
 
 #### Game Feel Improvements (Oct 1, 2025)
 All "game juice" features successfully implemented:
@@ -162,4 +177,4 @@ The project includes export configurations for:
 - Web (HTML5)
 
 ## Last Updated
-October 2, 2025
+October 3, 2025

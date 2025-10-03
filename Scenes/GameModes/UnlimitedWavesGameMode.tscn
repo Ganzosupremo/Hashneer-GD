@@ -52,7 +52,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 script = ExtResource("2_obtmh")
 debug_name = ""
 quadrant_size = 200
-grid_size = Vector2(6, 6)
+grid_size = Vector2(10, 10)
 map_shape = 0
 initial_health = 50.0
 fiat_drop_rate_factor = 1.0
@@ -60,7 +60,7 @@ block_core_cuts_delaunay = 200
 block_core_cut_min_area = 100.0
 spawn_time = 4.0
 spawn_count = 20
-kills_to_spawn_boss = 40
+kills_to_spawn_boss = 100
 enemy_drops_count = 5
 enemy_damage_multiplier = 1.3
 enemies_drop_table = SubResource("Resource_rvc4p")
@@ -415,9 +415,20 @@ size_flags_horizontal = 8
 size_flags_vertical = 3
 theme_override_constants/separation = 15
 
+[node name="WaveLabel" type="Label" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 35)
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("7_4pl34")
+theme_type_variation = &"NormalText"
+text = "Wave: 1"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="EnemiesKilledLabel" type="Label" parent="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(300, 40)
+custom_minimum_size = Vector2(300, 35)
 layout_mode = 2
 size_flags_horizontal = 8
 theme = ExtResource("7_4pl34")
