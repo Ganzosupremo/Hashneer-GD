@@ -1,5 +1,6 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=22 format=3 uid="uid://dxgjejnnjd8a6"]
+[gd_resource type="Resource" script_class="WeaponDetails" load_steps=23 format=3 uid="uid://dxgjejnnjd8a6"]
 
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_6khr4"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_jdhiw"]
 [ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_6khr4"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="3_36wup"]
@@ -58,6 +59,8 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [sub_resource type="Resource" id="Resource_nx4ij"]
 script = ExtResource("3_36wup")
+available_upgrades = Array[ExtResource("1_6khr4")]([])
+ammo_name = "Default Ammo"
 min_lifetime = 1.0
 max_lifetime = 2.0
 bullet_damage = 100.0
@@ -84,6 +87,8 @@ trail_length = 30
 trail_width = 20.0
 fracture_force = 15000.0
 bullet_hit_vfx = SubResource("Resource_ayku6")
+is_child = false
+upgrade_description = "No description available"
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
 
 [sub_resource type="Gradient" id="Gradient_4y2qm"]
@@ -132,9 +137,10 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [resource]
 script = ExtResource("5_cpcso")
+available_upgrades = Array[ExtResource("1_6khr4")]([])
 weapon_name = "Enemy Pistol"
 fire_sound = ExtResource("4_a8oq1")
-weapon_damage_multiplier = 0.0
+weapon_damage_multiplier_percent = 0.0
 ammo_details = SubResource("Resource_nx4ij")
 weapon_shoot_effect = SubResource("Resource_hvhwf")
 shots_per_second = 1.0
@@ -148,4 +154,9 @@ armonic_ration = Array[int]([1, 1])
 phase_offset = 90
 samples = 10
 shake_trans = 0
+recoil_strength = 150.0
+recoil_kick_strength = 250.0
+trauma_shake_amount = 0.1
+is_child = false
+upgrade_description = "No description available"
 metadata/_custom_type_script = "uid://c3oqvnse8erag"

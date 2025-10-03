@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://csplit1multi2"]
+[gd_scene load_steps=7 format=3 uid="uid://csplit1multi2"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
-[ext_resource type="Script" path="res://Scripts/Enemies/SplitterEnemy.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://cxjewkln811wt" path="res://Scripts/Enemies/SplitterEnemy.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://dhsf3uibxlt6l" path="res://Scenes/Enemies/SquareEnemy.tscn" id="3_mini"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="5_norm"]

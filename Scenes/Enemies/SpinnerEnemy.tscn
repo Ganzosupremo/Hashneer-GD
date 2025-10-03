@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://b5l72vhnyb6ha"]
+[gd_scene load_steps=7 format=3 uid="uid://b5l72vhnyb6ha"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
-[ext_resource type="Script" path="res://Scripts/Enemies/SpinnerEnemy.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://sju5asbswhyc" path="res://Scripts/Enemies/SpinnerEnemy.gd" id="2_script"]
 [ext_resource type="Resource" uid="uid://dxgjejnnjd8a6" path="res://Resources/Weapons/Enemy/EnemyPistol.tres" id="3_weapon"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="5_norm"]
@@ -15,13 +15,14 @@ texture_repeat = 2
 script = ExtResource("2_script")
 spin_speed = 3.0
 bullet_spread_count = 8
+can_shoot = false
 weapon = ExtResource("3_weapon")
 shooting_duration_interval = Vector2(1, 2)
 shooting_cooldown_interval = Vector2(2, 4)
 color_default = Color(1, 0.5, 0.5, 1)
 shape_area_percent = 0.13
-max_speed = 110.0
 rotate_towards_velocity = false
+max_speed = 110.0
 polygon_shape = 4
 s_p_number = 4
 s_a = 55.0

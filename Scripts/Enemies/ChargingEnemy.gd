@@ -1,5 +1,8 @@
 class_name ChargingEnemy extends BaseEnemy
 
+@onready var _damage_area_polygon: CollisionPolygon2D = $DamageArea/DamageAreaPolygon
+
+
 @export var charge_cooldown_range: Vector2 = Vector2(2.0, 4.0)
 @export var charge_windup_time: float = 0.3
 @export var charge_duration: float = 0.5
@@ -18,11 +21,12 @@ var _original_color: Color
 func _ready() -> void:
 	super._ready()
 	_original_color = color_default
-	body_entered.connect(_on_body_entered)
 	_charge_timer = Timer.new()
 	add_child(_charge_timer)
 	_charge_timer.timeout.connect(_on_charge_timer_timeout)
 	_schedule_next_charge()
+	
+	_damage_area_polygon.polygon = _col_polygon.polygon
 
 func _physics_process(delta: float) -> void:
 	if isKnockbackActive(): 
@@ -38,7 +42,7 @@ func _physics_process(delta: float) -> void:
 	else:
 		super._physics_process(delta)
 
-func _on_body_entered(body: Node) -> void:
+func _on_body_entered(body: Node2D) -> void:
 	if _charge_state == ChargeState.CHARGING and body is PlayerController:
 		if not _charge_hit_bodies.has(body):
 			_charge_hit_bodies.append(body)

@@ -11,12 +11,13 @@ normal_texture = ExtResource("3_al4en")
 texture_repeat = 2
 
 [node name="ChargingEnemy" instance=ExtResource("1_pyqee")]
-collision_mask = 208
 script = ExtResource("4_script")
 charge_cooldown_range = Vector2(2, 6)
+charge_windup_time = 0.3
 charge_duration = 1.0
 charge_speed = 600.0
 charge_damage_range = Vector2(10, 15)
+charge_color = Color(1, 0.3, 0.3, 1)
 color_default = Color(1, 1, 1, 1)
 shape_area_percent = 0.15
 max_speed = 100.0
@@ -37,3 +38,12 @@ texture = SubResource("CanvasTexture_isfyj")
 
 [node name="Line2D" parent="Shape3D" index="1"]
 default_color = Color(0, 0, 0, 1)
+
+[node name="DamageArea" type="Area2D" parent="." index="13"]
+collision_layer = 32
+collision_mask = 128
+
+[node name="DamageAreaPolygon" type="CollisionPolygon2D" parent="DamageArea" index="0"]
+polygon = PackedVector2Array(11, -22, -45, -21, -42, 39, 28, 49)
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_body_entered"]

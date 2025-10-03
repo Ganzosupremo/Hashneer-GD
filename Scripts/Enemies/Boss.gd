@@ -8,6 +8,8 @@ signal target_pos_reached(pos: Vector3)
 @export var charge_speed: float = 400.0
 @export var charge_damage_range: Vector2 = Vector2(20.0, 60.0)
 
+@onready var _damage_area_polygon: CollisionPolygon2D = $DamageArea/DamageAreaPolygon
+
 enum State { CHASE, CHARGE }
 var _state: State = State.CHASE
 var _state_timer: Timer
@@ -16,11 +18,12 @@ var _charge_direction: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	super._ready()
 	target_pos_reached.connect(_on_target_pos_reached)
-	body_entered.connect(_on_body_entered)
 	_state_timer = Timer.new()
 	add_child(_state_timer)
 	_state_timer.timeout.connect(_on_state_timer_timeout)
 	_enter_state(State.CHASE)
+	
+	_damage_area_polygon.set_deferred("polygon", _col_polygon.polygon)
 
 func _physics_process(delta: float) -> void:
 	if _state == State.CHARGE and !is_player_dead:
@@ -40,7 +43,7 @@ func _on_target_pos_reached(_pos: Vector3) -> void:
 	if target_pos.z == 0.0:
 		setNewTargetPos()
 
-func _on_body_entered(body: Node) -> void:
+func _on_body_entered(body: Node2D) -> void:
 	if _state == State.CHARGE and body is PlayerController:
 		var args: LevelBuilderArgs = GameManager.get_level_args()
 		var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)

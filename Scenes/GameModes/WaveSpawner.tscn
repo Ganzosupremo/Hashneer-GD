@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4ga32y0ajao6"]
+
+[ext_resource type="Script" uid="uid://djnn2vlhv03yu" path="res://Scripts/WaveSpawner.gd" id="1_ogf1e"]
+
+[node name="WaveSpawner" type="Node2D"]
+script = ExtResource("1_ogf1e")
+initial_wave_delay = 3.0
+wave_completion_delay = 5.0

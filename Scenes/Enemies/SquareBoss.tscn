@@ -28,7 +28,6 @@ combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [node name="SquareBoss" instance=ExtResource("1_glr62")]
-collision_mask = 208
 mass = 10.0
 script = ExtResource("2_fkfjs")
 charge_cooldown_range = Vector2(1.5, 3)
@@ -57,3 +56,12 @@ rectangle_size = Vector2(140, 140)
 
 [node name="RandomDrops" parent="." index="11"]
 drops_table = SubResource("Resource_ug63n")
+
+[node name="DamageArea" type="Area2D" parent="." index="13"]
+collision_layer = 32
+collision_mask = 128
+
+[node name="DamageAreaPolygon" type="CollisionPolygon2D" parent="DamageArea" index="0"]
+polygon = PackedVector2Array(-24, -43, -77, 40, 87, 79, 72, -35)
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_body_entered"]
