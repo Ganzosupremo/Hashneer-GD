@@ -3,6 +3,8 @@ extends Node2D
 const ENEMY_LIFETIME_SECONDS: float = 120.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
 
+const WaveSpawnerScript = preload("res://Scripts/WaveSpawner.gd")
+
 @onready var enemies_holder: Node2D = %EnemiesHolder
 @onready var _pool_cut_visualizer: PoolFracture = $PoolFractureCutVisualizer
 @onready var _pool_fracture_shards: PoolFracture = $PoolFractureShards
@@ -20,7 +22,7 @@ const MAX_DESPAWNS_PER_FRAME: int = 15
 @export var music: MusicDetails
 @export var boss_music: MusicDetails
 
-var wave_spawner: WaveSpawner
+var wave_spawner: Node2D
 var boss_spawned: bool = false
 var kill_count: int = 0
 var _spawned_enemies_array: Array = []
@@ -36,7 +38,7 @@ func _ready() -> void:
         _setup_wave_spawner()
 
 func _setup_wave_spawner() -> void:
-        wave_spawner = WaveSpawner.new()
+        wave_spawner = WaveSpawnerScript.new()
         wave_spawner.enemies_holder = enemies_holder
         wave_spawner.spawn_area_rect = Rect2(-100, -100, 2200, 2200)
         add_child(wave_spawner)

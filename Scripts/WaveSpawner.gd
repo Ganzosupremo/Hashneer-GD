@@ -64,47 +64,46 @@ func _get_wave_configuration(wave_num: int) -> Dictionary:
         }
         
         if wave_num <= 2:
-                config.total_count = 10 + (wave_num * 5)
                 config.compositions = [
                         {"type": "basic_square", "count": 6},
                         {"type": "basic_triangle", "count": 4},
                 ]
         elif wave_num <= 5:
-                config.total_count = 15 + (wave_num * 5)
                 config.compositions = [
                         {"type": "basic_square", "count": 5},
-                        {"type": "shooter", "count": 3},
-                        {"type": "fast_dart", "count": 4},
-                        {"type": "charger", "count": 2},
-                ]
-        elif wave_num <= 8:
-                config.total_count = 20 + (wave_num * 3)
-                config.compositions = [
                         {"type": "shooter", "count": 4},
                         {"type": "fast_dart", "count": 3},
-                        {"type": "tank", "count": 2},
-                        {"type": "exploder", "count": 3},
                         {"type": "charger", "count": 3},
                 ]
-        elif wave_num <= 12:
-                config.total_count = 25 + (wave_num * 2)
+        elif wave_num <= 8:
                 config.compositions = [
-                        {"type": "sniper", "count": 3},
-                        {"type": "teleporter", "count": 2},
+                        {"type": "shooter", "count": 5},
+                        {"type": "fast_dart", "count": 4},
                         {"type": "tank", "count": 3},
-                        {"type": "splitter", "count": 2},
-                        {"type": "healer", "count": 1},
-                        {"type": "spinner", "count": 2},
+                        {"type": "exploder", "count": 4},
+                        {"type": "charger", "count": 4},
+                ]
+        elif wave_num <= 12:
+                config.compositions = [
+                        {"type": "sniper", "count": 4},
+                        {"type": "teleporter", "count": 3},
+                        {"type": "tank", "count": 3},
+                        {"type": "splitter", "count": 3},
+                        {"type": "healer", "count": 2},
+                        {"type": "spinner", "count": 3},
+                        {"type": "fast_dart", "count": 3},
                 ]
         else:
-                config.total_count = 30 + wave_num
                 var enemy_types = ENEMY_SCENES.keys()
                 enemy_types.erase("basic_square")
                 enemy_types.erase("basic_triangle")
                 
-                var count_per_type = max(2, int(config.total_count / enemy_types.size()))
+                var base_count = 3 + int(wave_num / 5)
                 for enemy_type in enemy_types:
-                        config.compositions.append({"type": enemy_type, "count": count_per_type})
+                        config.compositions.append({"type": enemy_type, "count": base_count})
+        
+        for comp in config.compositions:
+                config.total_count += comp.count
         
         return config
 
