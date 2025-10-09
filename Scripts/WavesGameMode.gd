@@ -20,21 +20,48 @@ const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 @export var main_event_bus: MainEventBus
 @export var music: MusicDetails
 @export var boss_music: MusicDetails
+@export var boss_kill_threshold_increment: int = 50
+@export var item_drops_bus: ItemDropsBus
 
 var wave_spawner: Node2D
-var boss_spawned: bool = false
 var kill_count: int = 0
+var despawn_count: int = 0
 var _spawned_enemies_array: Array = []
 var _enemies_to_despawn_queue: Array = []
 
+var boss_tracker = {
+        "current_boss_number": 0,
+        "base_threshold": 0,
+        "kills_for_next_boss": 0,
+        "total_bosses_spawned": 0,
+        "boss_active": false,
+        "bitcoin_spawned": false,
+        "checking_drops": false
+}
+
+var bitcoin_check_timer: Timer
+var current_boss: BaseEnemy = null
+
 func _ready() -> void:
-		AudioManager.change_music_clip(music)
-		level_args = GameManager.get_level_args()
+        AudioManager.change_music_clip(music)
+        level_args = GameManager.get_level_args()
 
-		boss_progress_bar.max_value = level_args.kills_to_spawn_boss
-		boss_progress_bar.value = 0.0
+        boss_tracker.base_threshold = level_args.kills_to_spawn_boss
+        boss_tracker.kills_for_next_boss = level_args.kills_to_spawn_boss
+        boss_tracker.current_boss_number = 1
+        
+        boss_progress_bar.max_value = boss_tracker.kills_for_next_boss
+        boss_progress_bar.value = 0.0
 
-		_setup_wave_spawner()
+        bitcoin_check_timer = Timer.new()
+        bitcoin_check_timer.one_shot = true
+        bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
+        add_child(bitcoin_check_timer)
+
+        if item_drops_bus:
+                item_drops_bus.item_picked.connect(_on_item_picked)
+
+        _setup_wave_spawner()
 
 func _setup_wave_spawner() -> void:
 		wave_spawner = WAVE_SPAWNER.instantiate()
@@ -130,27 +157,119 @@ func _on_enemy_shield_fractured(_ref: ShieldComponent, fracture_shard: Dictionar
 		spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
 
 func on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
-		_spawned_enemies_array.erase(_ref)
-		
-		if not natural_death:
-				kill_count += 1
-				enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
-				boss_progress_bar.value = kill_count
+        _spawned_enemies_array.erase(_ref)
+        
+        if not natural_death:
+                kill_count += 1
+                enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
+                boss_progress_bar.value = kill_count
 
-				if kill_count >= level_args.kills_to_spawn_boss and not boss_spawned:
-						_spawn_boss()
+                if kill_count >= level_args.kills_to_spawn_boss and not boss_spawned:
+                        _spawn_boss()
 
-func _spawn_boss() -> void:
-		boss_spawned = true
-		AudioManager.change_music_clip(boss_music)
-		
-		var boss = wave_spawner.spawn_boss()
-		if boss:
-				_connect_enemy_signals(boss)
 
 func _on_boss_progress_bar_value_changed(value: float) -> void:
-		if value >= boss_progress_bar.max_value and not boss_spawned:
-				_spawn_boss()
+        if value >= boss_progress_bar.max_value and not boss_spawned:
+                _spawn_boss()
 				
+        _spawned_enemies_array.erase(_ref)
+        
+        if natural_death:
+                despawn_count += 1
+        else:
+                kill_count += 1
+                enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
+                boss_progress_bar.value = kill_count
+
+                if kill_count >= boss_tracker.kills_for_next_boss and not boss_tracker.boss_active:
+                        _spawn_boss()
+
+func _spawn_boss() -> void:
+        boss_tracker.boss_active = true
+        boss_tracker.total_bosses_spawned += 1
+        AudioManager.change_music_clip(boss_music)
+        
+        print("Spawning Boss #%d at %d kills" % [boss_tracker.current_boss_number, kill_count])
+        
+        current_boss = wave_spawner.spawn_boss()
+        if current_boss:
+                _connect_enemy_signals(current_boss)
+                current_boss.Died.connect(_on_boss_died)
+                
+                if current_boss.random_drops and current_boss.random_drops.scene_spawner:
+                        current_boss.random_drops.scene_spawner.spawned.connect(_on_boss_item_spawned)
+
+func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool) -> void:
+        if natural_death:
+                return
+        
+        boss_tracker.boss_active = false
+        boss_tracker.bitcoin_spawned = false
+        boss_tracker.checking_drops = true
+        AudioManager.change_music_clip(music)
+        
+        print("Boss #%d defeated! Waiting 2 seconds to check for Bitcoin drops..." % boss_tracker.current_boss_number)
+        bitcoin_check_timer.start(2.0)
+
+func _on_boss_item_spawned(event: SpawnEvent) -> void:
+        if not boss_tracker.checking_drops:
+                return
+        
+        var spawned_node = event.instance
+        if spawned_node and spawned_node.has_node("Pickup2D"):
+                var pickup = spawned_node.get_node("Pickup2D") as Pickup2D
+                if pickup:
+                        var resource = pickup.get_pickup_resource()
+                        if resource is CurrencyPickupResource and resource.currency_type == Constants.CurrencyType.BITCOIN:
+                                print("Bitcoin spawned from boss!")
+                                boss_tracker.bitcoin_spawned = true
+
+func _on_item_picked(event: PickupEvent) -> void:
+        var pickup = event.pickup
+        if not pickup:
+                return
+        
+        var resource = pickup.get_pickup_resource()
+        if resource is CurrencyPickupResource:
+                if resource.currency_type == Constants.CurrencyType.BITCOIN:
+                        print("Bitcoin picked up! Level completed!")
+                        boss_tracker.checking_drops = false
+                        bitcoin_check_timer.stop()
+                        _complete_level()
+
+func _on_bitcoin_check_timeout() -> void:
+        if not boss_tracker.checking_drops:
+                return
+        
+        boss_tracker.checking_drops = false
+        
+        if not boss_tracker.bitcoin_spawned:
+                print("Boss defeated but no Bitcoin dropped. Escalating threshold...")
+                _escalate_boss_threshold()
+        else:
+                print("Bitcoin dropped by boss. Waiting for player to collect it...")
+
+func _complete_level() -> void:
+        print("=== LEVEL COMPLETED ===")
+        print("Total Kills: %d" % kill_count)
+        print("Total Bosses Defeated: %d" % boss_tracker.total_bosses_spawned)
+        print("Enemies Despawned: %d" % despawn_count)
+        level_completed.show_with_data(kill_count, 0, 0)
+
+func _escalate_boss_threshold() -> void:
+        kill_count = 0
+        boss_tracker.current_boss_number += 1
+        boss_tracker.kills_for_next_boss = boss_tracker.base_threshold + (boss_tracker.current_boss_number - 1) * boss_kill_threshold_increment
+        
+        boss_progress_bar.max_value = boss_tracker.kills_for_next_boss
+        boss_progress_bar.value = 0
+        enemies_killed_label.text = "Enemies Killed: 0"
+        
+        print("Next boss (#%d) will spawn at %d kills" % [boss_tracker.current_boss_number, boss_tracker.kills_for_next_boss])
+
+func _on_boss_progress_bar_value_changed(value: float) -> void:
+        if value >= boss_progress_bar.max_value and not boss_tracker.boss_active:
+                _spawn_boss()
+                
 func _on_exit_button_pressed() -> void:
 		GameManager.emit_level_completed(Constants.ERROR_210)
