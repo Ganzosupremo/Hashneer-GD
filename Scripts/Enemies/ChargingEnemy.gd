@@ -1,14 +1,13 @@
 class_name ChargingEnemy extends BaseEnemy
 
-@onready var _damage_area_polygon: CollisionPolygon2D = $DamageArea/DamageAreaPolygon
-
-
 @export var charge_cooldown_range: Vector2 = Vector2(2.0, 4.0)
 @export var charge_windup_time: float = 0.3
 @export var charge_duration: float = 0.5
 @export var charge_speed: float = 600.0
 @export var charge_damage_range: Vector2 = Vector2(10.0, 20.0)
 @export var charge_color: Color = Color(1.0, 0.3, 0.3)
+
+@onready var _damage_area_polygon: CollisionPolygon2D = $DamageArea/DamageAreaPolygon
 
 enum ChargeState { IDLE, WINDING_UP, CHARGING, COOLDOWN }
 
@@ -26,8 +25,6 @@ func _ready() -> void:
 	_charge_timer.timeout.connect(_on_charge_timer_timeout)
 	_schedule_next_charge()
 	
-	_damage_area_polygon.polygon = _col_polygon.polygon
-
 func _physics_process(delta: float) -> void:
 	if isKnockbackActive(): 
 		return
@@ -88,3 +85,26 @@ func _schedule_next_charge() -> void:
 	_charge_state = ChargeState.COOLDOWN
 	if charge_cooldown_range != Vector2.ZERO:
 		_charge_timer.start(randf_range(charge_cooldown_range.x, charge_cooldown_range.y))
+
+func get_charge_damage() -> float:
+	return randf_range(charge_damage_range.x, charge_damage_range.y)
+
+
+func setPolygon(new_polygon: PackedVector2Array, exclude_main_poly: bool = false):
+	_col_polygon.call_deferred("set_polygon", new_polygon)
+	_damage_area_polygon.call_deferred("set_polygon", new_polygon)
+	
+	if not exclude_main_poly:
+		_polygon.set_polygon(new_polygon)
+	
+	_hit_flash_poly.set_polygon(new_polygon)
+	new_polygon.append(new_polygon[0])
+	_line.points = new_polygon
+
+func _on_damage_area_area_entered(area: Area2D) -> void:
+	if _charge_state == ChargeState.CHARGING and area.get_parent() is PlayerController:
+		var args: LevelBuilderArgs = GameManager.get_level_args()
+		var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
+		var multiplier = args.enemy_damage_multiplier if args else 1.0
+		var player: PlayerController = area.get_parent()
+		player.damage(dmg * multiplier, global_position, true, 0.15, 0.4)

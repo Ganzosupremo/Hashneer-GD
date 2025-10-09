@@ -122,8 +122,10 @@ func apply_gravity(force: Vector2) -> void:
 ## Applies damage to the player and plays hit sound and visual effects.
 ## [param _damage]: The amount of damage to apply.[br]
 ## [param hit_position]: The position where the hit occurred, used for visual effects.
+## [param hitstop_duration]: Duration of the hitstop effect in seconds (default is 0.08s).
+## [param time_scale]: The time scale to apply during hitstop (0.0 = full freeze, 1.0 = normal, default is 0.3).
 ## If not provided, defaults to [Vector2.ZERO].
-func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
+func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time: bool = false, hitstop_duration: float = 0.08, time_scale: float = 0.3) -> void:
 	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0
 	if hit_position != Vector2.ZERO:
@@ -134,8 +136,9 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO) -> void:
 	# Add camera trauma and hitstop on hit
 	if GameManager.player_camera:
 		GameManager.player_camera.add_trauma(0.25)
-	apply_hitstop(0.06, 0.3)
-	
+
+	if slow_down_time:
+		GameManager.vfx_manager.slow_time(hitstop_duration, time_scale, hitstop_duration * 0.5)
 	get_health_node().take_damage(_damage)
 
 ## Applies a brief time slowdown effect (hitstop/freeze frame).[br]
@@ -368,3 +371,12 @@ func get_active_weapon_node() -> ActiveWeaponComponent:
 func get_current_weapon() -> WeaponDetails:
 	return get_active_weapon_node().get_current_weapon()
 #endregion
+
+
+#func _on_damageable_area_area_entered(area: Area2D) -> void:
+	#if area.get_parent() and (area.get_parent() is ChargingEnemy or area.get_parent() is Boss):
+		#var enemy: BaseEnemy = area.get_parent()
+		#var args: LevelBuilderArgs = GameManager.get_level_args()
+		#var dmg: float = enemy.get_charge_damage()
+		#var multiplier = args.enemy_damage_multiplier if args else 1.0
+		#damage(dmg * multiplier)

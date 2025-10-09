@@ -44,6 +44,6 @@ collision_layer = 32
 collision_mask = 128
 
 [node name="DamageAreaPolygon" type="CollisionPolygon2D" parent="DamageArea" index="0"]
-polygon = PackedVector2Array(11, -22, -45, -21, -42, 39, 28, 49)
 
+[connection signal="area_entered" from="DamageArea" to="." method="_on_damage_area_area_entered"]
 [connection signal="body_entered" from="DamageArea" to="." method="_on_body_entered"]

@@ -202,10 +202,11 @@ func _deal_damage(body: Node2D, pos: Vector2) -> void:
 			var force: Vector2 = (body.global_position - global_position).normalized() * _ammo_details.fracture_force
 			body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.5, global_position, force, 0.25, Color.MISTY_ROSE)
 	elif body is PlayerController:
-		body.damage(damage_to_deal)
+		body.damage(damage_to_deal, (body.global_position - global_position).normalized(), true, 0.25, 0.15)
+			# Trigger camera shake and slow-motion effects on player hit
 		GameManager.player_camera.shake_with_preset(Constants.ShakeMagnitude.Large)
 		# Slow down time briefly when player is hit by enemy bullet
-		GameManager.vfx_manager.slow_time(0.25, 0.35, 0.15)
+		# GameManager.vfx_manager.slow_time(0.25, 0.35, 0.15)
 
 # Processes what happens to the bullet after hitting something
 # [param body]: The Node2D that was hit.

@@ -62,11 +62,11 @@ class_name WeaponDetails extends IUpgradeable
 ## The transition type used for the shake effect, controlling how the shake transitions over time.
 @export var shake_trans: Tween.TransitionType = Tween.TransitionType.TRANS_LINEAR
 
-@export_subgroup("Weapon Recoild", "Weapon Shake")
+@export_group("Weapon Recoil")
 ## The amount of recoil applied to the player when the weapon is fired, controlling how much the player is pushed back.
-@export var recoil_strength: float = 150.0
+@export_range(0.0, 1000.0, 1.0) var recoil_strength: float = 150.0
 ## The strength of the recoil kick applied to the camera when the weapon is fired, controlling how much the camera is pushed back.
-@export var recoil_kick_strength: float = 250.0
+@export_range(0.0, 50.0, 0.1) var recoil_kick_strength: float = 5.0
 ## The amount of trauma-based shake to add to the camera when the weapon is fired.
 @export_range(0.0, 1.0, 0.01) var trauma_shake_amount: float = 0.1
 
