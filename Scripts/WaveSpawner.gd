@@ -7,7 +7,7 @@ signal boss_wave_triggered()
 signal enemy_spawned(enemy: BaseEnemy)
 
 @export var enemies_holder: Node2D
-@export var spawn_area_rect: Rect2 = Rect2(-100, -100, 2200, 2200)
+@export var spawn_area_rect: Rect2 = Rect2(-100, -100, 3200, 3200)
 @export var initial_wave_delay: float = 2.0
 @export var wave_completion_delay: float = 3.0
 

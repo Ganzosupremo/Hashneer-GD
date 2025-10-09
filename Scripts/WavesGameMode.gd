@@ -2,6 +2,7 @@ extends Node2D
 
 const ENEMY_LIFETIME_SECONDS: float = 120.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
+const MAX_ACTIVE_ENEMIES: int = 150
 
 const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 @onready var enemies_holder: Node2D = %EnemiesHolder
@@ -64,18 +65,19 @@ func _ready() -> void:
         _setup_wave_spawner()
 
 func _setup_wave_spawner() -> void:
-		wave_spawner = WAVE_SPAWNER.instantiate()
-		add_child(wave_spawner)
-		wave_spawner.enemies_holder = enemies_holder
-		wave_spawner.spawn_area_rect = Rect2(-100, -100, 2200, 2200)
-		
-		wave_spawner.wave_started.connect(_on_wave_started)
-		wave_spawner.wave_completed.connect(_on_wave_completed)
-		wave_spawner.enemy_spawned.connect(_connect_enemy_signals)
+        wave_spawner = WAVE_SPAWNER.instantiate()
+        add_child(wave_spawner)
+        wave_spawner.enemies_holder = enemies_holder
+        wave_spawner.spawn_area_rect = Rect2(-100, -100, 2200, 2200)
+        
+        wave_spawner.wave_started.connect(_on_wave_started)
+        wave_spawner.wave_completed.connect(_on_wave_completed)
+        wave_spawner.enemy_spawned.connect(_connect_enemy_signals)
 
 func _process(_delta: float) -> void:
-		_check_enemy_lifetime()
-		_process_despawn_queue()
+        _check_enemy_lifetime()
+        _check_enemy_cap()
+        _process_despawn_queue()
 
 func _check_enemy_lifetime() -> void:
 		var current_time_msec = Time.get_ticks_msec()
@@ -98,6 +100,33 @@ func _check_enemy_lifetime() -> void:
 				if age_seconds > ENEMY_LIFETIME_SECONDS:
 						_enemies_to_despawn_queue.append(enemy)
 						_spawned_enemies_array.remove_at(i)
+
+func _check_enemy_cap() -> void:
+        if _spawned_enemies_array.size() <= MAX_ACTIVE_ENEMIES:
+                return
+        
+        var player = GameManager.player
+        if not player:
+                return
+        
+        var player_pos = player.global_position
+        var enemies_over_cap = _spawned_enemies_array.size() - MAX_ACTIVE_ENEMIES
+        
+        var enemies_with_distance = []
+        for enemy in _spawned_enemies_array:
+                if not is_instance_valid(enemy) or _enemies_to_despawn_queue.has(enemy):
+                        continue
+                
+                var distance = enemy.global_position.distance_squared_to(player_pos)
+                enemies_with_distance.append({"enemy": enemy, "distance": distance})
+        
+        enemies_with_distance.sort_custom(func(a, b): return a.distance > b.distance)
+        
+        for i in range(min(enemies_over_cap, enemies_with_distance.size())):
+                var enemy = enemies_with_distance[i].enemy
+                if not _enemies_to_despawn_queue.has(enemy):
+                        _enemies_to_despawn_queue.append(enemy)
+                        _spawned_enemies_array.erase(enemy)
 
 func _process_despawn_queue() -> void:
 		var despawn_count: int = 0
