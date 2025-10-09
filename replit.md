@@ -16,9 +16,35 @@ Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Player
 
 ### Recent Improvements (Oct 1-3, 2025)
 
-#### Unlimited Waves Mode Overhaul (Oct 3, 2025)
-Enhanced wave-based gameplay with larger map and progressive difficulty:
-- **Map Expansion** - Increased from 6x6 to 10x10 grid (2000x2000 pixels total play area)
+#### Brotato-Style Survival Mode Overhaul (Oct 9, 2025)
+Transformed Unlimited Waves into a Brotato-inspired survival roguelike:
+- **Larger Arena** - Expanded from 2000x2000 to 3000x3000 pixels (15x15 grid) for more tactical space
+- **Intelligent Enemy Movement** - Implemented flocking behavior with separation, alignment, and cohesion
+  - Enemies move in natural swarms while following the player
+  - Configurable weights: separation (1.5), alignment (0.3), cohesion (0.5)
+  - Performs efficiently with 100+ enemies via max_neighbors_check (20)
+- **Enemy Cap Management** - MAX_ACTIVE_ENEMIES (150) with distance-based despawn
+  - Farthest enemies from player are despawned first when cap is exceeded
+  - Maintains performance without sacrificing gameplay intensity
+- **Escalating Boss System** - Bosses scale dynamically until player finds Bitcoin
+  - Boss #1 spawns at 100 kills (configurable base threshold)
+  - If boss doesn't drop Bitcoin (75% chance), threshold increases by 50 kills
+  - Boss #2 at 150 kills, Boss #3 at 200 kills, etc.
+  - Bitcoin drop detection uses spawn events (not pickup) for accurate escalation
+  - Level completes only when player collects Bitcoin from boss drop
+- **Wave Progression Fix** - Waves now complete based on total enemies removed
+  - Tracks player kills AND system despawns separately
+  - Wave advances when (kills + despawns) reaches wave target
+  - Prevents stalling when enemies timeout before player reaches them
+- **Enhanced UI** - Real-time stats display
+  - Kill counter shows progress: "Kills: 50/100"
+  - Despawn counter tracks system-removed enemies
+  - Boss status: "Boss #2 Active!" or "Next Boss: #3 at 150 kills"
+  - Wave information with boss progression
+- **Core Files:** `Scripts/WaveSpawner.gd`, `Scripts/WavesGameMode.gd`, `Scripts/Enemies/EnemyBase.gd`
+
+#### Unlimited Waves Mode Foundation (Oct 3, 2025)
+Initial wave-based gameplay with larger map and progressive difficulty:
 - **Wave Spawning System** - New WaveSpawner.gd replaces item drop-based enemy spawning
   - Progressive difficulty scaling across 12+ wave configurations
   - Wave 1-2: 10 enemies (basic types for learning)
@@ -26,10 +52,7 @@ Enhanced wave-based gameplay with larger map and progressive difficulty:
   - Wave 6-8: 20 enemies (adds tanks, exploders)
   - Wave 9-12: 21 enemies (all 13 enemy types featured)
   - Wave 13+: Dynamic scaling with base_count = 3 + floor(wave/5)
-- **Boss Spawning** - Boss appears after reaching 100 kills (increased from 40 for larger map)
-- **UI Updates** - Wave number label shows current wave progress
 - **Enemy Spawning** - Enemies spawn around map edges for better gameplay flow
-- **Core Files:** `Scripts/WaveSpawner.gd`, `Scripts/WavesGameMode.gd`
 
 #### Game Feel Improvements (Oct 1, 2025)
 All "game juice" features successfully implemented:
@@ -177,4 +200,4 @@ The project includes export configurations for:
 - Web (HTML5)
 
 ## Last Updated
-October 3, 2025
+October 9, 2025
