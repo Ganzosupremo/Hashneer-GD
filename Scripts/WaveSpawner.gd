@@ -125,7 +125,7 @@ func _spawn_enemy(enemy_type: String) -> BaseEnemy:
 		push_error("WaveSpawner: Failed to instantiate enemy: " + enemy_type)
 		return null
 		
-	var spawn_pos = _get_spawn_position()
+	var spawn_pos: Vector2 = _get_spawn_position()
 	enemy.global_position = spawn_pos
 		
 	if enemies_holder:
