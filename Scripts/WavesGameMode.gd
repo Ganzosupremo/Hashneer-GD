@@ -120,10 +120,10 @@ func _check_enemy_cap() -> void:
                 var distance = enemy.global_position.distance_squared_to(player_pos)
                 enemies_with_distance.append({"enemy": enemy, "distance": distance})
         
-        enemies_with_distance.sort_custom(func(a, b): return a.distance > b.distance)
+        enemies_with_distance.sort_custom(func(a, b): return a["distance"] > b["distance"])
         
         for i in range(min(enemies_over_cap, enemies_with_distance.size())):
-                var enemy = enemies_with_distance[i].enemy
+                var enemy = enemies_with_distance[i]["enemy"]
                 if not _enemies_to_despawn_queue.has(enemy):
                         _enemies_to_despawn_queue.append(enemy)
                         _spawned_enemies_array.erase(enemy)
@@ -137,7 +137,10 @@ func _process_despawn_queue() -> void:
 				despawn_count += 1
 
 func _on_wave_started(wave_number: int) -> void:
-		wave_label.text = "Wave: {0}".format([wave_number])
+        if boss_tracker.boss_active:
+                wave_label.text = "Boss #{0} Active | Wave: {1}".format([boss_tracker.current_boss_number, wave_number])
+        else:
+                wave_label.text = "Wave: {0} | Next Boss: #{1} at {2} kills".format([wave_number, boss_tracker.current_boss_number, boss_tracker.kills_for_next_boss])
 
 func _on_wave_completed(wave_number: int) -> void:
 		print("Wave {0} completed!".format([wave_number]))
@@ -205,13 +208,21 @@ func _on_boss_progress_bar_value_changed(value: float) -> void:
         
         if natural_death:
                 despawn_count += 1
+                _update_kill_display()
         else:
                 kill_count += 1
-                enemies_killed_label.text = "Enemies Killed: {0}".format([kill_count])
+                _update_kill_display()
                 boss_progress_bar.value = kill_count
 
                 if kill_count >= boss_tracker.kills_for_next_boss and not boss_tracker.boss_active:
                         _spawn_boss()
+
+func _update_kill_display() -> void:
+        enemies_killed_label.text = "Kills: {0}/{1} | Despawned: {2}".format([
+                kill_count, 
+                boss_tracker.kills_for_next_boss,
+                despawn_count
+        ])
 
 func _spawn_boss() -> void:
         boss_tracker.boss_active = true
@@ -219,6 +230,7 @@ func _spawn_boss() -> void:
         AudioManager.change_music_clip(boss_music)
         
         print("Spawning Boss #%d at %d kills" % [boss_tracker.current_boss_number, kill_count])
+        wave_label.text = "Boss #{0} Active!".format([boss_tracker.current_boss_number])
         
         current_boss = wave_spawner.spawn_boss()
         if current_boss:
@@ -292,7 +304,8 @@ func _escalate_boss_threshold() -> void:
         
         boss_progress_bar.max_value = boss_tracker.kills_for_next_boss
         boss_progress_bar.value = 0
-        enemies_killed_label.text = "Enemies Killed: 0"
+        _update_kill_display()
+        wave_label.text = "Next Boss: #{0} at {1} kills".format([boss_tracker.current_boss_number, boss_tracker.kills_for_next_boss])
         
         print("Next boss (#%d) will spawn at %d kills" % [boss_tracker.current_boss_number, boss_tracker.kills_for_next_boss])
 
