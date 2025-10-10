@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=51 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
@@ -9,7 +9,7 @@
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="5_w6c12"]
 [ext_resource type="PackedScene" uid="uid://xos3xcnwpqn6" path="res://Scenes/UI/WeaponUIWavesGameMode.tscn" id="5_xahjo"]
 [ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="6_bevur"]
-[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
+[ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="7_3aspk"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_4pl34"]
 [ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="7_7n1wt"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://cw1kt08tfv0f6" path="res://Audio/Music/Myuu-Final-Boss.mp3" id="11_rg2dc"]
 [ext_resource type="PackedScene" uid="uid://d074pyn2g110d" path="res://Scenes/QuadrantTerrain/PoolFractureShards.tscn" id="11_rxwaq"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_tscnx"]
+[ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="12_rg2dc"]
 [ext_resource type="PackedScene" uid="uid://bxsis1jiu5g06" path="res://Scenes/QuadrantTerrain/EnemyFractureBullet.tscn" id="15_w6c12"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="15_xdq2w"]
 [ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="16_w6c12"]
@@ -228,6 +229,8 @@ level_args = SubResource("Resource_b5yyy")
 main_event_bus = ExtResource("5_w6c12")
 music = SubResource("Resource_fpn40")
 boss_music = SubResource("Resource_w41ci")
+boss_kill_threshold_increment = 10
+item_drops_bus = ExtResource("12_rg2dc")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_b5yyy")
@@ -506,6 +509,37 @@ theme_type_variation = &"BossProgressBar"
 max_value = 120.0
 value = 28.47
 show_percentage = false
+
+[node name="CenterBar" type="Control" parent="MainUI/UIContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MainUI/UIContainer/CenterBar"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WaveCompletedLabel" type="Label" parent="MainUI/UIContainer/CenterBar/MarginContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme = ExtResource("7_4pl34")
+theme_type_variation = &"HeaderMedium"
+text = "Wave Completed"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LevelCompletedUI" parent="MainUI" instance=ExtResource("1_87mxq")]
 unique_name_in_owner = true

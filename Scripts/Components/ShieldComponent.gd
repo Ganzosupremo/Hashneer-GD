@@ -129,7 +129,6 @@ func _on_body_entered(body: Node2D) -> void:
 		# Stop the bullet (destroy it since shield blocked it)
 		bullet.call_deferred("destroy")
 		
-		DebugLogger.info("Shield blocked bullet, absorbed: {0} damage".format([damage - remaining_damage]))
 		return
 	
 	# Handle other damage sources
@@ -161,8 +160,6 @@ func _on_area_entered(area: Area2D) -> void:
 		elif area.has_method("queue_free"):
 			area.call_deferred("queue_free")
 			
-		DebugLogger.info("Shield blocked area projectile, absorbed: {0} damage".format([damage - remaining_damage]))
-
 func _on_regeneration_tick() -> void:
 	if destroyed or current_shield >= max_shield:
 		regeneration_active = false

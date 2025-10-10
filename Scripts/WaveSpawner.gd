@@ -7,7 +7,7 @@ signal boss_wave_triggered()
 signal enemy_spawned(enemy: BaseEnemy)
 
 @export var enemies_holder: Node2D
-@export var spawn_area_rect: Rect2 = Rect2(-100, -100, 3200, 3200)
+@export var spawn_area_rect: Rect2 = Rect2(-100, -100, 2200, 2200)
 @export var initial_wave_delay: float = 2.0
 @export var wave_completion_delay: float = 3.0
 
@@ -48,16 +48,16 @@ func _ready() -> void:
 	start_next_wave()
 
 func start_next_wave() -> void:
-        current_wave += 1
-        enemies_killed_in_wave = 0
-        enemies_despawned_in_wave = 0
-        wave_active = true
-        
-        var wave_config = _get_wave_configuration(current_wave)
-        enemies_in_wave = wave_config.total_count
-        
-        wave_started.emit(current_wave)
-        _spawn_wave(wave_config)
+	current_wave += 1
+	enemies_killed_in_wave = 0
+	enemies_despawned_in_wave = 0
+	wave_active = true
+	
+	var wave_config = _get_wave_configuration(current_wave)
+	enemies_in_wave = wave_config.total_count
+	
+	wave_started.emit(current_wave)
+	_spawn_wave(wave_config)
 
 func _get_wave_configuration(wave_num: int) -> Dictionary:
 	var config = {
@@ -192,15 +192,17 @@ func spawn_boss() -> BaseEnemy:
 func _on_enemy_died(_ref: BaseEnemy, _pos: Vector2, natural_death: bool, enemy: BaseEnemy) -> void:
 	_spawned_enemies.erase(enemy)
 	
-	if wave_active:
-					if natural_death:
-									enemies_despawned_in_wave += 1
-					else:
-									enemies_killed_in_wave += 1
-					
-					var total_removed = enemies_killed_in_wave + enemies_despawned_in_wave
-					if total_removed >= enemies_in_wave:
-									_complete_wave()
+	if !wave_active: return
+	
+	if natural_death:
+		enemies_despawned_in_wave += 1
+	else:
+		enemies_killed_in_wave += 1
+	
+	var total_removed: int = enemies_despawned_in_wave + enemies_killed_in_wave
+	
+	if total_removed >= enemies_in_wave:
+		_complete_wave()
 
 func _complete_wave() -> void:
 	wave_active = false

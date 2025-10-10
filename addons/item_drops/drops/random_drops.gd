@@ -29,7 +29,11 @@ func spawn_drops(p_drop_rolls : int, p_odds_multiplier : float = 1.0) -> Node:
 
 func _validate():
 	if drops_table == null:
-		push_warning("No drops_table defined at %s" % get_path())
+		DebugLogger.warn("No drops_table defined at %s" % get_path())
 		
 	if scene_spawner == null:
-		push_warning("No scene spawner defined at %s" % get_path())
+		DebugLogger.warn("No scene spawner defined at %s" % get_path())
+
+
+func get_scene_spawner() -> SceneSpawner2D:
+	return scene_spawner

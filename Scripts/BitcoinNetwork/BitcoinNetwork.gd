@@ -150,7 +150,7 @@ func get_block_by_id(id: int) -> BitcoinBlock:
 
 ## Checks if a specific level has been mined.
 ## Returns [code]true[/code] if the level has been mined, [code]false[/code] otherwise.[br]
-## [param level_index]: The index of the level to check[br]
+## [param level_index]: The index of the level to check.[br]
 ## @return bool Whether the level has been mined.
 func is_level_mined(level_index: int) -> bool:
 	return get_block_by_id(level_index) != null

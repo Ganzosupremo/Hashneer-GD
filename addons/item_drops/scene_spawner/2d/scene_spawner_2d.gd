@@ -9,6 +9,9 @@ signal spawned(event : SpawnEvent)
 ## Name of the group that holds the node that will be parent to all scenes spawned by this spawner
 @export var spawn_group : SpawnGroup
 
+## The ItemDropsBus resource that will be used to emit signals when items are spawned
+@export var item_drops_bus : ItemDropsBus = preload("res://Resources/Item Drops/MainItemDropsEventBus.tres")
+
 var spawn_parent : Node :
 	get():
 		if spawn_parent == null:
@@ -25,8 +28,11 @@ func _ready():
 	_validate()
 	spawned.connect(_on_spawned)
 	
-## Spawns a scene into the game world
+## Spawns a scene into the game world.
+## The scene will be instanced and added as a child to the node.
+## Emits the "spawned" signal after the object is added to the scene tree.
 func spawn(p_packed_scene : PackedScene) -> Node:
+	DebugLogger.info("Spawning drops from ", self.name)
 	var instance = p_packed_scene.instantiate()
 	var global_spawn_position = get_spawn_position()
 	spawn_parent.add_child.call_deferred(instance, true)
@@ -34,13 +40,14 @@ func spawn(p_packed_scene : PackedScene) -> Node:
 	
 	## Send signal after adding child to tree
 	var event = SpawnEvent.new(self, instance)
-	call_deferred("emit_signal", "spawned", event)
+	spawned.emit(event)
+	item_drops_bus.emit_item_spawned(event)
 	
 	return instance
 
 ## Execute any code needed on the instanced object after it's placed into the game world here
 func post_spawn(event : SpawnEvent):
-	pass
+	print_debug("Post-spawn processing for ", event.spawned)
 
 ## Gets the spawn position for the instanced object
 func get_spawn_position():

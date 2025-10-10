@@ -11,6 +11,21 @@
 atlas = ExtResource("2_lrual")
 region = Rect2(7, 9, 51, 51)
 
+[sub_resource type="Animation" id="Animation_6vkib"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BitcoinPixelArt:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [SubResource("AtlasTexture_5arbs")]
+}
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_o43ie"]
 atlas = ExtResource("2_lrual")
 region = Rect2(7, 9, 51, 51)
@@ -74,21 +89,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [SubResource("AtlasTexture_o43ie"), SubResource("AtlasTexture_d34d1"), SubResource("AtlasTexture_h743j"), SubResource("AtlasTexture_3gyqo"), SubResource("AtlasTexture_8154q"), SubResource("AtlasTexture_jjye6"), SubResource("AtlasTexture_ssoct"), SubResource("AtlasTexture_cug6k"), SubResource("AtlasTexture_6vadq"), SubResource("AtlasTexture_8gy2g"), SubResource("AtlasTexture_drvb5"), SubResource("AtlasTexture_eip27")]
-}
-
-[sub_resource type="Animation" id="Animation_6vkib"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("BitcoinPixelArt:texture")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [SubResource("AtlasTexture_5arbs")]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_rq1s7"]

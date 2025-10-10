@@ -11,11 +11,19 @@ extends SceneSpawner2D
 ## The spread that the angle can vary rom the base direction
 @export_range(0, 360.0, .25) var angle_spread = 45.0
 
-func spawn(p_packed_scene : PackedScene):
+func spawn(p_packed_scene : PackedScene) -> Node:
+	DebugLogger.info("Spawning drops from ", self.name)
 	var instance : RigidBody2D = p_packed_scene.instantiate()
 	spawn_parent.call_deferred("add_child", instance)
 	instance.global_position = global_position
 	add_force(instance)
+
+	## Send signal after adding child to tree
+	var event = SpawnEvent.new(self, instance)
+	spawned.emit(event)
+	item_drops_bus.emit_item_spawned(event)
+	
+	return instance
 
 func add_force(p_rigid_body_2d : RigidBody2D):
 	var rotation_degress = randf_range(-angle_spread / 2, angle_spread / 2)
