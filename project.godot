@@ -167,6 +167,7 @@ thrust={
 2d_render/layer_7="UI"
 2d_render/layer_8="BlockCore"
 2d_physics/layer_1="Default"
+2d_navigation/layer_1="Ground"
 2d_physics/layer_2="VFX"
 2d_physics/layer_3="Ignore Collisions"
 2d_physics/layer_4="Ground&Walls"

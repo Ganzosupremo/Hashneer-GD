@@ -3,14 +3,11 @@ extends Node
 var pathfinding_grid: AStarPathfinding = null
 var obstacles_dirty: bool = false
 
-func _ready() -> void:
-	pass
-
 func initialize_grid(map_rect: Rect2, cell_size: int = 50) -> void:
 	pathfinding_grid = AStarPathfinding.new(map_rect, cell_size)
 	print("PathfindingManager: Grid initialized with size %s, cell size %d" % [map_rect.size, cell_size])
 
-func get_path(from: Vector2, to: Vector2) -> PackedVector2Array:
+func get_pathfinding_path(from: Vector2, to: Vector2) -> PackedVector2Array:
 	if not pathfinding_grid:
 		return PackedVector2Array()
 	return pathfinding_grid.get_simplified_path(from, to, 2)

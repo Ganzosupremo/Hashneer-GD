@@ -7,7 +7,10 @@
 invincible_time = 0.0
 knockback_resistance_base = 0.5
 shield = NodePath("ShieldComponent")
+shape_area_percent = 0.1
 max_speed = 100.0
+use_flocking = false
+use_pathfinding = true
 polygon_shape = 4
 s_p_number = 3
 s_a = 100.0

@@ -1,6 +1,4 @@
-extends Node
-
-class_name AStarPathfinding
+class_name AStarPathfinding extends Node
 
 var astar_grid: AStarGrid2D
 var cell_size: int = 50
@@ -55,7 +53,7 @@ func set_region_solid(start_grid: Vector2i, end_grid: Vector2i, solid: bool = tr
 			if is_valid_grid_position(pos):
 				astar_grid.set_point_solid(pos, solid)
 
-func get_path(from_world: Vector2, to_world: Vector2) -> PackedVector2Array:
+func get_pathfinding_path(from_world: Vector2, to_world: Vector2) -> PackedVector2Array:
 	var from_grid = world_to_grid(from_world)
 	var to_grid = world_to_grid(to_world)
 	
@@ -74,7 +72,7 @@ func get_path(from_world: Vector2, to_world: Vector2) -> PackedVector2Array:
 	return world_path
 
 func get_simplified_path(from_world: Vector2, to_world: Vector2, skip_points: int = 2) -> PackedVector2Array:
-	var full_path = get_path(from_world, to_world)
+	var full_path = get_pathfinding_path(from_world, to_world)
 	
 	if full_path.size() <= skip_points + 1:
 		return full_path
