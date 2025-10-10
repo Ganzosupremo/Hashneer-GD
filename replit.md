@@ -16,6 +16,22 @@ Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Player
 
 ### Recent Improvements (Oct 1-3, 2025)
 
+#### A* Pathfinding System (Oct 10, 2025)
+Added optional A* pathfinding for enemies with obstacle avoidance:
+- **Grid-Based Pathfinding** - 50x50 pixel cells using Godot's AStarGrid2D
+  - Diagonal movement with octile heuristic for natural paths
+  - Simplified waypoint system reduces path complexity
+  - PathfindingManager singleton provides shared grid access
+- **Smart Path Recalculation** - Updates paths based on timer (0.5s) or target movement (100px threshold)
+- **Hybrid Movement System** - Pathfinding works alongside existing flocking behavior
+  - Can be toggled per enemy via `use_pathfinding` export variable
+  - Flocking forces (separation, alignment, cohesion) apply to pathfinding direction
+  - Maintains natural swarm movement even with obstacles
+- **Future-Ready** - Grid supports obstacle management for upcoming terrain destruction
+  - Methods for adding/removing obstacles dynamically
+  - Region-based solid area marking
+- **Core Files:** `Scripts/Utils/AStarPathfinding.gd`, `Scripts/Autoload/PathfindingManager.gd`
+
 #### Brotato-Style Survival Mode Overhaul (Oct 9, 2025)
 Transformed Unlimited Waves into a Brotato-inspired survival roguelike:
 - **Larger Arena** - Expanded from 2000x2000 to 3000x3000 pixels (15x15 grid) for more tactical space
@@ -23,6 +39,7 @@ Transformed Unlimited Waves into a Brotato-inspired survival roguelike:
   - Enemies move in natural swarms while following the player
   - Configurable weights: separation (1.5), alignment (0.3), cohesion (0.5)
   - Performs efficiently with 100+ enemies via max_neighbors_check (20)
+  - Now compatible with A* pathfinding for obstacle avoidance
 - **Enemy Cap Management** - MAX_ACTIVE_ENEMIES (150) with distance-based despawn
   - Farthest enemies from player are despawned first when cap is exceeded
   - Maintains performance without sacrificing gameplay intensity
@@ -200,4 +217,4 @@ The project includes export configurations for:
 - Web (HTML5)
 
 ## Last Updated
-October 9, 2025
+October 10, 2025
