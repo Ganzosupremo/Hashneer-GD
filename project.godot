@@ -46,7 +46,7 @@ UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
 EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
-PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"
+; PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"  # Disabled: Using NavigationAgent2D instead
 
 [display]
 
