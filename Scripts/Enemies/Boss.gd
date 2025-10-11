@@ -56,7 +56,7 @@ func _enter_state(new_state: State) -> void:
 	_state = new_state
 	match _state:
 		State.CHARGE:
-			var player: Node2D = GameManager.player
+			var player: Node2D = GameManager.get_player()
 			if player:
 				_charge_direction = (player.global_position - global_position).normalized()
 			_state_timer.start(charge_duration)

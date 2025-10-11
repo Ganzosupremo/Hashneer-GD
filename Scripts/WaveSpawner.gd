@@ -67,7 +67,7 @@ func _get_wave_configuration(wave_num: int) -> Dictionary:
 		
 	if wave_num <= 2:
 		config.compositions = [
-			{"type": "basic_square", "count": 6},
+			{"type": "basic_square", "count": 150},
 			{"type": "basic_triangle", "count": 4},
 		]
 	elif wave_num <= 5:

@@ -13,15 +13,15 @@ extends Node2D
 @export_category("Levels")
 @export var game_levels: Array[LevelBuilderArgs]
 
-var levels_unlocked: int = 1
-var previous_levels_unlocked_index: int = 0
-var _current_level: int = 0
+var _levels_unlocked: int = 1
+var _previous_levels_unlocked_index: int = 0
+var current_level: int = 0
 
-var current_level_args: LevelBuilderArgs = null
-var player: PlayerController = null
-var current_block_core: BlockCore
-var current_quadrant_builder: QuadrantBuilder
-var player_camera: AdvanceCamera
+var _current_level_args: LevelBuilderArgs = null
+var _player: PlayerController = null
+var _current_block_core: BlockCore
+var _current_quadrant_builder: QuadrantBuilder
+var _player_camera: AdvanceCamera
 
 var loaded: bool = false
 
@@ -45,15 +45,15 @@ func complete_level(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 	if player_in_completed_level(): return
 	
-	levels_unlocked = clamp(levels_unlocked + 1, 1, game_levels.size())
-	previous_levels_unlocked_index = levels_unlocked - 1
+	_levels_unlocked = clamp(_levels_unlocked + 1, 1, game_levels.size())
+	_previous_levels_unlocked_index = _levels_unlocked - 1
 
 func emit_level_completed(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_NEGATIVE_SOUND_T3, AudioManager.DestinationAudioBus.SFX)
 
-func player_in_completed_level(level_index: int = _current_level) -> bool:
-	return level_index < levels_unlocked - 1
+func player_in_completed_level(level_index: int = current_level) -> bool:
+	return level_index < _levels_unlocked - 1
 
 func init_tween() -> Tween:
 	return create_tween()
@@ -62,27 +62,27 @@ func init_timer(delay: float) -> SceneTreeTimer:
 	return get_tree().create_timer(delay)
 
 func shake_camera(amplitude: float, frequency: float, duration: float, axis_ratio: float, armonic_ratio: Array[int], phase_offset_degrees: int, samples: int, tween_trans: Tween.TransitionType) -> void:
-	player_camera.shake(amplitude, frequency, duration, axis_ratio, armonic_ratio, phase_offset_degrees, samples, tween_trans)
+	_player_camera.shake(amplitude, frequency, duration, axis_ratio, armonic_ratio, phase_offset_degrees, samples, tween_trans)
 
 func shake_camera_with_magnitude(magnitude: Constants.ShakeMagnitude) -> void:
-	player_camera.shake_with_preset(magnitude)
+	_player_camera.shake_with_preset(magnitude)
 
 #endregion
 
 #region Level Management
 func _set_level_index(index: int) -> void:
 	print("Setting Level Index: {0}".format([index]))
-	_current_level = index
+	current_level = index
 
 func get_level_index() -> int:
-	return _current_level
+	return current_level
 
 func select_builder_args(index: int) -> void:
-	current_level_args = game_levels[index]
-	print("Selecting Builder Args: {0}. At index: {1}".format([current_level_args.debug_name, index]))
+	_current_level_args = game_levels[index]
+	print("Selecting Builder Args: {0}. At index: {1}".format([_current_level_args.debug_name, index]))
 
 func get_level_args() -> LevelBuilderArgs:
-	return current_level_args
+	return _current_level_args
 
 func get_current_level() -> int:
 	return get_level_args().level_index
@@ -96,8 +96,8 @@ func save_data() -> void:
 func _build_dictionary_to_save() -> Dictionary:
 	# var unlocked_weapons_keys: Array = unlocked_weapons.keys()
 	return {
-		"levels_unlocked": levels_unlocked,
-		"previous_levels_unlocked_index": previous_levels_unlocked_index,
+		"_levels_unlocked": _levels_unlocked,
+		"_previous_levels_unlocked_index": _previous_levels_unlocked_index,
 	}
 
 func load_data() -> void:
@@ -106,8 +106,8 @@ func load_data() -> void:
 	if !SaveSystem.has(GameManagerSaveName): return
 	var data: Dictionary = SaveSystem.get_var(GameManagerSaveName)
 
-	levels_unlocked = data["levels_unlocked"]
-	previous_levels_unlocked_index = data["previous_levels_unlocked_index"]
+	_levels_unlocked = data["_levels_unlocked"]
+	_previous_levels_unlocked_index = data["_previous_levels_unlocked_index"]
 	loaded = true
 
 #endregion
@@ -116,6 +116,11 @@ func load_data() -> void:
 #region Getters
 
 func get_main_camera() -> AdvanceCamera:
-	if player_camera != null:
-		return player_camera
+	if _player_camera != null:
+		return _player_camera
+	return null
+
+func get_player() -> PlayerController:
+	if _player != null:
+		return _player
 	return null

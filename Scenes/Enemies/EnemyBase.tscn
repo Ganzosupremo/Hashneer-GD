@@ -11,10 +11,10 @@
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="7_sja6u"]
 [ext_resource type="Texture2D" uid="uid://cwtw4gx8qcy3w" path="res://Textures/Enemies/Grass.png" id="8_5jwg1"]
 [ext_resource type="Texture2D" uid="uid://bhoj5ykjs0ahw" path="res://Textures/FracturableBodies/BlockCoreTextureNormal.png" id="9_5jwg1"]
-[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
+[ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="11_imyi4"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="12_5jwg1"]
-[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="13_imyi4"]
+[ext_resource type="Script" uid="uid://c3clj86lkv5ej" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="13_imyi4"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="14_5jwg1"]
 
 [sub_resource type="Curve" id="Curve_kxeub"]
@@ -385,6 +385,8 @@ keep_distance_range = Vector2(1.5, 1.5)
 rotate_towards_velocity = true
 max_speed = 75.0
 accel = 800.0
+navigation_agent_radius = 50.0
+enable_rvo_avoidance = false
 sound_on_hurt = ExtResource("3_5jwg1")
 sound_on_dead = ExtResource("4_t8mk1")
 sound_on_heal = ExtResource("5_bo7sv")
@@ -392,6 +394,11 @@ hit_vfx = SubResource("Resource_ebyh8")
 death_vfx = SubResource("Resource_4seab")
 cir_radius = 50.0
 cir_smoothing = 8
+
+[node name="PathfindingNode" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+debug_enabled = true
+debug_path_custom_color = Color(0, 0.448929, 0.886795, 1)
 
 [node name="FractureBodyHealthComponent" type="Node2D" parent="."]
 script = ExtResource("2_m1s7c")

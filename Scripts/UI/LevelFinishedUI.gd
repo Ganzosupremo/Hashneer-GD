@@ -11,7 +11,7 @@ var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
 
 func _ready() -> void:
-	GameManager.player.get_health_node().zero_health.connect(_on_zero_health)
+	GameManager.get_player().get_health_node().zero_health.connect(_on_zero_health)
 	main_event_bus.level_completed.connect(_on_level_completed)
 	item_drop_bus.item_picked.connect(_on_item_picked)
 	hide()

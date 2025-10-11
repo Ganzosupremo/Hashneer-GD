@@ -9,7 +9,7 @@ class_name FractureBodyHealthComponent extends HealthComponent
 @export var regeneration_amount: float = 10.0
 @export var regeneration_color: Color = Color.WHITE
 ## if health percent is above that threshold the start polygon is used instead of morphing polygons.
-@export_range(0.0, 1.0, 0.1) var heal_treshold : float = 0.8 
+@export_range(0.0, 1.0, 0.1) var heal_treshold : float = 0.8
 
 var total_frame_heal_amount : float = 0.0
 var regeneration_timer : Timer = null

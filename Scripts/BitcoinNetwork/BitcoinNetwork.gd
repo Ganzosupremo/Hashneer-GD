@@ -113,7 +113,7 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 ## [param block]: The BitcoinBlock to check against the current level[br]
 ## @return bool Whether the block matches the current level.
 func is_current_level_block(block: BitcoinBlock) -> bool:
-	return block.height == GameManager._current_level
+	return block.height == GameManager.current_level
 
 
 ## Checks if a block has already been mined

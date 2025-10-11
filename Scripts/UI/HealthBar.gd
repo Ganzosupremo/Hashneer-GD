@@ -5,12 +5,12 @@ class_name SphereHealthBar
 @onready var sphere_health: ColorRect = %SphereHealth
 
 func _ready() -> void:
-	GameManager.player.get_health_node().update_health.connect(update_ui)
+	GameManager.get_player().get_health_node().update_health.connect(update_ui)
 	init_ui()
 
 func init_ui() -> void:
-	var max_health: float = GameManager.player.get_max_health()
-	var current_health: float = GameManager.player.get_current_health()
+	var max_health: float = GameManager.get_player().get_max_health()
+	var current_health: float = GameManager.get_player().get_current_health()
 	update_ui(current_health, max_health)
 
 func update_ui(current_health: float, max_health: float) -> void:

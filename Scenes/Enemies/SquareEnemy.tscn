@@ -19,7 +19,7 @@ use_pathfinding = true
 polygon_shape = 1
 rectangle_size = Vector2(50, 50)
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 regeneration_start_threshold = 0.0

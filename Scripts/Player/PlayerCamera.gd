@@ -52,7 +52,7 @@ var constant_shake_phase_offset: float = 0.0
 var constant_shake_start_time: float = 0.0
 
 func _ready() -> void:
-		GameManager.player_camera = self
+		GameManager._player_camera = self
 		shake_timer = Timer.new()
 		shake_timer.autostart = false
 		shake_timer.one_shot = true

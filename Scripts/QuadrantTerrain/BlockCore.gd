@@ -15,7 +15,7 @@ var _hit_tween: Tween = null
 
 func _ready() -> void:
 	_slowdown_timer.timeout.connect(_on_slow_down_timer_timeout)
-	GameManager.current_block_core = self
+	GameManager._current_block_core = self
 	_poly_fracture = PolygonFracture.new()
 	_rng.randomize()
 	_block_core_particles.emitting = false
@@ -65,7 +65,7 @@ func take_damage(damage: float, instakill: bool = false) -> bool:
 		return true
 	
 	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_HIT, AudioManager.DestinationAudioBus.SFX)
-	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
+	GameManager.get_player().get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false
 
 # Store the cut info for progressive cuts
@@ -128,7 +128,7 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		_block_core_particles.emitting = false
 		Engine.time_scale = 0.21
 		
-		GameManager.player_camera.shake_with_preset(Constants.ShakeMagnitude.Large)
+		GameManager._player_camera.shake_with_preset(Constants.ShakeMagnitude.Large)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.EXPLOSION, global_transform)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.DEBRIS, global_transform)
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SCREEN_FLASH, Transform2D.IDENTITY, null, 0.15)

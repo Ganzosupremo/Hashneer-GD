@@ -52,7 +52,7 @@ var previous_velocity: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 		gravity_sources.clear()
-		GameManager.player = self
+		GameManager._player = self
 		_health.zero_health.connect(on_zero_power)
 		main_event_bus.level_completed.connect(deactivate_player)
 		set_player()
@@ -134,8 +134,8 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time
 	animation_player.play("hit-flash")
 	
 	# Add camera trauma and hitstop on hit
-	if GameManager.player_camera:
-		GameManager.player_camera.add_trauma(0.25)
+	if GameManager._player_camera:
+		GameManager._player_camera.add_trauma(0.25)
 
 	if slow_down_time:
 		GameManager.vfx_manager.slow_time(hitstop_duration, time_scale, hitstop_duration * 0.5)
