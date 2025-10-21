@@ -15,7 +15,7 @@ color_default = Color(1, 1, 1, 1)
 shape_area_percent = 0.07
 max_speed = 100.0
 use_flocking = false
-use_pathfinding = true
+use_pathfinding = false
 polygon_shape = 1
 rectangle_size = Vector2(50, 50)
 

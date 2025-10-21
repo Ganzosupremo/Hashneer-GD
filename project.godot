@@ -17,7 +17,7 @@ config/tags=PackedStringArray("bitcoin")
 run/main_scene="res://Scenes/UI/MainMenu.tscn"
 config/use_custom_user_dir=true
 config/custom_user_dir_name="Nigga_pls"
-config/features=PackedStringArray("4.4", "Forward Plus")
+config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://Textures/Disclaimer Hasheneer.png"
 config/icon="res://Textures/Icons/Hashneneer Logo.png"
@@ -46,7 +46,6 @@ UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
 EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
-; PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"  # Disabled: Using NavigationAgent2D instead
 
 [display]
 

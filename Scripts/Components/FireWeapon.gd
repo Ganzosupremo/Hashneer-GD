@@ -115,7 +115,7 @@ func _trigger_camera_shake() -> void:
 				
 				# Add directional recoil kick to camera
 				var aim_angle = (bullet_spawn_position.global_position.direction_to(GameManager.get_player().get_global_mouse_position())).angle()
-				GameManager.get_player_camera().recoil_kick(aim_angle, current_weapon.recoil_kick_strength)
+				GameManager.get_main_camera().recoil_kick(aim_angle, current_weapon.recoil_kick_strength)
 
 				# Apply weapon recoil to player velocity (if not enemy weapon)
 				if !is_enemy_weapon and GameManager.get_player():

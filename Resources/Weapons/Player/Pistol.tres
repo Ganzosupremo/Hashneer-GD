@@ -9,16 +9,10 @@
 
 [sub_resource type="Resource" id="Resource_wgbrq"]
 script = ExtResource("2_wgbrq")
-upgrade_type = 0
 upgrade_name = "increase fire rate"
 upgrade_description = "+0.15 bullets per second"
 upgrade_levels = 5
 upgrade_power_per_level = 0.15
-base_cost = 50000.0
-cost_multiplier = 1.5
-requires_bitcoin = false
-bitcoin_base_cost = 50.0
-bitcoin_cost_multiplier = 1.1
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_psf4r"]
@@ -45,22 +39,16 @@ available_upgrades = Array[ExtResource("2_wgbrq")]([SubResource("Resource_wgbrq"
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_psf4r")
-weapon_damage_multiplier_percent = 0.0
 ammo_details = ExtResource("1_wgbrq")
 weapon_shoot_effect = ExtResource("4_hdk3o")
 shots_per_second = 3.0
-precharge_time = 0.0
 spread = 0.28
 amplitude = 1.8
 frequency = 6.5
 duration = 0.28
 axis_ratio = 90.0
 armonic_ration = Array[int]([4, 5])
-phase_offset = 90
-samples = 10
 shake_trans = 10
 recoil_strength = 100.0
 recoil_kick_strength = 6.0
 trauma_shake_amount = 0.05
-is_child = false
-upgrade_description = "No description available"

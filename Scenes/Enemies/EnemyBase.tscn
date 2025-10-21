@@ -385,6 +385,7 @@ keep_distance_range = Vector2(1.5, 1.5)
 rotate_towards_velocity = true
 max_speed = 75.0
 accel = 800.0
+use_pathfinding = true
 navigation_agent_radius = 50.0
 enable_rvo_avoidance = false
 sound_on_hurt = ExtResource("3_5jwg1")
