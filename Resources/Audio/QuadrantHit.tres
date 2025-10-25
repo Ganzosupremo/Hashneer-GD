@@ -8,7 +8,4 @@ script = ExtResource("2_dve35")
 limit = 50
 sound_type = 24
 destination_audio_bus = 2
-sound_volume = 1.0
 audio_stream = ExtResource("1_o2k2q")
-sound_pitch = 1.0
-pitch_randomness = 0.0

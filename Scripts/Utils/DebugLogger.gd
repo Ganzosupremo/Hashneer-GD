@@ -1,4 +1,4 @@
-class_name Logger extends Node
+class_name CustomDebugLogger extends Node
 ## DebugLogger - Centralized debug logging system
 ## 
 ## This system provides conditional debug logging that only outputs to console

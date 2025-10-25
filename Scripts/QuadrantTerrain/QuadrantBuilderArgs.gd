@@ -4,7 +4,7 @@ class_name LevelBuilderArgs
 ## This is used to create the QuadrantBuilder or set the level waves parameters
 @export var debug_name: String = ""
 ## The size of the quadrants in pixels
-@export_category("Quadrant Builder Parameters")
+@export_category("Mining Game Mode Parameters")
 @export var quadrant_size: int = 200
 ## The size of the grid in quadrants
 @export var grid_size: Vector2 = Vector2(6, 6)
@@ -33,10 +33,12 @@ var level_index: int = 0
 @export var block_core_cut_min_area: float = 100.0
 
 @export_category("Wave Levels Parameters")
-## The time between each wave
-@export var spawn_time: float = 5.0
-## The amount of enemies to spawn per wave
-@export var spawn_count: int = 5
+## The waves phases data for the level.
+@export var waves_phases: Array[WavePhase] = []
+## Number of waves before advancing to the next phase.
+@export var waves_per_phase: int = 4
+## The time to wait before a new wave starts (in seconds).
+@export var wave_spawn_time: float = 5.0
 ## Number of enemy kills required before boss spawns
 @export var kills_to_spawn_boss: int = 40
 ## This is used to determine how many drops the enemies will drop

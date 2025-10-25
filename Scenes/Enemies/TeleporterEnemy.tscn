@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b1v2tjq2oo26s"]
+[gd_scene load_steps=6 format=3 uid="uid://b1v2tjq2oo26s"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
-[ext_resource type="Script" path="res://Scripts/Enemies/TeleporterEnemy.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
+[ext_resource type="Script" uid="uid://b8gvrklxcsvg2" path="res://Scripts/Enemies/TeleporterEnemy.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="3_tex"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="4_norm"]
 
@@ -18,6 +18,8 @@ teleport_fade_time = 0.2
 color_default = Color(0.6, 0.4, 1, 1)
 shape_area_percent = 0.14
 max_speed = 130.0
+use_pathfinding = false
+use_custom_pathfinding = true
 polygon_shape = 4
 s_p_number = 6
 s_a = 50.0
@@ -31,7 +33,7 @@ n2 = 0.6
 min_n3 = 0.6
 n3 = 0.6
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 

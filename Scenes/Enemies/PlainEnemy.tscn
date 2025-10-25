@@ -1,6 +1,6 @@
-[gd_scene load_steps=38 format=3 uid="uid://d1ck5inf3bdcq"]
+[gd_scene load_steps=32 format=3 uid="uid://d1ck5inf3bdcq"]
 
-[ext_resource type="Script" uid="uid://c5igpevslv6j5" path="res://Scripts/Enemies/EnemyBase.gd" id="1_iiq2q"]
+[ext_resource type="Script" uid="uid://breu7mnavm6o5" path="res://Scripts/Enemies/SquareEnemy.gd" id="1_lo6ee"]
 [ext_resource type="Script" uid="uid://byctsght1ktgt" path="res://Scripts/Components/FractureBodyHealthComponent.gd" id="2_m1s7c"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_t8mk1"]
 [ext_resource type="Resource" uid="uid://daacsw3qy6nj" path="res://Resources/Audio/EnemyHurt.tres" id="3_5jwg1"]
@@ -17,104 +17,20 @@
 [ext_resource type="Script" uid="uid://c3clj86lkv5ej" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="13_imyi4"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="14_5jwg1"]
 
-[sub_resource type="Curve" id="Curve_kxeub"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0egv6"]
 
-[sub_resource type="CurveTexture" id="CurveTexture_st35r"]
-curve = SubResource("Curve_kxeub")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_8ly7q"]
-particle_flag_align_y = true
-particle_flag_rotate_y = true
-angle_min = 1.07288e-05
-angle_max = 90.0
-initial_velocity_min = 200.0
-initial_velocity_max = 800.0
-gravity = Vector3(0, 0, 0)
-linear_accel_min = -2.23517e-06
-linear_accel_max = 52.63
-radial_accel_min = -2.23517e-06
-radial_accel_max = 33.68
-tangential_accel_min = -2.23517e-06
-tangential_accel_max = 52.63
-scale_min = 5.0
-scale_max = 10.0
-scale_curve = SubResource("CurveTexture_st35r")
-hue_variation_min = 0.21
-hue_variation_max = 0.88
-turbulence_enabled = true
-turbulence_noise_strength = 2.5
-turbulence_noise_speed = Vector3(0.6, 0.615, 0)
-turbulence_noise_speed_random = 0.33
-turbulence_influence_max = 0.239
-
-[sub_resource type="Resource" id="Resource_ebyh8"]
+[sub_resource type="Resource" id="Resource_8rp6w"]
 script = ExtResource("7_sja6u")
-amount = 50
-lifetime = 0.2
-one_shot = true
-speed_scale = 1.0
-explosiveness = 0.0
-randomness = 0.5
 particle_texture = ExtResource("6_bo7sv")
-process_material = SubResource("ParticleProcessMaterial_8ly7q")
+process_material = SubResource("ParticleProcessMaterial_0egv6")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
-[sub_resource type="Gradient" id="Gradient_bo7sv"]
-offsets = PackedFloat32Array(0, 0.523529, 0.994118)
-colors = PackedColorArray(0.879128, 0.232802, 0.232594, 1, 0.781325, 0.233746, 0.625911, 1, 0.825685, 0.190779, 0.403695, 1)
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_11db8"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_sja6u"]
-gradient = SubResource("Gradient_bo7sv")
-
-[sub_resource type="Curve" id="Curve_bo7sv"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_sja6u"]
-curve = SubResource("Curve_bo7sv")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_kxeub"]
-particle_flag_align_y = true
-particle_flag_rotate_y = true
-emission_shape = 6
-emission_ring_axis = Vector3(0, 0, 1)
-emission_ring_height = 2.0
-emission_ring_radius = 5.0
-emission_ring_inner_radius = 2.5
-emission_ring_cone_angle = 90.0
-angle_min = 1.07288e-05
-angle_max = 180.0
-spread = 180.0
-initial_velocity_min = 500.0
-initial_velocity_max = 900.0
-gravity = Vector3(0, 0, 0)
-linear_accel_min = -2.23517e-06
-linear_accel_max = 61.05
-radial_accel_min = -2.23517e-06
-radial_accel_max = 50.53
-tangential_accel_min = -2.23517e-06
-tangential_accel_max = 57.64
-scale_min = 5.0
-scale_max = 15.0
-scale_curve = SubResource("CurveTexture_sja6u")
-color_ramp = SubResource("GradientTexture1D_sja6u")
-hue_variation_min = 0.1
-hue_variation_max = 0.8
-turbulence_enabled = true
-turbulence_influence_max = 0.209
-
-[sub_resource type="Resource" id="Resource_4seab"]
+[sub_resource type="Resource" id="Resource_rerji"]
 script = ExtResource("7_sja6u")
-amount = 100
-lifetime = 0.8
-one_shot = true
-speed_scale = 1.0
-explosiveness = 1.0
-randomness = 0.5
 particle_texture = ExtResource("6_bo7sv")
-process_material = SubResource("ParticleProcessMaterial_kxeub")
+process_material = SubResource("ParticleProcessMaterial_11db8")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t8mk1"]
@@ -349,14 +265,11 @@ _data = {
 [sub_resource type="Resource" id="Resource_t8mk1"]
 script = ExtResource("11_imyi4")
 drop_path = "uid://bjdc26h1h0pfv"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_bo7sv"]
 script = ExtResource("12_5jwg1")
 possible_drops = Array[ExtResource("11_imyi4")]([SubResource("Resource_t8mk1")])
-guaranteed_drops = 0
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_sja6u"]
@@ -373,28 +286,14 @@ collision_mask = 80
 can_sleep = false
 contact_monitor = true
 max_contacts_reported = 12
-script = ExtResource("1_iiq2q")
+script = ExtResource("1_lo6ee")
 main_event_bus = ExtResource("2_t8mk1")
-invincible_time = 0.1
-shape_area_percent = 0.3
-fractures = 10
-collision_damage = Vector2(2, 4)
-target_reached_tolerance = 50.0
-target_pos_interval_range = Vector2(10, 20)
-keep_distance_range = Vector2(1.5, 1.5)
-rotate_towards_velocity = true
-max_speed = 75.0
-accel = 800.0
 use_pathfinding = true
-navigation_agent_radius = 50.0
-enable_rvo_avoidance = false
 sound_on_hurt = ExtResource("3_5jwg1")
 sound_on_dead = ExtResource("4_t8mk1")
 sound_on_heal = ExtResource("5_bo7sv")
-hit_vfx = SubResource("Resource_ebyh8")
-death_vfx = SubResource("Resource_4seab")
-cir_radius = 50.0
-cir_smoothing = 8
+hit_vfx = SubResource("Resource_8rp6w")
+death_vfx = SubResource("Resource_rerji")
 
 [node name="PathfindingNode" type="NavigationAgent2D" parent="."]
 path_postprocessing = 1
@@ -468,7 +367,6 @@ libraries = {
 script = ExtResource("10_obdxo")
 drops_table = SubResource("Resource_bo7sv")
 scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
-metadata/_custom_type_script = "uid://b8fqt8af86l80"
 
 [node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
 script = ExtResource("13_imyi4")
@@ -476,7 +374,6 @@ force = 30000.0
 direction = Vector2(1, 0)
 angle_spread = 90.0
 spawn_group = SubResource("Resource_sja6u")
-metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
 
 [connection signal="timeout" from="TargetPositionTimer" to="." method="_on_TargetPosTimer_timeout"]
 [connection signal="screen_exited" from="OffScreenNotifier" to="." method="_on_off_screen_notifier_screen_exited"]

@@ -115,11 +115,13 @@ func load_data() -> void:
 
 #region Getters
 
+## Returns the main camera used for the player.
 func get_main_camera() -> AdvanceCamera:
 	if _player_camera != null:
 		return _player_camera
 	return null
 
+## Returns the player controller instance.
 func get_player() -> PlayerController:
 	if _player != null:
 		return _player

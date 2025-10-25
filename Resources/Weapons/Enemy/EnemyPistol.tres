@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_6khr4"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_jdhiw"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_6khr4"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="3_36wup"]
 [ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="4_a8oq1"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="5_cpcso"]
@@ -52,6 +51,8 @@ explosiveness = 1.0
 particle_texture = SubResource("CompressedTexture2D_xg7bx")
 process_material = SubResource("ParticleProcessMaterial_r5nha")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
 
 [sub_resource type="Gradient" id="Gradient_q13lb"]
 

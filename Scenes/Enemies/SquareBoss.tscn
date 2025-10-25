@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://bv36oct4uiv5w"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_glr62"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_glr62"]
 [ext_resource type="Script" uid="uid://2i17mcnw3la2" path="res://Scripts/Enemies/Boss.gd" id="2_fkfjs"]
 [ext_resource type="Resource" uid="uid://bl3gcxc42ryaw" path="res://Resources/Audio/BossDeath.tres" id="3_6ehc6"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="3_6wbg5"]
@@ -17,14 +17,12 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 [sub_resource type="Resource" id="Resource_m42mc"]
 script = ExtResource("3_6wbg5")
 drop_path = "uid://bjdc26h1h0pfv"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_ug63n"]
 script = ExtResource("4_1bt1g")
 possible_drops = Array[ExtResource("3_6wbg5")]([SubResource("Resource_6ehc6"), SubResource("Resource_m42mc")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_m42mc"]
@@ -48,16 +46,16 @@ find_new_target_pos_tolerance = 10.0
 target_reached_tolerance = 25.0
 target_pos_interval_range = Vector2(10, 15)
 keep_distance_range = Vector2(1, 1)
-accel = 1000.0
+use_pathfinding = false
+use_custom_pathfinding = true
 sound_on_hurt = ExtResource("3_m42mc")
 sound_on_dead = ExtResource("3_6ehc6")
 sound_on_heal = ExtResource("4_m42mc")
 polygon_shape = 1
-cir_radius = 0.0
 cir_smoothing = 0
 rectangle_size = Vector2(140, 140)
 
-[node name="RandomDrops" parent="." index="11"]
+[node name="RandomDrops" parent="." index="12"]
 drops_table = SubResource("Resource_ug63n")
 
 [node name="DamageArea" type="Area2D" parent="." index="13"]

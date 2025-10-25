@@ -1,4 +1,4 @@
-[gd_scene load_steps=76 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=85 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="PackedScene" uid="uid://7c0kkjaw4yai" path="res://Scenes/VFX/VFXManager.tscn" id="1_vfxman"]
@@ -11,18 +11,18 @@
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="7_lbc0e"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="9_1f4k2"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="9_qgubg"]
+[ext_resource type="Script" uid="uid://b2ne6r8s160qn" path="res://Scripts/Resources/WavePhase.gd" id="10_f24ny"]
+[ext_resource type="Script" uid="uid://d2ustuibdi8sb" path="res://Scripts/Resources/WaveComposition.gd" id="11_o0qoy"]
 
 [sub_resource type="Resource" id="Resource_1wrq4"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_c3rr8"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_1wrq4")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_lbc0e"]
@@ -44,6 +44,22 @@ guaranteed_drops = 5
 combined_odds = true
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
+[sub_resource type="Resource" id="Resource_38mn4"]
+script = ExtResource("11_o0qoy")
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_q3b18"]
+script = ExtResource("11_o0qoy")
+enemy_type = 1
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_p8p40"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_38mn4"), SubResource("Resource_q3b18")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
 [sub_resource type="Resource" id="Resource_2qui5"]
 script = ExtResource("7_dsf0w")
 debug_name = "Element Zero"
@@ -52,12 +68,7 @@ grid_size = Vector2(5, 5)
 map_shape = 3
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
-initial_health = 50.0
-fiat_drop_rate_factor = 1.0
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 10.0
-spawn_count = 8
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_p8p40")])
 kills_to_spawn_boss = 30
 enemy_drops_count = 1
 enemy_damage_multiplier = 1.1
@@ -67,30 +78,45 @@ boss_drop_table = SubResource("Resource_c3rr8")
 [sub_resource type="Resource" id="Resource_y58sf"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_ahlnf"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_y58sf")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="Resource" id="Resource_uko5e"]
+script = ExtResource("11_o0qoy")
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_quse7"]
+script = ExtResource("11_o0qoy")
+enemy_type = 1
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_kxysm"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_5hj87"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_uko5e"), SubResource("Resource_quse7"), SubResource("Resource_kxysm")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
 
 [sub_resource type="Resource" id="Resource_rmngw"]
 script = ExtResource("7_dsf0w")
 debug_name = "1"
 quadrant_size = 300
-grid_size = Vector2(6, 6)
 map_shape = 2
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 80.0
 fiat_drop_rate_factor = 1.1
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 9.8
-spawn_count = 12
-kills_to_spawn_boss = 40
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_5hj87")])
 enemy_drops_count = 1
 enemy_damage_multiplier = 1.2
 enemies_drop_table = SubResource("Resource_f24ny")
@@ -99,27 +125,23 @@ boss_drop_table = SubResource("Resource_ahlnf")
 [sub_resource type="Resource" id="Resource_p8huj"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_gnd5q"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_p8huj")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_wirnu"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://dhsf3uibxlt6l"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_h5wcw"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_wirnu")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_885h5"]
@@ -127,38 +149,29 @@ script = ExtResource("7_dsf0w")
 debug_name = "2"
 quadrant_size = 320
 grid_size = Vector2(7, 7)
-map_shape = 0
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 150.0
 fiat_drop_rate_factor = 1.2
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 9.5
-spawn_count = 16
 kills_to_spawn_boss = 50
 enemy_drops_count = 2
-enemy_damage_multiplier = 1.3
 enemies_drop_table = SubResource("Resource_h5wcw")
 boss_drop_table = SubResource("Resource_gnd5q")
 
 [sub_resource type="Resource" id="Resource_xrowd"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_fe0fy"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_xrowd")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_q0o65"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://dhsf3uibxlt6l"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_eosgy"]
@@ -171,7 +184,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_q0o65"), SubResource("Resource_eosgy")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_2pchh"]
@@ -179,14 +191,9 @@ script = ExtResource("7_dsf0w")
 debug_name = "3"
 quadrant_size = 340
 grid_size = Vector2(7, 7)
-map_shape = 0
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 300.0
 fiat_drop_rate_factor = 1.3
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 9.3
-spawn_count = 20
 kills_to_spawn_boss = 60
 enemy_drops_count = 3
 enemy_damage_multiplier = 1.4
@@ -196,14 +203,12 @@ boss_drop_table = SubResource("Resource_fe0fy")
 [sub_resource type="Resource" id="Resource_aonvj"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_s02aq"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_aonvj")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_7b0fb"]
@@ -222,7 +227,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_7b0fb"), SubResource("Resource_o8j68")])
 guaranteed_drops = 2
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_vq5xj"]
@@ -230,15 +234,10 @@ script = ExtResource("7_dsf0w")
 debug_name = "4"
 quadrant_size = 360
 grid_size = Vector2(8, 8)
-map_shape = 0
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 600.0
 fiat_drop_rate_factor = 1.4
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 9.0
-spawn_count = 24
 kills_to_spawn_boss = 70
 enemy_drops_count = 4
 enemy_damage_multiplier = 1.5
@@ -248,14 +247,12 @@ boss_drop_table = SubResource("Resource_s02aq")
 [sub_resource type="Resource" id="Resource_drdsm"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_k0s4q"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_drdsm")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_m72rw"]
@@ -280,7 +277,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m72rw"), SubResource("Resource_upvvp"), SubResource("Resource_iqojj")])
 guaranteed_drops = 3
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_dxlcl"]
@@ -288,16 +284,11 @@ script = ExtResource("7_dsf0w")
 debug_name = "5"
 quadrant_size = 380
 grid_size = Vector2(8, 8)
-map_shape = 0
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 1000.0
 fiat_drop_rate_factor = 1.5
-block_core_cuts_delaunay = 200
 block_core_cut_min_area = 50.0
-spawn_time = 8.8
-spawn_count = 28
 kills_to_spawn_boss = 80
-enemy_drops_count = 5
 enemy_damage_multiplier = 1.6
 enemies_drop_table = SubResource("Resource_gmo6b")
 boss_drop_table = SubResource("Resource_k0s4q")
@@ -305,14 +296,12 @@ boss_drop_table = SubResource("Resource_k0s4q")
 [sub_resource type="Resource" id="Resource_vjt04"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_4v0ux"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_vjt04")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_05ymk"]
@@ -337,7 +326,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_05ymk"), SubResource("Resource_fewer"), SubResource("Resource_04lec")])
 guaranteed_drops = 2
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_46rwd"]
@@ -345,15 +333,10 @@ script = ExtResource("7_dsf0w")
 debug_name = "6"
 quadrant_size = 400
 grid_size = Vector2(8, 8)
-map_shape = 0
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 1500.0
 fiat_drop_rate_factor = 1.6
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 8.5
-spawn_count = 32
 kills_to_spawn_boss = 90
 enemy_drops_count = 6
 enemy_damage_multiplier = 1.8
@@ -363,14 +346,12 @@ boss_drop_table = SubResource("Resource_4v0ux")
 [sub_resource type="Resource" id="Resource_d7ux4"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_dhk02"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_d7ux4")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_m1qi8"]
@@ -389,7 +370,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m1qi8"), SubResource("Resource_rifc4")])
 guaranteed_drops = 2
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_3ywsn"]
@@ -397,14 +377,9 @@ script = ExtResource("7_dsf0w")
 debug_name = "7"
 quadrant_size = 420
 grid_size = Vector2(9, 9)
-map_shape = 0
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 2500.0
 fiat_drop_rate_factor = 1.7
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 8.3
-spawn_count = 36
 kills_to_spawn_boss = 100
 enemy_drops_count = 7
 enemy_damage_multiplier = 2.0
@@ -414,21 +389,18 @@ boss_drop_table = SubResource("Resource_dhk02")
 [sub_resource type="Resource" id="Resource_tanwt"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_fhg3g"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_tanwt")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_6a3u3"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_m72rw"), SubResource("Resource_upvvp"), SubResource("Resource_iqojj")])
 guaranteed_drops = 2
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_mcmpw"]
@@ -436,15 +408,10 @@ script = ExtResource("7_dsf0w")
 debug_name = "8"
 quadrant_size = 440
 grid_size = Vector2(9, 9)
-map_shape = 0
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 4000.0
 fiat_drop_rate_factor = 1.8
-block_core_cuts_delaunay = 200
-block_core_cut_min_area = 100.0
-spawn_time = 8.0
-spawn_count = 40
 kills_to_spawn_boss = 110
 enemy_drops_count = 8
 enemy_damage_multiplier = 2.1
@@ -454,14 +421,12 @@ boss_drop_table = SubResource("Resource_fhg3g")
 [sub_resource type="Resource" id="Resource_aesvm"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_wsmsf"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_aesvm")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_1wlf0"]
@@ -486,7 +451,6 @@ metadata/_custom_type_script = "uid://daksr3jumc0af"
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_1wlf0"), SubResource("Resource_lmewh"), SubResource("Resource_ovygy")])
 guaranteed_drops = 3
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_2sqe8"]
@@ -494,14 +458,10 @@ script = ExtResource("7_dsf0w")
 debug_name = "9"
 quadrant_size = 460
 grid_size = Vector2(10, 10)
-map_shape = 0
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 6500.0
 fiat_drop_rate_factor = 1.9
 block_core_cuts_delaunay = 300
-block_core_cut_min_area = 100.0
-spawn_time = 7.8
-spawn_count = 44
 kills_to_spawn_boss = 120
 enemy_drops_count = 10
 enemy_damage_multiplier = 2.3
@@ -511,14 +471,12 @@ boss_drop_table = SubResource("Resource_wsmsf")
 [sub_resource type="Resource" id="Resource_dh8pc"]
 script = ExtResource("6_1wrq4")
 drop_path = "uid://bv36oct4uiv5w"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_8y3jg"]
 script = ExtResource("7_lbc0e")
 possible_drops = Array[ExtResource("6_1wrq4")]([SubResource("Resource_dh8pc")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_v0pm3"]
@@ -551,15 +509,11 @@ script = ExtResource("7_dsf0w")
 debug_name = "10"
 quadrant_size = 480
 grid_size = Vector2(10, 10)
-map_shape = 0
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 9000.0
 fiat_drop_rate_factor = 2.0
 block_core_cuts_delaunay = 300
-block_core_cut_min_area = 100.0
-spawn_time = 7.5
-spawn_count = 48
 kills_to_spawn_boss = 140
 enemy_drops_count = 12
 enemy_damage_multiplier = 2.5

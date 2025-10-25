@@ -37,13 +37,9 @@
 
 [sub_resource type="Resource" id="Resource_2ixia"]
 script = ExtResource("3_mddlq")
-limit = 5
 sound_type = 33
 destination_audio_bus = 2
-sound_volume = 1.0
 audio_stream = ExtResource("33_dv5xf")
-sound_pitch = 1.0
-pitch_randomness = 0.0
 metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [sub_resource type="Resource" id="Resource_mqklg"]
@@ -53,8 +49,6 @@ sound_type = 34
 destination_audio_bus = 2
 sound_volume = -5.0
 audio_stream = ExtResource("34_qxoid")
-sound_pitch = 1.0
-pitch_randomness = 0.0
 metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [sub_resource type="Resource" id="Resource_8gatj"]
@@ -64,8 +58,6 @@ sound_type = 35
 destination_audio_bus = 2
 sound_volume = 0.0
 audio_stream = ExtResource("35_davep")
-sound_pitch = 1.0
-pitch_randomness = 0.0
 metadata/_custom_type_script = "uid://tjgxmgkq4pce"
 
 [node name="AudioManager" type="Node2D"]

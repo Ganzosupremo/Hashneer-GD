@@ -1,4 +1,12 @@
-extends Node2D
+class_name WavesGameMode extends Node2D
+## Game mode implementing wave-based enemy spawning with bosses
+##
+## Game mode features:[br]
+## - WaveSpawner integration for enemy waves[br]
+## - Boss spawning based on kill thresholds[br]
+## - Enemy lifetime and despawn management[br]
+## - Navigation region setup for pathfinding[br]
+## - Music management for waves and bosses[br]
 
 const ENEMY_LIFETIME_SECONDS: float = 120.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
@@ -32,6 +40,7 @@ var _kill_count: int = 0
 var _despawn_count: int = 0
 var _spawned_enemies_array: Array = []
 var _enemies_to_despawn_queue: Array = []
+static var _world_map_rect: Rect2 = Rect2(-100, -100, 2200, 2200)
 
 var _boss_tracker = {
 	"current_boss_number": 0,
@@ -47,6 +56,9 @@ var _bitcoin_check_timer: Timer
 var _current_boss: BaseEnemy = null
 
 func _ready() -> void:
+	item_drops_bus.item_picked.connect(_on_item_picked)
+	item_drops_bus.item_spawned.connect(_on_boss_item_spawned)
+
 	AudioManager.change_music_clip(music)
 	level_args = GameManager.get_level_args()
 
@@ -59,17 +71,15 @@ func _ready() -> void:
 
 	_bitcoin_check_timer = Timer.new()
 	_bitcoin_check_timer.one_shot = true
-				# _bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
+	# _bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
 	add_child(_bitcoin_check_timer)
 
 
 	_wave_completed_label.modulate.a = 0.0
 	_wave_completed_label.visible = false
 
-	item_drops_bus.item_picked.connect(_on_item_picked)
-	item_drops_bus.item_spawned.connect(_on_boss_item_spawned)
-
-				# _setup_navigation_region()
+	_setup_navigation_region()
+	PathfindingManager.initialize_grid(_world_map_rect, 50)
 	_setup_wave_spawner()
 
 func _setup_navigation_region() -> void:
@@ -78,18 +88,17 @@ func _setup_navigation_region() -> void:
 	add_child(nav_region)
 				
 	var nav_poly = NavigationPolygon.new()
-	var spawn_rect = Rect2(-100, -100, 2200, 2200)
 	var padding = 100.0
 				
 	var outline = PackedVector2Array([
-		Vector2(spawn_rect.position.x - padding, spawn_rect.position.y - padding),
-		Vector2(spawn_rect.end.x + padding, spawn_rect.position.y - padding),
-		Vector2(spawn_rect.end.x + padding, spawn_rect.end.y + padding),
-		Vector2(spawn_rect.position.x - padding, spawn_rect.end.y + padding)
+		Vector2(_world_map_rect.position.x - padding, _world_map_rect.position.y - padding),
+		Vector2(_world_map_rect.end.x + padding, _world_map_rect.position.y - padding),
+		Vector2(_world_map_rect.end.x + padding, _world_map_rect.end.y + padding),
+		Vector2(_world_map_rect.position.x - padding, _world_map_rect.end.y + padding)
 	])
 				
 	nav_poly.add_outline(outline)
-	nav_poly.make_polygons_from_outlines()
+	NavigationServer2D.bake_from_source_geometry_data(nav_poly, NavigationMeshSourceGeometryData2D.new())
 	nav_poly.agent_radius = 20.0
 				
 	nav_region.navigation_polygon = nav_poly
@@ -100,6 +109,11 @@ func _setup_wave_spawner() -> void:
 	add_child(_wave_spawner)
 	_wave_spawner.enemies_holder = _enemies_holder
 	_wave_spawner.spawn_area_rect = Rect2(-100, -100, 2200, 2200)
+	_wave_spawner.set_wave_spawner({
+		"waves_per_phase": level_args.waves_per_phase,
+		"wave_spawn_time": level_args.wave_spawn_time,
+		"wave_data": level_args.waves_phases
+	})
 								
 	_wave_spawner.wave_started.connect(_on_wave_started)
 	_wave_spawner.wave_completed.connect(_on_wave_completed)
@@ -262,6 +276,9 @@ func _update_kill_display() -> void:
 		_despawn_count
 	])
 
+static func get_world_map_rect() -> Rect2:
+	return _world_map_rect
+
 func _spawn_boss() -> void:
 	_boss_tracker.boss_active = true
 	_boss_tracker.total_bosses_spawned += 1
@@ -278,8 +295,7 @@ func _spawn_boss() -> void:
 func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false) -> void:
 	if system_despawn:
 		return
-				
-	print("_on_boss_died called")
+	
 	_boss_tracker.boss_active = false
 	_boss_tracker.bitcoin_spawned = false
 	_boss_tracker.checking_drops = true
@@ -289,7 +305,6 @@ func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false)
 	_bitcoin_check_timer.start(3.0)
 
 func _on_boss_item_spawned(event: SpawnEvent) -> void:
-	print("_on_boss_item_spawned called")
 	if !_boss_tracker.checking_drops:
 		print("Not checking drops, ignoring.")
 		return

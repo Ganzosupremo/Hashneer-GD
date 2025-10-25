@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_37v23"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_np5ir"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_w7mvb"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="2_6iw8x"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_6iw8x"]
 load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
@@ -51,6 +50,8 @@ one_shot = true
 particle_texture = SubResource("CompressedTexture2D_6iw8x")
 process_material = SubResource("ParticleProcessMaterial_xjqfy")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
 
 [sub_resource type="Gradient" id="Gradient_37v23"]
 

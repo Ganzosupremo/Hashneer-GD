@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=4 uid="uid://cfs468tglaels"]
+[gd_scene load_steps=57 format=4 uid="uid://cfs468tglaels"]
 
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="1_73um3"]
 [ext_resource type="PackedScene" uid="uid://dmek3vskirk8m" path="res://Scenes/UI/LevelCompletedUI.tscn" id="1_87mxq"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="2_obtmh"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="5_5761m"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="5_w6c12"]
+[ext_resource type="Script" uid="uid://b2ne6r8s160qn" path="res://Scripts/Resources/WavePhase.gd" id="5_w41ci"]
 [ext_resource type="PackedScene" uid="uid://xos3xcnwpqn6" path="res://Scenes/UI/WeaponUIWavesGameMode.tscn" id="5_xahjo"]
 [ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="6_bevur"]
 [ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="6_l3lx7"]
@@ -37,8 +38,6 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_b5yyy"]
 script = ExtResource("2_obtmh")
 grid_size = Vector2(10, 10)
-spawn_time = 4.0
-spawn_count = 20
 kills_to_spawn_boss = 100
 enemies_drop_table = SubResource("Resource_rvc4p")
 metadata/_custom_type_script = "uid://b6pf1rc5kjonv"

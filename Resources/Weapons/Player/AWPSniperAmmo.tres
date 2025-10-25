@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="AmmoDetails" load_steps=9 format=3 uid="uid://j0b1rc1iki68"]
 
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="1_bhow2"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ebvcn"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_h4fyi"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_h5r0u"]
@@ -39,6 +38,8 @@ requires_bitcoin = true
 bitcoin_base_cost = 175.0
 bitcoin_cost_multiplier = 1.6
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
 
 [sub_resource type="Gradient" id="Gradient_xsvdn"]
 offsets = PackedFloat32Array(0, 0.495413, 1)

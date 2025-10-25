@@ -24,7 +24,7 @@ func _on_teleport_timer_timeout() -> void:
 func _teleport() -> void:
 	_is_teleporting = true
 	
-	var tween = create_tween()
+	var tween: Tween = create_tween()
 	tween.tween_property(_polygon, "modulate:a", 0.0, teleport_fade_time)
 	tween.tween_property(_line, "modulate:a", 0.0, teleport_fade_time)
 	
@@ -35,7 +35,7 @@ func _teleport() -> void:
 	var offset = Vector2(cos(angle), sin(angle)) * distance
 	global_position += offset
 	
-	var tween2 = create_tween()
+	var tween2: Tween = create_tween()
 	tween2.tween_property(_polygon, "modulate:a", 1.0, teleport_fade_time)
 	tween2.tween_property(_line, "modulate:a", 1.0, teleport_fade_time)
 	

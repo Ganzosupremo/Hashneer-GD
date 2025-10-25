@@ -31,6 +31,8 @@ signal Died(ref: BaseEnemy, pos: Vector2, natural_death: bool)
 signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
 signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
 
+signal target_position_reached()
+
 @export_category("Main Event Bus")
 @export var main_event_bus: MainEventBus
 
@@ -76,10 +78,12 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var cohesion_weight: float = 0.5
 @export var max_neighbors_check: int = 20
 
-@export_group("NavigationAgent2D Pathfinding")
+@export_group("Pathfinding")
+## True to use the [NavigationAgent2D] A* pathfinding
 @export var use_pathfinding: bool = false
+## True to use game's custom A* pathfinding implementation
+@export var use_custom_pathfinding: bool = false
 @export var navigation_agent_radius: float = 20.0
-@export var enable_rvo_avoidance: bool = true
 @export_range(0.1, 2.0, 0.05) var path_recalc_interval: float = 0.5
 @export_range(50.0, 500.0, 10.0) var path_recalc_distance_threshold: float = 100.0
 @export var use_staggered_pathfinding: bool = true
@@ -131,27 +135,6 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export_range(0.0, 1.0, 0.05) var min_n3: float = 0
 @export_range(0.0, 1.0, 0.05) var n3 : float = 0
 
-var cur_area : float = 0.0
-var start_area : float = 0.0
-var target_pos := Vector3.ZERO
-var prev_target_pos := Vector2.ZERO
-var knockback_resistance : float = 1.0
-var knockback_timer : float = 0.0
-var start_poly : PackedVector2Array
-var total_frame_heal_amount : float = 0.0
-var regeneration_timer : Timer = null
-var regeneration_started : bool = false
-var polygon_restorer : PolygonRestorer = null
-var spawn_timestamp : int = 0
-var drops_count : int = 0
-var is_player_dead: bool = false
-
-var desired_velocity: Vector2 = Vector2.ZERO
-
-## Staggered pathfinding variables
-var path_recalc_timer: float = 0.0
-var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
-
 @onready var find_new_target_pos_tolerance_sq : float = find_new_target_pos_tolerance * find_new_target_pos_tolerance
 @onready var target_reached_tolerance_sq : float = target_reached_tolerance * target_reached_tolerance
 @onready var max_speed_sq : float = max_speed * max_speed
@@ -174,6 +157,35 @@ var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
 ## Pathfinding node
 @onready var pathfinding_node: NavigationAgent2D = $PathfindingNode
 
+var cur_area : float = 0.0
+var start_area : float = 0.0
+var target_pos := Vector3.ZERO
+var prev_target_pos := Vector2.ZERO
+var knockback_resistance : float = 1.0
+var knockback_timer : float = 0.0
+var start_poly : PackedVector2Array
+var total_frame_heal_amount : float = 0.0
+var regeneration_timer : Timer = null
+var regeneration_started : bool = false
+var polygon_restorer : PolygonRestorer = null
+var spawn_timestamp : int = 0
+var drops_count : int = 0
+var is_player_dead: bool = false
+
+var desired_velocity: Vector2 = Vector2.ZERO
+
+
+# Custom Pathfinding
+var _current_pathfinding_path: PackedVector2Array
+var _current_waypoint_index: int = 0
+var _last_pathfinding_target_pos: Vector2 = Vector2.ZERO
+
+
+## Staggered pathfinding variables
+var path_recalc_timer: float = 0.0
+var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
+
+
 func _ready() -> void:
 	var new_polygon : PackedVector2Array = _createPolygonShape()
 	start_poly = new_polygon
@@ -181,9 +193,7 @@ func _ready() -> void:
 	GameManager.get_player().get_health_node().zero_health.connect(_on_player_health_zero)
 	spawn_timestamp = Time.get_ticks_msec()
 	_rng.randomize()
-																
-	_off_screen_notifier.rect = getPolygonRect()
-																
+																													
 	cur_area = start_area
 	_health_component.set_max_health(start_area)
 																
@@ -275,6 +285,8 @@ func _physics_process(delta):
 				input = (next_path_pos - global_position).normalized()
 			else:
 				input = Vector2.ZERO
+		elif use_custom_pathfinding and PathfindingManager.is_pathfinding_grid_valid():
+			input = _get_pathfinding_direction(delta, cur_target_pos)
 		else:
 			var target_vec: Vector2 = cur_target_pos - global_position
 			var dis : float = target_vec.length_squared()
@@ -287,7 +299,7 @@ func _physics_process(delta):
 			input = (input + flocking_force).normalized()
 				
 	# Setting velocity towards target
-	if use_pathfinding and pathfinding_node and enable_rvo_avoidance:
+	if use_pathfinding and pathfinding_node:
 		desired_velocity = input * max_speed
 		pathfinding_node.velocity = desired_velocity
 	else:
@@ -306,6 +318,48 @@ func _physics_process(delta):
 	if rotate_towards_velocity:
 		global_rotation = linear_velocity.angle()
 
+func _get_pathfinding_direction(delta: float, target_position: Vector2) -> Vector2:
+	if !PathfindingManager.is_pathfinding_grid_valid():
+		return (target_position - global_position).normalized()
+	
+	if PathfindingManager.is_target_position_reached(global_position, target_position, target_reached_tolerance):
+		setNewRandomTargetPos()
+		target_position_reached.emit()
+		return Vector2.ZERO
+
+	path_recalc_timer -= delta
+	
+	var should_recalculate: bool = false
+
+	if _current_pathfinding_path.is_empty():
+		should_recalculate = true
+	elif path_recalc_timer <= 0.0:
+		should_recalculate = true
+	elif target_position.distance_to(_last_pathfinding_target_pos) > path_recalc_distance_threshold:
+		should_recalculate =  true
+	
+	if should_recalculate:
+		_current_pathfinding_path = PathfindingManager.get_pathfinding_path(global_position, target_position)
+		_last_pathfinding_target_pos = target_position
+		_current_waypoint_index = 0
+		path_recalc_timer = path_recalc_interval
+	
+	if _current_pathfinding_path.is_empty():
+		return (target_position - global_position).normalized()
+	
+	if _current_waypoint_index >= _current_pathfinding_path.size():
+		_current_waypoint_index = _current_pathfinding_path.size() - 1
+	
+	var waypoint: Vector2 = _current_pathfinding_path[_current_waypoint_index]
+	var direction_to_waypoint: Vector2 = (waypoint - global_position).normalized()
+
+	if global_position.distance_to(waypoint) < target_reached_tolerance:
+		_current_waypoint_index += 1
+		if _current_waypoint_index >= _current_pathfinding_path.size():
+			_current_waypoint_index = _current_pathfinding_path.size() - 1
+
+	return direction_to_waypoint
+
 func _processKnockbackTimer(delta : float) -> void:
 	if knockback_timer > 0.0:
 		knockback_timer -= delta * knockback_resistance
@@ -314,7 +368,8 @@ func _processKnockbackTimer(delta : float) -> void:
 
 func _setup_navigation_agent() -> void:
 	await get_tree().physics_frame
-	setNewTargetPos()
+	# setTarget(GameManager.get_player())
+	setNewRandomTargetPos()
 		
 	if !use_pathfinding:
 		return
@@ -328,11 +383,7 @@ func _setup_navigation_agent() -> void:
 	pathfinding_node.max_speed = max_speed
 	pathfinding_node.path_desired_distance = 10.0
 	pathfinding_node.target_desired_distance = target_reached_tolerance
-	pathfinding_node.avoidance_enabled = enable_rvo_avoidance
 				
-	if enable_rvo_avoidance:
-		pathfinding_node.velocity_computed.connect(_on_navigation_velocity_computed)
-		
 	# Initialize staggered pathfinding with random offset to spread out calculations
 	if use_staggered_pathfinding:
 		path_recalc_timer = _rng.randf_range(0.0, path_recalc_interval)
@@ -342,7 +393,7 @@ func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
 	linear_velocity = safe_velocity
 
 func _calculate_flocking_force() -> Vector2:
-	if not use_flocking:
+	if !use_flocking:
 		return Vector2.ZERO
 				
 	var separation_force: Vector2 = Vector2.ZERO
@@ -401,21 +452,19 @@ func _calculate_flocking_force() -> Vector2:
 
 # Handle screen wrapping - when enemy goes off one side, it appears on the opposite side
 func _handle_screen_wrapping() -> void:
-	var camera: Camera2D = get_viewport().get_camera_2d()
-	if not camera: return
-																
-	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+	var camera: Camera2D = GameManager.get_main_camera()										
+	var world_map_size: Vector2 = WavesGameMode.get_world_map_rect().size
 	var zoom: Vector2 = camera.zoom
 	var cam_pos: Vector2 = camera.global_position
 																
-																# Get the current global position
+	# Get the current global position
 	var current_position = global_position
-																
-																# Calculate visible world boundaries based on camera position and zoom
-	var left_bound : float = cam_pos.x - (viewport_size.x / 2) / zoom.x
-	var right_bound : float = cam_pos.x + (viewport_size.x / 2) / zoom.x
-	var top_bound : float = cam_pos.y - (viewport_size.y / 2) / zoom.y
-	var bottom_bound : float = cam_pos.y + (viewport_size.y / 2) / zoom.y
+														
+	# Calculate visible world boundaries based on camera position and zoom
+	var left_bound : float = cam_pos.x - (world_map_size.x / 2) / zoom.x
+	var right_bound : float = cam_pos.x + (world_map_size.x / 2) / zoom.x
+	var top_bound : float = cam_pos.y - (world_map_size.y / 2) / zoom.y
+	var bottom_bound : float = cam_pos.y + (world_map_size.y / 2) / zoom.y
 																
 	current_position.x = wrapf(current_position.x, left_bound, right_bound)
 	current_position.y = wrapf(current_position.y, bottom_bound, top_bound)
@@ -429,7 +478,7 @@ func applyColor(color : Color) -> void:
 	_line.modulate = color
 	_origin_poly.modulate = color
 
-##
+## Applies damage to the enemy, handling invincibility, shield, fracture, knockback, and death.
 func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector2, knockback_time : float, damage_color : Color) -> Dictionary:
 	if isDead():
 		return {"percent_cut" : 0.0, "dead" : true}
@@ -614,34 +663,29 @@ func isKnockbackActive() -> bool:
 
 #region Setters
 
-## DEPRECATED
 func setTarget(new_target: Node2D) -> void:
-	print("Setting target to ", new_target)
 	target = new_target
-	target_pos = Vector3(new_target.global_position.x, new_target.global_position.y, 1.0)
+	setTargetPosition(target.global_position)
 	prev_target_pos = global_position # Use current position as previous
-#       if target and is_instance_valid(target):
-				# startTargetPosTimer(target_pos_interval_range.x, target_pos_interval_range.y)
-				# setNewTargetPos()
 
 ## Sets a new target position for the enemy to move towards.[br]
 ## [param new_target_pos] The new target position as a Vector2
 func setTargetPosition(new_target_pos: Vector2) -> void:
 	target_pos = Vector3(new_target_pos.x, new_target_pos.y, 1.0)
 
-func setNewTargetPos() -> void:
-	var viewport_rect : Rect2 = get_viewport_rect()
-	var screen_width : float = viewport_rect.size.x
-	var screen_height : float = viewport_rect.size.y
+func setNewRandomTargetPos() -> void:
+	var world_rect: Rect2 = WavesGameMode.get_world_map_rect()
+	var map_width : float = world_rect.size.x
+	var map_height : float = world_rect.size.y
 	var offset: float = 500.0
 																												
 	_rng.randomize()
-				# Define possible target positions at screen edges
+	# Define possible target positions at screen edges
 	var possible_target_positions : Array[Vector2] = [
-		Vector2(-offset, screen_height * _rng.randf()), # Left edge
-		Vector2(screen_width + offset, screen_height * _rng.randf()), # Right edge
-		Vector2(screen_width * _rng.randf(), -offset), # Top edge
-		Vector2(screen_width * _rng.randf(), screen_height + offset) # Bottom edge
+		Vector2(-offset, map_height * _rng.randf()), # Left edge
+		Vector2(map_width + offset, map_height * _rng.randf()), # Right edge
+		Vector2(map_width * _rng.randf(), -offset), # Top edge
+		Vector2(map_width * _rng.randf(), map_height + offset) # Bottom edge
 	]
 																												
 	# Choose a random target position

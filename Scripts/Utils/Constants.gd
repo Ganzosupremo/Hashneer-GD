@@ -26,7 +26,20 @@ const Player_Brake_Accel: float = 3500.0
 const Player_Friction: float = 1000.0
 const Player_Steer_Assist: float = 1.15
 
-
+enum EnemyType {
+		BASIC_SQUARE,
+		BASIC_TRIANGLE,
+		SHOOTER,
+		CHARGER,
+		FAST_DART,
+		TANK,
+		EXPLODER,
+		SPLITTER,
+		SNIPER,
+		TELEPORTER,
+		HEALER,
+		SPINNER,
+}
 
 enum ShakeMagnitude {
 		None,
