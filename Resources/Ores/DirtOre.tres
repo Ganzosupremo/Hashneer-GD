@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3 uid="uid://nvroeuvjn2pi"]
+
+[ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_bw0sa"]
+
+[resource]
+script = ExtResource("1_bw0sa")
+ore_type = 8
+ore_name = "Bitcoin Ore"
+spawn_weight = 0.01
+metadata/_custom_type_script = "uid://cu47duhlxpj3b"

@@ -15,7 +15,7 @@ class_name QuadrantBuilder extends Node2D
 
 @export_group("Size and Color")
 ## The size of each quadrant in the grid.
-@export var quadrant_size: Vector2i = Vector2i(250, 250)
+@export var quadrant_size: Vector2i = Vector2i(50, 50)
 ## The size of the grid in terms of quadrants.
 @export var grid_size: Vector2i = Vector2i(16, 16)
 ## The color of the fracture bodies.
@@ -29,6 +29,14 @@ class_name QuadrantBuilder extends Node2D
 @export var gravity_strength: float = 600.0
 ## The exponent for the gravity falloff.
 @export var gravity_falloff: float = 2.0
+
+
+## New ore-based properties
+@export_category("Mining Mode")
+@export var mining_mode_enabled: bool = false
+@export var current_depth_layer: int = 0  # 0-20
+@export var ore_spawn_weights: Dictionary = {}  # Populated from LevelBuilderArgs
+
 
 #endregion
 
@@ -247,6 +255,9 @@ func _is_cell_in_shape(cell: Vector2i) -> bool:
 		_:
 			return true
 
+#region Ore Integration
+
+## Modified initialization
 func _initialize_grid_of_blocks(initial_health: float) -> void:
 	_quadrant_positions.clear()
 	for i in range(grid_size.x):
@@ -257,15 +268,114 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			
 			var block: FracturableStaticBody2D = _static_body_template.instantiate()
 			_quadrant_nodes.add_child(block)
+			
+			# NEW: Determine ore type based on depth
+			var ore_type: OreDetails.OreType = _determine_ore_type(j)
+			var ore_data: OreDetails = _get_ore_resource(ore_type)
+			
+			# Set block properties based on ore type
 			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
 			block.placed_in_level = true
 			var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
 			block.position = pos
 			_quadrant_positions.append(pos)
-			block.setFractureBody(initial_health, builder_args.quadrant_texture, builder_args.normal_texture)
+			
+			# NEW: Use ore-specific health and texture
+			var ore_health = initial_health * ore_data.health_multiplier
+			block.setFractureBody(ore_health, ore_data.texture, builder_args.normal_texture)
+			block.self_modulate = ore_data.ore_color
+			
+			# Store ore metadata for drop spawning
+			block.set_meta("ore_type", ore_type)
+			block.set_meta("ore_data", ore_data)
+
+func _determine_ore_type(y_grid_position: int) -> OreDetails.OreType:
+	# Calculate depth layer (0-20) based on Y position
+	var depth_layer = int((float(y_grid_position) / grid_size.y) * 20.0)
 	
-	_calculate_map_bounds()
-	_initialize_block_core()
+	# Get spawn weights for this depth
+	var weights = _get_spawn_weights_for_depth(depth_layer)
+	
+	# Weighted random selection
+	return _weighted_random_ore(weights)
+
+
+func _get_spawn_weights_for_depth(depth_layer: int) -> Dictionary:
+	if depth_layer <= 5:
+		return {
+			OreDetails.OreType.DIRT: 0.80,
+			OreDetails.OreType.COAL: 0.15,
+			OreDetails.OreType.IRON: 0.05
+		}
+	elif depth_layer <= 10:
+		return {
+			OreDetails.OreType.DIRT: 0.60,
+			OreDetails.OreType.COAL: 0.20,
+			OreDetails.OreType.IRON: 0.10,
+			OreDetails.OreType.COPPER: 0.05,
+			OreDetails.OreType.SILVER: 0.05
+		}
+	elif depth_layer <= 15:
+		return {
+			OreDetails.OreType.DIRT: 0.50,
+			OreDetails.OreType.COAL: 0.15,
+			OreDetails.OreType.IRON: 0.15,
+			OreDetails.OreType.GOLD: 0.10,
+			OreDetails.OreType.EMERALD: 0.05,
+			OreDetails.OreType.DIAMOND: 0.05
+		}
+	else: # 16-20 Bitcoin zone
+		return {
+			OreDetails.OreType.DIRT: 0.40,
+			OreDetails.OreType.IRON: 0.20,
+			OreDetails.OreType.GOLD: 0.15,
+			OreDetails.OreType.DIAMOND: 0.10,
+			OreDetails.OreType.SILVER: 0.14,
+			OreDetails.OreType.BITCOIN_ORE: 0.01
+		}
+
+
+func _weighted_random_ore(weights: Dictionary) -> OreDetails.OreType:
+	var total_weight: float = 0.0
+	for weight in weights.values():
+		total_weight += weight
+
+	var rand_value: float = _rng.randf() * total_weight
+	var cumulative_weight: float = 0.0
+	
+	for ore_type in weights.keys():
+		cumulative_weight += weights[ore_type]
+		if rand_value <= cumulative_weight:
+			return ore_type
+	
+	# Fallback
+	return OreDetails.OreType.DIRT
+
+
+func _get_ore_resource(ore_type: OreDetails.OreType) -> OreDetails:
+	match ore_type:
+		OreDetails.OreType.DIRT:
+			return preload("res://Resources/Ores/DirtOre.tres")
+		OreDetails.OreType.COAL:
+			return preload("res://Resources/Ores/CoalOre.tres")
+		OreDetails.OreType.IRON:
+			return preload("res://Resources/Ores/IronOre.tres")
+		OreDetails.OreType.COPPER:
+			return preload("res://Resources/Ores/CopperOre.tres")
+		OreDetails.OreType.SILVER:
+			return preload("res://Resources/Ores/SilverOre.tres")
+		OreDetails.OreType.GOLD:
+			return preload("res://Resources/Ores/GoldOre.tres")
+		OreDetails.OreType.DIAMOND:
+			return preload("res://Resources/Ores/DiamondOre.tres")
+		OreDetails.OreType.EMERALD:
+			return preload("res://Resources/Ores/EmeraldOre.tres")
+		OreDetails.OreType.BITCOIN_ORE:
+			return preload("res://Resources/Ores/BitcoinOre.tres")
+		_:
+			return preload("res://Resources/Ores/DirtOre.tres")
+
+#endregion
 
 func _set_player_position() -> void:
 	## Set the _player position to a random position within the grid of blocks with a little offset
