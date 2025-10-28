@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="1_nuhma"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_rkkgi"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="1_ynk2i"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="3_5p3y8"]
 
 [sub_resource type="Resource" id="Resource_ek8o0"]
 script = ExtResource("1_ek8o0")
@@ -13,12 +12,8 @@ upgrade_type = 10
 upgrade_name = "Increase bullets per shoot"
 upgrade_description = "+1 bullet per shoot"
 upgrade_levels = 2
-upgrade_power_per_level = 0.1
 base_cost = 75000.0
 cost_multiplier = 1.35
-requires_bitcoin = false
-bitcoin_base_cost = 50.0
-bitcoin_cost_multiplier = 1.1
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Gradient" id="Gradient_nuhma"]
@@ -60,14 +55,14 @@ turbulence_influence_max = 0.303
 [sub_resource type="Resource" id="Resource_46w7s"]
 script = ExtResource("1_rkkgi")
 amount = 30
-lifetime = 1.0
 one_shot = true
-speed_scale = 1.0
 explosiveness = 1.0
 randomness = 0.0
 particle_texture = ExtResource("1_nuhma")
 process_material = SubResource("ParticleProcessMaterial_nbwp3")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
+
+[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
 
 [sub_resource type="Gradient" id="Gradient_x0ieh"]
 offsets = PackedFloat32Array(0, 0.534653, 0.727723, 1)
@@ -80,22 +75,8 @@ ammo_name = "Pistol Ammo"
 min_lifetime = 2.0
 max_lifetime = 4.0
 bullet_damage = 30.0
-bullet_speed = 1000.0
-bullet_type = 0
 bullet_pattern = 2
-pattern_arc_angle = 45.0
-fire_pattern_simultaneous = false
-max_pierce_count = 0
-max_bounce_count = 0
-explosion_radius = 0.0
-explosion_layer_mask = 1
-laser_beam_scene = ExtResource("3_5p3y8")
-laser_length = 300.0
-laser_damage_cooldown = 0.1
-laser_collision_mask = 1
 size = 8
-bullets_per_shoot_min = 1
-bullets_per_shoot_max = 1
 bullet_spawn_interval_min = 0.004
 bullet_spawn_interval_max = 0.018
 trail_gradient = SubResource("Gradient_x0ieh")
@@ -105,4 +86,3 @@ fracture_force = 10000.0
 bullet_hit_vfx = ExtResource("1_ynk2i")
 failed_explosion_vfx = SubResource("Resource_46w7s")
 is_child = true
-upgrade_description = "No description available"

@@ -253,5 +253,5 @@ func take_damage(damage: float, instakill: bool = false) -> bool:
 		return true
 	
 	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_HIT, AudioManager.DestinationAudioBus.SFX)
-	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
+	GameManager.get_player().get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false

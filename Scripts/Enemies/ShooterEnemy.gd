@@ -23,7 +23,7 @@ var _state_timer: Timer
 func _ready() -> void:
 	super._ready()
 	main_event_bus.level_completed.connect(_on_level_completed)
-	_fire_target = GameManager.player
+	_fire_target = GameManager.get_player()
 	_active_weapon_component.set_weapon(weapon)
 	_state_timer = Timer.new()
 	add_child(_state_timer)

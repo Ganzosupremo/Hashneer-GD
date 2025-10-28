@@ -169,7 +169,7 @@ static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
 		_: return SkillNode.NodeState.UNKNOWN
 
 
-## @deprecated: Use [method enum_label] instead.
+## Deprecated: Use [method enum_label] instead.[br]
 ## Converts an enum value to its string name.
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:
 	for key in enum_type.keys():

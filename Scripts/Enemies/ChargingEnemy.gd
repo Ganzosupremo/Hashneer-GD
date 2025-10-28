@@ -62,7 +62,7 @@ func _windup_charge() -> void:
 		_schedule_next_charge()
 		return
 	
-	var player: Node2D = GameManager.player
+	var player: Node2D = GameManager.get_player()
 	if player:
 		_charge_direction = (player.global_position - global_position).normalized()
 	

@@ -80,7 +80,6 @@ script = ExtResource("1_o3i6u")
 amount = 21
 lifetime = 0.35
 one_shot = true
-speed_scale = 1.0
 explosiveness = 1.0
 randomness = 0.3
 particle_texture = SubResource("CompressedTexture2D_sin88")

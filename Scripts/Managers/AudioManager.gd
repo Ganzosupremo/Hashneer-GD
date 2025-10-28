@@ -90,10 +90,10 @@ func _on_music_clip_changed(clip: MusicDetails, time_to_fade: float) -> void:
 	if clip == null:
 		return
 	
-	_current_music_clip = clip.music_clip
+	var to_play: AudioStream = clip.music_clip if !clip.has_playlist else clip.playlist
+	_current_music_clip = to_play
 	_is_music_clip1_playing = !_is_music_clip1_playing
 	
-	var to_play: AudioStream = clip.music_clip if !clip.has_playlist else clip.playlist
 	await _fade_music(to_play, clip.volume_linear, time_to_fade)
 
 ## Creates a sound effect at a specific location if the limit has not been reached.

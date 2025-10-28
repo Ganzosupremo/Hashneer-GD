@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ou5uc"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="2_nn25n"]
-[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="3_7txh4"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="4_riq1q"]
 
 [sub_resource type="Resource" id="Resource_1c5fr"]
@@ -14,9 +13,6 @@ upgrade_levels = 4
 upgrade_power_per_level = 1.0
 base_cost = 37500.0
 cost_multiplier = 1.3
-requires_bitcoin = false
-bitcoin_base_cost = 50.0
-bitcoin_cost_multiplier = 1.1
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_hgibs"]
@@ -28,10 +24,9 @@ upgrade_levels = 10
 upgrade_power_per_level = 0.2
 base_cost = 60000.0
 cost_multiplier = 1.4
-requires_bitcoin = false
-bitcoin_base_cost = 50.0
-bitcoin_cost_multiplier = 1.1
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
 
 [sub_resource type="Gradient" id="Gradient_ubo30"]
 offsets = PackedFloat32Array(0, 0.571721, 1)
@@ -41,22 +36,10 @@ colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238
 script = ExtResource("4_riq1q")
 available_upgrades = Array[ExtResource("1_ou5uc")]([SubResource("Resource_1c5fr"), SubResource("Resource_hgibs")])
 ammo_name = "Shotgun Ammo"
-min_lifetime = 1.0
 max_lifetime = 1.5
 bullet_damage = 15.0
 bullet_speed = 800.0
-bullet_type = 0
 bullet_pattern = 2
-pattern_arc_angle = 45.0
-fire_pattern_simultaneous = false
-max_pierce_count = 0
-max_bounce_count = 0
-explosion_radius = 0.0
-explosion_layer_mask = 1
-laser_beam_scene = ExtResource("3_7txh4")
-laser_length = 300.0
-laser_damage_cooldown = 0.1
-laser_collision_mask = 1
 size = 4
 bullets_per_shoot_min = 4
 bullets_per_shoot_max = 8
@@ -68,4 +51,3 @@ trail_width = 9.0
 fracture_force = 25000.0
 bullet_hit_vfx = ExtResource("2_nn25n")
 is_child = true
-upgrade_description = "No description available"

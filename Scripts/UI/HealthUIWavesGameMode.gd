@@ -4,9 +4,9 @@ class_name HealthUIWavesGameMode extends Control
 @onready var _health_text: Label = %HealthText
 
 func _ready() -> void:
-	GameManager.player.get_health_node().update_health.connect(_on_health_changed)
-	var current_health: float = GameManager.player.get_current_health()
-	var max_health: float = GameManager.player.get_max_health()
+	GameManager.get_player().get_health_node().update_health.connect(_on_health_changed)
+	var current_health: float = GameManager.get_player().get_current_health()
+	var max_health: float = GameManager.get_player().get_max_health()
 	_on_health_changed(current_health, max_health)
 
 func _on_health_changed(current_health: float, max_health: float) -> void:

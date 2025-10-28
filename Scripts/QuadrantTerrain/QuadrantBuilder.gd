@@ -58,7 +58,7 @@ var _quadrant_positions: Array = []
 #region Public API
 
 func _ready() -> void:
-	GameManager.current_quadrant_builder = self
+	GameManager._current_quadrant_builder = self
 	AudioManager.change_music_clip(music)
 	_init_builder()
 
@@ -192,7 +192,7 @@ func _create_boundary_walls() -> void:
 
 ## Initializes the builder with the arguments from the current level.
 func _init_builder() -> void:
-	var builder_data: LevelBuilderArgs = GameManager.current_level_args
+	var builder_data: LevelBuilderArgs = GameManager._current_level_args
 	builder_args = builder_data
 
 	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://csplit1multi2"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://cxjewkln811wt" path="res://Scripts/Enemies/SplitterEnemy.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://dhsf3uibxlt6l" path="res://Scenes/Enemies/SquareEnemy.tscn" id="3_mini"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
@@ -13,13 +13,12 @@ texture_repeat = 2
 
 [node name="SplitterEnemy" instance=ExtResource("1_base")]
 script = ExtResource("2_script")
-split_count = 2
+split_count = 4
 mini_enemy_scene = ExtResource("3_mini")
 mini_size_scale = 0.6
 can_split = true
 color_default = Color(0.8, 0.4, 0.8, 1)
 shape_area_percent = 0.15
-max_speed = 120.0
 polygon_shape = 4
 s_p_number = 5
 s_a = 60.0
@@ -33,7 +32,7 @@ n2 = 0.6
 min_n3 = 0.6
 n3 = 0.6
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 

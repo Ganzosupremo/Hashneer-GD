@@ -6,9 +6,9 @@ var target_core: BlockCore
 
 func _ready() -> void:
 	super._ready()
-	if GameManager.current_block_core != null:
-		GameManager.current_block_core.onBlockDestroyed.connect(_on_block_found)
-		set_target_core(GameManager.current_block_core)
+	if GameManager._current_block_core != null:
+		GameManager._current_block_core.onBlockDestroyed.connect(_on_block_found)
+		set_target_core(GameManager._current_block_core)
 
 func _on_activate() -> void:
 	if !get_active_state(): return

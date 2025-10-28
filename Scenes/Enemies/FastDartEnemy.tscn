@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cnhwooa77y17b"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://dxwafsfydt64" path="res://Scripts/Enemies/FastDartEnemy.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="3_tex"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="4_norm"]
@@ -21,6 +21,8 @@ knockback_resistance_base = 0.5
 shape_area_percent = 0.1
 max_speed = 350.0
 accel = 1500.0
+use_pathfinding = false
+use_custom_pathfinding = true
 polygon_shape = 4
 s_p_number = 3
 s_a = 30.0
@@ -34,7 +36,7 @@ n2 = 0.5
 min_n3 = 0.5
 n3 = 0.5
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dhsf3uibxlt6l"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_pyqee"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_pyqee"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="2_al4en"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="3_al4en"]
 
@@ -10,16 +10,21 @@ normal_texture = ExtResource("3_al4en")
 texture_repeat = 2
 
 [node name="SquareEnemy" instance=ExtResource("1_pyqee")]
-invincible_time = 0.0
-color_default = Color(1, 1, 1, 1)
-shape_area_percent = 0.07
-max_speed = 100.0
+shape_area_percent = 0.1
+max_speed = 75.0
 use_flocking = false
-use_pathfinding = true
+separation_radius = 50.0
+separation_weight = 1.2
+alignment_radius = 100.0
+cohesion_radius = 150.0
+max_neighbors_check = 21
+use_pathfinding = false
+use_custom_pathfinding = true
+use_staggered_pathfinding = false
 polygon_shape = 1
 rectangle_size = Vector2(50, 50)
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 regeneration_start_threshold = 0.0

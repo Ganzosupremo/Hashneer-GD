@@ -23,7 +23,7 @@ func kill(natural_death: bool = false) -> void:
 	super.kill(natural_death)
 
 func _explode() -> void:
-	var player = GameManager.player
+	var player = GameManager.get_player()
 	if player and global_position.distance_to(player.global_position) <= explosion_radius:
 		var args: LevelBuilderArgs = GameManager.get_level_args()
 		var dmg = randf_range(explosion_damage_range.x, explosion_damage_range.y)

@@ -359,7 +359,7 @@ func take_damage(damage: float, instakill: bool = false) -> bool:
 	if health.get_current_health() <= 0.0:
 		return true
 	
-	GameManager.player.get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
+	GameManager.get_player().get_health_node().take_damage(pow(2.0, GameManager.get_level_index()))
 	return false
 #endregion
 

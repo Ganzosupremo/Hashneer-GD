@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://bsniper1long2"]
 
-[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/EnemyBase.tscn" id="1_base"]
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://ck6a8n6ujdtfg" path="res://Scripts/Enemies/SniperEnemy.gd" id="2_script"]
 [ext_resource type="Resource" uid="uid://dxgjejnnjd8a6" path="res://Resources/Weapons/Enemy/EnemyPistol.tres" id="3_weapon"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
@@ -15,7 +15,7 @@ texture_repeat = 2
 script = ExtResource("2_script")
 preferred_distance = 400.0
 distance_tolerance = 50.0
-can_shoot = false
+can_shoot = true
 weapon = ExtResource("3_weapon")
 shooting_duration_interval = Vector2(0.5, 1)
 shooting_cooldown_interval = Vector2(3, 5)
@@ -28,7 +28,7 @@ beam_distance = 15.0
 beam_start_width = 8.0
 beam_end_width = 3.0
 
-[node name="FractureBodyHealthComponent" parent="." index="0"]
+[node name="FractureBodyHealthComponent" parent="." index="1"]
 advanced_regeneration = false
 regeneration_interval_range = Vector2(0, 0)
 

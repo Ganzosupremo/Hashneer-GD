@@ -37,7 +37,7 @@ func kill(natural_death: bool = false) -> void:
 
 func _on_target_pos_reached(_pos: Vector3) -> void:
 	if target_pos.z == 0.0:
-		setNewTargetPos()
+		setNewRandomTargetPos()
 
 #func _on_body_entered(body: Node2D) -> void:
 	#if _state == State.CHARGE and body is PlayerController:
@@ -56,7 +56,7 @@ func _enter_state(new_state: State) -> void:
 	_state = new_state
 	match _state:
 		State.CHARGE:
-			var player: Node2D = GameManager.player
+			var player: Node2D = GameManager.get_player()
 			if player:
 				_charge_direction = (player.global_position - global_position).normalized()
 			_state_timer.start(charge_duration)

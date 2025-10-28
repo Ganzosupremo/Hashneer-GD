@@ -19,8 +19,8 @@ func _fire() -> void:
 		_fired_previous_frame = true
 		for i in range(bullet_spread_count):
 			var angle = (TAU / bullet_spread_count) * i + _spin_angle
-			var direction = Vector2(cos(angle), sin(angle))
-			var target_pos = global_position + direction * 1000.0
+			var direction: Vector2 = Vector2(cos(angle), sin(angle))
+			var target_pos: Vector2 = global_position + direction * 1000.0
 			_fire_weapon.fire_weapon.emit(true, i == 0, 1.0, target_pos)
 	else:
 		_fired_previous_frame = false

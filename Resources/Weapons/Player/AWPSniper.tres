@@ -9,16 +9,13 @@
 
 [sub_resource type="Resource" id="Resource_804t7"]
 script = ExtResource("2_gtgx1")
-upgrade_type = 0
 upgrade_name = "Shoot Faster!!"
 upgrade_description = "+0.2 Shoots per second"
 upgrade_levels = 10
 upgrade_power_per_level = 0.2
 base_cost = 146000.0
-cost_multiplier = 1.5
 requires_bitcoin = true
 bitcoin_base_cost = 100.0
-bitcoin_cost_multiplier = 1.1
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_t3kxi"]
@@ -26,7 +23,6 @@ script = ExtResource("2_gtgx1")
 upgrade_type = 1
 upgrade_name = "More Damage!!"
 upgrade_description = "+2.5% damage output increase"
-upgrade_levels = 3
 upgrade_power_per_level = 0.25
 base_cost = 250000.0
 cost_multiplier = 1.7
@@ -41,22 +37,15 @@ available_upgrades = Array[ExtResource("2_gtgx1")]([SubResource("Resource_804t7"
 weapon_name = "Sniper"
 weapon_texture = ExtResource("4_o7c4p")
 fire_sound = ExtResource("2_pqhfw")
-weapon_damage_multiplier_percent = 0.0
 ammo_details = ExtResource("1_fq4yy")
 weapon_shoot_effect = ExtResource("4_kv2l2")
 shots_per_second = 0.9
-precharge_time = 0.0
 spread = 0.03
 amplitude = 3.8
 frequency = 10.5
 duration = 0.7
-axis_ratio = 0.0
 armonic_ration = Array[int]([4, 5])
-phase_offset = 90
-samples = 10
 shake_trans = 10
 recoil_strength = 450.0
 recoil_kick_strength = 25.0
-trauma_shake_amount = 0.1
-is_child = false
 upgrade_description = "If the default sniper was not enough, you can make it more powerful here."

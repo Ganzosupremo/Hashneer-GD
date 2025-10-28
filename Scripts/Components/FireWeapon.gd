@@ -92,14 +92,14 @@ func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_mult
 func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool, ammo: AmmoDetails) -> bool:
 	# Stop on release
 	if !has_fired and fired_previous_frame and _laser_beam:
-		GameManager.player_camera.stop_constant_shake()
+		GameManager._player_camera.stop_constant_shake()
 		_laser_beam.destroy()
 		_laser_beam = null
 		reset_cooldown_timer()
 		return true
 	# Stop if ammo type changed
 	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
-		GameManager.player_camera.stop_constant_shake()
+		GameManager._player_camera.stop_constant_shake()
 		_laser_beam.destroy()
 		_laser_beam = null
 		reset_cooldown_timer()
@@ -109,22 +109,22 @@ func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool,
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
 func _trigger_camera_shake() -> void:
-		if shake_camera_on_fire and GameManager.player_camera:
+		if shake_camera_on_fire and GameManager._player_camera:
 				# Add trauma-based shake (small amount for firing)
-				GameManager.player_camera.add_trauma(current_weapon.trauma_shake_amount)
+				GameManager._player_camera.add_trauma(current_weapon.trauma_shake_amount)
 				
 				# Add directional recoil kick to camera
-				var aim_angle = (bullet_spawn_position.global_position.direction_to(GameManager.player.get_global_mouse_position())).angle()
-				GameManager.player_camera.recoil_kick(aim_angle, current_weapon.recoil_kick_strength)
-				
+				var aim_angle = (bullet_spawn_position.global_position.direction_to(GameManager.get_player().get_global_mouse_position())).angle()
+				GameManager.get_main_camera().recoil_kick(aim_angle, current_weapon.recoil_kick_strength)
+
 				# Apply weapon recoil to player velocity (if not enemy weapon)
-				if !is_enemy_weapon and GameManager.player:
-						var recoil_direction = GameManager.player.get_global_mouse_position() - GameManager.player.global_position
-						GameManager.player.apply_weapon_recoil(recoil_direction, current_weapon.recoil_strength)
+				if !is_enemy_weapon and GameManager.get_player():
+						var recoil_direction = GameManager.get_player().get_global_mouse_position() - GameManager.get_player().global_position
+						GameManager.get_player().apply_weapon_recoil(recoil_direction, current_weapon.recoil_strength)
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.player_camera.start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+	GameManager.get_player_camera().start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
 	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
 	
 	if !_laser_beam:

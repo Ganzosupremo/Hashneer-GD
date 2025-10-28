@@ -1,4 +1,4 @@
-class_name NotificationPopupPanel extends PopupPanel
+class_name NotificationPopupPanel extends PanelContainer
 ## Controls the dynamic display of economic event info and other notifications.
 ##
 ## This panel is used to show detailed information about economic events
@@ -24,14 +24,18 @@ class_name NotificationPopupPanel extends PopupPanel
 
 
 func _ready():
-	self.size = Vector2i(600, 512)  # Start with initial size
 	hide()
+	_main_container.hide()
 	_economic_event_passed.hide()
 
 ## Shows the panel with economic event info
 func show_economic_event(event):
+	DebugLogger.info("Showing pop up panel")
+	self.show()
+
 	_main_container.show()
-	_economic_event_passed.hide()
+
+	await _tween_modulate()
 
 	_title_label.animate_label(0.05)
 	_description_label.animate_label_custom_text(event.description, 0.05)
@@ -46,7 +50,7 @@ func show_economic_event(event):
 	_currency_label.animate_label(0.1)
 	_duration_label.animate_label(0.1)
 
-	await _tween_popup_size()
+
 
 func _calculate_event_impact(impact: float) -> String:
 	var impact_percentage: float = impact * 100.0
@@ -74,23 +78,22 @@ func _calculate_currency_suffix(type: Constants.CurrencyType) -> String:
 
 
 func show_economic_event_passed(_event: EconomicEvent):
+	await _tween_modulate()
+	
 	_main_container.hide()
 	_economic_event_passed.show()
 
 	_non_editable_title_label.animate_label(0.1)
 	_event_passed_notification_description.animate_label_custom_text(
-		"Event '%s' has passed. All effects reverted." % _event.name, 0.1
+		"✅ Market conditions have stabilized. 
+The economic event '%s' has concluded and its effects have dissipated from the market." % _event.name, 0.1
 	)
 
-	await _tween_popup_size(Vector2i(600, 512), 0.5)
-
-
-func _tween_popup_size(target_size: Vector2i = Vector2i(600, 512), duration: float = 0.8):
+func _tween_modulate(target_modulate: float = 1.0, duration: float = 1.2):
 	# Start from initial size
-	self.size = Vector2i(500, 363)
-	self.popup_centered()
 	var tween = create_tween()
-	tween.tween_property(self, "size", target_size, duration).set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_IN_OUT)
+
+	tween.tween_property(self, "modulate:a", target_modulate, duration).from_current().set_trans(Tween.TRANS_SPRING).set_ease(Tween.EASE_IN_OUT)
 
 	await tween.finished
 
@@ -101,7 +104,12 @@ func show_custom(_title: String, info: Dictionary):
 	if info.has("impact"): _impact_value_label.text = str(info["impact"])
 	if info.has("currency"): _currency_value_label.text = str(info["currency"])
 	if info.has("duration"): _duration_value_label.text = str(info["duration"])
-	_tween_popup_size()
+	_tween_modulate()
 
 func _on_close_button_pressed() -> void:
+	_main_container.hide()
+	_economic_event_passed.hide()
+	
+	await _tween_modulate(0.0, 0.5)
+	
 	self.hide()

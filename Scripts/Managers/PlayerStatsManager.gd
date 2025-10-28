@@ -46,7 +46,7 @@ var unlocked_weapons: Dictionary = {}
 ## This dictionary will store the unlocked abilities using [Constants.AbilityNames] as keys.
 var unlocked_abilities: Dictionary = {}
 
-const SaveName: String = "player_stats"
+const SAVE_NAME: String = "player_stats"
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
@@ -121,7 +121,7 @@ func reset_upgrades() -> void:
 	stats_updated.emit()
 
 func save_data() -> void:
-	SaveSystem.set_var(SaveName, _build_save_data())
+	SaveSystem.set_var(SAVE_NAME, _build_save_data())
 
 func _build_save_data() -> Dictionary:
 		return {
@@ -132,8 +132,8 @@ func _build_save_data() -> Dictionary:
 		}
 
 func load_data() -> void:
-		if !SaveSystem.has(SaveName): return
-		var data: Dictionary = SaveSystem.get_var(SaveName)
+		if !SaveSystem.has(SAVE_NAME): return
+		var data: Dictionary = SaveSystem.get_var(SAVE_NAME)
 		upgrade_bonuses = data.get("upgrade_bonuses", upgrade_bonuses)
 		percent_bonuses = data.get("percent_bonuses", percent_bonuses)
 		_load_saved_bonuses(upgrade_bonuses, false)
