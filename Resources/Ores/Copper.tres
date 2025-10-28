@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_copper"]
+
+[resource]
+script = ExtResource("1_copper")
+ore_type = 3
+ore_name = "Copper"
+ore_description = "Uncommon metal - good value"
+ore_color = Color(0.8, 0.5, 0.3, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.9, 0.6, 0.4, 1)
+base_value = 15.0
+depth_multiplier = 0.10
+health_multiplier = 1.6
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

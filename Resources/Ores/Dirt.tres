@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_dirt"]
+
+[resource]
+script = ExtResource("1_dirt")
+ore_type = 0
+ore_name = "Dirt"
+ore_description = "Common dirt - no value"
+ore_color = Color(0.5, 0.4, 0.3, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.6, 0.5, 0.4, 1)
+base_value = 0.0
+depth_multiplier = 0.0
+health_multiplier = 1.0
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

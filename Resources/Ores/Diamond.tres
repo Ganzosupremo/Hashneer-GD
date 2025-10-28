@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_diamond"]
+
+[resource]
+script = ExtResource("1_diamond")
+ore_type = 7
+ore_name = "Diamond"
+ore_description = "Very rare gemstone - extremely high value"
+ore_color = Color(0.5, 0.8, 1.0, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.7, 0.9, 1.0, 1)
+base_value = 100.0
+depth_multiplier = 0.20
+health_multiplier = 2.5
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

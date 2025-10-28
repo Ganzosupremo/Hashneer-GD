@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_iron"]
+
+[resource]
+script = ExtResource("1_iron")
+ore_type = 2
+ore_name = "Iron"
+ore_description = "Useful metal - medium value"
+ore_color = Color(0.7, 0.7, 0.7, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.8, 0.8, 0.8, 1)
+base_value = 10.0
+depth_multiplier = 0.08
+health_multiplier = 1.5
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

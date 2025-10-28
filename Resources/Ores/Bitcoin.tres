@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_bitcoin"]
+
+[resource]
+script = ExtResource("1_bitcoin")
+ore_type = 8
+ore_name = "Bitcoin Ore"
+ore_description = "The ultimate prize! Find this to win the level"
+ore_color = Color(1.0, 0.65, 0.0, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(1.0, 0.8, 0.0, 1)
+base_value = 0.0
+depth_multiplier = 0.0
+health_multiplier = 3.0
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

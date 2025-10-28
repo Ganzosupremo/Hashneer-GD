@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_emerald"]
+
+[resource]
+script = ExtResource("1_emerald")
+ore_type = 6
+ore_name = "Emerald"
+ore_description = "Very rare gemstone - extremely high value"
+ore_color = Color(0.0, 0.8, 0.3, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.2, 1.0, 0.5, 1)
+base_value = 75.0
+depth_multiplier = 0.18
+health_multiplier = 2.2
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

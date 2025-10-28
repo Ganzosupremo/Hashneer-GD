@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_gold"]
+
+[resource]
+script = ExtResource("1_gold")
+ore_type = 5
+ore_name = "Gold"
+ore_description = "Rare precious metal - very high value"
+ore_color = Color(1.0, 0.84, 0.0, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(1.0, 0.9, 0.2, 1)
+base_value = 50.0
+depth_multiplier = 0.15
+health_multiplier = 2.0
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null

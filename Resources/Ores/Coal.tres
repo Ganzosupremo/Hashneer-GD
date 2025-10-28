@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_coal"]
+
+[resource]
+script = ExtResource("1_coal")
+ore_type = 1
+ore_name = "Coal"
+ore_description = "Common fuel source - low value"
+ore_color = Color(0.2, 0.2, 0.2, 1)
+texture = null
+normal_texture = null
+pickup_texture = null
+particle_color = Color(0.3, 0.3, 0.3, 1)
+base_value = 5.0
+depth_multiplier = 0.05
+health_multiplier = 1.2
+spawn_weight = 1.0
+mining_sound = null
+pickup_sound = null
