@@ -1,14 +1,19 @@
-[gd_scene load_steps=3 format=3 uid="uid://c7dpwyv8ml0c2"]
+[gd_scene load_steps=4 format=3 uid="uid://c7dpwyv8ml0c2"]
 
-[ext_resource type="Script" path="res://Scripts/Pickups/OrePickup.gd" id="1_ore_pickup"]
+[ext_resource type="Script" path="res://addons/item_drops/pickups/pickup_2d.gd" id="1_pickup_2d"]
+[ext_resource type="Resource" uid="uid://deyti3och2qku" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_item_drops_bus"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ore_pickup"]
 radius = 20.0
 
 [node name="OrePickup" type="Area2D"]
 collision_layer = 8
-collision_mask = 1
-script = ExtResource("1_ore_pickup")
+collision_mask = 128
+script = ExtResource("1_pickup_2d")
+items_drop_bus = ExtResource("2_item_drops_bus")
+pickup_resource_file = ""
+free_on_pickup = true
+pickup_delay = 0.25
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0.8)
