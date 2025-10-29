@@ -427,14 +427,26 @@ func _spawn_ore_drop(position: Vector2, ore_type: OreDetails.OreType, ore_data: 
         if ore_type == OreDetails.OreType.DIRT:
                 return  # No drops for dirt
         
-        # Instantiate ore pickup
+        # Instantiate ore pickup (uses addon's Pickup2D)
         var ore_pickup_scene = preload("res://Scenes/Pickups/OrePickup.tscn")
         var ore_pickup = ore_pickup_scene.instantiate()
         ore_pickup.global_position = position
-        ore_pickup.ore_type = ore_type
-        ore_pickup.ore_value = ore_data.get_value_at_depth(depth)
-        ore_pickup.ore_texture = ore_data.pickup_texture
-        ore_pickup.ore_data = ore_data
+        
+        # Configure Pickup2D properties
+        ore_pickup.pickup_resource_file = ore_data.resource_path
+        ore_pickup.resource_count = 1
+        ore_pickup.root = ore_pickup  # Self-reference so Pickup2D can free it
+        
+        # Store depth in metadata for value calculation later
+        ore_pickup.set_meta("depth_layer", depth)
+        
+        # Configure visual appearance
+        var sprite = ore_pickup.get_node("Sprite2D")
+        if sprite and ore_data.pickup_texture:
+                sprite.texture = ore_data.pickup_texture
+        if sprite:
+                sprite.modulate = ore_data.ore_color
+        
         get_tree().current_scene.add_child(ore_pickup)
 
 #endregion
