@@ -8,8 +8,35 @@ signal inventory_cleared()
 ## Dictionary mapping OreType → {count: int, total_value: float}
 var _ores: Dictionary = {}
 
+## Reference to ItemDropsBus for listening to pickup events
+var _item_drops_bus: ItemDropsBus
+
 func _ready() -> void:
         _reset_inventory()
+        
+        # Connect to ItemDropsBus to listen for ore pickups
+        _item_drops_bus = load("res://Resources/Item Drops/MainItemDropsEventBus.tres")
+        if _item_drops_bus:
+                _item_drops_bus.item_picked.connect(_on_item_picked)
+
+## Handle pickup events from ItemDropsBus
+func _on_item_picked(event: PickupEvent) -> void:
+        var pickup = event.pickup
+        if not pickup:
+                return
+        
+        # Get the ore resource
+        var ore_resource = pickup.get_pickup_resource()
+        if not ore_resource is OreDetails:
+                return  # Not an ore pickup
+        
+        # Get depth from metadata
+        var depth = pickup.get_meta("depth_layer", 0)
+        
+        # Calculate value and add to inventory
+        var ore_type = ore_resource.ore_type
+        var ore_value = ore_resource.get_value_at_depth(depth)
+        add_ore(ore_type, ore_value)
 
 ## Add ore to inventory
 func add_ore(ore_type: OreDetails.OreType, value: float) -> void:
