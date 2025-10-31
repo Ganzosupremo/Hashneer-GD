@@ -29,6 +29,7 @@ var dead_sound_effect: SoundEffectDetails
 @onready var fire_weapon: FireWeaponComponent = %FireWeapon
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
 @onready var _health: HealthComponent = %Health
+@onready var _inventory: PlayerInventory = %Inventory
 @onready var rotation_container: Node2D = $RotationContainer
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var edge_polygon: Polygon2D = $EdgePolygon
@@ -313,14 +314,6 @@ func on_zero_power() -> void:
 	
 	await tween.finished
 	visible = false
-
-func _on_pickups_collector_area_entered(area: Area2D) -> void:
-	if area.is_in_group("GravitySource"):
-		gravity_sources.append(area)
-
-func _on_pickups_collector_area_exited(area: Area2D) -> void:
-	gravity_sources.erase(area)
-
 #endregion
 
 #region Getters
@@ -370,6 +363,9 @@ func get_active_weapon_node() -> ActiveWeaponComponent:
 
 func get_current_weapon() -> WeaponDetails:
 	return get_active_weapon_node().get_current_weapon()
+
+func get_inventory() -> PlayerInventory:
+	return _inventory
 #endregion
 
 

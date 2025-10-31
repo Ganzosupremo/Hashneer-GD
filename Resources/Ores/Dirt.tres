@@ -1,20 +1,14 @@
-[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="OreDetails" load_steps=4 format=3 uid="uid://2ppe8o0jvusg"]
 
-[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_dirt"]
+[ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_dirt"]
+[ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="2_72t77"]
+[ext_resource type="Texture2D" uid="uid://bt77rmrgy51k2" path="res://Textures/Terrain/DirtBlock.png" id="3_rdfpb"]
 
 [resource]
 script = ExtResource("1_dirt")
-ore_type = 0
 ore_name = "Dirt"
 ore_description = "Common dirt - no value"
-ore_color = Color(0.5, 0.4, 0.3, 1)
-texture = null
-normal_texture = null
-pickup_texture = null
+texture = ExtResource("3_rdfpb")
+pickup_texture = ExtResource("2_72t77")
 particle_color = Color(0.6, 0.5, 0.4, 1)
-base_value = 0.0
 depth_multiplier = 0.0
-health_multiplier = 1.0
-spawn_weight = 1.0
-mining_sound = null
-pickup_sound = null

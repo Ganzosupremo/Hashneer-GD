@@ -3,13 +3,13 @@
 ## health management, and collision detection.
 class_name FracturableStaticBody2D extends StaticBody2D
 
-@onready var _polygon2d: Polygon2D = $Polygon2D
-@onready var _line2d: Line2D = $Polygon2D/Line2D
-@onready var _col_polygon2d: CollisionPolygon2D = $CollisionPolygon2D
+@onready var _polygon2d: Polygon2D = %Polygon2D
+@onready var _line2d: Line2D = %Line2D
+@onready var _col_polygon2d: CollisionPolygon2D = %CollisionPolygon2D
 @onready var _rng: RandomNumberGenerator= RandomNumberGenerator.new()
-@onready var health: HealthComponent = %Health
+@onready var health: Node2D = %Health as HealthComponent
 @onready var light_occluder_2d: LightOccluder2D = $LightOccluder2D
-@onready var random_drops: RandomDrops = $RandomDrops
+@onready var random_drops: RandomDrops = %RandomDrops
 
 #region Properties
 
@@ -137,6 +137,13 @@ func setFractureBody(initial_health: float, texture: Texture2D, normal_texture: 
 	set_texture_with_texture(texture, normal_texture)
 	set_initial_health(initial_health)
 
+## Sets up the fracturable body with given parameters
+## [param initial_health] Starting health value[br]
+## [param texture_info] Dictionary containing texture properties[br]
+func SetFractureBody(initial_health: float, texture_info: Dictionary) -> void:
+	set_texture(texture_info)
+	set_initial_health(initial_health)
+
 func set_texture_with_texture(new_texture: Texture2D, normal_texture: Texture2D = null) -> void:
 	if normal_texture != null:
 		_polygon2d.texture = CanvasTexture.new()
@@ -161,7 +168,13 @@ func setPolygon(poly : PackedVector2Array) -> void:
 	light_occluder_2d.occluder.polygon = poly
 
 func setTexture(texture_info : Dictionary) -> void:
-	_polygon2d.texture = texture_info.texture
+	if texture_info.normal_texture != null:
+		_polygon2d.texture = CanvasTexture.new()
+		_polygon2d.texture.diffuse_texture = texture_info.texture
+		_polygon2d.texture.normal_texture = texture_info.normal_texture
+	else:
+		_polygon2d.texture = texture_info.texture
+	
 	_polygon2d.texture_scale = texture_info.scale
 	_polygon2d.texture_offset = texture_info.offset
 	_polygon2d.texture_rotation = texture_info.rot

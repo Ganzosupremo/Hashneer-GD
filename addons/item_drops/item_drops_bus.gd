@@ -16,4 +16,4 @@ signal gathered(event : GatherEvent)
 
 func emit_item_spawned(event : SpawnEvent) -> void:
     item_spawned.emit(event)
-    DebugLogger.info("Signal emitted: item_spawned. From {0} spawning {1}".format([event.spawner, event.spawned]), "Item Drop Bus")
+    # DebugLogger.info("Signal emitted: item_spawned. From {0} spawning {1}".format([event.spawner, event.spawned]), "Item Drop Bus")

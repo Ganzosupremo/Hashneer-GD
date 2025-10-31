@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://coor22u4r4srn"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_ulx88"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_m8w84"]
+[ext_resource type="Resource" uid="uid://bbgva1wenrhhh" path="res://Resources/Ores/Emerald.tres" id="3_emerald"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vue5d"]
+atlas = ExtResource("2_m8w84")
+region = Rect2(80, 0, 16, 16)
+
+[node name="EmeraldOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_ulx88")]
+ore_details = ExtResource("3_emerald")
+root = NodePath(".")
+
+[node name="Texture" parent="." index="0"]
+texture = SubResource("AtlasTexture_vue5d")

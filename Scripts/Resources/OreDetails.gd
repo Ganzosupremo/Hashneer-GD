@@ -4,15 +4,15 @@ class_name OreDetails extends Resource
 ## This resource holds the details for each type of ore available in the game.
 
 enum OreType {
-    DIRT,
-    COAL,
-    IRON,
-    COPPER,
-    SILVER,
-    GOLD,
-    DIAMOND,
-    EMERALD,
-    BITCOIN_ORE
+	DIRT,
+	COAL,
+	IRON,
+	COPPER,
+	SILVER,
+	GOLD,
+	DIAMOND,
+	EMERALD,
+	BITCOIN_ORE
 }
 
 @export_category("Ore Identity")
@@ -41,6 +41,14 @@ enum OreType {
 @export var mining_sound: SoundEffectDetails
 @export var pickup_sound: SoundEffectDetails
 
+var _depth_layer: int = 0
+
+func set_depth_layer(layer: int) -> void:
+	_depth_layer = layer
+
+func get_depth_layer() -> int:
+	return _depth_layer
+
 ## Calculate final value based on depth
 func get_value_at_depth(depth: int) -> float:
-    return base_value * (1.0 + (depth * depth_multiplier))
+	return base_value * (1.0 + (depth * depth_multiplier))

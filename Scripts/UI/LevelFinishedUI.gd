@@ -54,6 +54,7 @@ func _on_item_picked(event : PickupEvent) -> void:
 	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(level_id)
 	match pickup.currency_type:
 		Constants.CurrencyType.FIAT:
+			event.pickup.resource_count = FED.get_fiat_subsidy()
 			fiat_gained_so_far += event.pickup.resource_count
 		Constants.CurrencyType.BITCOIN:
 			event.pickup.resource_count = BitcoinNetwork.get_block_subsidy()

@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://7hmfgey36x04"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_stn26"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_pgpey"]
+[ext_resource type="Resource" uid="uid://be425wvrjuwnw" path="res://Resources/Ores/Iron.tres" id="3_iron"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0lr4q"]
+atlas = ExtResource("2_pgpey")
+region = Rect2(32, 0, 16, 16)
+
+[node name="IronOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_stn26")]
+ore_details = ExtResource("3_iron")
+root = NodePath(".")
+
+[node name="Texture" parent="." index="0"]
+texture = SubResource("AtlasTexture_0lr4q")
+
+[node name="CollisionShape2D" parent="." index="1"]
+debug_color = Color(0.36940393, 0.8829779, 0.99999946, 0.41960785)

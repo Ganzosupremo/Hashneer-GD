@@ -12,6 +12,9 @@ extends ItemDropsNode
 func _ready() -> void:
 	_validate()
 
+func add_drop_to_drops_table(drop: Droppable) -> void:
+	drops_table.add_drops(drop)
+
 ## Generates an array of drops from the drops_table
 ## and then uses the scene_spawner to place them into the scene
 func spawn_drops(p_drop_rolls : int, p_odds_multiplier : float = 1.0) -> Node:
@@ -34,6 +37,9 @@ func _validate():
 	if scene_spawner == null:
 		DebugLogger.warn("No scene spawner defined at %s" % get_path())
 
+
+func set_drops_table(new_table: DropsTable) -> void:
+	drops_table = new_table
 
 func get_scene_spawner() -> SceneSpawner2D:
 	return scene_spawner

@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://gtmu3ovqw7is"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_itew7"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_wb4v5"]
+[ext_resource type="Resource" uid="uid://cxb3mogp3o6no" path="res://Resources/Ores/Coal.tres" id="3_coal"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_slgsj"]
+atlas = ExtResource("2_wb4v5")
+region = Rect2(0, 0, 16, 16)
+
+[node name="CoalOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_itew7")]
+ore_details = ExtResource("3_coal")
+root = NodePath(".")
+pickup_resource_file = "uid://cxb3mogp3o6no"
+
+[node name="Texture" parent="." index="0"]
+texture = SubResource("AtlasTexture_slgsj")
+
+[node name="CollisionShape2D" parent="." index="1"]
+debug_color = Color(0, 0, 0, 0.60784316)

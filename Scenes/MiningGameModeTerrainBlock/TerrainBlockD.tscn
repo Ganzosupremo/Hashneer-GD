@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=3 uid="uid://brbtah5ucrojl"]
+
+[ext_resource type="Script" uid="uid://befoao771do7i" path="res://Scripts/MiningGameModeTerrainBlock/TerrainBlock.gd" id="1_8m4o1"]
+[ext_resource type="PackedScene" uid="uid://tgo2cl26po3f" path="res://Scenes/Components/HealthComponent.tscn" id="2_jotw5"]
+[ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="3_qwfee"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="4_xhjv4"]
+[ext_resource type="Script" uid="uid://bopjfk7oa47k2" path="res://addons/item_drops/drops/drops_table.gd" id="5_edect"]
+[ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="6_7q6gd"]
+[ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="7_jotw5"]
+
+[sub_resource type="Resource" id="Resource_4bmdh"]
+script = ExtResource("5_edect")
+metadata/_custom_type_script = "uid://bopjfk7oa47k2"
+
+[sub_resource type="Resource" id="Resource_qwfee"]
+script = ExtResource("7_jotw5")
+name = &"PickupsHolder"
+metadata/_custom_type_script = "uid://1m6g6565f4jt"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tq5s1"]
+
+[node name="TerrainBlock" type="StaticBody2D"]
+script = ExtResource("1_8m4o1")
+placed_in_level = true
+polygon_shape = 1
+rectangle_size = Vector2(50, 50)
+metadata/_custom_type_script = "uid://bjrgycn06uxy0"
+
+[node name="Health" parent="." instance=ExtResource("2_jotw5")]
+unique_name_in_owner = true
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+unique_name_in_owner = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Center" type="Polygon2D" parent="."]
+
+[node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+unique_name_in_owner = true
+script = ExtResource("3_qwfee")
+drops_table = SubResource("Resource_4bmdh")
+scene_spawner = NodePath("../ShapeEdgeSceneSpawner2D")
+metadata/_custom_type_script = "uid://bw5mrw1knvour"
+
+[node name="ShapeEdgeSceneSpawner2D" type="Node2D" parent="." node_paths=PackedStringArray("spawn_shape")]
+script = ExtResource("6_7q6gd")
+spawn_shape = NodePath("../CollisionShape2D")
+spawn_group = SubResource("Resource_qwfee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tq5s1")

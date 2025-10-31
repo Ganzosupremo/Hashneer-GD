@@ -23,7 +23,7 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_mu
 
 @export var is_enemy_weapon: bool
 @export var use_object_pool: bool = false
-@export var bullet_scene: PackedScene = preload("res://Scenes/QuadrantTerrain/FractureBullet.tscn")
+@export var bullet_scene: PackedScene = preload("res://Scenes/FracturableTerrain/BlockCore.tscn")
 
 @onready var bullet_spawn_position: Marker2D = %BulletFirePosition
 @onready var shoot_effect_position: Marker2D = %ShootEffectPosition

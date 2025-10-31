@@ -8,26 +8,23 @@ extends Area2D
 ## Emitted when the object is picked up by another node but before the pickup scene is removed from the 2D world.
 signal picked_up(data: PickupEvent)
 
+@onready var texture: Sprite2D = %Texture
+
+
 ## The bus for handling item drop events.
 @export var items_drop_bus: ItemDropsBus
-
 ## Scene object root to be freed after pickup.
 @export var root: Node
-
 ## How many of the pickup's resource is represented by this node.
 @export var resource_count: float = 1
-
 ## File path to the resource file for the pickup item.
 @export_file("*.tres", "*.res") var pickup_resource_file: String
-
 ## Whether to automatically free the scene once picked up
 ## or simply set monitorable false instead and allow animations
 ## or other scripts to handle freeing the scene instead.
 @export var free_on_pickup: bool = true
-
 ## The sound to be played on pickup, played through the event since the pickup is freed before the sound finishes.
 @export var sound: AudioStream
-
 ## Delay in seconds before the pickup becomes monitorable and collectible. If 0 or negative, it’s immediate.
 @export var pickup_delay: float = 0.25
 
@@ -55,6 +52,9 @@ func take(taker: PickupsCollector2D) -> PickupEvent:
 		set.call_deferred("monitorable", false)
 	
 	return event
+
+func set_texture(text: Texture2D) -> void:
+	texture.texture = text
 
 ## Loads and returns the pickup’s associated resource.
 func get_pickup_resource() -> Resource:

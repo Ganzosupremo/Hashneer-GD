@@ -1,20 +1,17 @@
-[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="OreDetails" load_steps=4 format=3 uid="uid://cxb3mogp3o6no"]
 
-[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_coal"]
+[ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_coal"]
+[ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="2_fcmww"]
+[ext_resource type="Texture2D" uid="uid://dodk1ynqk3aes" path="res://Textures/Terrain/CoalBlock.png" id="3_ct217"]
 
 [resource]
 script = ExtResource("1_coal")
 ore_type = 1
 ore_name = "Coal"
 ore_description = "Common fuel source - low value"
-ore_color = Color(0.2, 0.2, 0.2, 1)
-texture = null
-normal_texture = null
-pickup_texture = null
+texture = ExtResource("3_ct217")
+pickup_texture = ExtResource("2_fcmww")
 particle_color = Color(0.3, 0.3, 0.3, 1)
 base_value = 5.0
 depth_multiplier = 0.05
 health_multiplier = 1.2
-spawn_weight = 1.0
-mining_sound = null
-pickup_sound = null

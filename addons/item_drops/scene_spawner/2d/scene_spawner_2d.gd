@@ -47,7 +47,7 @@ func spawn(p_packed_scene : PackedScene) -> Node:
 
 ## Execute any code needed on the instanced object after it's placed into the game world here
 func post_spawn(event : SpawnEvent):
-	print_debug("Post-spawn processing for ", event.spawned)
+	pass
 
 ## Gets the spawn position for the instanced object
 func get_spawn_position():

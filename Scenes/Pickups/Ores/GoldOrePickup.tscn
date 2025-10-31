@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://8jpnwklw2yog"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_6px3h"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_rgpll"]
+[ext_resource type="Resource" uid="uid://da2s3w1r7a17l" path="res://Resources/Ores/Gold.tres" id="3_gold"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jrd04"]
+atlas = ExtResource("2_rgpll")
+region = Rect2(48, 0, 16, 16)
+
+[node name="GoldOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_6px3h")]
+ore_details = ExtResource("3_gold")
+root = NodePath(".")
+
+[node name="Texture" parent="." index="0"]
+texture = SubResource("AtlasTexture_jrd04")

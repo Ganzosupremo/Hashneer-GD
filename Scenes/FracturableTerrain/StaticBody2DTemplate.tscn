@@ -1,37 +1,28 @@
-[gd_scene load_steps=19 format=3 uid="uid://bg51o3dcb5mrm"]
+[gd_scene load_steps=15 format=3 uid="uid://bg51o3dcb5mrm"]
 
-[ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/QuadrantTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
-[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="2_56ed8"]
-[ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="3_yxxnb"]
-[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_78gmd"]
-[ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="7_idcnk"]
+[ext_resource type="Script" uid="uid://bjrgycn06uxy0" path="res://Scripts/FracturableTerrain/FracturableStaticBody2D.gd" id="1_obgke"]
+[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/HealthComponent.gd" id="2_56ed8"]
+[ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="7_78gmd"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_ildng"]
-[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="8_r1qd5"]
-[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wqqyk"]
-[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
+[ext_resource type="Script" uid="uid://bopjfk7oa47k2" path="res://addons/item_drops/drops/drops_table.gd" id="9_wqqyk"]
+[ext_resource type="Script" uid="uid://c3clj86lkv5ej" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_78gmd"]
 [ext_resource type="Script" uid="uid://bcjmdqied76to" path="res://addons/item_drops/scene_spawner/2d/shape_edge_scene_spawner_2d.gd" id="10_idcnk"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_r1qd5"]
-
-[sub_resource type="CanvasTexture" id="CanvasTexture_ildng"]
-diffuse_texture = ExtResource("7_idcnk")
-normal_texture = ExtResource("8_r1qd5")
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_qpjim"]
 closed = false
 cull_mode = 2
 
-[sub_resource type="Resource" id="Resource_w65oi"]
+[sub_resource type="Resource" id="Resource_kvb86"]
 script = ExtResource("8_ildng")
 drop_path = "uid://bjdc26h1h0pfv"
-odds = 1.0
-metadata/_custom_type_script = "uid://daksr3jumc0af"
+metadata/_custom_type_script = "uid://ckwvxfsflo23h"
 
-[sub_resource type="Resource" id="Resource_hxyl1"]
+[sub_resource type="Resource" id="Resource_5qe7n"]
 script = ExtResource("9_wqqyk")
-possible_drops = Array[ExtResource("8_ildng")]([SubResource("Resource_w65oi")])
-guaranteed_drops = 5
-combined_odds = false
-metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+possible_drops = Array[ExtResource("8_ildng")]([SubResource("Resource_kvb86")])
+guaranteed_drops = 2
+metadata/_custom_type_script = "uid://bopjfk7oa47k2"
 
 [sub_resource type="Resource" id="Resource_ildng"]
 script = ExtResource("11_r1qd5")
@@ -61,23 +52,20 @@ rectangle_size = Vector2(250, 250)
 unique_name_in_owner = true
 script = ExtResource("2_56ed8")
 
-[node name="HitSoundComponent" parent="." instance=ExtResource("3_yxxnb")]
-unique_name_in_owner = true
-max_polyphony = 50
-bus = &"SFX"
-
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+unique_name_in_owner = true
 light_mask = 2
 visibility_layer = 2
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+unique_name_in_owner = true
 light_mask = 2
 visibility_layer = 2
+texture_filter = 1
 texture_repeat = 3
-texture = SubResource("CanvasTexture_ildng")
-uv = PackedVector2Array(0, 0, 0, 32, 32, 32, 32, 0)
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
+unique_name_in_owner = true
 light_mask = 2
 visibility_layer = 2
 
@@ -90,10 +78,10 @@ occluder = SubResource("OccluderPolygon2D_qpjim")
 occluder_light_mask = 2
 
 [node name="RandomDrops" type="Node2D" parent="." node_paths=PackedStringArray("scene_spawner")]
+unique_name_in_owner = true
 script = ExtResource("7_78gmd")
-drops_table = SubResource("Resource_hxyl1")
+drops_table = SubResource("Resource_5qe7n")
 scene_spawner = NodePath("../ShapeEdgeSceneSpawner2D")
-metadata/_custom_type_script = "uid://b8fqt8af86l80"
 
 [node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
 script = ExtResource("10_78gmd")
@@ -101,7 +89,6 @@ force = 3000.0
 direction = Vector2(0.5, 0.5)
 angle_spread = 90.0
 spawn_group = SubResource("Resource_ildng")
-metadata/_custom_type_script = "uid://cttuwmb0e0k2k"
 
 [node name="ShapeEdgeSceneSpawner2D" type="Node2D" parent="." node_paths=PackedStringArray("spawn_shape")]
 script = ExtResource("10_idcnk")

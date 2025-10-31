@@ -1,20 +1,16 @@
-[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="OreDetails" load_steps=4 format=3 uid="uid://buh0w51bkxrr4"]
 
-[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_silver"]
+[ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_silver"]
+[ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="2_5j8qu"]
+[ext_resource type="Texture2D" uid="uid://cw3p80ohijjlx" path="res://Textures/Terrain/SilverBlock.png" id="3_d2ieg"]
 
 [resource]
 script = ExtResource("1_silver")
 ore_type = 4
 ore_name = "Silver"
 ore_description = "Uncommon precious metal - high value"
-ore_color = Color(0.9, 0.9, 0.95, 1)
-texture = null
-normal_texture = null
-pickup_texture = null
-particle_color = Color(1.0, 1.0, 1.0, 1)
+texture = ExtResource("3_d2ieg")
+pickup_texture = ExtResource("2_5j8qu")
 base_value = 25.0
 depth_multiplier = 0.12
 health_multiplier = 1.8
-spawn_weight = 1.0
-mining_sound = null
-pickup_sound = null

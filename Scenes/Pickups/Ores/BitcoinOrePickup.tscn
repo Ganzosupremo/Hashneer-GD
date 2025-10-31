@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvn23d35lfa7x"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_x210l"]
+[ext_resource type="Resource" uid="uid://fbcppv533sac" path="res://Resources/Ores/Bitcoin.tres" id="2_bitcoin"]
+
+[node name="BitcoinOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_x210l")]
+ore_details = ExtResource("2_bitcoin")
+root = NodePath(".")

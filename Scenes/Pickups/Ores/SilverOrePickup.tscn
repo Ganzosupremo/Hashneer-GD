@@ -1,0 +1,16 @@
+[gd_scene load_steps=5 format=3 uid="uid://chk4t8lvpiv5u"]
+
+[ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_sx6hx"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_sdgd2"]
+[ext_resource type="Resource" uid="uid://buh0w51bkxrr4" path="res://Resources/Ores/Silver.tres" id="3_silver"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mhdjd"]
+atlas = ExtResource("2_sdgd2")
+region = Rect2(96, 0, 16, 16)
+
+[node name="SilverOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_sx6hx")]
+ore_details = ExtResource("3_silver")
+root = NodePath(".")
+
+[node name="Texture" parent="." index="0"]
+texture = SubResource("AtlasTexture_mhdjd")

@@ -11,10 +11,10 @@
 [ext_resource type="Texture2D" uid="uid://c26mrbug7eklq" path="res://Textures/Player/HasheneerPlayerNormalMapWeapon.png" id="9_1e6p3"]
 [ext_resource type="Texture2D" uid="uid://c4tmk82lj3a0m" path="res://Textures/Player/HasheneerPlayerWeapon.png" id="9_yb677"]
 [ext_resource type="Texture2D" uid="uid://b2peog5i65ihp" path="res://Textures/WeaponSystem/Ammo/SmokeEffect.png" id="11_k55ag"]
-[ext_resource type="Script" uid="uid://b542eoymso6xc" path="res://addons/item_drops/pickups/pickups_collector_2d.gd" id="13_0u84n"]
+[ext_resource type="Script" uid="uid://btsrwvnhlwxbm" path="res://addons/item_drops/pickups/pickups_collector_2d.gd" id="13_0u84n"]
 [ext_resource type="Script" uid="uid://bf4gc2pn1fbeu" path="res://addons/item_drops/settings/inventory_access_settings.gd" id="14_esmjy"]
 [ext_resource type="Texture2D" uid="uid://bpade1wsvod0u" path="res://Textures/Misc/Light2D.png" id="15_0objx"]
-[ext_resource type="Script" uid="uid://gld0xbjaoymd" path="res://Scripts/Player/CurrencyInventory.gd" id="15_esmjy"]
+[ext_resource type="Script" uid="uid://gld0xbjaoymd" path="res://Scripts/Player/PlayerInventory.gd" id="15_esmjy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_1sxoh"]
 radius = 13.68
@@ -106,15 +106,14 @@ polygon = PackedVector2Array(-2, -15, -9, -12, -14, -6, -15, 3, -12, 9, -6, 14, 
 
 [sub_resource type="Resource" id="Resource_6tu5v"]
 script = ExtResource("14_esmjy")
-method_get_contents = &""
-method_remove = &""
-prop_inventory = &""
+method_get_contents = &"get_inventory_contents"
+method_remove = &"remove_from_inventory"
 method_add = &"add_to_inventory"
 path_to_scene_path = Array[StringName]([&"type", &"file_path"])
 metadata/_custom_type_script = "uid://bf4gc2pn1fbeu"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_spxdj"]
-radius = 20.0
+radius = 35.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_esmjy"]
 radius = 16.0312
@@ -265,21 +264,22 @@ height = 50.0
 occluder = SubResource("OccluderPolygon2D_5vc63")
 occluder_light_mask = 170
 
-[node name="CurrencyInventory" type="Node2D" parent="."]
+[node name="Inventory" type="Node2D" parent="."]
+unique_name_in_owner = true
 script = ExtResource("15_esmjy")
 
 [node name="PickupsCollector2D" type="Area2D" parent="." node_paths=PackedStringArray("actor", "inventory_node")]
 collision_layer = 128
 collision_mask = 528
+gravity_space_override = 1
 gravity_point = true
-gravity_point_unit_distance = 30.0
+gravity_point_unit_distance = 50.0
 gravity = 200.0
 audio_bus_name = &"SFX"
 script = ExtResource("13_0u84n")
 actor = NodePath("..")
-inventory_node = NodePath("../CurrencyInventory")
+inventory_node = NodePath("../Inventory")
 access = SubResource("Resource_6tu5v")
-metadata/_custom_type_script = "uid://b542eoymso6xc"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PickupsCollector2D"]
 shape = SubResource("CircleShape2D_spxdj")
@@ -297,6 +297,3 @@ debug_color = Color(0.815384, 0.00195931, 0.975908, 0.42)
 libraries = {
 &"": SubResource("AnimationLibrary_yb677")
 }
-
-[connection signal="area_entered" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_entered"]
-[connection signal="area_exited" from="PickupsCollector2D" to="." method="_on_pickups_collector_area_exited"]

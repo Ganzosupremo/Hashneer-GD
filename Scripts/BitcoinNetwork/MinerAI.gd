@@ -12,11 +12,8 @@ class_name AIMiner extends Node2D
 @export var time: float = 0.0
 
 func _ready() -> void:
-	ai_timer.timeout.connect(on_timeout)
 	GameManager.get_player().get_health_node().zero_health.connect(_on_zero_power)
-	GameManager._current_block_core.onBlockDestroyed.connect(stop_mining)
 	GameManager.main_event_bus.level_completed.connect(stop_mining)
-	ai_timer.start(time)
 
 func stop_mining(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	ai_timer.stop()

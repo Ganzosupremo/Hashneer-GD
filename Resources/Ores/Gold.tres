@@ -1,20 +1,17 @@
-[gd_resource type="Resource" script_class="OreDetails" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="OreDetails" load_steps=4 format=3 uid="uid://da2s3w1r7a17l"]
 
-[ext_resource type="Script" path="res://Scripts/Resources/OreDetails.gd" id="1_gold"]
+[ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_gold"]
+[ext_resource type="Texture2D" uid="uid://dju3nffp7wmss" path="res://Textures/Currencies/DollarSign.png" id="2_ian4d"]
+[ext_resource type="Texture2D" uid="uid://c8dto3axopjtr" path="res://Textures/Terrain/GoldBlock.png" id="3_h74u0"]
 
 [resource]
 script = ExtResource("1_gold")
 ore_type = 5
 ore_name = "Gold"
 ore_description = "Rare precious metal - very high value"
-ore_color = Color(1.0, 0.84, 0.0, 1)
-texture = null
-normal_texture = null
-pickup_texture = null
-particle_color = Color(1.0, 0.9, 0.2, 1)
+texture = ExtResource("3_h74u0")
+pickup_texture = ExtResource("2_ian4d")
+particle_color = Color(1, 0.9, 0.2, 1)
 base_value = 50.0
 depth_multiplier = 0.15
 health_multiplier = 2.0
-spawn_weight = 1.0
-mining_sound = null
-pickup_sound = null

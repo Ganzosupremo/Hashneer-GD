@@ -1,19 +1,17 @@
-[gd_scene load_steps=37 format=3 uid="uid://dqo2lrxl5di8o"]
+[gd_scene load_steps=35 format=3 uid="uid://dqo2lrxl5di8o"]
 
-[ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/QuadrantTerrain/BlockCore.gd" id="1_dt8bo"]
-[ext_resource type="Resource" uid="uid://tekh6aoc0ka6" path="res://Resources/Audio/QuadrantHit.tres" id="2_ehrd3"]
-[ext_resource type="Resource" uid="uid://c4t8evy2q7rgi" path="res://Resources/Audio/QuadrantCoreDestroyed.tres" id="3_ar8vc"]
-[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/Health.gd" id="3_j3i4g"]
+[ext_resource type="Script" uid="uid://cnfdekj5rc5it" path="res://Scripts/FracturableTerrain/BlockCore.gd" id="1_dt8bo"]
+[ext_resource type="Script" uid="uid://clbr10soo6aow" path="res://Scripts/Components/HealthComponent.gd" id="3_j3i4g"]
 [ext_resource type="PackedScene" uid="uid://b3yv6n2td4emd" path="res://Scenes/Components/SoundEffectComponent2D.tscn" id="4_7m2w8"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="5_tatvt"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="6_08pad"]
-[ext_resource type="Script" uid="uid://b8fqt8af86l80" path="res://addons/item_drops/drops/random_drops.gd" id="7_7drh7"]
+[ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="7_7drh7"]
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="7_j7cbf"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="8_pmhie"]
 [ext_resource type="Texture2D" uid="uid://byfxitvkdx3f8" path="res://Textures/VFX/Sparks.png" id="9_j7cbf"]
-[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="9_wf5i4"]
+[ext_resource type="Script" uid="uid://bopjfk7oa47k2" path="res://addons/item_drops/drops/drops_table.gd" id="9_wf5i4"]
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="10_hq16b"]
-[ext_resource type="Script" uid="uid://cttuwmb0e0k2k" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_wf5i4"]
+[ext_resource type="Script" uid="uid://c3clj86lkv5ej" path="res://addons/item_drops/scene_spawner/2d/launch_force_scene_spawner_2d.gd" id="10_wf5i4"]
 [ext_resource type="Script" uid="uid://gm1tcxr1506r" path="res://addons/item_drops/settings/spawn_group.gd" id="11_ehrd3"]
 
 [sub_resource type="Resource" id="Resource_hf0pe"]
@@ -133,14 +131,12 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="Resource" id="Resource_7drh7"]
 script = ExtResource("8_pmhie")
 drop_path = "uid://beswcfw4ytxol"
-odds = 1.0
 metadata/_custom_type_script = "uid://daksr3jumc0af"
 
 [sub_resource type="Resource" id="Resource_ehrd3"]
 script = ExtResource("9_wf5i4")
 possible_drops = Array[ExtResource("8_pmhie")]([SubResource("Resource_7drh7")])
 guaranteed_drops = 1
-combined_odds = false
 metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 
 [sub_resource type="Resource" id="Resource_08pad"]
@@ -160,8 +156,6 @@ collision_mask = 752
 script = ExtResource("1_dt8bo")
 placed_in_level = true
 poly_texture = SubResource("Resource_hf0pe")
-hit_sound_effect = ExtResource("2_ehrd3")
-sound_effect_on_destroy = ExtResource("3_ar8vc")
 mass = 50.0
 polygon_shape = 4
 cir_radius = 150.0
@@ -187,13 +181,16 @@ unique_name_in_owner = true
 bus = &"SFX"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+unique_name_in_owner = true
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+unique_name_in_owner = true
 modulate = Color(0.557321, 0.728003, 0.985251, 1)
 texture_repeat = 3
 texture = SubResource("CanvasTexture_hq16b")
 
 [node name="Line2D" type="Line2D" parent="Polygon2D"]
+unique_name_in_owner = true
 
 [node name="Center" type="Polygon2D" parent="."]
 
@@ -252,7 +249,6 @@ texture_scale = 15.0
 script = ExtResource("7_7drh7")
 drops_table = SubResource("Resource_ehrd3")
 scene_spawner = NodePath("../LaunchForceSceneSpawner2D")
-metadata/_custom_type_script = "uid://b8fqt8af86l80"
 
 [node name="LaunchForceSceneSpawner2D" type="Node2D" parent="."]
 script = ExtResource("10_wf5i4")
@@ -260,4 +256,3 @@ force = 5000.0
 direction = Vector2(1, 0.5)
 angle_spread = 90.0
 spawn_group = SubResource("Resource_08pad")
-metadata/_custom_type_script = "uid://cttuwmb0e0k2k"

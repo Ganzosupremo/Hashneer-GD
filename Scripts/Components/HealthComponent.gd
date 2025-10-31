@@ -1,5 +1,5 @@
-extends Node2D
-class_name HealthComponent
+class_name HealthComponent extends Node2D
+
 
 signal zero_health()
 signal update_health(current_health: float, max_health: float)

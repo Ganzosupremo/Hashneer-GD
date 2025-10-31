@@ -1,9 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://d074pyn2g110d"]
-
-[ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/QuadrantTerrain/PoolFracture.tscn" id="1_fss8o"]
-[ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/QuadrantTerrain/FractureShard.tscn" id="2_4dbvb"]
-
-[node name="PoolFractureShards" instance=ExtResource("1_fss8o")]
-instance_template = ExtResource("2_4dbvb")
-max_amount = 300
-keep_instances_in_tree = true

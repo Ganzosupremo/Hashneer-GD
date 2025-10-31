@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://crj8n15ft70nj"]
 
-[ext_resource type="Script" path="res://Scripts/QuadrantTerrain/FractureBodyDelaunay.gd" id="1_50onj"]
+[ext_resource type="Script" uid="uid://3h151jbcyoli" path="res://Scripts/FracturableTerrain/FractureBodyDelaunay.gd" id="1_50onj"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_04rpe"]
 friction = 0.2

@@ -19,6 +19,16 @@ extends Resource
 ## one of them will definitely drop per each call to generate drops.
 @export var combined_odds = false
 
+func _init(_possible_drops: Array[Droppable] = [], _guaranteed_drops: int = 1, _combined_odds: bool = false) -> void:
+	_possible_drops = _possible_drops.duplicate()
+	guaranteed_drops = _guaranteed_drops
+	combined_odds = _combined_odds
+
+
+func add_drops(drop: Droppable) -> void:
+	possible_drops.append(drop)
+
+
 func has_possible_drops() -> bool:
 	for drop in possible_drops:
 		if drop.odds > 0.0:

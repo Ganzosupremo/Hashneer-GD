@@ -7,7 +7,7 @@
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="4_4lapq"]
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="5_px33u"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="6_1wrq4"]
-[ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/QuadrantTerrain/QuadrantBuilderArgs.gd" id="7_dsf0w"]
+[ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/FracturableTerrain/QuadrantBuilderArgs.gd" id="7_dsf0w"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="7_lbc0e"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="9_1f4k2"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="9_qgubg"]
