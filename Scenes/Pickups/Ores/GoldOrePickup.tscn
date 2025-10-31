@@ -1,16 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://8jpnwklw2yog"]
+[gd_scene load_steps=7 format=3 uid="uid://8jpnwklw2yog"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_6px3h"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_rgpll"]
+[ext_resource type="Texture2D" uid="uid://d34r16gt6sj1p" path="res://Textures/Ores/GoldOre.png" id="3_73w85"]
 [ext_resource type="Resource" uid="uid://da2s3w1r7a17l" path="res://Resources/Ores/Gold.tres" id="3_gold"]
+[ext_resource type="Texture2D" uid="uid://c1kofn3ipte5s" path="res://Textures/Ores/GoldOre_n.png" id="4_v1faj"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jrd04"]
-atlas = ExtResource("2_rgpll")
-region = Rect2(48, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_eg4ii"]
+diffuse_texture = ExtResource("3_73w85")
+normal_texture = ExtResource("4_v1faj")
 
-[node name="GoldOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_6px3h")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_kaujd"]
+polygon = PackedVector2Array(2.5, -8, -4.5, -8, -4.5, -6.4, -8, -1.3000002, -8, 5.1000004, -5.5, 6.7, -5.5, 8, 5.1000004, 8, 6.7, 5.5, 8, 5.5, 8, 2.6999998, 6.5, -0.3000002, 6.5, -3.6999998, 2.5, -6.8)
+
+[node name="GoldOrePickup" instance=ExtResource("1_6px3h")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_gold")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_jrd04")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_eg4ii")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_kaujd")
+occluder_light_mask = 49

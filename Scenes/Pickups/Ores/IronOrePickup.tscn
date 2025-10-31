@@ -1,19 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://7hmfgey36x04"]
+[gd_scene load_steps=7 format=3 uid="uid://7hmfgey36x04"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_stn26"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_pgpey"]
 [ext_resource type="Resource" uid="uid://be425wvrjuwnw" path="res://Resources/Ores/Iron.tres" id="3_iron"]
+[ext_resource type="Texture2D" uid="uid://cjwj05ey1cht8" path="res://Textures/Ores/IronOre.png" id="3_megdn"]
+[ext_resource type="Texture2D" uid="uid://dwvniqc0pyb3g" path="res://Textures/Ores/IronOre_n.png" id="4_jwxjn"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0lr4q"]
-atlas = ExtResource("2_pgpey")
-region = Rect2(32, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_1fwku"]
+diffuse_texture = ExtResource("3_megdn")
+normal_texture = ExtResource("4_jwxjn")
 
-[node name="IronOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_stn26")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_megdn"]
+polygon = PackedVector2Array(4.5, -7.5, -4.5, -7.5, -4.5, -5.7, -8, -2.1999998, -8, 5.1000004, -6.5, 5.8999996, -6.5, 7.5, 5.8999996, 7.5, 6.8999996, 5.5, 8, 5.5, 8, 1.6999998, 7.5, -0.4000001, 7.5, -3.8000002, 4.5, -5.8)
+
+[node name="IronOrePickup" instance=ExtResource("1_stn26")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_iron")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_0lr4q")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_1fwku")
 
-[node name="CollisionShape2D" parent="." index="1"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_megdn")
+occluder_light_mask = 49
+
+[node name="CollisionShape2D" parent="." index="3"]
 debug_color = Color(0.36940393, 0.8829779, 0.99999946, 0.41960785)

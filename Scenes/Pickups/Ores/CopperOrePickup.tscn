@@ -1,19 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://vvunxldstwum"]
+[gd_scene load_steps=7 format=3 uid="uid://vvunxldstwum"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_gt2ps"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_y1pp3"]
 [ext_resource type="Resource" uid="uid://t16tscekva8i" path="res://Resources/Ores/Copper.tres" id="3_copper"]
+[ext_resource type="Texture2D" uid="uid://c45rcu38i2e84" path="res://Textures/Ores/CopperOre.png" id="3_eiw0p"]
+[ext_resource type="Texture2D" uid="uid://coubtf0iymuhn" path="res://Textures/Ores/CopperOre_n.png" id="4_x865c"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_rbd7k"]
-atlas = ExtResource("2_y1pp3")
-region = Rect2(16, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_rqvy3"]
+diffuse_texture = ExtResource("3_eiw0p")
+normal_texture = ExtResource("4_x865c")
 
-[node name="CopperOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_gt2ps")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_eiw0p"]
+polygon = PackedVector2Array(6, -7.7, 4.2, -8, -4, -8, -4, -6.7, -7, -3, -8, -3, -8, 6.1000004, -5.2, 8, 4.7, 8, 7, 5, 8, 5, 8, 0.3000002, 6, -4.4)
+
+[node name="CopperOrePickup" instance=ExtResource("1_gt2ps")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_copper")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_rbd7k")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_rqvy3")
 
-[node name="CollisionShape2D" parent="." index="1"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_eiw0p")
+
+[node name="CollisionShape2D" parent="." index="3"]
 debug_color = Color(0.74635863, 0.4142301, 0.5513747, 0.41960785)

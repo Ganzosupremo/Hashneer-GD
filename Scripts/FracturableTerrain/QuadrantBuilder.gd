@@ -49,8 +49,8 @@ class_name QuadrantBuilder extends Node2D
 @onready var _pool_cut_visualizer: PoolFracture = $"../PoolFractureCutVisualizer"
 @onready var _pool_fracture_shards: PoolFracture = $"../PoolFractureShards"
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
-@onready var block_core: BlockCore = %BlockCore
-@onready var map_boundaries: StaticBody2D = %MapBoundaries
+@onready var map_boundaries: Node2D = %MapBoundaries
+const UNFRACTURABLE_TERRAIN_TEMPLATE = preload("res://Scenes/FracturableTerrain/UnfracturableTerrainTemplate.tscn")
 
 var _polygon_fracture: PolygonFracture
 var _fracture_disabled: bool = false
@@ -67,9 +67,35 @@ const ORE_PICKUP_SCENE = preload("res://Scenes/Pickups/OrePickup.tscn")
 #region Public API
 
 func _ready() -> void:
-	GameManager._current_quadrant_builder = self
+	GameManager.set_quadrant_builder(self)
 	AudioManager.change_music_clip(music)
 	_init_builder()
+
+# Initializes the builder with the arguments from the current level.
+func _init_builder() -> void:
+	var builder_data: LevelBuilderArgs = GameManager.get_level_args()
+	builder_args = builder_data
+
+	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
+	grid_size = builder_data.grid_size
+	_map_shape = builder_data.map_shape
+		
+	_polygon_fracture = PolygonFracture.new()
+	_rng.randomize()
+		
+	var color := Color.WHITE
+	color.s = fracture_body_color.s
+	color.v = fracture_body_color.v
+	color.h = _rng.randf()
+	_cur_fracture_color = color
+	_quadrant_nodes.modulate = _cur_fracture_color
+	_rigid_bodies_parent.modulate = _cur_fracture_color
+	
+	_initialize_grid_of_blocks(builder_args.initial_health)
+	_calculate_grid_center()
+	_calculate_map_bounds()
+	_set_player_position()
+
 
 ## Handles the fracturing of the source polygon (Quadrant) at the given position.[br]
 ## [param pos]: The global position where the fracture occurs.[br]
@@ -104,13 +130,13 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 ## [param bullet_damage]: The damage to deal to the block core.[br]
 ## [param miner]: The miner that will mine the block.[br]
 ## [param instakill]: Whether the block core should be instakilled.[br]
-func fracture_block_core(bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
-	if _fracture_disabled: return
-	_fracture_disabled = true
-		
-	block_core.fracture(builder_args.block_core_cuts_delaunay, builder_args.block_core_cut_min_area, bullet_damage, _cur_fracture_color, instakill, miner)
-		
-	set_deferred("_fracture_disabled", false)
+#func fracture_block_core(bullet_damage: float, miner: String = "Player", instakill: bool = false) -> void:
+	#if _fracture_disabled: return
+	#_fracture_disabled = true
+		#
+	#block_core.fracture(builder_args.block_core_cuts_delaunay, builder_args.block_core_cut_min_area, bullet_damage, _cur_fracture_color, instakill, miner)
+		#
+	#set_deferred("_fracture_disabled", false)
 
 #endregion
 
@@ -142,7 +168,8 @@ func _calculate_map_bounds() -> void:
 	_create_boundary_walls()
 
 func _create_boundary_walls() -> void:
-		# Wall thickness
+	DebugLogger.info("Creating boundary walls with map bounds: %s" % str(_map_bounds))
+	# Wall thickness
 	var thickness: float = 75.0
 	var horizontal_offset: float = 1.2
 
@@ -177,43 +204,33 @@ func _create_boundary_walls() -> void:
 			"position": vcenter + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
 		}
 	]
+	DebugLogger.info("Wall configurations: %s" % str(wall_configs))
 
 	for config in wall_configs:
-		var wall: StaticBody2D = StaticBody2D.new()
-		var collision_shape: CollisionShape2D = CollisionShape2D.new()
-		var rect_shape: RectangleShape2D = RectangleShape2D.new()
+		var wall: StaticBody2D = UNFRACTURABLE_TERRAIN_TEMPLATE.instantiate()
+		var collision_polygon: CollisionPolygon2D = CollisionPolygon2D.new()
 
-		rect_shape.size = config.size
-		collision_shape.shape = rect_shape
+		# Create rectangle polygon from size
+		var half_width: float = config.size.x / 2.0
+		var half_height: float = config.size.y / 2.0
+		var rect_polygon: PackedVector2Array = PackedVector2Array([
+			Vector2(-half_width, -half_height),
+			Vector2(half_width, -half_height),
+			Vector2(half_width, half_height),
+			Vector2(-half_width, half_height)
+		])
+
+		var wall_texture: Polygon2D = wall.get_node("Texture")
+		wall_texture.set_polygon(rect_polygon)
+		collision_polygon.set_polygon(rect_polygon)
 		wall.position = config.position
-
-		wall.add_child(collision_shape)
+		
+		wall.add_child(collision_polygon)
 		map_boundaries.add_child(wall)
+		DebugLogger.info("Created wall at position: %s with size: %s" % [str(config.position), str(config.size)])
 
 
-## Initializes the builder with the arguments from the current level.
-func _init_builder() -> void:
-	var builder_data: LevelBuilderArgs = GameManager._current_level_args
-	builder_args = builder_data
 
-	quadrant_size = Vector2i(builder_data.quadrant_size, builder_data.quadrant_size)
-	grid_size = builder_data.grid_size
-	_map_shape = builder_data.map_shape
-		
-	_polygon_fracture = PolygonFracture.new()
-	_rng.randomize()
-		
-	var color := Color.WHITE
-	color.s = fracture_body_color.s
-	color.v = fracture_body_color.v
-	color.h = _rng.randf()
-	_cur_fracture_color = color
-	_quadrant_nodes.modulate = _cur_fracture_color
-	_rigid_bodies_parent.modulate = _cur_fracture_color
-
-	_calculate_grid_center()
-	_initialize_grid_of_blocks(builder_args.initial_health)
-	_set_player_position()
 
 func _calculate_grid_center() -> void:
 	_grid_center = Vector2(
@@ -529,7 +546,7 @@ func _spawn_staticbody(shape_info : Dictionary, color : Color, texture_info : Di
 		var depth_layer: int = ore_info.get("depth_layer", 0)
 		var health: float = ore_info.get("health", builder_args.initial_health)
 		var terrain_block_args: TerrainBlock.TerrainBlockArgs = _create_terrain_block_args(ore_type, ore_data, depth_layer, health)
-		instance_staticbody.setup(terrain_block_args)
+		instance_staticbody.setup(terrain_block_args, texture_info)
 	
 	instance_staticbody.set_fracture_body(builder_args.initial_health, shape_info, texture_info)
 	instance_staticbody.reset_health()

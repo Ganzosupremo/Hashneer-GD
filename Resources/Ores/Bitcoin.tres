@@ -1,8 +1,17 @@
-[gd_resource type="Resource" script_class="OreDetails" load_steps=4 format=3 uid="uid://fbcppv533sac"]
+[gd_resource type="Resource" script_class="OreDetails" load_steps=7 format=3 uid="uid://fbcppv533sac"]
 
+[ext_resource type="Texture2D" uid="uid://bdtqla8tvm0qb" path="res://Textures/Terrain/Ores_normal.png" id="1_6k4w6"]
 [ext_resource type="Script" uid="uid://cu47duhlxpj3b" path="res://Scripts/Resources/OreDetails.gd" id="1_bitcoin"]
-[ext_resource type="Texture2D" uid="uid://c3q4hbc4arufs" path="res://Textures/Currencies/Bitcoin logo new.png" id="2_mvxvv"]
+[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_mvxvv"]
 [ext_resource type="Texture2D" uid="uid://chkg3yc4ti7m8" path="res://Textures/Terrain/BitcoinBlock.png" id="3_prr3p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gkmr"]
+atlas = ExtResource("1_6k4w6")
+region = Rect2(113, 2, 14, 12)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d8cgd"]
+atlas = ExtResource("2_mvxvv")
+region = Rect2(113, 2, 14, 12)
 
 [resource]
 script = ExtResource("1_bitcoin")
@@ -10,7 +19,8 @@ ore_type = 8
 ore_name = "Bitcoin Ore"
 ore_description = "The ultimate prize! Find this to win the level"
 texture = ExtResource("3_prr3p")
-pickup_texture = ExtResource("2_mvxvv")
+normal_texture = SubResource("AtlasTexture_3gkmr")
+pickup_texture = SubResource("AtlasTexture_d8cgd")
 particle_color = Color(1, 0.8, 0, 1)
 depth_multiplier = 0.0
 health_multiplier = 3.0

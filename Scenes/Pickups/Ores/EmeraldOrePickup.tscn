@@ -1,16 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://coor22u4r4srn"]
+[gd_scene load_steps=7 format=3 uid="uid://coor22u4r4srn"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_ulx88"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_m8w84"]
 [ext_resource type="Resource" uid="uid://bbgva1wenrhhh" path="res://Resources/Ores/Emerald.tres" id="3_emerald"]
+[ext_resource type="Texture2D" uid="uid://bhhn8na7el8ir" path="res://Textures/Ores/EmeraldOre.png" id="3_g01du"]
+[ext_resource type="Texture2D" uid="uid://dlmgfjrb0rqls" path="res://Textures/Ores/EmeraldOre_n.png" id="4_8t4qq"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_vue5d"]
-atlas = ExtResource("2_m8w84")
-region = Rect2(80, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_awjfp"]
+diffuse_texture = ExtResource("3_g01du")
+normal_texture = ExtResource("4_8t4qq")
 
-[node name="EmeraldOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_ulx88")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_g01du"]
+polygon = PackedVector2Array(4.5, -8, -4.5, -8, -4.5, -6.8, -7.5, -4.8, -7.5, 4.8, -4.5, 6.7, -4.5, 8, 4.1000004, 8, 5.7, 5.5, 7.5, 5.5, 7.5, -4.8, 4.5, -6.8)
+
+[node name="EmeraldOrePickup" instance=ExtResource("1_ulx88")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_emerald")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_vue5d")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_awjfp")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_g01du")
+occluder_light_mask = 49

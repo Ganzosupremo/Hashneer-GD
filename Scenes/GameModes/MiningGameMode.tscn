@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=27 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" uid="uid://ctm8u4rgnfagt" path="res://Scripts/MiningGameMode.gd" id="1_wooh0"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="8_f83gl"]
@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="13_wefku"]
 [ext_resource type="AudioStream" uid="uid://y3nyp5xeicnn" path="res://Audio/Music/Southern Gothic.mp3" id="14_mnofu"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="15_1cro5"]
+[ext_resource type="PackedScene" uid="uid://bjdc26h1h0pfv" path="res://Scenes/Pickups/FiatPickup.tscn" id="16_resba"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="19_i1wc4"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/FracturableTerrain/PoolFracture.tscn" id="20_2lbus"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/FracturableTerrain/CutShapeVisualizer.tscn" id="21_4y4n7"]
@@ -35,17 +36,6 @@ volume_linear = 1.0
 has_playlist = true
 playlist = SubResource("AudioStreamPlaylist_v8agn")
 metadata/_custom_type_script = "uid://so4m0io4gjtt"
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xxpkq"]
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_xy5po"]
-normal = Vector2(0, 1)
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1noj3"]
-normal = Vector2(-1, 0)
-
-[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_c7ke4"]
-normal = Vector2(1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
@@ -169,26 +159,8 @@ grid_size = Vector2i(32, 32)
 fracture_body_color = Color(1, 1, 1, 1)
 mining_mode_enabled = true
 
-[node name="MapBoundaries" type="StaticBody2D" parent="QuadrantBuilder"]
+[node name="MapBoundaries" type="Node2D" parent="QuadrantBuilder"]
 unique_name_in_owner = true
-collision_layer = 8
-collision_mask = 497
-
-[node name="Bottom" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(0, 11500)
-shape = SubResource("WorldBoundaryShape2D_xxpkq")
-
-[node name="Up" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(0, -11500)
-shape = SubResource("WorldBoundaryShape2D_xy5po")
-
-[node name="Right" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(13500, 0)
-shape = SubResource("WorldBoundaryShape2D_1noj3")
-
-[node name="Left" type="CollisionShape2D" parent="QuadrantBuilder/MapBoundaries"]
-position = Vector2(-13500, 0)
-shape = SubResource("WorldBoundaryShape2D_c7ke4")
 
 [node name="Player" parent="." instance=ExtResource("19_i1wc4")]
 unique_name_in_owner = true
@@ -253,6 +225,18 @@ shadow_item_cull_mask = 190
 height = 0.5
 
 [node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
+
+[node name="FiatPickup" parent="PickupsHolder" instance=ExtResource("16_resba")]
+position = Vector2(617, 300)
+
+[node name="FiatPickup2" parent="PickupsHolder" instance=ExtResource("16_resba")]
+position = Vector2(344, 158)
+
+[node name="FiatPickup3" parent="PickupsHolder" instance=ExtResource("16_resba")]
+position = Vector2(141, 382)
+
+[node name="FiatPickup4" parent="PickupsHolder" instance=ExtResource("16_resba")]
+position = Vector2(708, 236)
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -100

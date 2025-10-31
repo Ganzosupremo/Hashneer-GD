@@ -1,16 +1,25 @@
-[gd_scene load_steps=5 format=3 uid="uid://chk4t8lvpiv5u"]
+[gd_scene load_steps=7 format=3 uid="uid://chk4t8lvpiv5u"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_sx6hx"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_sdgd2"]
+[ext_resource type="Texture2D" uid="uid://d01yn4eok2jsw" path="res://Textures/Ores/SilverOre.png" id="3_avl08"]
 [ext_resource type="Resource" uid="uid://buh0w51bkxrr4" path="res://Resources/Ores/Silver.tres" id="3_silver"]
+[ext_resource type="Texture2D" uid="uid://r67uknynsa4r" path="res://Textures/Ores/SilverOre_n.png" id="4_cbc4l"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_mhdjd"]
-atlas = ExtResource("2_sdgd2")
-region = Rect2(96, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_yuqde"]
+diffuse_texture = ExtResource("3_avl08")
+normal_texture = ExtResource("4_cbc4l")
 
-[node name="SilverOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_sx6hx")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_avl08"]
+polygon = PackedVector2Array(7.5, -3.9, 0.3000002, -8, -2.5, -8, -2.5, -6.8, -8, -2.1999998, -8, 4.1000004, -4.5, 6.7, -4.5, 8, 5.1000004, 8, 6.7, 5.5, 8, 5.5, 8, 2.1999998, 7.5, 0.6999998)
+
+[node name="SilverOrePickup" instance=ExtResource("1_sx6hx")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_silver")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_mhdjd")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_yuqde")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_avl08")
+occluder_light_mask = 49

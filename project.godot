@@ -47,7 +47,6 @@ NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
 EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
 PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"
-OreInventory="*res://Scripts/Autoload/OreInventory.gd"
 
 [display]
 

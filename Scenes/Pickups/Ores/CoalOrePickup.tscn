@@ -1,20 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://gtmu3ovqw7is"]
+[gd_scene load_steps=7 format=3 uid="uid://gtmu3ovqw7is"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_itew7"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_wb4v5"]
+[ext_resource type="Texture2D" uid="uid://b2thvowoqssqg" path="res://Textures/Ores/CoalOre.png" id="3_30jq7"]
 [ext_resource type="Resource" uid="uid://cxb3mogp3o6no" path="res://Resources/Ores/Coal.tres" id="3_coal"]
+[ext_resource type="Texture2D" uid="uid://b35imbp7be0sh" path="res://Textures/Ores/CoalOre_n.png" id="4_oh5ay"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_slgsj"]
-atlas = ExtResource("2_wb4v5")
-region = Rect2(0, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_xkoj3"]
+diffuse_texture = ExtResource("3_30jq7")
+normal_texture = ExtResource("4_oh5ay")
 
-[node name="CoalOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_itew7")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_30jq7"]
+polygon = PackedVector2Array(-2, -7, -2, -5.5, -7, -1.5, -7, 3.5, -4, 5.5, -4, 7, 3.5, 7, 5.5, 4, 7.6000004, 4, 6, 0.8000002, 6, -4.6, 4, -5.6, 4, -7)
+
+[node name="CoalOrePickup" instance=ExtResource("1_itew7")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_coal")
-root = NodePath(".")
-pickup_resource_file = "uid://cxb3mogp3o6no"
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_slgsj")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_xkoj3")
 
-[node name="CollisionShape2D" parent="." index="1"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_30jq7")
+occluder_light_mask = 49
+
+[node name="CollisionShape2D" parent="." index="3"]
 debug_color = Color(0, 0, 0, 0.60784316)

@@ -7,7 +7,6 @@ class_name AIMiner extends Node2D
 
 @onready var ai_timer: Timer = %AITimer
 @onready var time_left_ui = %TimeLeftUI
-@onready var block_core: BlockCore = %BlockCore
 
 @export var time: float = 0.0
 
@@ -26,4 +25,3 @@ func _process(_delta: float) -> void:
 
 func on_timeout() -> void:
 	GameManager.complete_level()
-	block_core.fracture(250 , 50.0, float("inf"),Color.WHITE, true, "AI")

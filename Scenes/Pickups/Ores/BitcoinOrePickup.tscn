@@ -1,8 +1,25 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvn23d35lfa7x"]
+[gd_scene load_steps=7 format=3 uid="uid://bvn23d35lfa7x"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_x210l"]
 [ext_resource type="Resource" uid="uid://fbcppv533sac" path="res://Resources/Ores/Bitcoin.tres" id="2_bitcoin"]
+[ext_resource type="Texture2D" uid="uid://dh2c6fcn11x7n" path="res://Textures/Ores/BitcoinOre.png" id="3_1kda7"]
+[ext_resource type="Texture2D" uid="uid://cgyg0m4pxm2n4" path="res://Textures/Ores/BitcoinOre_n.png" id="4_bpaqt"]
 
-[node name="BitcoinOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_x210l")]
+[sub_resource type="CanvasTexture" id="CanvasTexture_13xpa"]
+diffuse_texture = ExtResource("3_1kda7")
+normal_texture = ExtResource("4_bpaqt")
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_1kda7"]
+polygon = PackedVector2Array(-3, -7, -3, -5.4, -4.4, -4, -6, -4, -6, 0, -7, 0, -7, 3.5, -6, 5, -4, 5, -4, 7, 3.5, 7, 5.5, 4, 7, 4, 7, 0, 8, 0, 8, -4.6, 6, -5.6, 6, -7)
+
+[node name="BitcoinOrePickup" instance=ExtResource("1_x210l")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("2_bitcoin")
-root = NodePath(".")
+
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_13xpa")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_1kda7")
+occluder_light_mask = 49

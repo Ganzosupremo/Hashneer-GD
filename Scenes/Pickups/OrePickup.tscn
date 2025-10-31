@@ -1,16 +1,30 @@
-[gd_scene load_steps=4 format=3 uid="uid://c7dpwyv8ml0c2"]
+[gd_scene load_steps=6 format=3 uid="uid://c7dpwyv8ml0c2"]
 
+[ext_resource type="PhysicsMaterial" uid="uid://2kay8j53abmv" path="res://samples/softbody2d/softbody2d_phys_slippery.tres" id="1_3i20i"]
 [ext_resource type="Script" uid="uid://cbmngg6lkn62g" path="res://Scripts/Pickups/OrePickup.gd" id="1_ore_pickup"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_item_drops_bus"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q3v61"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ore_pickup"]
 radius = 20.0
 
-[node name="OrePickup" type="Area2D"]
+[node name="RigidBody2D" type="RigidBody2D"]
+collision_layer = 512
+collision_mask = 1432
+physics_material_override = ExtResource("1_3i20i")
+can_sleep = false
+linear_damp = 5.0
+
+[node name="OrePickup" type="Area2D" parent="." node_paths=PackedStringArray("root")]
 collision_layer = 512
 collision_mask = 141
 script = ExtResource("1_ore_pickup")
 items_drop_bus = ExtResource("2_item_drops_bus")
+root = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="OrePickup"]
+shape = SubResource("CircleShape2D_q3v61")
 
 [node name="Texture" type="Sprite2D" parent="."]
 unique_name_in_owner = true

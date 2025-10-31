@@ -19,7 +19,7 @@ var current_level: int = 0
 
 var _current_level_args: LevelBuilderArgs = null
 var _player: PlayerController = null
-var _current_block_core: BlockCore
+# var _current_block_core: BlockCore
 var _current_quadrant_builder: QuadrantBuilder
 var _player_camera: AdvanceCamera
 
@@ -113,6 +113,11 @@ func load_data() -> void:
 #endregion
 
 
+#region Setters
+
+func set_quadrant_builder(builder: QuadrantBuilder) -> void:
+	_current_quadrant_builder = builder
+
 #region Getters
 
 ## Returns the main camera used for the player.
@@ -126,3 +131,11 @@ func get_player() -> PlayerController:
 	if _player != null:
 		return _player
 	return null
+
+func get_current_level_args() -> LevelBuilderArgs:
+	return _current_level_args
+
+func get_quadrant_builder() -> QuadrantBuilder:
+	return _current_quadrant_builder
+
+#endregion

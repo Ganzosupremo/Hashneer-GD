@@ -1,16 +1,24 @@
-[gd_scene load_steps=5 format=3 uid="uid://qxuwbul1t1df"]
+[gd_scene load_steps=7 format=3 uid="uid://qxuwbul1t1df"]
 
 [ext_resource type="PackedScene" uid="uid://c7dpwyv8ml0c2" path="res://Scenes/Pickups/OrePickup.tscn" id="1_7ceb3"]
-[ext_resource type="Texture2D" uid="uid://dpmt2tg5ir8fq" path="res://Textures/Terrain/Ores.png" id="2_l34he"]
 [ext_resource type="Resource" uid="uid://cejuurswtyr73" path="res://Resources/Ores/Diamond.tres" id="3_diamond"]
+[ext_resource type="Texture2D" uid="uid://kqyq8fmt5i0m" path="res://Textures/Ores/DiamondOre.png" id="3_ttlve"]
+[ext_resource type="Texture2D" uid="uid://ddywai2pomm5" path="res://Textures/Ores/DiamondOre_n.png" id="4_huo8i"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_k8y76"]
-atlas = ExtResource("2_l34he")
-region = Rect2(64, 0, 16, 16)
+[sub_resource type="CanvasTexture" id="CanvasTexture_su7ob"]
+diffuse_texture = ExtResource("3_ttlve")
+normal_texture = ExtResource("4_huo8i")
 
-[node name="DiamondOrePickup" node_paths=PackedStringArray("root") instance=ExtResource("1_7ceb3")]
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_ttlve"]
+polygon = PackedVector2Array(4.5, -8, -3.5, -8, -3.5, -6.8, -8, -3.1999998, -8, 6.1000004, -5.5, 7.7, 5.7, 8, 6.7, 6.5, 8, 6.5, 8, 2.3000002, 7.5, -0.3000002, 7.5, -4.8, 4.5, -6.8)
+
+[node name="DiamondOrePickup" instance=ExtResource("1_7ceb3")]
+
+[node name="OrePickup" parent="." index="0"]
 ore_details = ExtResource("3_diamond")
-root = NodePath(".")
 
-[node name="Texture" parent="." index="0"]
-texture = SubResource("AtlasTexture_k8y76")
+[node name="Texture" parent="." index="1"]
+texture = SubResource("CanvasTexture_su7ob")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+occluder = SubResource("OccluderPolygon2D_ttlve")

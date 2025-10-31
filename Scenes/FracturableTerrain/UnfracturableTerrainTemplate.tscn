@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c78x5lcvx2lf7"]
+
+[ext_resource type="Texture2D" uid="uid://bcxqamyvaxui3" path="res://Textures/Terrain/DirtBlock2.png" id="1_p2d0c"]
+
+[node name="UnfracturableTerrain" type="StaticBody2D"]
+collision_layer = 9
+collision_mask = 4089
+
+[node name="Texture" type="Polygon2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+texture = ExtResource("1_p2d0c")
+uv = PackedVector2Array(1145, -222, 1118, 476, 1789, 508, 1818, -231)
