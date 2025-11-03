@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="5_px33u"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="6_1wrq4"]
 [ext_resource type="Script" uid="uid://b6pf1rc5kjonv" path="res://Scripts/FracturableTerrain/QuadrantBuilderArgs.gd" id="7_dsf0w"]
-[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="7_lbc0e"]
+[ext_resource type="Script" uid="uid://bopjfk7oa47k2" path="res://addons/item_drops/drops/drops_table.gd" id="7_lbc0e"]
 [ext_resource type="Texture2D" uid="uid://cp76ykxde57hh" path="res://Textures/FracturableBodies/BlockTexture.png" id="9_1f4k2"]
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="9_qgubg"]
 [ext_resource type="Script" uid="uid://b2ne6r8s160qn" path="res://Scripts/Resources/WavePhase.gd" id="10_f24ny"]
@@ -63,9 +63,8 @@ metadata/_custom_type_script = "uid://b2ne6r8s160qn"
 [sub_resource type="Resource" id="Resource_2qui5"]
 script = ExtResource("7_dsf0w")
 debug_name = "Element Zero"
-quadrant_size = 280
-grid_size = Vector2(5, 5)
-map_shape = 3
+quadrant_size = 150
+grid_size = Vector2(15, 15)
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_p8p40")])
@@ -111,8 +110,8 @@ metadata/_custom_type_script = "uid://b2ne6r8s160qn"
 [sub_resource type="Resource" id="Resource_rmngw"]
 script = ExtResource("7_dsf0w")
 debug_name = "1"
-quadrant_size = 300
-map_shape = 2
+quadrant_size = 150
+grid_size = Vector2(17, 17)
 quadrant_texture = ExtResource("9_1f4k2")
 initial_health = 80.0
 fiat_drop_rate_factor = 1.1
@@ -147,8 +146,8 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_885h5"]
 script = ExtResource("7_dsf0w")
 debug_name = "2"
-quadrant_size = 320
-grid_size = Vector2(7, 7)
+quadrant_size = 100
+grid_size = Vector2(17, 17)
 quadrant_texture = ExtResource("9_qgubg")
 normal_texture = ExtResource("5_px33u")
 initial_health = 150.0

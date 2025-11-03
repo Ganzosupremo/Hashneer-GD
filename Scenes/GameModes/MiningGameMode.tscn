@@ -1,13 +1,15 @@
-[gd_scene load_steps=27 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=28 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" uid="uid://ctm8u4rgnfagt" path="res://Scripts/MiningGameMode.gd" id="1_wooh0"]
+[ext_resource type="PackedScene" uid="uid://bfct743pn2rl7" path="res://Scenes/Utils/WorldBorders.tscn" id="2_resba"]
+[ext_resource type="PackedScene" uid="uid://b4lu2cl76ss4g" path="res://Scenes/Utils/ShopLayer.tscn" id="3_ooyxa"]
+[ext_resource type="PackedScene" uid="uid://c2bjid5t11351" path="res://Scenes/Utils/DigitalAmbience.tscn" id="4_ooyxa"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="8_f83gl"]
 [ext_resource type="Script" uid="uid://d2veqt7wkxl4y" path="res://Scripts/FracturableTerrain/QuadrantBuilder.gd" id="11_lf7vs"]
 [ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="12_cvs73"]
 [ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="13_wefku"]
 [ext_resource type="AudioStream" uid="uid://y3nyp5xeicnn" path="res://Audio/Music/Southern Gothic.mp3" id="14_mnofu"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="15_1cro5"]
-[ext_resource type="PackedScene" uid="uid://bjdc26h1h0pfv" path="res://Scenes/Pickups/FiatPickup.tscn" id="16_resba"]
 [ext_resource type="PackedScene" uid="uid://domdfxprvi6aw" path="res://Scenes/Player/Player.tscn" id="19_i1wc4"]
 [ext_resource type="PackedScene" uid="uid://fk52mrn5gvsy" path="res://Scenes/FracturableTerrain/PoolFracture.tscn" id="20_2lbus"]
 [ext_resource type="PackedScene" uid="uid://ckhd13abglk4l" path="res://Scenes/FracturableTerrain/CutShapeVisualizer.tscn" id="21_4y4n7"]
@@ -15,7 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://ceq2hhdrvgk6b" path="res://Scenes/FracturableTerrain/FractureShard.tscn" id="22_8xmqo"]
 [ext_resource type="PackedScene" uid="uid://crj8n15ft70nj" path="res://Scenes/FracturableTerrain/FractureBodyDelaunay.tscn" id="23_44xgw"]
 [ext_resource type="PackedScene" uid="uid://cmswv1ebatwo6" path="res://Scenes/Components/AdvancedCamera.tscn" id="24_thavx"]
-[ext_resource type="Script" uid="uid://dcd0s8jvtfjsg" path="res://Scripts/BitcoinNetwork/MinerAI.gd" id="25_0mtbo"]
 [ext_resource type="Shader" uid="uid://hsrcdx8p8ec5" path="res://Shaders/GameBackgroundUnified.gdshader" id="26_2lin2"]
 [ext_resource type="PackedScene" uid="uid://c5hp70ml1r2a4" path="res://Scenes/UI/health_bar.tscn" id="29_gc5eq"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="29_xxpkq"]
@@ -41,7 +42,7 @@ metadata/_custom_type_script = "uid://so4m0io4gjtt"
 shader = ExtResource("26_2lin2")
 shader_parameter/time = 0.0
 shader_parameter/bg_color_dark = Color(0.03, 0.04, 0.08, 1)
-shader_parameter/bg_color_light = Color(0.06, 0.08, 0.14, 1)
+shader_parameter/bg_color_light = Color(0.086557575, 0.28838056, 0.43811765, 1)
 shader_parameter/grid_scale = 50.0
 shader_parameter/movement_speed = 0.4
 
@@ -51,113 +52,31 @@ bg_color = Color(0.02, 0.02, 0.04, 0.95)
 [node name="MiningGameMode" type="Node2D"]
 script = ExtResource("1_wooh0")
 
-[node name="BGParallax" type="Node2D" parent="."]
+[node name="WorldBorders" parent="." instance=ExtResource("2_resba")]
+unique_name_in_owner = true
 
-[node name="BitcoinParallax1" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(2560, 1440)
-autoscroll = Vector2(15, 0)
-repeat_times = 3
+[node name="ShopLayer" parent="." instance=ExtResource("3_ooyxa")]
+unique_name_in_owner = true
+platform_height_offset = 110.0
 
-[node name="BitcoinSymbol1" type="ColorRect" parent="BGParallax/BitcoinParallax1"]
-modulate = Color(1, 0.843, 0, 0.08)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -400.0
-offset_top = -300.0
-offset_right = 400.0
-offset_bottom = 300.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0.843, 0, 0.06)
-
-[node name="BitcoinSymbol2" type="ColorRect" parent="BGParallax/BitcoinParallax1"]
-modulate = Color(1, 0.843, 0, 0.04)
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -200.0
-offset_top = 200.0
-offset_right = 200.0
-offset_bottom = 600.0
-grow_horizontal = 0
-color = Color(1, 0.843, 0, 0.04)
-
-[node name="BitcoinParallax2" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(3200, 1800)
-autoscroll = Vector2(-8, 5)
-repeat_times = 2
-
-[node name="HashPattern1" type="ColorRect" parent="BGParallax/BitcoinParallax2"]
-modulate = Color(0.05, 0.05, 0.08, 0.3)
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_left = 100.0
-offset_top = -150.0
-offset_right = 500.0
-offset_bottom = 150.0
-grow_vertical = 2
-color = Color(0.05, 0.05, 0.08, 0.25)
-
-[node name="HashPattern2" type="ColorRect" parent="BGParallax/BitcoinParallax2"]
-modulate = Color(0.05, 0.05, 0.08, 0.2)
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -600.0
-offset_top = -200.0
-offset_right = -200.0
-offset_bottom = 200.0
-grow_horizontal = 0
-grow_vertical = 2
-color = Color(0.05, 0.05, 0.08, 0.2)
-
-[node name="BitcoinParallax3" type="Parallax2D" parent="BGParallax"]
-repeat_size = Vector2(4000, 2000)
-autoscroll = Vector2(3, -10)
-
-[node name="NetworkNode1" type="ColorRect" parent="BGParallax/BitcoinParallax3"]
-modulate = Color(1, 0.843, 0, 0.12)
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 300.0
-offset_top = -800.0
-offset_right = 700.0
-offset_bottom = -400.0
-grow_vertical = 0
-color = Color(1, 0.843, 0, 0.1)
-
-[node name="NetworkNode2" type="ColorRect" parent="BGParallax/BitcoinParallax3"]
-modulate = Color(1, 0.843, 0, 0.06)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -500.0
-offset_top = -600.0
-offset_right = -100.0
-offset_bottom = -200.0
-grow_horizontal = 0
-grow_vertical = 0
-color = Color(1, 0.843, 0, 0.05)
+[node name="DigitalAmbience" parent="." instance=ExtResource("4_ooyxa")]
+unique_name_in_owner = true
+number_of_scan_lines = 12
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("8_f83gl")
 
-[node name="QuadrantBuilder" type="Node2D" parent="." groups=["QuadrantBuilder"]]
+[node name="QuadrantBuilder" type="Node2D" parent="." node_paths=PackedStringArray("world_borders", "shop_layer", "digital_ambiance") groups=["QuadrantBuilder"]]
+unique_name_in_owner = true
 script = ExtResource("11_lf7vs")
 music = SubResource("Resource_ao83a")
 quadrant_size = Vector2i(25, 25)
 grid_size = Vector2i(32, 32)
 fracture_body_color = Color(1, 1, 1, 1)
 mining_mode_enabled = true
+world_borders = NodePath("../WorldBorders")
+shop_layer = NodePath("../ShopLayer")
+digital_ambiance = NodePath("../DigitalAmbience")
 
 [node name="MapBoundaries" type="Node2D" parent="QuadrantBuilder"]
 unique_name_in_owner = true
@@ -193,7 +112,9 @@ unique_name_in_owner = true
 position = Vector2(425, 0)
 
 [node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("24_thavx")]
+light_mask = 1023
 position = Vector2(302, 296)
+zoom = Vector2(1, 1)
 limit_left = -13500
 limit_top = -11000
 limit_right = 13500
@@ -206,18 +127,8 @@ drag_vertical_enabled = true
 target = NodePath("../Player")
 smooth_speed = 5.0
 
-[node name="MinerAI" type="Node2D" parent="."]
-unique_name_in_owner = true
-script = ExtResource("25_0mtbo")
-time = 120.0
-
-[node name="AITimer" type="Timer" parent="MinerAI"]
-unique_name_in_owner = true
-wait_time = 20.0
-one_shot = true
-
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
-position = Vector2(-275, -248)
+position = Vector2(-148, -105)
 energy = 0.69
 blend_mode = 1
 range_item_cull_mask = 191
@@ -225,18 +136,6 @@ shadow_item_cull_mask = 190
 height = 0.5
 
 [node name="PickupsHolder" type="Node2D" parent="." groups=["PickupsHolder"]]
-
-[node name="FiatPickup" parent="PickupsHolder" instance=ExtResource("16_resba")]
-position = Vector2(617, 300)
-
-[node name="FiatPickup2" parent="PickupsHolder" instance=ExtResource("16_resba")]
-position = Vector2(344, 158)
-
-[node name="FiatPickup3" parent="PickupsHolder" instance=ExtResource("16_resba")]
-position = Vector2(141, 382)
-
-[node name="FiatPickup4" parent="PickupsHolder" instance=ExtResource("16_resba")]
-position = Vector2(708, 236)
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -100
@@ -306,6 +205,7 @@ alignment = 1
 
 [node name="TimeLeftUI" parent="GameUI/UIContainer/TopBar/MarginContainer/TopBarContainer/CenterSection" instance=ExtResource("31_5ogkh")]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 size_flags_vertical = 3

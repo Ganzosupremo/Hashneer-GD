@@ -5,11 +5,12 @@
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_item_drops_bus"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q3v61"]
+radius = 22.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ore_pickup"]
-radius = 20.0
+radius = 15.033297
 
-[node name="RigidBody2D" type="RigidBody2D"]
+[node name="OrePickup" type="RigidBody2D"]
 collision_layer = 512
 collision_mask = 1432
 physics_material_override = ExtResource("1_3i20i")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfct743pn2rl7"]
+
+[ext_resource type="Script" uid="uid://c171ibppje3or" path="res://Scripts/Utils/WorldBorders.gd" id="1_wxly7"]
+
+[node name="WorldBorders" type="Node2D"]
+script = ExtResource("1_wxly7")

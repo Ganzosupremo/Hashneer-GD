@@ -51,16 +51,14 @@ func _add_drops_to_drops_table() -> void:
 			# Create Droppable for ore pickup
 			var droppable = Droppable.new()
 			var ore_name = Utils.enum_label(OreDetails.OreType, _ore_type)
-			DebugLogger.info("Adding droppable for ore type: %s (enum value: %d)" % [ore_name, _ore_type])
-			
+
 			# Check if the ore name exists in the dictionary
 			if not ore_pickups_dictionary.has(ore_name):
 				DebugLogger.error("Ore pickup not found in dictionary for: %s. Available keys: %s" % [ore_name, str(ore_pickups_dictionary.keys())])
 				return
 			
 			droppable.drop_path = ore_pickups_dictionary[ore_name]
-			DebugLogger.info("Drop path: %s" % str(droppable.drop_path))
-			
+
 			# Validate the drop path is not empty
 			if droppable.drop_path == "":
 				DebugLogger.error("Drop path is empty for ore: %s" % ore_name)

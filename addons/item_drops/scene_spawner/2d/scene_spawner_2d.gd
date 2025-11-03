@@ -32,7 +32,6 @@ func _ready():
 ## The scene will be instanced and added as a child to the node.
 ## Emits the "spawned" signal after the object is added to the scene tree.
 func spawn(p_packed_scene : PackedScene) -> Node:
-	DebugLogger.info("Spawning drops from ", self.name)
 	var instance = p_packed_scene.instantiate()
 	var global_spawn_position = get_spawn_position()
 	spawn_parent.add_child.call_deferred(instance, true)

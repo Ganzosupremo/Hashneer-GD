@@ -23,8 +23,11 @@ class_name QuadrantBuilder extends Node2D
 
 ## New ore-based properties
 @export_category("Mining Mode")
+## Whether mining mode is enabled.
 @export var mining_mode_enabled: bool = false
+## The current depth layer for ore generation.
 @export var current_depth_layer: int = 0  # 0-20
+## Dictionary mapping ore types to their resources.
 @export var ores_dictionary: Dictionary = {
 	OreDetails.OreType.DIRT: preload("res://Resources/Ores/Dirt.tres"),
 	OreDetails.OreType.COAL: preload("res://Resources/Ores/Coal.tres"),
@@ -37,6 +40,17 @@ class_name QuadrantBuilder extends Node2D
 	OreDetails.OreType.BITCOIN_ORE: preload("res://Resources/Ores/Bitcoin.tres")
 }
 
+@export_category("World Generation")
+## Whether to generate world borders.
+@export var generate_borders: bool = true
+## The height of the shop layer above the mining layer.
+@export var shop_layer_height: float = 500.0
+## The world borders manager.
+@export var world_borders: WorldBorders
+## The shop layer (safe zone above mining area)
+@export var shop_layer: ShopLayer
+## Digital ambiance effects for cyberpunk atmosphere
+@export var digital_ambiance: DigitalAmbiance
 
 #endregion
 
@@ -50,6 +64,8 @@ class_name QuadrantBuilder extends Node2D
 @onready var _pool_fracture_shards: PoolFracture = $"../PoolFractureShards"
 @onready var pool_fracture_bodies: PoolFracture = $"../Pool_FractureBodies"
 @onready var map_boundaries: Node2D = %MapBoundaries
+
+## The template for unfracturable terrain used for boundaries.
 const UNFRACTURABLE_TERRAIN_TEMPLATE = preload("res://Scenes/FracturableTerrain/UnfracturableTerrainTemplate.tscn")
 
 var _polygon_fracture: PolygonFracture
@@ -62,7 +78,6 @@ var _map_shape: Constants.MapShape = Constants.MapShape.Square
 var _quadrant_positions: Array = []
 
 
-const ORE_PICKUP_SCENE = preload("res://Scenes/Pickups/OrePickup.tscn")
 
 #region Public API
 
@@ -82,8 +97,15 @@ func _init_builder() -> void:
 		
 	_polygon_fracture = PolygonFracture.new()
 	_rng.randomize()
-		
-	var color := Color.WHITE
+	
+	if mining_mode_enabled and generate_borders:
+		# Reset positions to origin for consistent layout
+		_quadrant_nodes.position = Vector2.ZERO
+		_rigid_bodies_parent.position = Vector2.ZERO
+		if map_boundaries:
+			map_boundaries.position = Vector2.ZERO
+
+	var color: Color = Color.WHITE
 	color.s = fracture_body_color.s
 	color.v = fracture_body_color.v
 	color.h = _rng.randf()
@@ -92,9 +114,6 @@ func _init_builder() -> void:
 	_rigid_bodies_parent.modulate = _cur_fracture_color
 	
 	_initialize_grid_of_blocks(builder_args.initial_health)
-	_calculate_grid_center()
-	_calculate_map_bounds()
-	_set_player_position()
 
 
 ## Handles the fracturing of the source polygon (Quadrant) at the given position.[br]
@@ -121,6 +140,9 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 		# var ore_data = other_body.get_meta("ore_data")
 		# var depth = other_body.get_meta("depth_layer")
 		other_body.random_drops.spawn_drops(5)
+		
+		# Trigger digital ambiance effect at mining location
+		digital_ambiance.create_scan_burst(pos)
 	else:
 		other_body.random_drops.spawn_drops(1)
 		
@@ -159,6 +181,16 @@ func _calculate_map_bounds() -> void:
 
 	var level_width: float = max_x - min_x
 	var level_height: float = max_y - min_y
+	
+	# In mining mode, use exact terrain bounds without buffer
+	if mining_mode_enabled:
+		_map_bounds = Rect2(
+			Vector2(min_x, min_y),
+			Vector2(level_width, level_height)
+		)
+		return
+	
+	# For other modes, use buffer
 	var buffer: float = max(level_width, level_height) * 0.5
 	_map_bounds = Rect2(
 		Vector2(min_x - buffer, min_y - buffer),
@@ -168,7 +200,6 @@ func _calculate_map_bounds() -> void:
 	_create_boundary_walls()
 
 func _create_boundary_walls() -> void:
-	DebugLogger.info("Creating boundary walls with map bounds: %s" % str(_map_bounds))
 	# Wall thickness
 	var thickness: float = 75.0
 	var horizontal_offset: float = 1.2
@@ -204,8 +235,6 @@ func _create_boundary_walls() -> void:
 			"position": vcenter + Vector2(-_map_bounds.size.x/2 - thickness/2, 0) * horizontal_offset
 		}
 	]
-	DebugLogger.info("Wall configurations: %s" % str(wall_configs))
-
 	for config in wall_configs:
 		var wall: StaticBody2D = UNFRACTURABLE_TERRAIN_TEMPLATE.instantiate()
 		var collision_polygon: CollisionPolygon2D = CollisionPolygon2D.new()
@@ -276,36 +305,88 @@ func _initialize_grid_of_blocks(initial_health: float) -> void:
 			var cell: Vector2i = Vector2i(i, j)
 			if not _is_cell_in_shape(cell):
 				continue
-						
-			var block: TerrainBlock = _terrain_block_template.instantiate()
-			_quadrant_nodes.add_child(block)
-						
-						# Determine ore type
-			var ore_type: OreDetails.OreType
-			if vein_pending.has(cell):
-				# Cell is part of a vein
-				ore_type = vein_pending[cell]
-			else:
-				# Normal weighted random
-				ore_type = _determine_ore_type(j)
-								
-				# Apply vein bonus if valuable ore
-				if ore_type != OreDetails.OreType.DIRT and mining_mode_enabled:
-					_apply_vein_bonus(cell, ore_type, vein_pending)
-						
-			var ore_data: OreDetails = _get_ore_resource(ore_type)
-						
-			# Set block properties based on ore type
-			block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
-			block.placed_in_level = true
+			
+			# Check if this is a border cell in mining mode
+			var is_border: bool = false
+			if mining_mode_enabled:
+				# Left, right, or bottom border
+				is_border = (i == 0 or i == grid_size.x - 1 or j == grid_size.y - 1)
+			
 			var pos = Vector2(i * quadrant_size.x, j * quadrant_size.y)
-			block.position = pos
 			_quadrant_positions.append(pos)
+			
+			if is_border:
+				# Spawn indestructible border block
+				var block: TerrainBlock = _terrain_block_template.instantiate()
+				_quadrant_nodes.add_child(block)
+				block.fracturable = false
+				block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
+				block.placed_in_level = true
+				block.position = pos
+
+				var ore_type = OreDetails.OreType.DIRT
+				var ore_data: OreDetails = _get_ore_resource(ore_type)
+
+
+				var ore_health = float('inf')  # Indestructible
+				var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, int((float(j) / grid_size.y) * 20.0), ore_health)
+				block.setup(terrain_block_args)
+			else:
+				# Spawn regular destructible terrain block
+				var block: TerrainBlock = _terrain_block_template.instantiate()
+				_quadrant_nodes.add_child(block)
 						
-			# Use ore-specific health and texture
-			var ore_health = initial_health * ore_data.health_multiplier
-			var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, int((float(j) / grid_size.y) * 20.0), ore_health)
-			block.setup(terrain_block_args)
+				# Determine ore type
+				var ore_type: OreDetails.OreType
+				if vein_pending.has(cell):
+					# Cell is part of a vein
+					ore_type = vein_pending[cell]
+				else:
+					# Normal weighted random
+					ore_type = _determine_ore_type(j)
+								
+					# Apply vein bonus if valuable ore
+					if ore_type != OreDetails.OreType.DIRT and mining_mode_enabled:
+						_apply_vein_bonus(cell, ore_type, vein_pending)
+						
+				var ore_data: OreDetails = _get_ore_resource(ore_type)
+						
+				# Set block properties based on ore type
+				block.rectangle_size = Vector2(builder_args.quadrant_size, builder_args.quadrant_size)
+				block.placed_in_level = true
+				block.position = pos
+						
+				# Use ore-specific health and texture
+				var ore_health = initial_health * ore_data.health_multiplier
+				var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, int((float(j) / grid_size.y) * 20.0), ore_health)
+				block.setup(terrain_block_args)
+	
+	# After grid generation, set up borders and shop layer using actual terrain bounds
+	if mining_mode_enabled and generate_borders:
+		_calculate_map_bounds()
+		
+		# Use actual terrain bounds
+		var terrain_width = _map_bounds.size.x
+		var terrain_height = _map_bounds.size.y
+		
+		# Initialize shop layer with exact terrain width
+		shop_layer.initialize(terrain_width)
+		
+		# Generate shop layer borders using actual bounds
+		if !world_borders:
+			world_borders = WorldBorders.new()
+			world_borders.name = "WorldBorders"
+			add_child(world_borders)
+		
+		world_borders.generate_shop_layer_borders(terrain_width, terrain_height, shop_layer_height)
+		
+		# Set ambiance bounds
+		var full_bounds = Rect2(
+			_map_bounds.position,
+			Vector2(terrain_width, terrain_height + shop_layer_height)
+		)
+		digital_ambiance.set_world_bounds(full_bounds)
+		digital_ambiance.add_data_particles()
 
 ## Determines the ore type based on depth and weighted probabilities
 func _determine_ore_type(y_grid_position: int) -> OreDetails.OreType:

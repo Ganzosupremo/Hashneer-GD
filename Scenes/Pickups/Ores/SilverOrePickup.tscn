@@ -10,7 +10,7 @@ diffuse_texture = ExtResource("3_avl08")
 normal_texture = ExtResource("4_cbc4l")
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_avl08"]
-polygon = PackedVector2Array(7.5, -3.9, 0.3000002, -8, -2.5, -8, -2.5, -6.8, -8, -2.1999998, -8, 4.1000004, -4.5, 6.7, -4.5, 8, 5.1000004, 8, 6.7, 5.5, 8, 5.5, 8, 2.1999998, 7.5, 0.6999998)
+polygon = PackedVector2Array(-2.5, -7.2, -2.5, -4.8, -6.5, -1.6999998, -6.5, 2.8000002, -3.5, 4.7, -3.5, 6.8, 4.2, 5.5, 7.1000004, 5.5, 5.5, 0.6999998, 5.5, -4)
 
 [node name="SilverOrePickup" instance=ExtResource("1_sx6hx")]
 
@@ -21,5 +21,6 @@ ore_details = ExtResource("3_silver")
 texture = SubResource("CanvasTexture_yuqde")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="." index="2"]
+scale = Vector2(2, 2)
 occluder = SubResource("OccluderPolygon2D_avl08")
 occluder_light_mask = 49

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4lu2cl76ss4g"]
+
+[ext_resource type="Script" uid="uid://s237tel8q2t7" path="res://Scripts/Utils/ShopLayer.gd" id="1_qwsrn"]
+
+[node name="ShopLayer" type="Node2D"]
+script = ExtResource("1_qwsrn")

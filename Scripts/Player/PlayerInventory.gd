@@ -98,11 +98,11 @@ func _add_ore(ore_resource: OrePickupResource, amount: float) -> bool:
 	item_added.emit(ore_resource, amount)
 	
 	# Debug logging
-	DebugLogger.info("Collected %s ore! Count: %d | Value: %.2f" % [
-		Utils.enum_label(OreDetails.OreType, ore_type),
-		_ore_inventory[ore_type]["count"],
-		_ore_inventory[ore_type]["total_value"]
-	])
+	# DebugLogger.info("Collected %s ore! Count: %d | Value: %.2f" % [
+	# 	Utils.enum_label(OreDetails.OreType, ore_type),
+	# 	_ore_inventory[ore_type]["count"],
+	# 	_ore_inventory[ore_type]["total_value"]
+	# ])
 	
 	return true
 

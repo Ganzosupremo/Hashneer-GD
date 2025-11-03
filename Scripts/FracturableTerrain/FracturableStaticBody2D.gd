@@ -21,6 +21,8 @@ class_name FracturableStaticBody2D extends StaticBody2D
 ## The texture to be applied to the polygon
 @export var poly_texture: Texture2D
 @export_range(0.0, 100.0, 0.5, "or_greater") var mass: float = 10.0
+## If true, the body can be fracturable
+@export var fracturable: bool = true
 
 enum PolygonShape { Circular, Rectangular, Beam, SuperEllipse, SuperShape}
 @export_group("Shape")
@@ -183,12 +185,24 @@ func getPolygon() -> PackedVector2Array:
 	return _polygon2d.get_polygon()
 
 func getTextureInfo() -> Dictionary:
-	var normal_texture: Texture2D
 	if _polygon2d.texture is CanvasTexture:
-		normal_texture = _polygon2d.texture.normal_texture
+		var normal_texture: Texture2D = _polygon2d.texture.normal_texture
+		var diffuse_texture: Texture2D = _polygon2d.texture.diffuse_texture
+		return {
+			"texture" : diffuse_texture, 
+			"normal_texture": normal_texture, 
+			"rot" : _polygon2d.texture_rotation, 
+			"offset" : _polygon2d.texture_offset,
+			"scale" : _polygon2d.texture_scale
+		}
 	else:
-		normal_texture = null
-	return {"texture" : _polygon2d.texture, "normal_texture": normal_texture, "rot" : _polygon2d.texture_rotation, "offset" : _polygon2d.texture_offset, "scale" : _polygon2d.texture_scale}
+		return {
+			"texture" : _polygon2d.texture, 
+			"normal_texture": null,
+			"rot" : _polygon2d.texture_rotation, 
+			"offset" : _polygon2d.texture_offset,
+			"scale" : _polygon2d.texture_scale
+			}
 
 func get_texture_info() -> Dictionary:
 	return getTextureInfo()
@@ -254,6 +268,8 @@ func get_bounding_rect() -> Rect2:
 ## [param instakill] If true, immediately destroys the body
 ## Returns true if the body is destroyed, false otherwise
 func take_damage(damage: float, instakill: bool = false) -> bool:
+	if !fracturable:
+		return false
 	if instakill:
 		AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 		health.take_damage(1.79769e308)

@@ -14,6 +14,7 @@ guaranteed_drops = 1
 metadata/_custom_type_script = "uid://bopjfk7oa47k2"
 
 [node name="TerrainBlock" instance=ExtResource("1_7xph5")]
+light_mask = 3
 script = ExtResource("1_8m4o1")
 ore_pickups_dictionary = {
 "Bitcoin Ore": &"res://Scenes/Pickups/Ores/BitcoinOrePickup.tscn",
@@ -27,9 +28,14 @@ ore_pickups_dictionary = {
 }
 
 [node name="Polygon2D" parent="." index="2"]
+visibility_layer = 1
 material = SubResource("CanvasItemMaterial_32tv1")
 texture = ExtResource("3_32tv1")
 uv = PackedVector2Array(0.07258222, -0.13220379, 0.11825198, 64.15448, 64.12725, 64.13948, 64.10683, -0.05674553)
+
+[node name="Center" parent="." index="3"]
+light_mask = 0
+visibility_layer = 0
 
 [node name="RandomDrops" parent="." index="5"]
 drops_table = SubResource("Resource_32tv1")
