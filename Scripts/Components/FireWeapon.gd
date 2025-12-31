@@ -32,12 +32,17 @@ signal fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_mu
 
 var fire_rate_cooldown_timer: float = 0.0
 var current_weapon: WeaponDetails
-var fracture_manager: FractureManager
+var _fracture_manager: FractureManager
 var current_pool: PoolFracture
 var _laser_beam: LaserBeam
 
+var fracture_manager: FractureManager:
+        get:
+                if not _fracture_manager:
+                        _fracture_manager = get_tree().get_first_node_in_group("FractureManager")
+                return _fracture_manager
+
 func _ready() -> void:
-                fracture_manager = get_tree().get_first_node_in_group("FractureManager")
                 _initialize_bullet_pools()
                 if _fire_cooldown_timer == null:
                                 _fire_cooldown_timer = Timer.new()

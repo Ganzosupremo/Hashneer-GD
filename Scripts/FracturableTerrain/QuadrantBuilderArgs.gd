@@ -1,7 +1,7 @@
 extends Resource
 class_name LevelBuilderArgs
 ## Holds the arguments for the Level
-## This is used to create the QuadrantBuilder or set the level waves parameters
+## This is used to configure world generation and wave parameters for each game mode
 @export var debug_name: String = ""
 ## The size of the quadrants in pixels
 @export_category("Mining Game Mode Parameters")
@@ -54,4 +54,4 @@ var level_index: int = 0
 
 
 func get_initial_quadrant_health() -> float:
-	return initial_health
+        return initial_health

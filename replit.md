@@ -4,7 +4,7 @@
 Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Players mine blocks to obtain Bitcoin while using fiat currency and upgrades to fight enemies. The game features polygon destruction mechanics, an economic system with inflation/deflation, and various game modes.
 
 ## Project Status
-**Status:** ✅ Mining Mode Phase 1 Complete - Ore System Foundation Implemented
+**Status:** ✅ Mining Mode Architecture Refactor Complete - Modular Component System
 
 ### What's Working
 - ✅ Godot 4.4.1 engine installed
@@ -13,9 +13,47 @@ Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Player
 - ✅ Workflow configured for VNC display
 - ✅ Game feel improvements fully implemented (Oct 1, 2025)
 - ✅ Mining Mode Phase 1: Ore system and inventory (Oct 28, 2025)
-- ❌ Polygon fracture addon missing core files (PoolFracture.gd, CutShapeVisualizer.gd, ShardFracture.gd)
+- ✅ Architecture Refactor: Modular component system replacing QuadrantBuilder (Dec 31, 2025)
 
-### Recent Improvements (Oct 28, 2025)
+### Recent Improvements (Dec 31, 2025)
+
+#### Architecture Refactor - Modular Component System (Dec 31, 2025)
+Complete architectural overhaul replacing the monolithic QuadrantBuilder with a modular component system:
+- **FractureManager** - Centralized fracturing/destruction logic
+  - Manages all fracture pools (cut visualizer, shards, bodies)
+  - Handles collision-based fracturing with damage processing
+  - Supports ore spawning in mining mode
+  - Integrates with DigitalAmbiance for visual effects
+  - Core File: `Scripts/FracturableTerrain/FractureManager.gd`
+- **MiningWorldGenerator** - Terrain generation for mining mode
+  - BFS-based ore vein clustering for natural ore distribution
+  - Data-driven depth configuration using MiningDepthConfig resources
+  - Shop layer integration with proper positioning
+  - Border generation using unified BorderSystem
+  - Core File: `Scripts/FracturableTerrain/MiningWorldGenerator.gd`
+- **MapGeometry** - Static utility class for spatial calculations
+  - Bounds calculation, shape checks, grid coordinate helpers
+  - Point-in-shape tests (circle, rectangle)
+  - World-to-grid coordinate conversions
+  - Core File: `Scripts/Utils/MapGeometry.gd`
+- **BorderSystem** - Unified cyberpunk-styled borders
+  - Consistent border generation across game modes
+  - Static body creation with proper collision masks
+  - Core File: `Scripts/Utils/BorderSystem.gd`
+- **MiningDepthConfig** - Data-driven ore spawn weights
+  - Configurable spawn weights per depth layer
+  - Easy balancing without code changes
+  - Core File: `Scripts/Resources/MiningDepthConfig.gd`
+- **Weapon System Updates**
+  - FractureBullet, LaserBeam, LaserBeamRect now use FractureManager
+  - FireWeapon component updated for new fracture group lookup
+  - GameManager updated with FractureManager reference
+- **QuadrantBuilder Removed**
+  - Monolithic class deleted in favor of modular components
+  - MiningGameMode.gd now orchestrates FractureManager + MiningWorldGenerator
+  - WavesGameMode unchanged (has its own fracture pool management)
+
+### Earlier Improvements (Oct 28, 2025)
 
 #### Mining Mode - Phase 1: Ore System Foundation (Oct 28, 2025)
 Implemented the complete ore-based terrain generation system:
@@ -31,9 +69,9 @@ Implemented the complete ore-based terrain generation system:
   - Mid-depth (6-10): 60% Dirt, 20% Coal, 10% Iron, 5% Copper, 5% Silver
   - Deep (11-15): 50% Dirt, 15% Coal, 15% Iron, 10% Gold, 5% Emerald, 5% Diamond
   - Bitcoin Zone (16-20): 40% Dirt, 20% Iron, 15% Gold, 10% Diamond, 14% Silver, 1% Bitcoin
-- **Ore Vein Clustering** - Realistic ore distribution with 40% propagation to adjacent cells
-  - Creates natural ore clusters in 3x3 radius
-  - Makes valuable ore veins rewarding to find
+- **Ore Vein Clustering** - Now uses BFS algorithm for more natural clustering
+  - Creates natural ore veins spreading from seed points
+  - Configurable vein size and spread probability
   - Only applies to non-dirt ores
 - **Ore Pickup System** - Auto-collecting ore items integrated with ItemDropsBus
   - Spawns when ore blocks destroyed (dirt blocks drop nothing)
@@ -46,17 +84,11 @@ Implemented the complete ore-based terrain generation system:
   - Proper value tracking when adding/removing ores
   - Signals for ore_added, ore_removed, inventory_cleared
   - Debug console output for collection feedback
-- **QuadrantBuilder Integration** - mining_mode_enabled flag switches ore/currency systems
-  - Ore metadata stored on blocks (ore_type, ore_data, depth_layer)
-  - Ore-specific health multipliers make deeper ores harder to mine
-  - fracture_quadrant_on_collision() conditionally spawns ore drops
-  - Preserves existing currency drop system when mining_mode_enabled = false
 - **Core Files:** 
   - `Scripts/Resources/OreDetails.gd` - Ore properties and value calculation
   - `Resources/Ores/*.tres` - 9 ore resource files
   - `Scripts/Pickups/OrePickup.gd` - Auto-collecting ore pickup
   - `Scripts/Autoload/OreInventory.gd` - Ore tracking singleton
-  - `Scripts/QuadrantTerrain/QuadrantBuilder.gd` - Modified for ore integration
 
 **Next Phases (Future Implementation)**:
 - Phase 2: AI Miners + Depth Management (competition system)
