@@ -23,7 +23,7 @@ const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 @onready var _wave_completed_label: Label = %WaveCompletedLabel
 
 ## Level Configuration Arguments
-@export var level_args: LevelBuilderArgs
+@export var level_args: WorldGenArgs
 ## Main event bus for the game mode to emit signals on
 @export var main_event_bus: MainEventBus
 ## Music to play during normal waves

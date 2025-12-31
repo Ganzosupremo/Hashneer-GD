@@ -372,7 +372,7 @@ func get_inventory() -> PlayerInventory:
 #func _on_damageable_area_area_entered(area: Area2D) -> void:
 	#if area.get_parent() and (area.get_parent() is ChargingEnemy or area.get_parent() is Boss):
 		#var enemy: BaseEnemy = area.get_parent()
-		#var args: LevelBuilderArgs = GameManager.get_level_args()
+		#var args: WorldGenArgs = GameManager.get_level_args()
 		#var dmg: float = enemy.get_charge_damage()
 		#var multiplier = args.enemy_damage_multiplier if args else 1.0
 		#damage(dmg * multiplier)

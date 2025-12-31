@@ -50,7 +50,7 @@ func _update_builder_args(index: int) -> void:
 func _update_level_info() -> void:
 	if GameManager.game_levels.size() == 0: return
 	
-	var level: LevelBuilderArgs = GameManager.game_levels[_current_level_index]
+	var level: WorldGenArgs = GameManager.game_levels[_current_level_index]
 	
 	level_name.set_text("%d" % (level.level_index))
 	_update_button_states()

@@ -1,9 +1,10 @@
-[gd_scene load_steps=27 format=3 uid="uid://bocdjbhql8qcn"]
+[gd_scene load_steps=29 format=3 uid="uid://bocdjbhql8qcn"]
 
 [ext_resource type="Script" uid="uid://ctm8u4rgnfagt" path="res://Scripts/MiningGameMode.gd" id="1_wooh0"]
 [ext_resource type="PackedScene" uid="uid://bfct743pn2rl7" path="res://Scenes/Utils/WorldBorders.tscn" id="2_resba"]
 [ext_resource type="PackedScene" uid="uid://b4lu2cl76ss4g" path="res://Scenes/Utils/ShopLayer.tscn" id="3_ooyxa"]
 [ext_resource type="PackedScene" uid="uid://c2bjid5t11351" path="res://Scenes/Utils/DigitalAmbience.tscn" id="4_ooyxa"]
+[ext_resource type="Script" uid="uid://b10l2432jafo7" path="res://Scripts/Resources/MiningDepthConfig.gd" id="6_ooyxa"]
 [ext_resource type="Environment" uid="uid://b0ojl28gnvtko" path="res://MainWorldEnvironment.tres" id="8_f83gl"]
 [ext_resource type="AudioStream" uid="uid://c7wininbpsppm" path="res://Audio/Music/Hall of the Mountain King.mp3" id="12_cvs73"]
 [ext_resource type="AudioStream" uid="uid://dmstst6t88drm" path="res://Audio/Music/The Four Seasons Summer in G Minor RV. 315 III.mp3" id="13_wefku"]
@@ -37,6 +38,11 @@ has_playlist = true
 playlist = SubResource("AudioStreamPlaylist_v8agn")
 metadata/_custom_type_script = "uid://so4m0io4gjtt"
 
+[sub_resource type="Resource" id="Resource_qcel0"]
+script = ExtResource("6_ooyxa")
+max_depth_layers = 25
+metadata/_custom_type_script = "uid://b10l2432jafo7"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
 shader_parameter/time = 0.0
@@ -51,6 +57,7 @@ bg_color = Color(0.02, 0.02, 0.04, 0.95)
 [node name="MiningGameMode" type="Node2D"]
 script = ExtResource("1_wooh0")
 music = SubResource("Resource_ao83a")
+depth_config = SubResource("Resource_qcel0")
 
 [node name="WorldBorders" parent="." instance=ExtResource("2_resba")]
 unique_name_in_owner = true

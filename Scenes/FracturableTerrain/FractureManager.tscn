@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbqefs3gmqsqr"]
+
+[ext_resource type="Script" uid="uid://2lt5galw14mr" path="res://Scripts/FracturableTerrain/FractureManager.gd" id="1_0q3uv"]
+
+[node name="FractureManager" type="Node2D"]
+script = ExtResource("1_0q3uv")

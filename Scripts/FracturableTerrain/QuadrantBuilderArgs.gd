@@ -1,5 +1,4 @@
-extends Resource
-class_name LevelBuilderArgs
+class_name WorldGenArgs extends Resource
 ## Holds the arguments for the Level
 ## This is used to configure world generation and wave parameters for each game mode
 @export var debug_name: String = ""
@@ -54,4 +53,4 @@ var level_index: int = 0
 
 
 func get_initial_quadrant_health() -> float:
-        return initial_health
+		return initial_health

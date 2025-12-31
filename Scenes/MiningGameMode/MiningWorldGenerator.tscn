@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://conhvta1wx2ab"]
+
+[ext_resource type="Script" uid="uid://bncra8omj0xcx" path="res://Scripts/FracturableTerrain/MiningWorldGenerator.gd" id="1_3yw7d"]
+
+[node name="MiningWorldGenerator" type="Node2D"]
+script = ExtResource("1_3yw7d")

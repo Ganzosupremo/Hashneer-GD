@@ -41,7 +41,7 @@ func _on_target_pos_reached(_pos: Vector3) -> void:
 
 #func _on_body_entered(body: Node2D) -> void:
 	#if _state == State.CHARGE and body is PlayerController:
-		#var args: LevelBuilderArgs = GameManager.get_level_args()
+		#var args: WorldGenArgs = GameManager.get_level_args()
 		#var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
 		#var multiplier = args.enemy_damage_multiplier if args else 1.0
 		#body.damage(dmg * multiplier, global_position)
@@ -70,7 +70,7 @@ func get_charge_damage() -> float:
 
 func _on_damage_area_area_entered(area: Area2D) -> void:
 	if _state == State.CHARGE and area.get_parent() is PlayerController:
-		var args: LevelBuilderArgs = GameManager.get_level_args()
+		var args: WorldGenArgs = GameManager.get_level_args()
 		var dmg = randf_range(charge_damage_range.x, charge_damage_range.y)
 		var multiplier = args.enemy_damage_multiplier if args else 1.0
 		var player: PlayerController = area.get_parent()
