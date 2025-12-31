@@ -485,6 +485,18 @@ static func createSuperEllipsePolygon(p_number : int, a : float, b : float, n : 
 #implemented thanks to Daniel Shiffman´s (@shiffman) coding challenges
 #https://thecodingtrain.com/CodingChallenges/023-supershape2d.html
 #http://paulbourke.net/geometry/supershape/
+
+## Creates a supershape 2D polygon with given parameters.[br]
+## [param p_number] The number of points to create.[br]
+## [param a] The a parameter of the supershape.[br]
+## [param b] The b parameter of the supershape.[br]
+## [param m] The m parameter of the supershape.[br]
+## [param n1] The n1 parameter of the supershape.[br]
+## [param n2] The n2 parameter of the supershape.[br]
+## [param n3] The n3 parameter of the supershape.[br]
+## [param start_angle_deg] The starting angle in degrees.[br]
+## [param max_angle_deg] The maximum angle in degrees.[br]
+## [param offset] The local offset of the supershape.
 static func createSupershape2DPolygon(p_number : int, a : float, b : float, m : float, n1 : float, n2 : float, n3 : float, start_angle_deg : float = 0.0, max_angle_deg : float = 360.0, offset := Vector2.ZERO) -> PackedVector2Array:
 	var poly : PackedVector2Array = []
 	
@@ -504,7 +516,14 @@ static func createSupershape2DPolygon(p_number : int, a : float, b : float, m : 
 	
 	return poly
 
-
+## Calculates the radius for a given angle in a supershape 2D.[br]
+## [param angle_rad] The angle in radians to calculate the radius for.[br]	
+## [param a] The a parameter of the supershape.[br]
+## [param b] The b parameter of the supershape.[br]
+## [param m] The m parameter of the supershape.[br]
+## [param n1] The n1 parameter of the supershape.[br]
+## [param n2] The n2 parameter of the supershape.[br]
+## [param n3] The n3 parameter of the supershape.[br]
 static func calculateSupershape2DRadius(angle_rad : float, a : float, b : float, m : float, n1 : float, n2 : float, n3 : float) -> float:
 	var part1 : float = (1.0 / a) * cos((angle_rad * m) / 4.0)
 	part1 = abs(part1)
@@ -525,34 +544,36 @@ static func calculateSupershape2DRadius(angle_rad : float, a : float, b : float,
 
 
 
-#SHAPE INFO
-#-------------------------------------------------------------------------------
-#just makes a dictionary that can be used in different funcs
+#region Shape Info
+## Just makes a dictionary that can be used in different funcs.
 static func makeShapeInfo(shape : PackedVector2Array, centered_shape : PackedVector2Array, centroid : Vector2, spawn_pos : Vector2, area : float, source_global_trans : Transform2D) -> Dictionary:
 	return {"shape" : shape, "centered_shape" : centered_shape, "centroid" : centroid, "spawn_pos" : spawn_pos, "spawn_rot" : source_global_trans.get_rotation(), "area" : area, "source_global_trans" : source_global_trans}
 
-#makes a shape info with the given parameters
+## Makes a shape info dictionary with the given parameters.
 static func getShapeInfo(source_global_trans : Transform2D, source_polygon : PackedVector2Array) -> Dictionary:
 	var triangulation : Dictionary = triangulatePolygon(source_polygon, true, true)
 	var centroid : Vector2 = getPolygonCentroid(triangulation.triangles, triangulation.area)
 	var centered_shape : PackedVector2Array = translatePolygon(source_polygon, -centroid)
 	return makeShapeInfo(source_polygon, centered_shape, centroid, getShapeSpawnPos(source_global_trans, centroid), triangulation.area, source_global_trans)
 
-#makes a shape info with the given parameters and has different parameters than getShapeInfo
+## Makes a shape info with the given parameters and has different parameters than [method getShapeInfo].[br]
+## Use this if you already have triangulation data available to avoid recalculating it.[br]
+## [param source_global_trans] The global transform of the source shape.[br]
+## [param source_polygon] The source polygon shape.[br]
+## [param triangulation] The triangulation dictionary of the source polygon (from [method triangulatePolygon] or [method triangulatePolygonDelaunay]).
 static func getShapeInfoSimple(source_global_trans : Transform2D, source_polygon : PackedVector2Array, triangulation : Dictionary) -> Dictionary:
 	var centroid : Vector2 = getPolygonCentroid(triangulation.triangles, triangulation.area)
 	var centered_shape : PackedVector2Array = translatePolygon(source_polygon, -centroid)
 	return makeShapeInfo(source_polygon, centered_shape, centroid, getShapeSpawnPos(source_global_trans, centroid), triangulation.area, source_global_trans)
 
-#calculates the global world position for a given centroid
+## Calculates the global world position for a given centroid.[br]
+## [param source_global_trans] The global transform of the source shape.[br]
+## [param centroid] The centroid point to calculate the global position for.
 static func getShapeSpawnPos(source_global_trans : Transform2D, centroid : Vector2) -> Vector2:
 	var spawn_pos : Vector2 = toGlobal(source_global_trans, centroid)
 	return spawn_pos
-#-------------------------------------------------------------------------------
 
-
-
-
+#endregion
 
 #POLYGON OPERATIONS
 #-------------------------------------------------------------------------------
