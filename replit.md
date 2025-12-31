@@ -1,302 +1,47 @@
 # Hasheneer - Bitcoin Themed Godot Game
 
-## Project Overview
-Hasheneer is a Godot 4.4 game project focused on Bitcoin-themed gameplay. Players mine blocks to obtain Bitcoin while using fiat currency and upgrades to fight enemies. The game features polygon destruction mechanics, an economic system with inflation/deflation, and various game modes.
+## Overview
+Hasheneer is a Godot 4.4 game project centered around Bitcoin-themed gameplay. Players mine blocks to acquire Bitcoin, utilizing fiat currency and upgrades to combat enemies. The game incorporates polygon destruction mechanics, a dynamic economic system with inflation and deflation, and diverse game modes. The project's vision is to deliver an engaging experience that combines resource management, combat, and an evolving in-game economy within a unique Bitcoin-inspired universe.
 
-## Project Status
-**Status:** ✅ Mining Mode Architecture Refactor Complete - Modular Component System
+## User Preferences
+I prefer detailed explanations.
+Do not make changes to the folder `Z`.
+Do not make changes to the file `Y`.
 
-### What's Working
-- ✅ Godot 4.4.1 engine installed
-- ✅ Project structure intact
-- ✅ All assets and scripts present
-- ✅ Workflow configured for VNC display
-- ✅ Game feel improvements fully implemented (Oct 1, 2025)
-- ✅ Mining Mode Phase 1: Ore system and inventory (Oct 28, 2025)
-- ✅ Architecture Refactor: Modular component system replacing QuadrantBuilder (Dec 31, 2025)
+## System Architecture
 
-### Recent Improvements (Dec 31, 2025)
+### UI/UX Decisions
+- **Backgrounds:** UI backgrounds feature falling "hash blocks," enhanced gold/orange Bitcoin colors, and subtle blockchain pulse effects. Game backgrounds use a unified animated grid with multi-octave noise, designed to be clean and non-distracting.
+- **Game Feel:** Implemented smooth, responsive steer-based movement, camera trauma system (screen shake with directional kick and weapon recoil), hitstop/freeze frames, muzzle flash lighting, speed-based footstep cadence with animations, and weapon kickback.
 
-#### Architecture Refactor - Modular Component System (Dec 31, 2025)
-Complete architectural overhaul replacing the monolithic QuadrantBuilder with a modular component system:
-- **FractureManager** - Centralized fracturing/destruction logic
-  - Manages all fracture pools (cut visualizer, shards, bodies)
-  - Handles collision-based fracturing with damage processing
-  - Supports ore spawning in mining mode
-  - Integrates with DigitalAmbiance for visual effects
-  - Core File: `Scripts/FracturableTerrain/FractureManager.gd`
-- **MiningWorldGenerator** - Terrain generation for mining mode
-  - BFS-based ore vein clustering for natural ore distribution
-  - Data-driven depth configuration using MiningDepthConfig resources
-  - Shop layer integration with proper positioning
-  - Border generation using unified BorderSystem
-  - Core File: `Scripts/FracturableTerrain/MiningWorldGenerator.gd`
-- **MapGeometry** - Static utility class for spatial calculations
-  - Bounds calculation, shape checks, grid coordinate helpers
-  - Point-in-shape tests (circle, rectangle)
-  - World-to-grid coordinate conversions
-  - Core File: `Scripts/Utils/MapGeometry.gd`
-- **BorderSystem** - Unified cyberpunk-styled borders
-  - Consistent border generation across game modes
-  - Static body creation with proper collision masks
-  - Core File: `Scripts/Utils/BorderSystem.gd`
-- **MiningDepthConfig** - Data-driven ore spawn weights
-  - Configurable spawn weights per depth layer
-  - Easy balancing without code changes
-  - Core File: `Scripts/Resources/MiningDepthConfig.gd`
-- **Weapon System Updates**
-  - FractureBullet, LaserBeam, LaserBeamRect now use FractureManager
-  - FireWeapon component updated for new fracture group lookup
-  - GameManager updated with FractureManager reference
-- **QuadrantBuilder Removed**
-  - Monolithic class deleted in favor of modular components
-  - MiningGameMode.gd now orchestrates FractureManager + MiningWorldGenerator
-  - WavesGameMode unchanged (has its own fracture pool management)
+### Technical Implementations
+- **Engine:** Godot 4.4.1 stable, OpenGL3 rendering driver, X11 display driver for VNC.
+- **Core Systems:**
+    - **Modular Component System:** Replaced monolithic structures with a modular design, including `FractureManager` (centralized destruction), `MiningWorldGenerator` (terrain generation with BFS-based ore clustering), `MapGeometry` (spatial utilities), `BorderSystem` (unified border generation), and `MiningDepthConfig` (data-driven ore spawn weights).
+    - **Ore System:** 9 ore types with depth-based spawning, unique properties, and visual differentiation. Ore vein clustering uses a BFS algorithm for natural distribution.
+    - **Ore Inventory:** `OreInventory` autoload tracks collected ores, their counts, and depth-adjusted values.
+    - **A* Pathfinding:** Grid-based A* pathfinding (50x50 cells) for enemies with obstacle avoidance and smart path recalculation.
+    - **Enemy AI:** Flocking behavior (separation, alignment, cohesion) for natural swarm movement, compatible with A* pathfinding.
+    - **Weapon System:** Multiple weapons with upgrades, integrated with the new `FractureManager`.
+    - **Bitcoin Network System:** `BitcoinNetwork.gd` simulates blockchain mining, `BitcoinWallet.gd` tracks balances, and `FED.gd` manages fiat supply and inflation.
 
-### Earlier Improvements (Oct 28, 2025)
+### Feature Specifications
+- **Mining Mode:** Players mine blocks to obtain Bitcoin. Features include depth-based ore distribution, ore pickup, and inventory management. Future phases include AI miners, depth management, mining tools, player mechanics, and a shop system.
+- **Unlimited Waves (Brotato-style survival):** Large 3000x3000 arena, intelligent enemy movement with flocking, dynamic enemy cap management with distance-based despawn, escalating boss system (bosses scale until Bitcoin is found), and wave progression based on total enemies removed.
+- **Enemy Variety:** 13 distinct enemy types, including FastDart, Tank, Exploding, Splitter, Sniper, Teleporter, Healer, and Spinner enemies, each with unique behaviors.
+- **Tunable Game Feel Parameters:** Key movement (acceleration, deceleration, turn, brake), camera effects (trauma decay, recoil decay), and footsteps (base step interval) are configurable via `Constants.gd`.
 
-#### Mining Mode - Phase 1: Ore System Foundation (Oct 28, 2025)
-Implemented the complete ore-based terrain generation system:
-- **Ore Resource System** - 9 ore types with depth-based spawning
-  - Common: Dirt (no value), Coal (5$), Iron (10$)
-  - Uncommon: Copper (15$), Silver (25$)
-  - Rare: Gold (50$), Emerald (75$), Diamond (100$)
-  - Ultra Rare: Bitcoin Ore (victory condition)
-  - Each ore has health_multiplier (1.0x - 3.0x), depth_multiplier for value scaling
-  - Ore colors differentiate blocks visually
-- **Depth-Based Distribution** - Ore spawn rates change with depth (0-20 layers)
-  - Surface (0-5): 80% Dirt, 15% Coal, 5% Iron
-  - Mid-depth (6-10): 60% Dirt, 20% Coal, 10% Iron, 5% Copper, 5% Silver
-  - Deep (11-15): 50% Dirt, 15% Coal, 15% Iron, 10% Gold, 5% Emerald, 5% Diamond
-  - Bitcoin Zone (16-20): 40% Dirt, 20% Iron, 15% Gold, 10% Diamond, 14% Silver, 1% Bitcoin
-- **Ore Vein Clustering** - Now uses BFS algorithm for more natural clustering
-  - Creates natural ore veins spreading from seed points
-  - Configurable vein size and spread probability
-  - Only applies to non-dirt ores
-- **Ore Pickup System** - Auto-collecting ore items integrated with ItemDropsBus
-  - Spawns when ore blocks destroyed (dirt blocks drop nothing)
-  - Collision layers/masks properly configured for player detection
-  - Integrates with existing auto-collection magnet system
-  - Visual feedback with ore-specific colors
-- **OreInventory Autoload** - Tracks collected ores by type
-  - Dictionary storage: {count, total_value} per ore type
-  - Depth-adjusted value calculation using ore_data.get_value_at_depth()
-  - Proper value tracking when adding/removing ores
-  - Signals for ore_added, ore_removed, inventory_cleared
-  - Debug console output for collection feedback
-- **Core Files:** 
-  - `Scripts/Resources/OreDetails.gd` - Ore properties and value calculation
-  - `Resources/Ores/*.tres` - 9 ore resource files
-  - `Scripts/Pickups/OrePickup.gd` - Auto-collecting ore pickup
-  - `Scripts/Autoload/OreInventory.gd` - Ore tracking singleton
+### System Design Choices
+- **Project Structure:** Organized into `Scenes/`, `Scripts/`, `Resources/`, `Textures/`, `Audio/`, `Shaders/`, and `addons/`.
+- **Autoloaded Singletons:** Extensive use of singletons (e.g., `GameManager`, `AudioManager`, `OreInventory`, `PathfindingManager`) for global access and management.
+- **Save System:** Integrated for persistent player progress.
+- **Custom Theme and Fonts:** Configured for a consistent visual style.
+- **Rendering:** Uses OpenGL3 and X11 display driver for VNC compatibility.
 
-**Next Phases (Future Implementation)**:
-- Phase 2: AI Miners + Depth Management (competition system)
-- Phase 3: Mining Tools + Player Mechanics (replace shooting with mining)
-- Phase 4: Shop System + Upgrades (surface return, buying/selling)
-- Phase 5: UI/UX + Polish (HUD, events, audio, combo system)
+## External Dependencies
 
-### Earlier Improvements (Oct 1-10, 2025)
-
-#### A* Pathfinding System (Oct 10, 2025)
-Added optional A* pathfinding for enemies with obstacle avoidance:
-- **Grid-Based Pathfinding** - 50x50 pixel cells using Godot's AStarGrid2D
-  - Diagonal movement with octile heuristic for natural paths
-  - Simplified waypoint system reduces path complexity
-  - PathfindingManager singleton provides shared grid access
-- **Smart Path Recalculation** - Updates paths based on timer (0.5s) or target movement (100px threshold)
-- **Hybrid Movement System** - Pathfinding works alongside existing flocking behavior
-  - Can be toggled per enemy via `use_pathfinding` export variable
-  - Flocking forces (separation, alignment, cohesion) apply to pathfinding direction
-  - Maintains natural swarm movement even with obstacles
-- **Future-Ready** - Grid supports obstacle management for upcoming terrain destruction
-  - Methods for adding/removing obstacles dynamically
-  - Region-based solid area marking
-- **Core Files:** `Scripts/Utils/AStarPathfinding.gd`, `Scripts/Autoload/PathfindingManager.gd`
-
-#### Brotato-Style Survival Mode Overhaul (Oct 9, 2025)
-Transformed Unlimited Waves into a Brotato-inspired survival roguelike:
-- **Larger Arena** - Expanded from 2000x2000 to 3000x3000 pixels (15x15 grid) for more tactical space
-- **Intelligent Enemy Movement** - Implemented flocking behavior with separation, alignment, and cohesion
-  - Enemies move in natural swarms while following the player
-  - Configurable weights: separation (1.5), alignment (0.3), cohesion (0.5)
-  - Performs efficiently with 100+ enemies via max_neighbors_check (20)
-  - Now compatible with A* pathfinding for obstacle avoidance
-- **Enemy Cap Management** - MAX_ACTIVE_ENEMIES (150) with distance-based despawn
-  - Farthest enemies from player are despawned first when cap is exceeded
-  - Maintains performance without sacrificing gameplay intensity
-- **Escalating Boss System** - Bosses scale dynamically until player finds Bitcoin
-  - Boss #1 spawns at 100 kills (configurable base threshold)
-  - If boss doesn't drop Bitcoin (75% chance), threshold increases by 50 kills
-  - Boss #2 at 150 kills, Boss #3 at 200 kills, etc.
-  - Bitcoin drop detection uses spawn events (not pickup) for accurate escalation
-  - Level completes only when player collects Bitcoin from boss drop
-- **Wave Progression Fix** - Waves now complete based on total enemies removed
-  - Tracks player kills AND system despawns separately
-  - Wave advances when (kills + despawns) reaches wave target
-  - Prevents stalling when enemies timeout before player reaches them
-- **Enhanced UI** - Real-time stats display
-  - Kill counter shows progress: "Kills: 50/100"
-  - Despawn counter tracks system-removed enemies
-  - Boss status: "Boss #2 Active!" or "Next Boss: #3 at 150 kills"
-  - Wave information with boss progression
-- **Core Files:** `Scripts/WaveSpawner.gd`, `Scripts/WavesGameMode.gd`, `Scripts/Enemies/EnemyBase.gd`
-
-#### Unlimited Waves Mode Foundation (Oct 3, 2025)
-Initial wave-based gameplay with larger map and progressive difficulty:
-- **Wave Spawning System** - New WaveSpawner.gd replaces item drop-based enemy spawning
-  - Progressive difficulty scaling across 12+ wave configurations
-  - Wave 1-2: 10 enemies (basic types for learning)
-  - Wave 3-5: 15 enemies (introduces intermediate types)
-  - Wave 6-8: 20 enemies (adds tanks, exploders)
-  - Wave 9-12: 21 enemies (all 13 enemy types featured)
-  - Wave 13+: Dynamic scaling with base_count = 3 + floor(wave/5)
-- **Enemy Spawning** - Enemies spawn around map edges for better gameplay flow
-
-#### Game Feel Improvements (Oct 1, 2025)
-All "game juice" features successfully implemented:
-- **Steer-based movement** - Smooth responsive controls with separate accel/decel/turn constants
-- **Camera trauma system** - Screen shake with directional kick and weapon recoil
-- **Hitstop/freeze frames** - Time dilation on hits (0.06s at 0.3 timescale)
-- **Muzzle flash lighting** - Dynamic Light2D flicker on weapon fire
-- **Footstep cadence** - Speed-based step timing with directional squash/stretch animations
-- **Weapon kickback** - Player velocity recoil on firing
-- **Bug fixes** - UserSettings.gd Vector2i.split() error, FireWeapon.gd tab/space indentation
-
-#### Visual Polish - Background Enhancements (Oct 2, 2025)
-Enhanced all backgrounds with Bitcoin-themed styling:
-- **UI Backgrounds** - Added falling "hash blocks" effect, enhanced gold/orange Bitcoin colors, subtle blockchain pulse
-  - Applied to Main Menu and Save Slot Selector
-  - Shader: `Shaders/UIBackgroundShader.gdshader`
-- **Game Backgrounds** - Unified subtle animated background with moving grid and multi-octave noise
-  - Applied to Mining Mode and Unlimited Waves Mode
-  - Shader: `Shaders/GameBackgroundUnified.gdshader`
-  - Clean, non-distracting design that complements gameplay
-
-#### Enemy Variety Expansion (Oct 2, 2025)
-**Fixed ChargingEnemy Issues:**
-- Implemented proper state machine (IDLE, WINDING_UP, CHARGING, COOLDOWN)
-- Added visual telegraph with color changes during wind-up
-- Fixed physics conflicts between charging and base movement
-- Added per-charge hit tracking to prevent multiple hits on same target
-
-**8 New Enemy Types Added:**
-1. **FastDartEnemy** - Fast, agile enemy with perpendicular dodging behavior
-2. **TankEnemy** - Slow, armored enemy with shield mechanic and damage reduction
-3. **ExplodingEnemy** - Suicide bomber that rushes and explodes on death
-4. **SplitterEnemy** - Splits into 3 smaller enemies when killed
-5. **SniperEnemy** - Long-range shooter that maintains distance from player
-6. **TeleporterEnemy** - Blinks around the map with fade effects
-7. **HealerEnemy** - Heals nearby enemies while fleeing from player
-8. **SpinnerEnemy** - Rotates and fires spiral bullet patterns
-
-**Total Enemy Count:** 13 types (5 original + 8 new) providing diverse gameplay challenges
-
-#### Tunable Game Feel Parameters (Scripts/Utils/Constants.gd)
-```gdscript
-# Movement
-Player_Acceleration = 2500      # Speed when starting to move
-Player_Deceleration = 3000      # Speed when stopping
-Player_Turn_Accel = 3500        # Speed when changing direction
-Player_Brake_Accel = 4000       # Emergency stop speed
-
-# Camera Effects
-trauma_decay_rate = 3.0         # How fast shake fades
-recoil_decay_rate = 8.0         # How fast recoil recovers
-
-# Footsteps
-base_step_interval = 0.45       # Time between steps at full speed
-```
-
-## Project Structure
-- **Scenes/** - All `.tscn` scenes (game modes, player, enemies, UI, etc.)
-- **Scripts/** - Core gameplay code in GDScript (managers, Bitcoin network, skill tree, utilities)
-- **Resources/** - Data assets (stats, upgrades, audio streams)
-- **Textures/** - Visual assets (sprites, UI elements, VFX)
-- **Audio/** - Sound effects and music
-- **Shaders/** - Custom shader effects
-- **addons/** - Godot plugins (item_drops, save_system, godot-git-plugin)
-
-## Technical Setup
-
-### Engine
-- Godot 4.4.1 stable
-- OpenGL3 rendering driver
-- X11 display driver for VNC
-
-### Dependencies
-- **Installed:** godot_4 (Nix package)
-- **Working Addons:**
-  - item_drops - Item dropping and pickup system
-  - save_system - Save/load functionality
-  - godot-git-plugin - Git integration
-
-### Configuration
-- Main scene: `res://Scenes/UI/MainMenu.tscn`
-- Custom user directory: "Nigga_pls"
-- Forward Plus rendering
-- No default gravity (2D top-down game)
-
-## Running the Project
-
-The project is configured with a workflow that launches Godot in VNC mode:
-```bash
-godot4 --path . --rendering-driver opengl3 --display-driver x11
-```
-
-The game runs in VNC display which can be accessed through the Replit interface.
-
-## Architecture Notes
-
-### Bitcoin Network System
-- `BitcoinNetwork.gd` - Simulates blockchain mining
-- `BitcoinWallet.gd` - Tracks fiat and Bitcoin balances
-- `FED.gd` - Manages fiat supply and inflation
-- Economic events affect prices and rewards
-
-### Gameplay Systems
-- **Quadrant Terrain** - Destructible polygon-based terrain (requires polygon_fracture)
-- **Skill Tree** - Player progression with Bitcoin/fiat costs
-- **Weapon System** - Multiple weapons with upgrades
-- **Enemy AI** - Various enemy types with different behaviors
-
-### Game Modes
-- Mining Mode - Focus on mining Bitcoin blocks
-- Unlimited Waves - Endless enemy waves survival mode
-
-## Known Issues
-
-### ⚠️ Critical: Polygon Fracture Addon Incomplete
-The `polygon_fracture` addon is missing three core files that prevent the game from loading:
-- `addons/polygon_fracture/PoolFracture.gd` - Pool management for fracture objects
-- `addons/polygon_fracture/CutShapeVisualizer.gd` - Debug visualization for cuts
-- `addons/polygon_fracture/ShardFracture.gd` - Individual shard fracture logic
-
-**Impact:** Game cannot start until these files are provided or the addon is replaced.
-
-**Partial addon files present:**
-- ✅ `PolygonLib.gd` - Polygon utility functions (working)
-- ✅ `PolygonFracture.gd` - Main fracture logic (working)
-
-### Other Notes
-- Some UID warnings in logs are expected and harmless (Godot falls back to text paths automatically)
-- Git plugin GDExtension has compatibility warnings but doesn't affect gameplay
-- OpenGLES rendering mode is used for VNC compatibility (some advanced features disabled)
-
-## Development Notes
-
-- Project uses Godot 4.4 features
-- Custom theme and fonts configured
-- Extensive use of autoloaded singletons (GameManager, AudioManager, etc.)
-- Save system integrated for persistent progress
-- Git integration available through godot-git-plugin
-
-## Export Presets
-
-The project includes export configurations for:
-- Windows Desktop
-- macOS
-- Web (HTML5)
-
-## Last Updated
-October 10, 2025
+- **Godot Addons:**
+    - `item_drops`: For item dropping and pickup mechanics.
+    - `save_system`: Provides save/load functionality.
+    - `godot-git-plugin`: For Git integration within the editor.
+- **Polygon Fracture Addon (Partial):** `PolygonLib.gd` and `PolygonFracture.gd` are present and working for polygon utility functions and main fracture logic. However, `PoolFracture.gd`, `CutShapeVisualizer.gd`, and `ShardFracture.gd` are missing and critical for the addon's full functionality.
