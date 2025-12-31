@@ -198,7 +198,7 @@ func _spawn_border_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer) -> v
         var ore_health: float = INF
         
         var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
-        block.setup(terrain_block_args)
+        block.setup(terrain_block_args, {}, true)
         
         if layer == TerrainLayer.BEDROCK:
                 block.self_modulate = Color(0.2, 0.2, 0.25, 1.0)
@@ -236,7 +236,11 @@ func _spawn_terrain_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer, vei
         var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
         block.setup(terrain_block_args)
         
-        block_generated.emit(pos, ore_type)
+        var pos_topleft: Vector2 = Vector2(
+                cell.x * quadrant_size.x,
+                cell.y * quadrant_size.y
+        )
+        block_generated.emit(pos_topleft, ore_type)
 
 func _layer_to_base_ore(layer: TerrainLayer) -> OreDetails.OreType:
         match layer:
