@@ -21,8 +21,9 @@ Do not make changes to the file `Y`.
     - **Mining World Generation (Minecraft-style 2D):**
         - **Surface Generation:** FastNoiseLite simplex noise creates rolling hills with configurable amplitude and base height.
         - **Cave System:** Secondary FastNoiseLite layer carves procedural caves below the dirt layer with depth-adjusted density.
-        - **Layered Geology:** AIR (sky), DIRT (surface layer), STONE (subsurface), DEEP_STONE (60%+ depth), BEDROCK (indestructible floor).
+        - **Layered Geology:** AIR (sky), DIRT (surface layer), STONE (subsurface), DEEP_STONE (60%+ depth), BEDROCK (indestructible floor), SHOP_WALL (underground chamber).
         - **Border System:** Left/right columns and bottom row are indestructible (fracturable=false, infinite health, no drops/shards).
+        - **Shop Chamber:** Underground chamber carved into stone layer with indestructible walls (SHOP_WALL layer). Chamber is centered horizontally with configurable width, height, and depth. ShopLayer positions platforms and spawn points inside the chamber.
         - **Coordinate Convention:** Block.position uses center (for polygon rendering), _quadrant_positions uses top-left (for bounds calculation), signals emit top-left (for downstream consumers).
     - **Ore System:** 9 ore types with depth-based spawning in STONE/DEEP_STONE layers only. Ore vein clustering uses BFS algorithm for natural distribution.
     - **Ore Inventory:** `OreInventory` autoload tracks collected ores, their counts, and depth-adjusted values.
@@ -39,7 +40,8 @@ Do not make changes to the file `Y`.
     - Depth-based ore distribution in stone layers only
     - BFS ore vein clustering for natural ore deposits
     - Indestructible world boundaries (side walls and bedrock floor)
-    - Future phases include AI miners, mining tools, and shop system.
+    - **Underground Shop Chamber:** Integrated structure carved into stone layer with indestructible bronze-colored walls, containing shop platform and spawn points. Configurable via shop_chamber_width, shop_chamber_height, shop_chamber_depth_ratio.
+    - Future phases include AI miners, mining tools, and shop inventory system.
 - **Unlimited Waves (Brotato-style survival):** Large 3000x3000 arena, intelligent enemy movement with flocking, dynamic enemy cap management with distance-based despawn, escalating boss system (bosses scale until Bitcoin is found), and wave progression based on total enemies removed.
 - **Enemy Variety:** 13 distinct enemy types, including FastDart, Tank, Exploding, Splitter, Sniper, Teleporter, Healer, and Spinner enemies, each with unique behaviors.
 - **Tunable Game Feel Parameters:** Key movement (acceleration, deceleration, turn, brake), camera effects (trauma decay, recoil decay), and footsteps (base step interval) are configurable via `Constants.gd`.
