@@ -68,7 +68,7 @@ func _ready() -> void:
 	_setup_fracture_manager()
 	_setup_world_generator()
 	_generate_world()
-	_setup_camera_limits()
+	#_setup_camera_limits()
 	_position_player()
 
 func _setup_fracture_manager() -> void:

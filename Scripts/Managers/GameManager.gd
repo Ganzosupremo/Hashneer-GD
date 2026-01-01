@@ -33,9 +33,9 @@ const implements = [
 ]
 
 func _ready() -> void:
-		# Set the level index for each level
-		# This is used to identify the level in the game
-		# and to unlock the next level when the current one is completed
+	# Set the level index for each level
+	# This is used to identify the level in the game
+	# and to unlock the next level when the current one is completed
 	for i in range(game_levels.size()):
 		game_levels[i].level_index = i
 
