@@ -48,28 +48,28 @@ var _builder_args: WorldGenArgs
 var _terrain_block_template: PackedScene = preload("res://Scenes/MiningGameMode/TerrainBlock.tscn")
 
 func _ready() -> void:
-        AudioManager.change_music_clip(music)
-        _builder_args = GameManager.get_level_args()
-        
-        if not _builder_args:
-                push_warning("MiningGameMode: No level args found, using exported defaults")
-                _builder_args = WorldGenArgs.new()
-                _builder_args.quadrant_size = quadrant_size.x
-                _builder_args.grid_size = grid_size
-                _builder_args.initial_health = 100.0
-        else:
-                if _builder_args.grid_size.x <= 0 or _builder_args.grid_size.y <= 0:
-                        push_warning("MiningGameMode: Level args has invalid grid_size, using exported defaults")
-                        _builder_args.grid_size = grid_size
-                if _builder_args.quadrant_size <= 0:
-                        push_warning("MiningGameMode: Level args has invalid quadrant_size, using exported defaults")
-                        _builder_args.quadrant_size = quadrant_size.x
-                
-        _setup_fracture_manager()
-        _setup_world_generator()
-        _generate_world()
-        _setup_camera_limits()
-        _position_player()
+	AudioManager.change_music_clip(music)
+	_builder_args = GameManager.get_level_args()
+		
+	if not _builder_args:
+		push_warning("MiningGameMode: No level args found, using exported defaults")
+		_builder_args = WorldGenArgs.new()
+		_builder_args.quadrant_size = quadrant_size.x
+		_builder_args.grid_size = grid_size
+		_builder_args.initial_health = 100.0
+	else:
+		if _builder_args.grid_size.x <= 0 or _builder_args.grid_size.y <= 0:
+			push_warning("MiningGameMode: Level args has invalid grid_size, using exported defaults")
+			_builder_args.grid_size = grid_size
+		if _builder_args.quadrant_size <= 0:
+			push_warning("MiningGameMode: Level args has invalid quadrant_size, using exported defaults")
+			_builder_args.quadrant_size = quadrant_size.x
+				
+	_setup_fracture_manager()
+	_setup_world_generator()
+	_generate_world()
+	_setup_camera_limits()
+	_position_player()
 
 func _setup_fracture_manager() -> void:
 	var fracture_manager_ins: FractureManager = _fracture_manager.instantiate()

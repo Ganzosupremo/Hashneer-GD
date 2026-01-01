@@ -53,4 +53,4 @@ var level_index: int = 0
 
 
 func get_initial_quadrant_health() -> float:
-                return initial_health
+	return initial_health

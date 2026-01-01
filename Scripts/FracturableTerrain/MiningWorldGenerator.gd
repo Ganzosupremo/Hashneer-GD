@@ -82,47 +82,47 @@ func _setup_noise() -> void:
 	_cave_noise.fractal_gain = 0.5
 
 func generate_world(builder_args: WorldGenArgs) -> void:
-        if not builder_args:
-                push_error("MiningWorldGenerator: builder_args is null")
-                return
-        
-        if not terrain_block_template:
-                push_error("MiningWorldGenerator: terrain_block_template must be set before generate_world()")
-                return
-        
-        if not quadrant_nodes_parent:
-                push_error("MiningWorldGenerator: quadrant_nodes_parent must be set before generate_world()")
-                return
-        
-        _initial_health = builder_args.initial_health
-        quadrant_size = Vector2i(builder_args.quadrant_size, builder_args.quadrant_size)
-        
-        var args_grid_size = builder_args.grid_size
-        if args_grid_size is Vector2:
-                grid_size = Vector2i(int(args_grid_size.x), int(args_grid_size.y))
-        elif args_grid_size is Vector2i:
-                grid_size = args_grid_size
-        else:
-                grid_size = Vector2i(32, 32)
-        
-        if grid_size.x <= 0 or grid_size.y <= 0:
-                push_warning("MiningWorldGenerator: Invalid grid_size %s, using defaults" % grid_size)
-                grid_size = Vector2i(32, 32)
-        
-        print("MiningWorldGenerator: Generating world with grid_size=%s, quadrant_size=%s" % [grid_size, quadrant_size])
-        
-        _quadrant_positions.clear()
-        _terrain_map.clear()
-        _surface_heights.clear()
-        
-        _generate_surface_heights()
-        _generate_terrain_map()
-        _carve_caves()
-        _spawn_terrain_blocks()
-        _setup_world_bounds()
-        
-        print("MiningWorldGenerator: Generation complete. Created %d blocks." % _quadrant_positions.size())
-        generation_complete.emit(_map_bounds)
+	if not builder_args:
+		push_error("MiningWorldGenerator: builder_args is null")
+		return
+		
+	if not terrain_block_template:
+		push_error("MiningWorldGenerator: terrain_block_template must be set before generate_world()")
+		return
+		
+	if not quadrant_nodes_parent:
+		push_error("MiningWorldGenerator: quadrant_nodes_parent must be set before generate_world()")
+		return
+		
+	_initial_health = builder_args.initial_health
+	quadrant_size = Vector2i(builder_args.quadrant_size, builder_args.quadrant_size)
+		
+	var args_grid_size = builder_args.grid_size
+	if args_grid_size is Vector2:
+		grid_size = Vector2i(int(args_grid_size.x), int(args_grid_size.y))
+	elif args_grid_size is Vector2i:
+		grid_size = args_grid_size
+	else:
+		grid_size = Vector2i(32, 32)
+		
+	if grid_size.x <= 0 or grid_size.y <= 0:
+		push_warning("MiningWorldGenerator: Invalid grid_size %s, using defaults" % grid_size)
+		grid_size = Vector2i(32, 32)
+		
+	print("MiningWorldGenerator: Generating world with grid_size=%s, quadrant_size=%s" % [grid_size, quadrant_size])
+		
+	_quadrant_positions.clear()
+	_terrain_map.clear()
+	_surface_heights.clear()
+		
+	_generate_surface_heights()
+	_generate_terrain_map()
+	_carve_caves()
+	_spawn_terrain_blocks()
+	_setup_world_bounds()
+		
+	print("MiningWorldGenerator: Generation complete. Created %d blocks." % _quadrant_positions.size())
+	generation_complete.emit(_map_bounds)
 
 func _generate_surface_heights() -> void:
 	_surface_heights.resize(grid_size.x)
@@ -208,73 +208,73 @@ func _is_world_border(cell: Vector2i) -> bool:
 	return cell.x == 0 or cell.x == grid_size.x - 1
 
 func _spawn_border_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer) -> void:
-        if not terrain_block_template:
-                push_error("MiningWorldGenerator: terrain_block_template is null")
-                return
-        if not quadrant_nodes_parent:
-                push_error("MiningWorldGenerator: quadrant_nodes_parent is null")
-                return
-        
-        var block: TerrainBlock = terrain_block_template.instantiate()
-        block.fracturable = false
-        block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
-        block.placed_in_level = true
-        quadrant_nodes_parent.add_child(block)
-        block.position = pos
-        
-        var ore_type: OreDetails.OreType = OreDetails.OreType.DIRT
-        var ore_data: OreDetails = _get_ore_resource(ore_type)
-        var depth_layer: int = depth_config.calculate_depth_layer(cell.y, grid_size.y)
-        var ore_health: float = INF
-        
-        var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
-        block.setup(terrain_block_args, {}, true)
-        
-        if layer == TerrainLayer.BEDROCK:
-                block.self_modulate = Color(0.2, 0.2, 0.25, 1.0)
-        else:
-                block.self_modulate = Color(0.3, 0.3, 0.35, 1.0)
+	if not terrain_block_template:
+		push_error("MiningWorldGenerator: terrain_block_template is null")
+		return
+	if not quadrant_nodes_parent:
+		push_error("MiningWorldGenerator: quadrant_nodes_parent is null")
+		return
+		
+	var block: TerrainBlock = terrain_block_template.instantiate()
+	block.fracturable = false
+	block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
+	block.placed_in_level = true
+	quadrant_nodes_parent.add_child(block)
+	block.position = pos
+		
+	var ore_type: OreDetails.OreType = OreDetails.OreType.DIRT
+	var ore_data: OreDetails = _get_ore_resource(ore_type)
+	var depth_layer: int = depth_config.calculate_depth_layer(cell.y, grid_size.y)
+	var ore_health: float = INF
+		
+	var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
+	block.setup(terrain_block_args, {}, true)
+		
+	if layer == TerrainLayer.BEDROCK:
+		block.self_modulate = Color(0.2, 0.2, 0.25, 1.0)
+	else:
+		block.self_modulate = Color(0.3, 0.3, 0.35, 1.0)
 
 func _spawn_terrain_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer, vein_pending: Dictionary) -> void:
-        if not terrain_block_template:
-                push_error("MiningWorldGenerator: terrain_block_template is null in _spawn_terrain_block")
-                return
-        if not quadrant_nodes_parent:
-                push_error("MiningWorldGenerator: quadrant_nodes_parent is null in _spawn_terrain_block")
-                return
-        
-        var block: TerrainBlock = terrain_block_template.instantiate()
-        
-        var ore_type: OreDetails.OreType
-        
-        if layer == TerrainLayer.DIRT:
-                ore_type = OreDetails.OreType.DIRT
-        elif vein_pending.has(cell):
-                ore_type = vein_pending[cell]
-        elif layer == TerrainLayer.STONE or layer == TerrainLayer.DEEP_STONE:
-                ore_type = _determine_ore_type(cell.y)
-                if ore_type != OreDetails.OreType.DIRT:
-                        _apply_vein_bfs(cell, ore_type, vein_pending)
-        else:
-                ore_type = OreDetails.OreType.DIRT
-        
-        var ore_data: OreDetails = _get_ore_resource(ore_type)
-        var depth_layer: int = depth_config.calculate_depth_layer(cell.y, grid_size.y)
-        var ore_health: float = _initial_health * ore_data.health_multiplier
-        
-        block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
-        block.placed_in_level = true
-        quadrant_nodes_parent.add_child(block)
-        block.position = pos
-        
-        var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
-        block.setup(terrain_block_args)
-        
-        var pos_topleft: Vector2 = Vector2(
-                cell.x * quadrant_size.x,
-                cell.y * quadrant_size.y
-        )
-        block_generated.emit(pos_topleft, ore_type)
+	if not terrain_block_template:
+		push_error("MiningWorldGenerator: terrain_block_template is null in _spawn_terrain_block")
+		return
+	if not quadrant_nodes_parent:
+		push_error("MiningWorldGenerator: quadrant_nodes_parent is null in _spawn_terrain_block")
+		return
+		
+	var block: TerrainBlock = terrain_block_template.instantiate()
+		
+	var ore_type: OreDetails.OreType
+		
+	if layer == TerrainLayer.DIRT:
+		ore_type = OreDetails.OreType.DIRT
+	elif vein_pending.has(cell):
+		ore_type = vein_pending[cell]
+	elif layer == TerrainLayer.STONE or layer == TerrainLayer.DEEP_STONE:
+		ore_type = _determine_ore_type(cell.y)
+		if ore_type != OreDetails.OreType.DIRT:
+			_apply_vein_bfs(cell, ore_type, vein_pending)
+	else:
+		ore_type = OreDetails.OreType.DIRT
+		
+	var ore_data: OreDetails = _get_ore_resource(ore_type)
+	var depth_layer: int = depth_config.calculate_depth_layer(cell.y, grid_size.y)
+	var ore_health: float = _initial_health * ore_data.health_multiplier
+		
+	block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
+	block.placed_in_level = true
+	quadrant_nodes_parent.add_child(block)
+	block.position = pos
+		
+	var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)
+	block.setup(terrain_block_args)
+		
+	var pos_topleft: Vector2 = Vector2(
+		cell.x * quadrant_size.x,
+		cell.y * quadrant_size.y
+	)
+	block_generated.emit(pos_topleft, ore_type)
 
 func _layer_to_base_ore(layer: TerrainLayer) -> OreDetails.OreType:
 	match layer:
