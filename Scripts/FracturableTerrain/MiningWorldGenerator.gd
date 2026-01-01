@@ -13,8 +13,8 @@ signal block_generated(position: Vector2, ore_type: OreDetails.OreType)
 
 enum TerrainLayer { AIR, DIRT, STONE, DEEP_STONE, BEDROCK }
 
-var quadrant_size: Vector2i = Vector2i(50, 50)
-var grid_size: Vector2i = Vector2i(64, 48)
+var quadrant_size: Vector2i = Vector2i.ZERO
+var grid_size: Vector2i = Vector2i.ZERO
 
 var surface_amplitude: float = 8.0
 var surface_base_height: float = 8.0
@@ -186,10 +186,10 @@ func _spawn_border_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer) -> v
 		return
 		
 	var block: TerrainBlock = terrain_block_template.instantiate()
-	quadrant_nodes_parent.add_child(block)
 	block.fracturable = false
 	block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
 	block.placed_in_level = true
+	quadrant_nodes_parent.add_child(block)
 	block.position = pos
 		
 	var ore_type: OreDetails.OreType = OreDetails.OreType.DIRT
@@ -210,7 +210,6 @@ func _spawn_terrain_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer, vei
 		return
 		
 	var block: TerrainBlock = terrain_block_template.instantiate()
-	quadrant_nodes_parent.add_child(block)
 		
 	var ore_type: OreDetails.OreType
 		
@@ -231,6 +230,7 @@ func _spawn_terrain_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer, vei
 		
 	block.rectangle_size = Vector2(quadrant_size.x, quadrant_size.y)
 	block.placed_in_level = true
+	quadrant_nodes_parent.add_child(block)
 	block.position = pos
 		
 	var terrain_block_args: TerrainBlock.TerrainBlockArgs = TerrainBlock.TerrainBlockArgs.new(ore_type, ore_data, depth_layer, ore_health)

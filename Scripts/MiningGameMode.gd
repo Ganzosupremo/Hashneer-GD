@@ -16,15 +16,15 @@ extends Node2D
 @export_category("Mining Configuration")
 @export var depth_config: MiningDepthConfig
 @export var ores_dictionary: Dictionary = {
-		OreDetails.OreType.DIRT: preload("res://Resources/Ores/Dirt.tres"),
-		OreDetails.OreType.COAL: preload("res://Resources/Ores/Coal.tres"),
-		OreDetails.OreType.IRON: preload("res://Resources/Ores/Iron.tres"),
-		OreDetails.OreType.COPPER: preload("res://Resources/Ores/Copper.tres"),
-		OreDetails.OreType.SILVER: preload("res://Resources/Ores/Silver.tres"),
-		OreDetails.OreType.GOLD: preload("res://Resources/Ores/Gold.tres"),
-		OreDetails.OreType.DIAMOND: preload("res://Resources/Ores/Diamond.tres"),
-		OreDetails.OreType.EMERALD: preload("res://Resources/Ores/Emerald.tres"),
-		OreDetails.OreType.BITCOIN_ORE: preload("res://Resources/Ores/Bitcoin.tres")
+	OreDetails.OreType.DIRT: preload("res://Resources/Ores/Dirt.tres"),
+	OreDetails.OreType.COAL: preload("res://Resources/Ores/Coal.tres"),
+	OreDetails.OreType.IRON: preload("res://Resources/Ores/Iron.tres"),
+	OreDetails.OreType.COPPER: preload("res://Resources/Ores/Copper.tres"),
+	OreDetails.OreType.SILVER: preload("res://Resources/Ores/Silver.tres"),
+	OreDetails.OreType.GOLD: preload("res://Resources/Ores/Gold.tres"),
+	OreDetails.OreType.DIAMOND: preload("res://Resources/Ores/Diamond.tres"),
+	OreDetails.OreType.EMERALD: preload("res://Resources/Ores/Emerald.tres"),
+	OreDetails.OreType.BITCOIN_ORE: preload("res://Resources/Ores/Bitcoin.tres")
 }
 
 @export_category("Fracture Settings")
@@ -48,82 +48,82 @@ var _builder_args: WorldGenArgs
 var _terrain_block_template: PackedScene = preload("res://Scenes/MiningGameMode/TerrainBlock.tscn")
 
 func _ready() -> void:
-		AudioManager.change_music_clip(music)
-		_builder_args = GameManager.get_level_args()
+	AudioManager.change_music_clip(music)
+	_builder_args = GameManager.get_level_args()
 				
-		_setup_fracture_manager()
-		_setup_world_generator()
-		_generate_world()
-		_setup_camera_limits()
-		_position_player()
+	_setup_fracture_manager()
+	_setup_world_generator()
+	_generate_world()
+	#_setup_camera_limits()
+	_position_player()
 
 func _setup_fracture_manager() -> void:
-		var fracture_manager_ins: FractureManager = _fracture_manager.instantiate()
-		add_child(fracture_manager_ins)
-		fracture_manager_ins.add_to_group("FractureManager")
+	var fracture_manager_ins: FractureManager = _fracture_manager.instantiate()
+	add_child(fracture_manager_ins)
+	fracture_manager_ins.add_to_group("FractureManager")
 
 		#await fracture_manager_ins.ready
 
-		fracture_manager_ins.fracture_body_color = fracture_body_color
-		fracture_manager_ins.pool_cut_visualizer = _pool_cut_visualizer
-		fracture_manager_ins.pool_fracture_shards = _pool_fracture_shards
-		fracture_manager_ins.pool_fracture_bodies = _pool_fracture_bodies
-		fracture_manager_ins.rigid_bodies_parent = _rigid_bodies_parent
-		fracture_manager_ins.terrain_block_template = _terrain_block_template
-		fracture_manager_ins.mining_mode_enabled = true
-		fracture_manager_ins.digital_ambiance = _digital_ambiance
-		fracture_manager_ins.initialize(_builder_args.initial_health)
+	fracture_manager_ins.fracture_body_color = fracture_body_color
+	fracture_manager_ins.pool_cut_visualizer = _pool_cut_visualizer
+	fracture_manager_ins.pool_fracture_shards = _pool_fracture_shards
+	fracture_manager_ins.pool_fracture_bodies = _pool_fracture_bodies
+	fracture_manager_ins.rigid_bodies_parent = _rigid_bodies_parent
+	fracture_manager_ins.terrain_block_template = _terrain_block_template
+	fracture_manager_ins.mining_mode_enabled = true
+	fracture_manager_ins.digital_ambiance = _digital_ambiance
+	fracture_manager_ins.initialize(_builder_args.initial_health)
 				
-		_quadrant_nodes.modulate = fracture_manager_ins.get_fracture_color()
+	_quadrant_nodes.modulate = fracture_manager_ins.get_fracture_color()
 				
-		GameManager.set_fracture_manager(fracture_manager_ins)
+	GameManager.set_fracture_manager(fracture_manager_ins)
 
 func _setup_world_generator() -> void:
-		_world_generator = _world_generator_scene.instantiate()
-		add_child(_world_generator)
+	_world_generator = _world_generator_scene.instantiate()
+	add_child(_world_generator)
 		#await _world_generator_scene.ready
+	
+	_world_generator.quadrant_size = Vector2i(_builder_args.quadrant_size, _builder_args.quadrant_size)
+	_world_generator.grid_size = _builder_args.grid_size
+	_world_generator.terrain_block_template = _terrain_block_template
+	_world_generator.quadrant_nodes_parent = _quadrant_nodes
+	_world_generator.shop_layer = _shop_layer
+	_world_generator.world_borders = _world_borders
+	_world_generator.digital_ambiance = _digital_ambiance
+	_world_generator.shop_layer_height = shop_layer_height
+	_world_generator.ores_dictionary = ores_dictionary
 				
-		_world_generator.quadrant_size = Vector2i(_builder_args.quadrant_size, _builder_args.quadrant_size)
-		_world_generator.grid_size = _builder_args.grid_size
-		_world_generator.terrain_block_template = _terrain_block_template
-		_world_generator.quadrant_nodes_parent = _quadrant_nodes
-		_world_generator.shop_layer = _shop_layer
-		_world_generator.world_borders = _world_borders
-		_world_generator.digital_ambiance = _digital_ambiance
-		_world_generator.shop_layer_height = shop_layer_height
-		_world_generator.ores_dictionary = ores_dictionary
-				
-		if depth_config:
-				_world_generator.depth_config = depth_config
+	if depth_config:
+		_world_generator.depth_config = depth_config
 
 func _generate_world() -> void:
-		_quadrant_nodes.position = Vector2.ZERO
-		_rigid_bodies_parent.position = Vector2.ZERO
+	_quadrant_nodes.position = Vector2.ZERO
+	_rigid_bodies_parent.position = Vector2.ZERO
 				
-		_world_generator.generate_world(_builder_args)
+	_world_generator.generate_world(_builder_args)
 		
 func _setup_camera_limits() -> void:
-		if not _world_borders:
-				return
+	if not _world_borders:
+		return
 				
-		var mining_bounds: Rect2 = _world_borders.get_mining_bounds()
-		var shop_bounds: Rect2 = _world_borders.get_shop_layer_bounds()
+	var mining_bounds: Rect2 = _world_borders.get_mining_bounds()
+	var shop_bounds: Rect2 = _world_borders.get_shop_layer_bounds()
 				
-		var camera: AdvanceCamera = $AdvancedCamera
-		if camera:
-				camera.limit_left = int(mining_bounds.position.x)
-				camera.limit_right = int(mining_bounds.end.x)
-				camera.limit_top = int(shop_bounds.position.y)
-				camera.limit_bottom = int(mining_bounds.end.y)
+	var camera: AdvanceCamera = $AdvancedCamera
+	if camera:
+		camera.limit_left = int(mining_bounds.position.x)
+		camera.limit_right = int(mining_bounds.end.x)
+		camera.limit_top = int(shop_bounds.position.y)
+		camera.limit_bottom = int(mining_bounds.end.y)
 
 func _position_player() -> void:
-		var spawn_x: int = int(_builder_args.grid_size.x / 2)
-		var surface_y: int = _world_generator.get_surface_height_at(spawn_x)
-		var spawn_pos: Vector2 = Vector2(
-				spawn_x * _builder_args.quadrant_size + _builder_args.quadrant_size / 2,
-				(surface_y - 2) * _builder_args.quadrant_size + _builder_args.quadrant_size / 2
-		)
-		_player.global_position = spawn_pos
+	var spawn_x: int = int(_builder_args.grid_size.x / 2)
+	var surface_y: int = _world_generator.get_surface_height_at(spawn_x)
+	var spawn_pos: Vector2 = Vector2(
+		spawn_x * _builder_args.quadrant_size + _builder_args.quadrant_size / 2,
+		(surface_y - 2) * _builder_args.quadrant_size + _builder_args.quadrant_size / 2
+	)
+	_player.global_position = spawn_pos
 
 func _on_terminate_button_pressed() -> void:
-		GameManager.emit_level_completed(Constants.ERROR_210)
+	GameManager.emit_level_completed(Constants.ERROR_210)
