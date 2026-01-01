@@ -6,7 +6,7 @@ class_name WorldGenArgs extends Resource
 @export_category("Mining Game Mode Parameters")
 @export var quadrant_size: int = 200
 ## The size of the grid in quadrants
-@export var grid_size: Vector2 = Vector2(6, 6)
+@export var grid_size: Vector2i = Vector2i(6, 6)
 ## Shape of the map grid
 @export var map_shape: Constants.MapShape = Constants.MapShape.Square
 ## The texture used to draw the quadrants
@@ -53,4 +53,4 @@ var level_index: int = 0
 
 
 func get_initial_quadrant_health() -> float:
-		return initial_health
+                return initial_health

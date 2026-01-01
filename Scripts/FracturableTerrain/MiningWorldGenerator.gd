@@ -82,9 +82,34 @@ func _setup_noise() -> void:
         _cave_noise.fractal_gain = 0.5
 
 func generate_world(builder_args: WorldGenArgs) -> void:
+        if not builder_args:
+                push_error("MiningWorldGenerator: builder_args is null")
+                return
+        
+        if not terrain_block_template:
+                push_error("MiningWorldGenerator: terrain_block_template must be set before generate_world()")
+                return
+        
+        if not quadrant_nodes_parent:
+                push_error("MiningWorldGenerator: quadrant_nodes_parent must be set before generate_world()")
+                return
+        
         _initial_health = builder_args.initial_health
         quadrant_size = Vector2i(builder_args.quadrant_size, builder_args.quadrant_size)
-        grid_size = builder_args.grid_size
+        
+        var args_grid_size = builder_args.grid_size
+        if args_grid_size is Vector2:
+                grid_size = Vector2i(int(args_grid_size.x), int(args_grid_size.y))
+        elif args_grid_size is Vector2i:
+                grid_size = args_grid_size
+        else:
+                grid_size = Vector2i(32, 32)
+        
+        if grid_size.x <= 0 or grid_size.y <= 0:
+                push_warning("MiningWorldGenerator: Invalid grid_size %s, using defaults" % grid_size)
+                grid_size = Vector2i(32, 32)
+        
+        print("MiningWorldGenerator: Generating world with grid_size=%s, quadrant_size=%s" % [grid_size, quadrant_size])
         
         _quadrant_positions.clear()
         _terrain_map.clear()
@@ -96,6 +121,7 @@ func generate_world(builder_args: WorldGenArgs) -> void:
         _spawn_terrain_blocks()
         _setup_world_bounds()
         
+        print("MiningWorldGenerator: Generation complete. Created %d blocks." % _quadrant_positions.size())
         generation_complete.emit(_map_bounds)
 
 func _generate_surface_heights() -> void:
@@ -182,7 +208,11 @@ func _is_world_border(cell: Vector2i) -> bool:
         return cell.x == 0 or cell.x == grid_size.x - 1
 
 func _spawn_border_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer) -> void:
-        if not terrain_block_template or not quadrant_nodes_parent:
+        if not terrain_block_template:
+                push_error("MiningWorldGenerator: terrain_block_template is null")
+                return
+        if not quadrant_nodes_parent:
+                push_error("MiningWorldGenerator: quadrant_nodes_parent is null")
                 return
         
         var block: TerrainBlock = terrain_block_template.instantiate()
@@ -206,7 +236,11 @@ func _spawn_border_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer) -> v
                 block.self_modulate = Color(0.3, 0.3, 0.35, 1.0)
 
 func _spawn_terrain_block(cell: Vector2i, pos: Vector2, layer: TerrainLayer, vein_pending: Dictionary) -> void:
-        if not terrain_block_template or not quadrant_nodes_parent:
+        if not terrain_block_template:
+                push_error("MiningWorldGenerator: terrain_block_template is null in _spawn_terrain_block")
+                return
+        if not quadrant_nodes_parent:
+                push_error("MiningWorldGenerator: quadrant_nodes_parent is null in _spawn_terrain_block")
                 return
         
         var block: TerrainBlock = terrain_block_template.instantiate()
