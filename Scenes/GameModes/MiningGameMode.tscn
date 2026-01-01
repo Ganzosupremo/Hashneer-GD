@@ -40,7 +40,6 @@ metadata/_custom_type_script = "uid://so4m0io4gjtt"
 
 [sub_resource type="Resource" id="Resource_qcel0"]
 script = ExtResource("6_ooyxa")
-max_depth_layers = 25
 metadata/_custom_type_script = "uid://b10l2432jafo7"
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
@@ -57,6 +56,8 @@ bg_color = Color(0.02, 0.02, 0.04, 0.95)
 [node name="MiningGameMode" type="Node2D"]
 script = ExtResource("1_wooh0")
 music = SubResource("Resource_ao83a")
+quadrant_size = Vector2i(50, 50)
+grid_size = Vector2i(25, 25)
 depth_config = SubResource("Resource_qcel0")
 
 [node name="WorldBorders" parent="." instance=ExtResource("2_resba")]

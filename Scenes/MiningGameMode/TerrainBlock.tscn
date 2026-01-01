@@ -10,7 +10,7 @@
 
 [sub_resource type="Resource" id="Resource_32tv1"]
 script = ExtResource("5_edect")
-guaranteed_drops = 1
+guaranteed_drops = 2
 metadata/_custom_type_script = "uid://bopjfk7oa47k2"
 
 [node name="TerrainBlock" instance=ExtResource("1_7xph5")]
