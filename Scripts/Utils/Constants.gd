@@ -39,6 +39,9 @@ enum EnemyType {
 		TELEPORTER,
 		HEALER,
 		SPINNER,
+		MONEY_PRINTER,
+		SHIELDED_BANKER,
+		MEMPOOL_SPAMMER,
 }
 
 enum ShakeMagnitude {

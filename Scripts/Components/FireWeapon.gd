@@ -138,7 +138,7 @@ func _trigger_camera_shake() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.get_player_camera().start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+	GameManager.get_main_camera().start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
 	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
 	
 	if !_laser_beam:

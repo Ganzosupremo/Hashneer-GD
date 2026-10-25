@@ -41,6 +41,8 @@ var level_index: int = 0
 @export var wave_spawn_time: float = 5.0
 ## Number of enemy kills required before boss spawns
 @export var kills_to_spawn_boss: int = 40
+## Bosses for this level, used in order (boss 1, boss 2, ...) and repeated. Empty uses the default boss.
+@export var boss_scenes: Array[PackedScene] = []
 ## This is used to determine how many drops the enemies will drop
 @export var enemy_drops_count: int = 5
 ## This value multiplies the enemy damage each level

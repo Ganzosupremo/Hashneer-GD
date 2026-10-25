@@ -1,0 +1,69 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Scripts/Enemies/Attack51Boss.gd" id="2_script"]
+[ext_resource type="Resource" uid="uid://bl3gcxc42ryaw" path="res://Resources/Audio/BossDeath.tres" id="3_death"]
+[ext_resource type="Resource" uid="uid://bg7tdmtbw2iis" path="res://Resources/Audio/BossHurt.tres" id="4_hurt"]
+[ext_resource type="Resource" uid="uid://xo74ypflhafb" path="res://Resources/Audio/BossHeal.tres" id="5_heal"]
+[ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="6_drop"]
+[ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="7_table"]
+
+[sub_resource type="Resource" id="Resource_drop_a"]
+script = ExtResource("6_drop")
+drop_path = "uid://beswcfw4ytxol"
+odds = 0.25
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_drop_b"]
+script = ExtResource("6_drop")
+drop_path = "uid://bjdc26h1h0pfv"
+metadata/_custom_type_script = "uid://daksr3jumc0af"
+
+[sub_resource type="Resource" id="Resource_table"]
+script = ExtResource("7_table")
+possible_drops = Array[ExtResource("6_drop")]([SubResource("Resource_drop_a"), SubResource("Resource_drop_b")])
+guaranteed_drops = 1
+metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dmg"]
+radius = 60.0
+
+[node name="Attack51Boss" instance=ExtResource("1_base")]
+mass = 10.0
+script = ExtResource("2_script")
+clone_count = 2
+clone_size_scale = 0.55
+split_health_percent = 0.51
+charge_cooldown_range = Vector2(1.2, 2.5)
+charge_duration = 0.6
+charge_speed = 850.0
+charge_damage_range = Vector2(18, 40)
+invincible_time = 0.25
+color_default = Color(0.9, 0.15, 0.15, 1)
+knockback_resistance_base = 2.0
+shape_area_percent = 0.01
+fractures = 15
+collision_damage = Vector2(5, 10)
+collision_knockback_time = 0.05
+find_new_target_pos_tolerance = 10.0
+target_reached_tolerance = 25.0
+target_pos_interval_range = Vector2(10, 15)
+keep_distance_range = Vector2(1, 1)
+use_custom_pathfinding = true
+sound_on_hurt = ExtResource("4_hurt")
+sound_on_dead = ExtResource("3_death")
+sound_on_heal = ExtResource("5_heal")
+polygon_shape = 1
+rectangle_size = Vector2(170, 170)
+
+[node name="RandomDrops" parent="."]
+drops_table = SubResource("Resource_table")
+
+[node name="DamageArea" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 128
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
+shape = SubResource("CircleShape2D_dmg")
+
+[connection signal="area_entered" from="DamageArea" to="." method="_on_damage_area_area_entered"]

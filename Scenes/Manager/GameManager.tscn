@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=88 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="PackedScene" uid="uid://7c0kkjaw4yai" path="res://Scenes/VFX/VFXManager.tscn" id="1_vfxman"]
@@ -13,6 +13,9 @@
 [ext_resource type="Texture2D" uid="uid://cgp31vjtrt14u" path="res://Textures/FracturableBodies/BlockCoreTexture.png" id="9_qgubg"]
 [ext_resource type="Script" uid="uid://b2ne6r8s160qn" path="res://Scripts/Resources/WavePhase.gd" id="10_f24ny"]
 [ext_resource type="Script" uid="uid://d2ustuibdi8sb" path="res://Scripts/Resources/WaveComposition.gd" id="11_o0qoy"]
+[ext_resource type="PackedScene" uid="uid://bv36oct4uiv5w" path="res://Scenes/Enemies/SquareBoss.tscn" id="20_squareboss"]
+[ext_resource type="PackedScene" path="res://Scenes/Enemies/Attack51Boss.tscn" id="21_attack51"]
+[ext_resource type="PackedScene" path="res://Scenes/Enemies/FedBoss.tscn" id="22_fedboss"]
 
 [sub_resource type="Resource" id="Resource_1wrq4"]
 script = ExtResource("6_1wrq4")
@@ -232,6 +235,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_vq5xj"]
 script = ExtResource("7_dsf0w")
 debug_name = "4"
+boss_scenes = Array[PackedScene]([ExtResource("20_squareboss"), ExtResource("21_attack51")])
 quadrant_size = 360
 grid_size = Vector2(8, 8)
 quadrant_texture = ExtResource("9_qgubg")
@@ -282,6 +286,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_dxlcl"]
 script = ExtResource("7_dsf0w")
 debug_name = "5"
+boss_scenes = Array[PackedScene]([ExtResource("20_squareboss"), ExtResource("21_attack51")])
 quadrant_size = 380
 grid_size = Vector2(8, 8)
 quadrant_texture = ExtResource("9_1f4k2")
@@ -331,6 +336,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_46rwd"]
 script = ExtResource("7_dsf0w")
 debug_name = "6"
+boss_scenes = Array[PackedScene]([ExtResource("21_attack51"), ExtResource("20_squareboss")])
 quadrant_size = 400
 grid_size = Vector2(8, 8)
 quadrant_texture = ExtResource("9_qgubg")
@@ -375,6 +381,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_3ywsn"]
 script = ExtResource("7_dsf0w")
 debug_name = "7"
+boss_scenes = Array[PackedScene]([ExtResource("21_attack51"), ExtResource("22_fedboss")])
 quadrant_size = 420
 grid_size = Vector2(9, 9)
 quadrant_texture = ExtResource("9_1f4k2")
@@ -406,6 +413,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_mcmpw"]
 script = ExtResource("7_dsf0w")
 debug_name = "8"
+boss_scenes = Array[PackedScene]([ExtResource("21_attack51"), ExtResource("22_fedboss")])
 quadrant_size = 440
 grid_size = Vector2(9, 9)
 quadrant_texture = ExtResource("9_qgubg")
@@ -456,6 +464,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_2sqe8"]
 script = ExtResource("7_dsf0w")
 debug_name = "9"
+boss_scenes = Array[PackedScene]([ExtResource("22_fedboss"), ExtResource("21_attack51")])
 quadrant_size = 460
 grid_size = Vector2(10, 10)
 quadrant_texture = ExtResource("9_1f4k2")
@@ -507,6 +516,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [sub_resource type="Resource" id="Resource_o0qoy"]
 script = ExtResource("7_dsf0w")
 debug_name = "10"
+boss_scenes = Array[PackedScene]([ExtResource("22_fedboss"), ExtResource("21_attack51")])
 quadrant_size = 480
 grid_size = Vector2(10, 10)
 quadrant_texture = ExtResource("9_qgubg")
