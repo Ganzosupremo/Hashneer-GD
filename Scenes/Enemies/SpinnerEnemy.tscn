@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://b5l72vhnyb6ha"]
+[gd_scene load_steps=10 format=3 uid="uid://b5l72vhnyb6ha"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://sju5asbswhyc" path="res://Scripts/Enemies/SpinnerEnemy.gd" id="2_script"]
 [ext_resource type="Resource" uid="uid://dxgjejnnjd8a6" path="res://Resources/Weapons/Enemy/EnemyPistol.tres" id="3_weapon"]
 [ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
 [ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="5_norm"]
+[ext_resource type="Script" uid="uid://bmphh71yg4oct" path="res://Scripts/Components/ActiveWeapon.gd" id="6_active"]
+[ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="7_fire"]
+[ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="8_bus"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_spinner"]
 diffuse_texture = ExtResource("4_tex")
@@ -46,3 +49,28 @@ texture = SubResource("CanvasTexture_spinner")
 
 [node name="Line2D" parent="Shape3D" index="1"]
 default_color = Color(0.7, 0.2, 0.2, 1)
+
+[node name="ShotingMechanics" type="Node2D" parent="."]
+
+[node name="ActiveWeaponComponent" type="Node2D" parent="ShotingMechanics" index="0"]
+script = ExtResource("6_active")
+metadata/_custom_type_script = "uid://bmphh71yg4oct"
+
+[node name="FireWeapon" type="Node2D" parent="ShotingMechanics" index="1" node_paths=PackedStringArray("active_weapon_component")]
+script = ExtResource("7_fire")
+main_event_bus = ExtResource("8_bus")
+shake_camera_on_fire = false
+active_weapon_component = NodePath("../ActiveWeaponComponent")
+is_enemy_weapon = true
+use_object_pool = true
+
+[node name="FireCooldownTimer" type="Timer" parent="ShotingMechanics/FireWeapon" index="0"]
+unique_name_in_owner = true
+
+[node name="BulletFirePosition" type="Marker2D" parent="ShotingMechanics" index="2"]
+unique_name_in_owner = true
+position = Vector2(62, 0)
+
+[node name="ShootEffectPosition" type="Marker2D" parent="ShotingMechanics" index="3"]
+unique_name_in_owner = true
+position = Vector2(55, 0)

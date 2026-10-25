@@ -142,7 +142,7 @@ func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_posi
 	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
 	
 	if !_laser_beam:
-		var scene_to_use: PackedScene = ammo.laser_beam_scene
+		var scene_to_use: PackedScene = ammo.get_laser_beam_scene()
 		_laser_beam = scene_to_use.instantiate()
 		get_node(".").add_child(_laser_beam)
 		

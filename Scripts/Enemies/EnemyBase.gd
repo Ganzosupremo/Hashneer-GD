@@ -528,7 +528,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			polygon_restorer.addShape(cur_shape.shape, cur_shape.area)
 		setPolygon(cur_shape.shape)
 																																
-		AudioManager.create_2d_audio_at_location(global_position, sound_on_hurt.sound_type, sound_on_hurt.destination_audio_bus)
+		_play_sound(sound_on_hurt)
 		if _rng.randf() > 0.1:
 			apply_central_impulse(knockback_force)
 			knockback_timer = knockback_time
@@ -559,12 +559,17 @@ func spawn_extra_enemy(enemy: BaseEnemy, pos: Vector2) -> void:
 	enemy.global_position = pos
 	enemies_holder.add_child(enemy)
 
+## Plays [param sound] at the enemy position. Enemies without that sound stay silent.
+func _play_sound(sound: SoundEffectDetails) -> void:
+	if sound == null: return
+	AudioManager.create_2d_audio_at_location(global_position, sound.sound_type, sound.destination_audio_bus)
+
 func kill(system_despawn: bool = false) -> void:
 	Died.emit(self, global_position, system_despawn)
 	hide()
 								
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_DEATH, global_transform, death_vfx)
-	AudioManager.create_2d_audio_at_location(global_position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
+	_play_sound(sound_on_dead)
 								
 	if !system_despawn:
 		for i in range(drops_count):
@@ -582,7 +587,7 @@ func heal(heal_amount : float) -> void:
 		cur_area = start_area
 		_health_component.heal(start_area)
 		_hit_flash_anim_player.play("heal")
-		AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
+		_play_sound(sound_on_heal)
 		_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 																																
 		if !hasRegeneration(): return
@@ -630,7 +635,7 @@ func restore() -> void:
 		_health_component.set_current_health(area)
 																
 	_hit_flash_anim_player.play("heal")
-	AudioManager.create_2d_audio_at_location(global_position, sound_on_heal.sound_type, sound_on_heal.destination_audio_bus)
+	_play_sound(sound_on_heal)
 	_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 																
 	if hasRegeneration():

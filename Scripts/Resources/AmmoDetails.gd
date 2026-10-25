@@ -72,7 +72,10 @@ enum BulletPattern {
 ## Chance (0 to 1) that an explosive bullet fizzles instead of exploding.
 @export_range(0.0, 1.0, 0.05) var explosion_fail_chance: float = 0.1
 @export_subgroup("Laser Bullet Parameters")
-@export var laser_beam_scene: PackedScene = preload("res://Scenes/WeaponSystem/LaserBeam.tscn")
+## The laser beam scene. Empty uses [constant DEFAULT_LASER_BEAM_SCENE].
+## Not preloaded: a preload here makes a load cycle (LaserBeam -> WavesGameMode -> enemy scenes -> this script)
+## that leaves the ammo of enemy weapons null.
+@export var laser_beam_scene: PackedScene
 ## The length of the laser beam, only applicable if the bullet type is [BulletType.LASER].
 @export var laser_length: float = 300.0
 ## The cooldown time between laser beam hits, only applicable if the bullet type is [BulletType.LASER].
@@ -120,6 +123,13 @@ const implements = [
 ]
 
 #region IUpgradeable Interface Implementation
+const DEFAULT_LASER_BEAM_SCENE: String = "res://Scenes/WeaponSystem/LaserBeam.tscn"
+
+func get_laser_beam_scene() -> PackedScene:
+	if laser_beam_scene == null:
+		laser_beam_scene = load(DEFAULT_LASER_BEAM_SCENE)
+	return laser_beam_scene
+
 func get_upgrade_id() -> String:
 	if _chached_id.is_empty():
 		_chached_id = _generate_id_from_path()
