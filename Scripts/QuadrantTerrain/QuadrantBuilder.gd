@@ -80,15 +80,15 @@ func fracture_quadrant_on_collision(pos : Vector2, other_body: FracturableStatic
 	var cut_shape: PackedVector2Array = _polygon_fracture.generateRandomPolygon(Vector2(100,50) * p, Vector2(8,32), Vector2.ZERO)
 	_spawn_cut_visualizers(pos, cut_shape, 10.0)
 	
+	# A block already cut this frame is waiting to be freed; hitting it again would cut it twice.
+	if other_body.is_queued_for_deletion(): return
 	if !other_body.take_damage(bullet_damage):
 		return
 	
-	if _fracture_disabled: return
-	_fracture_disabled = true
+	# No global per-frame lock here: it dropped every other block killed in the same frame (shotgun
+	# pellets), leaving it at 0 health and uncut until it was hit again.
 	_cut_polygons(other_body, pos, cut_shape, 45.0, 10.0)
 	other_body.random_drops.spawn_drops(1)
-	
-	set_deferred("_fracture_disabled", false)
 
 ## Fractures the block core at the given position with the specified parameters.[br]
 ## [param bullet_damage]: The damage to deal to the block core.[br]
@@ -353,7 +353,7 @@ func _cut_polygons(source: Node2D, cut_pos: Vector2, cut_shape : PackedVector2Ar
 	
 	var s_mass : float = 1.0
 	
-	var cut_fracture_info: Dictionary = _polygon_fracture.cutFracture(source_polygon, cut_shape, source_transform, cut_transform, 1000.0, 500.0, 100.0, 21)
+	var cut_fracture_info: Dictionary = _polygon_fracture.cutFracture(source_polygon, cut_shape, source_transform, cut_transform, 1000.0, 100.0, 100.0, 21)
 	
 	if cut_fracture_info.shapes.size() <= 0 and cut_fracture_info.fractures.size() <= 0:
 		print('empty dictionary')
@@ -384,6 +384,10 @@ func _spawn_fracture_shards(fracture_shard : Dictionary, texture_info : Dictiona
 	instance_fbody.spawn(fracture_shard.spawn_pos, fracture_shard.spawn_rot, fracture_shard.source_global_trans.get_scale(), life_time)
 	instance_fbody.setPolygon(fracture_shard.centered_shape, _cur_fracture_color, PolygonLib.setTextureOffset(texture_info, fracture_shard.centroid))
 	instance_fbody.setMass(new_mass)
+	# Small outward burst (the speed does not depend on the mass), so the shards visibly break off.
+	var dir : Vector2 = (fracture_shard.spawn_pos - fracture_shard.source_global_trans.get_origin()).normalized()
+	instance_fbody.addForce(dir.rotated(_rng.randf_range(-0.6, 0.6)) * _rng.randf_range(60.0, 180.0) * new_mass)
+	instance_fbody.addTorque(_rng.randf_range(-6.0, 6.0))
 
 # Spawns a little polygon cut that serves as feedback to the _player on where the collision happened.
 # @param pos The position where the cut occurred.

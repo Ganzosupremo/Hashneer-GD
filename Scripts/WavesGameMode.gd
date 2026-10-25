@@ -220,16 +220,23 @@ func spawnShapeVisualizer(cut_pos : Vector2, cut_shape : PackedVector2Array, col
 	instance.setColor(Color(color.r, color.g, color.b, 0.45), Color(color.r, color.g, color.b, 0.45))
 	instance.setPolygon(cut_shape)
 
-func spawnFractureBody(fracture_shard : Dictionary, new_mass : float, color : Color, _fracture_force : float, _p : float) -> void:
+## Shards burst outwards from the enemy center at about [param fracture_force] px/s. The force used
+## to be the cut percent (~0.1) divided by the shard mass, so shards never moved and got lost under
+## the cut visualizer. [param _new_mass] is ignored: enemy masses vary too much to be a usable scale.
+func spawnFractureBody(fracture_shard : Dictionary, _new_mass : float, color : Color, fracture_force : float, _p : float) -> void:
 	var instance = _pool_fracture_shards.getInstance()
 	if not instance:
 		return
-								
+	
 	var dir : Vector2 = (fracture_shard.spawn_pos - fracture_shard.source_global_trans.get_origin()).normalized()
-	instance.spawn(fracture_shard.spawn_pos, fracture_shard.spawn_rot, fracture_shard.source_global_trans.get_scale(), _rng.randf_range(1.0, 3.0))
+	if dir == Vector2.ZERO:
+		dir = Vector2.RIGHT.rotated(_rng.randf() * TAU)
+	dir = dir.rotated(_rng.randf_range(-0.5, 0.5))
+	instance.spawn(fracture_shard.spawn_pos, fracture_shard.spawn_rot, fracture_shard.source_global_trans.get_scale(), _rng.randf_range(0.8, 1.8))
 	instance.setPolygon(fracture_shard.centered_shape, color, {})
-	instance.setMass(new_mass)
-	instance.addForce(dir * _p)
+	instance.setMass(1.0)
+	instance.addForce(dir * fracture_force * _rng.randf_range(0.6, 1.6))
+	instance.addTorque(_rng.randf_range(-10.0, 10.0))
 
 func _connect_enemy_signals(enemy: BaseEnemy) -> void:
 	if not enemy:

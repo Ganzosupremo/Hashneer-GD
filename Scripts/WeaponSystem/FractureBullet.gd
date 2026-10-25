@@ -80,6 +80,8 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, q_b: Quadra
 	self._remaining_bounce = ammo_data.get_total_bounce()
 	self._remaining_pierce = ammo_data.get_total_pierce()
 	self._bullet_type = ammo_data.bullet_type
+	# Pooled bullets keep the body they last touched; a fresh bullet must be able to hit it again.
+	self._last_collision_body = null
 
 	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)

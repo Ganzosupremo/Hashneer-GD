@@ -37,7 +37,8 @@ signal target_position_reached()
 @export var main_event_bus: MainEventBus
 
 @export_category("General")
-@export var invincible_time: float = 0.5
+## Seconds the enemy ignores hits after being cut. 0 = every hit cuts and fractures.
+@export var invincible_time: float = 0.0
 @export var color_default: Color = Color.ANTIQUE_WHITE
 ## 1.0 = no change. 2.0 means twice as fast over. 0.5 means takes longer twice as much
 @export_range(0.0, 2.0, 0.5, "or_greater") var knockback_resistance_base: float = 1.0
@@ -48,6 +49,9 @@ signal target_position_reached()
 @export_range(0.0, 1.0, 0.01, "or_greater") var shape_area_percent : float = 0.25
 @export var fractures: int = 2
 @export var fracture_force: float = 200.0
+## Cut pieces and fracture shards smaller than this (px²) are not spawned. Kept small so weak
+## bullets (shotgun pellets, minigun) still throw shards.
+@export var shard_min_area: float = 12.0
 
 @export_category("Collision")
 @export var collision_damage := Vector2(10, 20)
@@ -505,7 +509,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
 	var angle: float = (-knockback_force).angle()
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point), hit_vfx)
-	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
+	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, shard_min_area, shard_min_area, fractures)
 	# The cut missed the polygon (the hit point lands on the bullet, just outside the edge, and the
 	# damage is applied deferred). Nothing was removed, so the enemy must not die from it.
 	if not fracture_info.get("intersected", true):
@@ -551,7 +555,10 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_health_component.set_current_health(cur_shape.area)
 		_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 																																
-		_invincible_timer.start(invincible_time)
+		# Timer.start(0.0) keeps the old wait_time (1 s by default), so a 0 invincible_time
+		# made the enemy ignore every hit for a whole second.
+		if invincible_time > 0.0:
+			_invincible_timer.start(invincible_time)
 		if hasRegeneration() and canRegenerate():
 			_health_component.regenerate(self)
 

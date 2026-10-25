@@ -101,9 +101,12 @@ func _process(delta: float) -> void:
 			var shader_mat = _polygon2d.material as ShaderMaterial
 			shader_mat.set_shader_parameter("hit_effect", _hit_effect_timer / hit_effect_duration)
 	
-	# Handle regeneration delay timer
+	# Handle regeneration delay timer. absorb_damage only resets the delay, so regeneration has to be
+	# restarted here once it runs out (it never came back after the first hit before).
 	if can_regenerate and regen_timer > 0:
 		regen_timer -= delta
+		if regen_timer <= 0 and not destroyed and current_shield < max_shield:
+			_start_regeneration()
 		
 	# Follow parent entity (uncommented and improved)
 	if parent_entity and is_instance_valid(parent_entity):
@@ -167,13 +170,15 @@ func _on_regeneration_tick() -> void:
 	
 	# Apply regeneration
 	current_shield = min(current_shield + regeneration_amount, max_shield)
-	shield_changed.emit(current_shield)
+	shield_changed.emit(self, current_shield)
 	
 	# Continue regenerating if not fully healed
 	if current_shield < max_shield:
-		_start_regeneration()
+		_regeneration_timer.start()
 	else:
 		regeneration_active = false
+		# Fully healed: put back the unbroken polygon (fractures only ever shrank it)
+		_setup_shield_polygon(PolygonLib.createCirclePolygon(shield_radius, 16), true)
 		# Restore to full visibility when fully healed
 		if _polygon2d:
 			_polygon2d.visible = true
@@ -306,7 +311,7 @@ func _on_shield_healed(amount: float) -> void:
 
 func _on_health_changed(new_value: float) -> void:
 	# Emit shield-specific signal
-	shield_changed.emit(new_value)
+	shield_changed.emit(self, new_value)
 	
 	# Start regeneration if needed
 	if can_regenerate and regen_timer <= 0 and new_value < max_shield and not regeneration_active:
@@ -349,7 +354,7 @@ func reset_shield() -> void:
 	if _line2d:
 		_line2d.visible = true
 	
-	shield_changed.emit(current_shield)
+	shield_changed.emit(self, current_shield)
 
 func getCurColor() -> Color:
 	# Return the current shield color based on its state
