@@ -138,7 +138,8 @@ func get_available_upgrades() -> Array[ArmoryUpgradeData]:
 func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrade_power_per_level: float) -> void:
 	match upgrade_type:
 		Constants.ArmoryUpgradeType.AMMO_DAMAGE, Constants.ArmoryUpgradeType.AMMO_LASER_DAMAGE, Constants.ArmoryUpgradeType.AMMO_EXPLOSION_DAMAGE:
-			_apply_upgrade_modifier("damage_upgrade", level, upgrade_power_per_level)
+			# One modifier per damage upgrade, they add up in get_final_damage()
+			_apply_upgrade_modifier("damage_upgrade_%d" % upgrade_type, level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.AMMO_SPEED:
 			_apply_upgrade_modifier("ammo_speed_upgrade", level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.AMMO_PIERCE_COUNT:
@@ -157,7 +158,8 @@ func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrad
 func _apply_upgrade_modifier(upgrade_name: String, level: int, upgrade_power_per_level: float) -> void:
 	if !upgrade_modifiers.has(upgrade_name):
 		upgrade_modifiers[upgrade_name] = 0.0
-	upgrade_modifiers[upgrade_name] += upgrade_power_per_level * level
+	# Set, not add: the full level is applied every time (on purchase and on load)
+	upgrade_modifiers[upgrade_name] = upgrade_power_per_level * level
 
 func get_current_stats() -> Dictionary:
 	var stats: Dictionary = {
@@ -166,10 +168,10 @@ func get_current_stats() -> Dictionary:
 		"Min Lifetime": str(min_lifetime),
 		"Max Lifetime": str(max_lifetime),
 		"Base Bullet Damage": str(bullet_damage),
-		"Bullet Damage Final": str(damage_final),
-		"Bullet Speed": str(bullet_speed),
-		"Explosion Radius": str(explosion_radius),
-		"Laser Length": str(laser_length),
+		"Bullet Damage Final": str(get_final_damage()),
+		"Bullet Speed": str(get_ammo_speed()),
+		"Explosion Radius": str(get_explosion_radius()),
+		"Laser Length": str(get_laser_length()),
 		"Laser Damage Cooldown": str(laser_damage_cooldown),
 		"Laser Collision Mask": str(laser_collision_mask),
 		"Size": str(size),
@@ -180,8 +182,8 @@ func get_current_stats() -> Dictionary:
 		"Trail Length": str(trail_length),
 		"Trail Width": str(trail_width),
 		"Fracture Force": str(fracture_force),
-		"Max Pierce Count": str(max_pierce_count),
-		"Max Bounce Count": str(max_bounce_count),
+		"Max Pierce Count": str(get_pierces()),
+		"Max Bounce Count": str(get_bounces()),
 		"Level": str(get_total_upgrade_level()),
 	}
 	return stats
@@ -211,11 +213,11 @@ func get_total_bounce() -> int:
 	var bounce_upgrade: int = upgrade_modifiers.get("bounce_upgrade", 0)
 	return max_bounce_count + bounce_upgrade
 
-## Returns the total upgrade level across all available upgrades.
+## Returns the total upgrade level bought across all available upgrades.
 func get_total_upgrade_level() -> int:
 	var total_level: int = 0
 	for upgrade in available_upgrades:
-		total_level += upgrade.upgrade_levels
+		total_level += PlayerStatsManager.get_armory_level(get_upgrade_id(), upgrade.upgrade_type)
 	return total_level
 
 ## Calculates the final damage dealt by the bullet based on global and weapon multipliers.[br]
@@ -223,7 +225,10 @@ func get_total_upgrade_level() -> int:
 ## [param weapon_multiplier]: The weapon-specific damage multiplier applied to this ammo.[br]
 ## Returns the final damage value after applying all multipliers and upgrades.
 func get_final_damage(global_multiplier_percent: float = 1.0, weapon_multiplier_percent: float = 0.0) -> float:
-	var damage_upgrade: float = upgrade_modifiers.get("damage_upgrade", 0.0)
+	var damage_upgrade: float = 0.0
+	for key in upgrade_modifiers:
+		if key.begins_with("damage_upgrade"):
+			damage_upgrade += upgrade_modifiers[key]
 	damage_final = bullet_damage * global_multiplier_percent * (1.0 + weapon_multiplier_percent) * (1.0 + damage_upgrade)
 	return damage_final
 

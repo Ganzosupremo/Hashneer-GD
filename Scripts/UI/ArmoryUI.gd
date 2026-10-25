@@ -52,7 +52,7 @@ func _update_stats_display() -> void:
 	_weapon_icon.texture = stats.get("Weapon Texture", null)
 	_weapon_description_label.text = _current_item.get_upgrade_description()
 	_fire_rate_label.text = "Fire Rate: {0}/sec".format([stats.get("ShotsPerSecond", 1.0)])
-	_damage_multiplier_label.text = "💥 Damage: " + stats.get("Damage", 0.0) + "x"
+	_damage_multiplier_label.text = "💥 Damage: %s per bullet (x%s)" % [stats.get("Damage", "0"), stats.get("DamageMultiplier", "1")]
 	_spread_label.text = "Spread: " + stats.get("Spread", 0.0)
 	_level_label.text = "Level: " + stats.get("Level", 0)
 
