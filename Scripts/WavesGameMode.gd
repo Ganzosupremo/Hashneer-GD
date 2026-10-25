@@ -81,6 +81,7 @@ func _ready() -> void:
 	_setup_navigation_region()
 	PathfindingManager.initialize_grid(_world_map_rect, 50)
 	_setup_wave_spawner()
+	Tutorial.show_once.call_deferred("waves")
 
 func _setup_navigation_region() -> void:
 	var nav_region = NavigationRegion2D.new()

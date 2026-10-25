@@ -23,6 +23,8 @@ func _ready() -> void:
 		id += 1
 
 	_add_mining_farm_ui()
+	_add_stats_screen()
+	Tutorial.show_once.call_deferred("skill_tree")
 	DebugLogger.info("SkillTreeManager initialized.")
 
 func _add_mining_farm_ui() -> void:
@@ -32,6 +34,16 @@ func _add_mining_farm_ui() -> void:
 	farm_ui.grow_horizontal = Control.GROW_DIRECTION_BEGIN
 	farm_ui.position.y = 73.0
 	farm_ui.new_epoch_requested.connect(start_new_epoch)
+
+func _add_stats_screen() -> void:
+	var stats_screen: StatsScreenUI = StatsScreenUI.new()
+	$FrontLayer.add_child(stats_screen)
+	var stats_button: Button = preload("res://Scenes/UI/CustomButtonNew.tscn").instantiate()
+	stats_button.custom_minimum_size = Vector2(140, 50)
+	stats_button.text = "Stats"
+	$FrontLayer/ButtonContainer.add_child(stats_button)
+	$FrontLayer/ButtonContainer.move_child(stats_button, 1)
+	stats_button.pressed.connect(stats_screen.open)
 
 ## Starts a new epoch (prestige): resets the chain, wallet, inflation, levels, upgrades and miners,
 ## and keeps the HODL points earned. See [method MiningFarm.start_new_epoch].

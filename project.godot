@@ -54,6 +54,8 @@ EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
 PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"
 MiningFarm="*res://Scripts/BitcoinNetwork/MiningFarm.gd"
 Achievements="*res://Scripts/BitcoinNetwork/Achievements.gd"
+GameStats="*res://Scripts/Autoload/GameStats.gd"
+Tutorial="*res://Scripts/Autoload/Tutorial.gd"
 
 [display]
 
