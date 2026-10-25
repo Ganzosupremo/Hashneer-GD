@@ -1,25 +1,33 @@
 class_name MiningFarmUI extends PanelContainer
 ## Skill tree panel for the [MiningFarm]: buy miners, see hashrate and fees, achievements and start a new epoch.
 ##
-## The panel is built in code and added by [SkillTreeManager].
+## The layout lives in [code]Scenes/UI/MiningFarmUI.tscn[/code], instanced by the skill tree scene.
+## Each miner button in [code]%MinerButtons[/code] has a [code]miner_id[/code] metadata matching an id in [constant MiningFarm.MINERS].
 
 ## Emitted when the player confirms starting a new epoch.
 signal new_epoch_requested()
 
-const FONT_SIZE: int = 10
+@onready var _hashrate_label: Label = %HashrateLabel
+@onready var _fees_label: Label = %FeesLabel
+@onready var _achievements_label: Label = %AchievementsLabel
+@onready var _epoch_label: Label = %EpochLabel
+@onready var _epoch_button: Button = %EpochButton
+@onready var _confirm_dialog: ConfirmationDialog = %ConfirmDialog
 
-var _hashrate_label: Label
-var _fees_label: Label
-var _epoch_label: Label
-var _achievements_label: Label
 var _miner_buttons: Dictionary = {}
-var _epoch_button: Button
-var _confirm_dialog: ConfirmationDialog
 
 
 func _ready() -> void:
-	theme = preload("res://game_main_theme.tres")
-	_build()
+	for button in %MinerButtons.get_children():
+		var miner_id: String = button.get_meta("miner_id", "")
+		var miner: Dictionary = _find_miner(miner_id)
+		if miner.is_empty():
+			push_warning("MiningFarmUI: button %s has unknown miner_id '%s'" % [button.name, miner_id])
+			continue
+		button.tooltip_text = "+%s TH/s" % str(miner.hashrate)
+		button.pressed.connect(_on_buy_miner_pressed.bind(miner_id))
+		_miner_buttons[miner_id] = button
+
 	BitcoinWallet.money_changed.connect(_on_state_changed)
 	MiningFarm.miner_bought.connect(_on_state_changed)
 	Achievements.achievement_unlocked.connect(_on_state_changed)
@@ -30,53 +38,11 @@ func _exit_tree() -> void:
 	MiningFarm.miner_bought.disconnect(_on_state_changed)
 	Achievements.achievement_unlocked.disconnect(_on_state_changed)
 
-func _build() -> void:
-	var margin: MarginContainer = MarginContainer.new()
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 8)
-	add_child(margin)
-	var vbox: VBoxContainer = VBoxContainer.new()
-	margin.add_child(vbox)
-
-	var title: Label = _label("Mining Farm")
-	title.add_theme_font_size_override("font_size", FONT_SIZE + 4)
-	vbox.add_child(title)
-
-	_hashrate_label = _label()
-	_fees_label = _label()
-	vbox.add_child(_hashrate_label)
-	vbox.add_child(_fees_label)
-
+func _find_miner(miner_id: String) -> Dictionary:
 	for miner in MiningFarm.MINERS:
-		var button: Button = Button.new()
-		button.add_theme_font_size_override("font_size", FONT_SIZE)
-		button.tooltip_text = "+%s TH/s" % str(miner.hashrate)
-		button.pressed.connect(_on_buy_miner_pressed.bind(miner.id))
-		vbox.add_child(button)
-		_miner_buttons[miner.id] = button
-
-	vbox.add_child(HSeparator.new())
-	_achievements_label = _label()
-	_achievements_label.mouse_filter = Control.MOUSE_FILTER_STOP
-	vbox.add_child(_achievements_label)
-	_epoch_label = _label()
-	vbox.add_child(_epoch_label)
-
-	_epoch_button = Button.new()
-	_epoch_button.add_theme_font_size_override("font_size", FONT_SIZE)
-	_epoch_button.pressed.connect(_on_epoch_button_pressed)
-	vbox.add_child(_epoch_button)
-
-	_confirm_dialog = ConfirmationDialog.new()
-	_confirm_dialog.title = "Start a new epoch?"
-	_confirm_dialog.confirmed.connect(func() -> void: new_epoch_requested.emit())
-	add_child(_confirm_dialog)
-
-func _label(text: String = "") -> Label:
-	var label: Label = Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", FONT_SIZE)
-	return label
+		if miner.id == miner_id:
+			return miner
+	return {}
 
 func _process(_delta: float) -> void:
 	# Fees and the network share change every second, keep the numbers live
@@ -85,6 +51,7 @@ func _process(_delta: float) -> void:
 
 func _refresh() -> void:
 	for miner in MiningFarm.MINERS:
+		if !_miner_buttons.has(miner.id): continue
 		var button: Button = _miner_buttons[miner.id]
 		var cost: float = MiningFarm.get_miner_cost(miner.id)
 		button.text = "%s x%d  ·  Buy $%s" % [miner.name, MiningFarm.get_owned(miner.id), Utils.format_currency(cost, true)]
@@ -109,6 +76,9 @@ func _on_buy_miner_pressed(miner_id: String) -> void:
 func _on_epoch_button_pressed() -> void:
 	_confirm_dialog.dialog_text = "Everything resets: blocks, wallet, upgrades, miners and inflation.\nYou keep %d new HODL points (one per square root of the BTC you hold)." % MiningFarm.get_points_for_new_epoch()
 	_confirm_dialog.popup_centered()
+
+func _on_confirm_dialog_confirmed() -> void:
+	new_epoch_requested.emit()
 
 func _on_state_changed(_a = null, _b = null) -> void:
 	_refresh()

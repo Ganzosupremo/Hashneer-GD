@@ -1,0 +1,94 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://d1vtbfiv1vtjl" path="res://Scripts/UI/MiningFarmUI.gd" id="1_farm"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+
+[node name="MiningFarmUI" type="PanelContainer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -14.0
+offset_top = 73.0
+offset_right = -14.0
+offset_bottom = 73.0
+grow_horizontal = 0
+theme = ExtResource("2_theme")
+script = ExtResource("1_farm")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Mining Farm"
+
+[node name="HashrateLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Hashrate: 0 TH/s (0.0% of network)"
+
+[node name="FeesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Fees: 0 BTC/h  ·  AI timer x1.00"
+
+[node name="MinerButtons" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="CpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "CPU Miner x0  ·  Buy $5K"
+metadata/miner_id = "cpu"
+
+[node name="GpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "GPU Rig x0  ·  Buy $60K"
+metadata/miner_id = "gpu"
+
+[node name="AsicButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "ASIC x0  ·  Buy $750K"
+metadata/miner_id = "asic"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="AchievementsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 0
+theme_override_font_sizes/font_size = 10
+text = "Achievements: 0/0"
+
+[node name="EpochLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Epoch 1  ·  HODL points 0 (+0% hashrate, +0% fiat)"
+
+[node name="EpochButton" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "New Epoch: mine every block first"
+
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Start a new epoch?"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/EpochButton" to="." method="_on_epoch_button_pressed"]
+[connection signal="confirmed" from="ConfirmDialog" to="." method="_on_confirm_dialog_confirmed"]

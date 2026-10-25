@@ -4,6 +4,7 @@ extends CanvasLayer
 ## Each tutorial is a list of pages shown in a panel at the bottom of the screen. The game is paused
 ## while a page is shown, so the AI miner timer and the enemies wait for the player.
 ## Seen tutorials are saved, [method reset] makes them show again.
+## The panel layout lives in [code]Scenes/UI/Tutorial.tscn[/code], which is the autoload.
 
 const TUTORIALS: Dictionary = {
 	"mining": [
@@ -37,17 +38,14 @@ var _pages: Array = []
 var _page_index: int = 0
 var _was_paused: bool = false
 
-var _panel: PanelContainer
-var _label: Label
-var _counter: Label
-var _next_button: Button
+@onready var _panel: PanelContainer = %Panel
+@onready var _label: Label = %PageLabel
+@onready var _counter: Label = %CounterLabel
+@onready var _next_button: Button = %NextButton
 
 
 func _ready() -> void:
 	add_to_group("PersistentNodes")
-	layer = 100
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	_build()
 
 ## Shows the tutorial with the given key if the player hasn't seen it yet.
 func show_once(key: String) -> void:
@@ -66,43 +64,6 @@ func reset() -> void:
 
 func is_showing() -> bool:
 	return _panel.visible
-
-func _build() -> void:
-	_panel = PanelContainer.new()
-	_panel.theme = preload("res://game_main_theme.tres")
-	_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER_BOTTOM, Control.PRESET_MODE_KEEP_SIZE, 40)
-	_panel.custom_minimum_size = Vector2(520, 0)
-	_panel.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	_panel.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	add_child(_panel)
-
-	var margin: MarginContainer = MarginContainer.new()
-	for side in ["left", "right", "top", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 12)
-	_panel.add_child(margin)
-	var vbox: VBoxContainer = VBoxContainer.new()
-	margin.add_child(vbox)
-
-	_label = Label.new()
-	_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_label.custom_minimum_size = Vector2(496, 0)
-	vbox.add_child(_label)
-
-	var buttons: HBoxContainer = HBoxContainer.new()
-	buttons.alignment = BoxContainer.ALIGNMENT_END
-	vbox.add_child(buttons)
-	_counter = Label.new()
-	_counter.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	buttons.add_child(_counter)
-	var skip: Button = Button.new()
-	skip.text = "Skip"
-	skip.pressed.connect(_close)
-	buttons.add_child(skip)
-	_next_button = Button.new()
-	_next_button.pressed.connect(_on_next_pressed)
-	buttons.add_child(_next_button)
-
-	_panel.hide()
 
 func _show_page() -> void:
 	_label.text = _pages[_page_index]

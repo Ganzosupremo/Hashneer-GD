@@ -1,0 +1,330 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://c8atpbyav2037" path="res://Scripts/UI/StatsScreenUI.gd" id="1_stats"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+
+[node name="StatsScreenUI" type="PanelContainer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_stats")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 19
+text = "Stats"
+horizontal_alignment = 1
+
+[node name="Columns" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="CurrentEpoch" type="GridContainer" parent="MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+columns = 2
+
+[node name="TimechainHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+modulate = Color(1, 0.75, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Timechain"
+
+[node name="TimechainHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+
+[node name="BlocksMinedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Blocks mined"
+
+[node name="BlocksMinedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BlockSubsidyName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Block subsidy"
+
+[node name="BlockSubsidyValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="HalvingsName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Halvings"
+
+[node name="HalvingsValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BtcMinedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "BTC mined"
+
+[node name="BtcMinedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BtcLostName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "BTC lost to the AI"
+
+[node name="BtcLostValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="LevelsUnlockedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Levels unlocked"
+
+[node name="LevelsUnlockedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="EconomyHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+modulate = Color(1, 0.75, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Economy"
+
+[node name="EconomyHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+
+[node name="WalletName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Wallet"
+
+[node name="WalletValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BtcPriceName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "BTC price"
+
+[node name="BtcPriceValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="InflationName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Inflation"
+
+[node name="InflationValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="MiningFarmHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+modulate = Color(1, 0.75, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "Mining Farm"
+
+[node name="MiningFarmHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+
+[node name="HashrateName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Hashrate"
+
+[node name="HashrateValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="FeesName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Fees"
+
+[node name="FeesValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="EpochName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Epoch"
+
+[node name="EpochValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="AchievementsName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Achievements"
+
+[node name="AchievementsValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="AllTime" type="GridContainer" parent="MarginContainer/VBoxContainer/Columns"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+columns = 2
+
+[node name="AlltimeHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+modulate = Color(1, 0.75, 0.2, 1)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "All time"
+
+[node name="AlltimeHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+
+[node name="BlocksMinedByYouName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Blocks mined by you"
+
+[node name="BlocksMinedByYouValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BlocksLostToAiName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Blocks lost to the AI"
+
+[node name="BlocksLostToAiValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BtcFromBlocksName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "BTC from blocks"
+
+[node name="BtcFromBlocksValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="BtcFromFeesName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "BTC from fees"
+
+[node name="BtcFromFeesValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="FiatReceivedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Fiat received"
+
+[node name="FiatReceivedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="HalvingsSurvivedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Halvings survived"
+
+[node name="HalvingsSurvivedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="LevelsPlayedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Levels played"
+
+[node name="LevelsPlayedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="PlayTimeName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "Play time"
+
+[node name="PlayTimeValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = "-"
+
+[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ReplayTutorialButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Replay tutorial"
+
+[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Close"
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/ReplayTutorialButton" to="." method="_on_replay_tutorial_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/CloseButton" to="." method="close"]
