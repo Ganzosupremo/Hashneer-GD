@@ -1,4 +1,4 @@
-extends Node2D
+class_name MiningGameMode extends Node2D
 @onready var player_bullets_pool: PoolFracture = $PlayerBulletsPool
 
 func _ready() -> void:
