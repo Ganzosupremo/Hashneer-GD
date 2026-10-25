@@ -653,7 +653,8 @@ func restore() -> void:
 		poly = PolygonLib.restorePolygon(_polygon.get_polygon(), start_poly, total_frame_heal_amount)
 		area = PolygonLib.getPolygonArea(poly)
 																
-	if area / start_area > _health_component.heal_treshold:
+	# The restorer stack ran out (more heals than saved shapes): that means back to the start shape.
+	if poly.size() < 3 or area / start_area > _health_component.heal_treshold:
 		cur_area = start_area
 		setPolygon(start_poly)
 		_health_component.set_current_health(start_area)
