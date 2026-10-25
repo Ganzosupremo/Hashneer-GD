@@ -245,11 +245,9 @@ func _connect_enemy_signals(enemy: BaseEnemy) -> void:
 								
 	_spawned_enemies_array.append(enemy)
 
-func on_enemy_damaged(enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
+func on_enemy_damaged(_enemy: BaseEnemy, pos : Vector2, shape : PackedVector2Array, color : Color, fade_speed : float) -> void:
+	# Shooting costs health only in mining mode; hitting enemies here is free.
 	spawnShapeVisualizer(pos, shape, color, fade_speed)
-	var base_dmg: float = randf_range(enemy.collision_damage.x, enemy.collision_damage.y)
-	var scaled: float = base_dmg * level_args.enemy_damage_multiplier
-	GameManager.get_player().damage(scaled, enemy.global_position)
 
 func on_enemy_fractured(_enemy: BaseEnemy, fracture_shard : Dictionary, new_mass : float, color : Color, fracture_force : float, p : float) -> void:
 	spawnFractureBody(fracture_shard, new_mass, color, fracture_force, p)
