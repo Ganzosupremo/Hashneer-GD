@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bjdc26h1h0pfv"]
 
-[ext_resource type="PhysicsMaterial" uid="uid://deqagbq7eod2b" path="res://samples/softbody2d/softbody2d_phys_bouncy.tres" id="1_cuxl8"]
+[ext_resource type="PhysicsMaterial" path="res://Resources/Item Drops/PickupBouncyPhysicsMaterial.tres" id="1_cuxl8"]
 [ext_resource type="Script" uid="uid://cswsevnw7pekp" path="res://addons/item_drops/pickups/pickup_2d.gd" id="1_ls16r"]
 [ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="2_cuxl8"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="3_k2hy4"]
