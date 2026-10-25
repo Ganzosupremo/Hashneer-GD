@@ -26,6 +26,12 @@ func add_weapon_to_list(weapon: WeaponDetails) -> void:
 		_weapons_list[i].weapon_index = i
 
 
+## Adds [param weapon] to the list if needed and makes it the current weapon.
+func equip_weapon(weapon: WeaponDetails) -> void:
+	add_weapon_to_list(weapon)
+	_current_weapon_index = _weapons_list.find(weapon) + 1
+	set_weapon(weapon)
+
 func select_next_weapon():
 	_current_weapon_index += 1
 	

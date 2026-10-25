@@ -50,6 +50,7 @@ FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 UpgradeService="*res://Scripts/Managers/UpgradeService.gd"
 NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
+FeatureTester="*res://Scenes/Debug/FeatureTester.tscn"
 EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
 PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"
 MiningFarm="*res://Scripts/BitcoinNetwork/MiningFarm.gd"
@@ -162,6 +163,11 @@ Test_input={
 thrust={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":32,"key_label":0,"unicode":32,"location":0,"echo":false,"script":null)
+]
+}
+Feature_Tester={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194332,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 
