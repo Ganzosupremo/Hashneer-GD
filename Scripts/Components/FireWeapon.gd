@@ -35,6 +35,9 @@ var current_weapon: WeaponDetails
 var quadrant_builder: QuadrantBuilder
 var current_pool: PoolFracture
 var _laser_beam: LaserBeam
+## Seconds the trigger has been held with the current weapon, used for spin up.
+var _trigger_held_time: float = 0.0
+var _trigger_held: bool = false
 
 func _ready() -> void:
 		quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
@@ -47,6 +50,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 		fire_rate_cooldown_timer -= delta
+		if _trigger_held:
+				_trigger_held_time += delta
+		else:
+				_trigger_held_time = 0.0
 
 func _enter_tree() -> void:
 		fire_weapon.connect(on_fire_weapon)
@@ -74,11 +81,18 @@ func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_m
 ## if it already exists, or creating a new laser beam instance if it does not.
 func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
 		var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-		current_weapon = active_weapon_component.get_current_weapon()
-		
+		var weapon: WeaponDetails = active_weapon_component.get_current_weapon()
+		if weapon != current_weapon:
+				_trigger_held_time = 0.0
+		current_weapon = weapon
+		_trigger_held = has_fired
+
+		if _laser_beam != null and !is_instance_valid(_laser_beam):
+				_laser_beam = null
+		# Handle laser beam termination on release or ammo change
+		if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
+
 		if ammo.bullet_type == AmmoDetails.BulletType.LASER:
-				# Handle laser beam termination on release or ammo change
-				if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
 				if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
 						# If the weapon is ready to fire, we can proceed with firing
 						_fire_laser(ammo, player_damage_multiplier, target_position)
@@ -203,7 +217,7 @@ func ready_to_fire(has_fired: bool, fired_previous_frame: bool) -> bool:
 ## This method is called to reset the cooldown timer after firing a weapon or when the weapon is not ready to fire.
 ## It sets the cooldown timer to the current weapon's fire cooldown value.
 func reset_cooldown_timer() -> void:
-	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown()
+	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown(_trigger_held_time)
 
 # Checks if the provided pool is valid for use.
 func _is_pool_valid(pool: PoolFracture) -> bool:

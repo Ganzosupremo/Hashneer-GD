@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="3_beam"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="4_hit"]
+
+[sub_resource type="Resource" id="Resource_laser_dmg"]
+script = ExtResource("2_upg")
+upgrade_type = 12
+upgrade_name = "Overclock the channel"
+upgrade_description = "+15% lightning damage"
+upgrade_levels = 8
+upgrade_power_per_level = 0.15
+base_cost = 180000.0
+cost_multiplier = 1.5
+requires_bitcoin = true
+bitcoin_base_cost = 4.0
+bitcoin_cost_multiplier = 1.3
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_laser_len"]
+script = ExtResource("2_upg")
+upgrade_type = 11
+upgrade_name = "Longer routes"
+upgrade_description = "+15% beam length"
+upgrade_levels = 4
+upgrade_power_per_level = 0.15
+base_cost = 120000.0
+cost_multiplier = 1.6
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+
+[resource]
+script = ExtResource("1_ammo")
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Resource_laser_dmg"), SubResource("Resource_laser_len")])
+ammo_name = "Lightning Channel"
+min_lifetime = 30.0
+max_lifetime = 30.0
+bullet_damage = 28.0
+bullet_type = 1
+laser_beam_scene = ExtResource("3_beam")
+laser_length = 650.0
+laser_damage_cooldown = 0.12
+laser_collision_mask = 3384
+trail_gradient = SubResource("Gradient_trail")
+trail_length = 0
+fracture_force = 6000.0
+bullet_hit_vfx = ExtResource("4_hit")
+is_child = true
+upgrade_description = "Instant payments, instant damage. Hold the trigger to keep the channel open."
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"

@@ -69,6 +69,8 @@ enum BulletPattern {
 ## The explosive bullet will deal damage to the targets within this radius
 @export var explosion_radius: float = 0.0
 @export_flags_2d_physics() var explosion_layer_mask: int = 1
+## Chance (0 to 1) that an explosive bullet fizzles instead of exploding.
+@export_range(0.0, 1.0, 0.05) var explosion_fail_chance: float = 0.1
 @export_subgroup("Laser Bullet Parameters")
 @export var laser_beam_scene: PackedScene = preload("res://Scenes/WeaponSystem/LaserBeam.tscn")
 ## The length of the laser beam, only applicable if the bullet type is [BulletType.LASER].

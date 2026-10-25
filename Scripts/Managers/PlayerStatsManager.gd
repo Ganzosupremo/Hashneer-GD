@@ -12,6 +12,9 @@ signal ability_unlocked(event: PlayerProgressEventBus.AbilityUnlockEvent)
 	"Sniper": preload("res://Resources/Weapons/Player/AWPSniper.tres"),
 	"Mini Uzi": preload("res://Resources/Weapons/Player/MiniUzis.tres"),
 	"Shotgun": preload("res://Resources/Weapons/Player/Shotgun.tres"),
+	"Laser": preload("res://Resources/Weapons/Player/LightningGun.tres"),
+	"Rocket Launcher": preload("res://Resources/Weapons/Player/HalvingRocket.tres"),
+	"Minigun": preload("res://Resources/Weapons/Player/AsicMinigun.tres"),
 }
 @export var ability_scenes_dictionary: Dictionary = {
 	"Block Core Finder": preload("res://Scenes/Player/Abilities/BlockCoreFinder.tscn"),
