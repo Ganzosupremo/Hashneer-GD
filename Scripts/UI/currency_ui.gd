@@ -7,52 +7,27 @@ signal currency_changed(currency: Constants.CurrencyType)
 @onready var btc_label: Label = %BitcoinLabel
 @onready var fiat_label: Label = %FiatLabel
 @onready var use_btc_button: CheckButton = %UseBTCButton
-@onready var _main_vbox: VBoxContainer = $MainContainer/MarginContainer/HBoxContainer
+@onready var _btc_price_label: Label = %BtcPriceLabel
+@onready var _inflation_label: Label = %InflationLabel
+@onready var _halving_label: Label = %HalvingLabel
+@onready var _buy_button: Button = %BuyButton
+@onready var _sell_button: Button = %SellButton
 
 ## Share of the balance traded each time an exchange button is pressed.
 const EXCHANGE_TRADE_SHARE: float = 0.25
 
 var skill_tree: SkillTreeManager = null
-var _btc_price_label: Label
-var _inflation_label: Label
-var _halving_label: Label
 
 func _ready() -> void:
 	skill_tree = get_tree().get_first_node_in_group("SkillsTree")
 	BitcoinWallet.money_changed.connect(_on_money_changed)
 	FED.inflation_applied.connect(_on_inflation_applied)
-	_build_exchange_ui()
+	_buy_button.tooltip_text = "Spend %d%% of your fiat on Bitcoin (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
+	_sell_button.tooltip_text = "Sell %d%% of your Bitcoin for fiat (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
 	_set_textes()
 
 func _exit_tree() -> void:
 	FED.inflation_applied.disconnect(_on_inflation_applied)
-
-## Builds the market info and the Fiat <-> BTC exchange buttons below the balances.
-func _build_exchange_ui() -> void:
-	var exchange: VBoxContainer = VBoxContainer.new()
-	exchange.name = "Exchange"
-	_main_vbox.add_child(exchange)
-
-	_btc_price_label = Label.new()
-	_inflation_label = Label.new()
-	_halving_label = Label.new()
-	for label in [_btc_price_label, _inflation_label, _halving_label]:
-		label.add_theme_font_size_override("font_size", 10)
-		exchange.add_child(label)
-
-	var buttons: HBoxContainer = HBoxContainer.new()
-	exchange.add_child(buttons)
-	var buy: Button = Button.new()
-	buy.text = "Buy ₿"
-	buy.tooltip_text = "Spend %d%% of your fiat on Bitcoin (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
-	buy.pressed.connect(_on_buy_btc_pressed)
-	var sell: Button = Button.new()
-	sell.text = "Sell ₿"
-	sell.tooltip_text = "Sell %d%% of your Bitcoin for fiat (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
-	sell.pressed.connect(_on_sell_btc_pressed)
-	for button in [buy, sell]:
-		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		buttons.add_child(button)
 
 func _update_market_labels() -> void:
 	_btc_price_label.text = "1 ₿ = $%s" % Utils.format_currency(BitcoinWallet.get_btc_price_in_fiat(), true)

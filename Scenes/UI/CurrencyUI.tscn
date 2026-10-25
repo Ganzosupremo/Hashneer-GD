@@ -131,4 +131,42 @@ texture = ExtResource("3_xvf2x")
 expand_mode = 1
 stretch_mode = 5
 
+[node name="Exchange" type="VBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+
+[node name="BtcPriceLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/Exchange"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "1 ₿ = $20K"
+
+[node name="InflationLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/Exchange"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Inflation: +4%/block (x1.00)"
+
+[node name="HalvingLabel" type="Label" parent="MainContainer/MarginContainer/HBoxContainer/Exchange"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Next halving in 2 blocks"
+
+[node name="Buttons" type="HBoxContainer" parent="MainContainer/MarginContainer/HBoxContainer/Exchange"]
+layout_mode = 2
+
+[node name="BuyButton" type="Button" parent="MainContainer/MarginContainer/HBoxContainer/Exchange/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Buy ₿"
+
+[node name="SellButton" type="Button" parent="MainContainer/MarginContainer/HBoxContainer/Exchange/Buttons"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sell ₿"
+
 [connection signal="toggled" from="MainContainer/MarginContainer/HBoxContainer/CurrencyToggle/HBoxContainer/UseBTCButton" to="." method="_on_use_btc_button_toggled"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Exchange/Buttons/BuyButton" to="." method="_on_buy_btc_pressed"]
+[connection signal="pressed" from="MainContainer/MarginContainer/HBoxContainer/Exchange/Buttons/SellButton" to="." method="_on_sell_btc_pressed"]

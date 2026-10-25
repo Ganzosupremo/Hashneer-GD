@@ -1,4 +1,4 @@
-[gd_scene load_steps=65 format=3 uid="uid://ckholw4dvrb5w"]
+[gd_scene load_steps=67 format=3 uid="uid://ckholw4dvrb5w"]
 
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
@@ -46,6 +46,8 @@
 [ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="53_lightning_tex"]
 [ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/HalvingRocket.png" id="54_rocket_tex"]
 [ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/AsicMinigun.png" id="55_minigun_tex"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/MiningFarmUI.tscn" id="56_farm_ui"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/StatsScreenUI.tscn" id="57_stats_ui"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
 shuffle = true
@@ -217,6 +219,11 @@ focus_neighbor_bottom = NodePath(".")
 theme_type_variation = &"ModernQuitButton"
 text = "Quit Game"
 
+[node name="StatsButton" parent="FrontLayer/ButtonContainer" instance=ExtResource("21_custom")]
+custom_minimum_size = Vector2(140, 50)
+layout_mode = 2
+text = "Stats"
+
 [node name="StartGame" parent="FrontLayer/ButtonContainer" instance=ExtResource("21_custom")]
 custom_minimum_size = Vector2(160, 50)
 layout_mode = 2
@@ -229,6 +236,10 @@ offset_right = 214.0
 offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
+
+[node name="MiningFarmUI" parent="FrontLayer" instance=ExtResource("56_farm_ui")]
+
+[node name="StatsScreenUI" parent="FrontLayer" instance=ExtResource("57_stats_ui")]
 
 [node name="Settings" parent="FrontLayer" instance=ExtResource("22_u5dcr")]
 visible = false
@@ -597,3 +608,5 @@ script = ExtResource("41_g7g25")
 
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]
+[connection signal="pressed" from="FrontLayer/ButtonContainer/StatsButton" to="FrontLayer/StatsScreenUI" method="open"]
+[connection signal="new_epoch_requested" from="FrontLayer/MiningFarmUI" to="." method="start_new_epoch"]
