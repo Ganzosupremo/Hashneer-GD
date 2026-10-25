@@ -188,6 +188,9 @@ var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	var new_polygon : PackedVector2Array = _createPolygonShape()
+	# The shape formulas only estimate the area (a spiky super shape is much smaller than PI*a*b),
+	# so use the real one. Health, death threshold and shard masses all depend on it.
+	start_area = PolygonLib.getPolygonArea(new_polygon)
 	start_poly = new_polygon
 	setPolygon(start_poly)
 	GameManager.get_player().get_health_node().zero_health.connect(_on_player_health_zero)
@@ -283,40 +286,41 @@ func _physics_process(delta):
 			if not pathfinding_node.is_navigation_finished():
 				var next_path_pos = pathfinding_node.get_next_path_position()
 				input = (next_path_pos - global_position).normalized()
-			else:
-				input = Vector2.ZERO
+			# No path yet (map not synced) or the target is outside the navigation region: go straight.
+			if input == Vector2.ZERO:
+				input = _get_direct_direction(cur_target_pos)
 		elif use_custom_pathfinding and PathfindingManager.is_pathfinding_grid_valid():
 			input = _get_pathfinding_direction(delta, cur_target_pos)
 		else:
-			var target_vec: Vector2 = cur_target_pos - global_position
-			var dis : float = target_vec.length_squared()
-
-			if dis > target_reached_tolerance_sq:
-				input = target_vec.normalized()
+			input = _get_direct_direction(cur_target_pos)
 
 		if use_flocking and input != Vector2.ZERO:
 			var flocking_force = _calculate_flocking_force()
 			input = (input + flocking_force).normalized()
 				
-	# Setting velocity towards target
-	if use_pathfinding and pathfinding_node:
-		desired_velocity = input * max_speed
-		pathfinding_node.velocity = desired_velocity
+	# Setting velocity towards target. The NavigationAgent2D only gives the direction: its avoidance
+	# (velocity_computed) is not enabled, so handing it the velocity left the enemy standing still.
+	desired_velocity = input * max_speed
+	if input != Vector2.ZERO:
+		var increase : Vector2 = input * getCurAccel() * delta
+		linear_velocity += increase
+		if linear_velocity.length_squared() > getCurMaxSpeedSq():
+			linear_velocity = linear_velocity.normalized() * getCurMaxSpeed()
 	else:
-		if input != Vector2.ZERO:
-			var increase : Vector2 = input * getCurAccel() * delta
-			linear_velocity += increase
-			if linear_velocity.length_squared() > getCurMaxSpeedSq():
-				linear_velocity = linear_velocity.normalized() * getCurMaxSpeed()
+		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * delta
+		if decrease.length_squared() >= linear_velocity.length_squared():
+			linear_velocity = Vector2.ZERO
 		else:
-			var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * delta
-			if decrease.length_squared() >= linear_velocity.length_squared():
-				linear_velocity = Vector2.ZERO
-			else:
-				linear_velocity -= decrease
+			linear_velocity -= decrease
 												
 	if rotate_towards_velocity:
 		global_rotation = linear_velocity.angle()
+
+func _get_direct_direction(target_position: Vector2) -> Vector2:
+	var target_vec: Vector2 = target_position - global_position
+	if target_vec.length_squared() > target_reached_tolerance_sq:
+		return target_vec.normalized()
+	return Vector2.ZERO
 
 func _get_pathfinding_direction(delta: float, target_position: Vector2) -> Vector2:
 	if !PathfindingManager.is_pathfinding_grid_valid():
@@ -501,6 +505,11 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	var angle: float = (-knockback_force).angle()
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point), hit_vfx)
 	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
+	# The cut missed the polygon (the hit point lands on the bullet, just outside the edge, and the
+	# damage is applied deferred). Nothing was removed, so the enemy must not die from it.
+	if not fracture_info.get("intersected", true):
+		_hit_flash_anim_player.play("hit-flash")
+		return {"percent_cut" : 0.0, "dead" : false}
 																
 	var p : float = cut_shape_area / cur_area
 	for fracture in fracture_info.fractures:

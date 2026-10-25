@@ -22,16 +22,23 @@ func _physics_process(delta: float) -> void:
 	if isKnockbackActive(): 
 		return
 	
-	_handle_screen_wrapping()
+	# Nobody assigns [member target] to spawned enemies, so flee from the player.
+	var threat: Node2D = target if hasTarget() else GameManager.get_player()
 	var input: Vector2 = Vector2.ZERO
 	
-	if target and !is_player_dead:
-		var to_target = target.global_position - global_position
+	if is_instance_valid(threat) and !is_player_dead:
+		var to_target = threat.global_position - global_position
 		var distance = to_target.length()
 		
 		if distance < flee_distance:
 			input = -to_target.normalized()
 	
+	# Out of danger: roam like every other enemy instead of standing still.
+	if input == Vector2.ZERO:
+		super._physics_process(delta)
+		return
+	
+	_handle_screen_wrapping()
 	if input != Vector2.ZERO:
 		var increase: Vector2 = input * getCurAccel() * delta
 		linear_velocity += increase
