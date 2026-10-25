@@ -10,6 +10,8 @@ signal health_changed(new_health: float)
 @export var has_shield: bool = false
 @export var shield: ShieldComponent
 var current_health: float = 0.0
+## Ignores all damage while true, used by the Feature Tester god mode.
+var invincible: bool = false
 
 func _ready() -> void:
 	current_health = max_health
@@ -28,6 +30,8 @@ func heal(amount_to_heal: float) -> void:
 	_update_health()
 
 func take_damage(damage: float) -> void:
+	if invincible:
+		return
 	var actual_damage = damage
 	
 	# If shield exists and is active, let it absorb damage first

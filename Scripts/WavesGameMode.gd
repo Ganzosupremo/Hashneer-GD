@@ -370,6 +370,13 @@ func _escalate_boss_threshold() -> void:
 								
 	print("Next boss (#%d) will spawn at %d kills" % [_boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
 
+## Spawns the next boss right away, as if the kill goal was reached. Returns false if a boss is already active.
+func force_next_boss() -> bool:
+	if _boss_tracker.boss_active:
+		return false
+	_spawn_boss()
+	return true
+
 func _on_boss_progress_bar_value_changed(value: float) -> void:
 	if value >= _boss_progress_bar.max_value and not _boss_tracker.boss_active:
 		_spawn_boss()

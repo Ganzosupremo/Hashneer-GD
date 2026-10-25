@@ -1,0 +1,129 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Debug/FeatureTester.gd" id="1_tester"]
+
+[sub_resource type="Theme" id="Theme_tester"]
+default_font_size = 14
+Button/font_sizes/font_size = 14
+CheckBox/font_sizes/font_size = 14
+Label/font_sizes/font_size = 14
+LineEdit/font_sizes/font_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.06, 0.07, 0.1, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.97, 0.58, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="FeatureTester" type="CanvasLayer"]
+process_mode = 3
+layer = 120
+script = ExtResource("1_tester")
+
+[node name="Panel" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -460.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 2
+theme = SubResource("Theme_tester")
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="VBox" type="VBoxContainer" parent="Panel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="Panel/VBox/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.97, 0.58, 0.1, 1)
+theme_override_font_sizes/font_size = 18
+text = "Feature Tester"
+
+[node name="CloseButton" type="Button" parent="Panel/VBox/Header"]
+layout_mode = 2
+tooltip_text = "Close (F1)"
+text = "X"
+
+[node name="ModeLabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Mode: -"
+
+[node name="Options" type="HBoxContainer" parent="Panel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="QuantityLabel" type="Label" parent="Panel/VBox/Options"]
+layout_mode = 2
+text = "Quantity"
+
+[node name="QuantitySpinBox" type="SpinBox" parent="Panel/VBox/Options"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "How many enemies to spawn, multiplies currency too"
+min_value = 1.0
+max_value = 50.0
+value = 1.0
+
+[node name="PauseCheckBox" type="CheckBox" parent="Panel/VBox/Options"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+tooltip_text = "Pauses the game while the panel is open, spawns appear when you close it"
+button_pressed = true
+text = "Pause game"
+
+[node name="SearchEdit" type="LineEdit" parent="Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "Search features..."
+clear_button_enabled = true
+
+[node name="Scroll" type="ScrollContainer" parent="Panel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Sections" type="VBoxContainer" parent="Panel/VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="EmptyLabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+text = "No features for this mode."
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="Panel/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.9, 0.6, 1)
+text = "F1 opens and closes the tester"
+autowrap_mode = 3
+
+[connection signal="pressed" from="Panel/VBox/Header/CloseButton" to="." method="_on_close_button_pressed"]
+[connection signal="toggled" from="Panel/VBox/Options/PauseCheckBox" to="." method="_on_pause_check_box_toggled"]
+[connection signal="text_changed" from="Panel/VBox/SearchEdit" to="." method="_on_search_edit_text_changed"]
