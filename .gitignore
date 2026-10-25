@@ -30,3 +30,5 @@ Logs_md/
 .config/
 .cache/
 venv/
+
+*.dll
