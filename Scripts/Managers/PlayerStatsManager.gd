@@ -46,6 +46,9 @@ var unlocked_weapons: Dictionary = {}
 ## This dictionary will store the unlocked abilities using [Constants.AbilityNames] as keys.
 var unlocked_abilities: Dictionary = {}
 
+## Armory upgrade levels bought, by item id (weapon or ammo) and upgrade type.
+var armory_levels: Dictionary = {}
+
 const SAVE_NAME: String = "player_stats"
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -120,8 +123,36 @@ func reset_upgrades() -> void:
 		upgrade_bonuses[key] = 0.0
 	stats_updated.emit()
 
-## Removes every bonus, weapon and ability bought in the skill tree, for a new epoch.
+#region Armory
+
+## Returns the armory level of an upgrade for a weapon or ammo item.
+func get_armory_level(item_id: String, upgrade_type: Constants.ArmoryUpgradeType) -> int:
+	return int(armory_levels.get(item_id, {}).get(str(upgrade_type), 0))
+
+## Stores the armory level of an upgrade, it is saved with the player stats.
+func set_armory_level(item_id: String, upgrade_type: Constants.ArmoryUpgradeType, level: int) -> void:
+	if !armory_levels.has(item_id):
+		armory_levels[item_id] = {}
+	armory_levels[item_id][str(upgrade_type)] = level
+
+## Applies the saved armory levels to the weapon and ammo resources, which only keep them in memory.
+func _apply_armory_levels() -> void:
+	for weapon in weapon_details_dictionary.values():
+		_apply_armory_levels_to(weapon)
+		if weapon.get_ammo_details():
+			_apply_armory_levels_to(weapon.get_ammo_details())
+
+func _apply_armory_levels_to(item: IUpgradeable) -> void:
+	for upgrade in item.get_available_upgrades():
+		var level: int = get_armory_level(item.get_upgrade_id(), upgrade.upgrade_type)
+		item.apply_upgrade(upgrade.upgrade_type, level, upgrade.upgrade_power_per_level)
+
+#endregion
+
+## Removes every bonus, weapon, ability and armory upgrade bought, for a new epoch.
 func reset_for_new_epoch() -> void:
+	armory_levels.clear()
+	_apply_armory_levels()
 	for key in upgrade_bonuses.keys():
 		upgrade_bonuses[key] = 0.0
 	for key in percent_bonuses.keys():
@@ -139,6 +170,7 @@ func _build_save_data() -> Dictionary:
 			"percent_bonuses": percent_bonuses,
 			"unlocked_weapons": unlocked_weapons.keys(),
 			"unlocked_abilities": unlocked_abilities.keys(),
+			"armory_levels": armory_levels,
 		}
 
 func load_data() -> void:
@@ -150,6 +182,8 @@ func load_data() -> void:
 		_load_saved_bonuses(percent_bonuses, true)
 		_load_unlocked_weapons(data["unlocked_weapons"])
 		_load_unlocked_abilities(data["unlocked_abilities"])
+		armory_levels = data.get("armory_levels", {})
+		_apply_armory_levels()
 
 func _load_saved_bonuses(data: Dictionary, is_percentage: bool = false) -> void:
 	for entry in data.keys():

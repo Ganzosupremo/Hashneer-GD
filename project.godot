@@ -20,7 +20,7 @@ config/version="0.0.4"
 config/tags=PackedStringArray("bitcoin")
 run/main_scene="res://Scenes/UI/MainMenu.tscn"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="Nigga_pls"
+config/custom_user_dir_name="Hasheneer"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/image="res://Textures/Disclaimer Hasheneer.png"
@@ -35,6 +35,7 @@ buses/default_bus_layout="uid://1ibwcs1mu46p"
 
 [autoload]
 
+UserDataMigration="*res://Scripts/Autoload/UserDataMigration.gd"
 UserSettings="*res://Scripts/Managers/UserSettings.gd"
 SaveSystem="*uid://144e28ew7g0f"
 PersistenceDataManager="*res://Scripts/PersistenceDataSystem/PersistenceDataManager.gd"

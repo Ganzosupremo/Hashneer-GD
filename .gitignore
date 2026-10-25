@@ -30,3 +30,4 @@ Logs_md/
 .config/
 .cache/
 venv/
+*.tmp

@@ -18,7 +18,7 @@ Hashneer is a Godot 4 project focused on Bitcoin themed gameplay. Players mine b
 - **Resources/** – Data assets such as stats, upgrades and audio streams used throughout the project.
 
 ## Building and Running
-1. Install [Godot 4.4](https://godotengine.org/) or later.
+1. Install [Godot 4.5](https://godotengine.org/) or later.
 2. Open this repository in Godot (`project.godot`).
 3. Press <kbd>F5</kbd> or use `godot4 --path .` to run.
 4. To build an export, configure the provided `export_presets.cfg` and use Godot's export dialog.

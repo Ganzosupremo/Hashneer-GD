@@ -10,7 +10,6 @@ class_name ArmoryManager extends Node2D
 ## [param new_level]: The new level of the item after the upgrade.
 signal item_upgraded(item_id: String, upgrade_type: Constants.ArmoryUpgradeType, new_level: int)
 
-var _upgrade_levels: Dictionary = {}  # Dictionary to hold upgrade levels for each item
 var _registered_items: Array[IUpgradeable] = []  # List of items that can be upgraded
 
 
@@ -154,9 +153,7 @@ func purchase_upgrade(upgrade_data: ArmoryUpgradeData, cost: float, bitcoin_cost
 ## [param upgrade_type]: The type of upgrade to retrieve the level for.[br]
 ## Returns the current upgrade level, or 0 if not set.
 func get_upgrade_level(item_id: String, upgrade_type: Constants.ArmoryUpgradeType) -> int:
-	if !_upgrade_levels.has(item_id):
-		_upgrade_levels[item_id] = {}
-	return _upgrade_levels[item_id].get(upgrade_type, 0)
+	return PlayerStatsManager.get_armory_level(item_id, upgrade_type)
 
 ## Returns the upgrade data for a specific item and upgrade type.[br]
 ## [param item]: The item implementing IUpgradeable.[br]
@@ -219,11 +216,9 @@ func get_weapon_with_ammo_upgrades(weapon: IUpgradeable) -> Dictionary:
 ## [param item_id]: The unique identifier for the item.[br]
 ## [param upgrade_type]: The type of upgrade to set the level for.[br]
 ## [param level]: The new level to set for the upgrade.[br]
-## This will create the entry in _upgrade_levels if it doesn't exist.
+## Levels are stored in [PlayerStatsManager] so they are saved with the game.
 func set_upgrade_level(item_id: String, upgrade_type: Constants.ArmoryUpgradeType, level: int) -> void:
-	if !_upgrade_levels.has(item_id):
-		_upgrade_levels[item_id] = {}
-	_upgrade_levels[item_id][upgrade_type] = level
+	PlayerStatsManager.set_armory_level(item_id, upgrade_type, level)
 
 
 #endregion
