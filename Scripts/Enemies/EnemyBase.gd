@@ -501,6 +501,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		Vector2.ZERO
 		)
 	var cut_shape_area : float = PolygonLib.getPolygonArea(cut_shape)
+	point = _snap_hit_point_to_polygon(point)
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
 	var angle: float = (-knockback_force).angle()
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point), hit_vfx)
@@ -554,6 +555,24 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 			_health_component.regenerate(self)
 
 	return {"percent_cut" : percent_cut , "dead" : isDead()}
+
+## Bullets report their own center, which sits outside the edge when they touch the enemy (and the
+## damage is applied deferred, after the enemy moved). A small cut there misses the polygon, so the
+## hit is moved to the closest point of the edge.
+func _snap_hit_point_to_polygon(point: Vector2) -> Vector2:
+	var poly: PackedVector2Array = _polygon.get_polygon()
+	if poly.size() < 3: return point
+	var local_point: Vector2 = to_local(point)
+	if Geometry2D.is_point_in_polygon(local_point, poly): return point
+	var closest: Vector2 = poly[0]
+	var closest_dis: float = INF
+	for i in poly.size():
+		var candidate: Vector2 = Geometry2D.get_closest_point_to_segment(local_point, poly[i], poly[(i + 1) % poly.size()])
+		var dis: float = candidate.distance_squared_to(local_point)
+		if dis < closest_dis:
+			closest_dis = dis
+			closest = candidate
+	return to_global(closest)
 
 ## Adds an enemy spawned by this one (minion, clone) at [param pos], so the game mode tracks it.
 func spawn_extra_enemy(enemy: BaseEnemy, pos: Vector2) -> void:
