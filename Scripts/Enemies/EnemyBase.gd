@@ -753,8 +753,12 @@ func setPolygon(new_polygon : PackedVector2Array, exclude_main_poly : bool = fal
 		_polygon.set_polygon(new_polygon)
 																
 	_hit_flash_poly.set_polygon(new_polygon)
-	new_polygon.append(new_polygon[0])
-	_line.points = new_polygon
+	# Close the outline on a copy: the array is shared with the caller (start_poly) and the deferred
+	# collision polygon, and a repeated closing point makes its convex decomposition fail, so bullets
+	# went through the enemy once it healed back to start_poly.
+	var outline: PackedVector2Array = new_polygon.duplicate()
+	outline.append(outline[0])
+	_line.points = outline
 
 #endregion
 
