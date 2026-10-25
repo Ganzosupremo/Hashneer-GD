@@ -512,10 +512,11 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_hit_flash_anim_player.play("hit-flash")
 		return {"percent_cut" : 0.0, "dead" : false}
 																
-	var p : float = cut_shape_area / cur_area
+	var area_ref : float = max(cur_area, 0.001)
+	var p : float = cut_shape_area / area_ref
 	for fracture in fracture_info.fractures:
 		for shard in fracture:
-			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
+			Fractured.emit(self, shard, mass * (shard.area / area_ref), getCurColor(), fracture_force, p)
 																
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
 		if hasRegeneration():
