@@ -11,6 +11,11 @@ var fiat_balance: float = 0.0
 var bitcoin_price: float = 0.0
 var static_bitcoin_price: float = 95_000.0
 
+## In-game price of 1 BTC in fiat before any inflation or halving.
+const BASE_BTC_PRICE_IN_FIAT: float = 20_000.0
+## Fee the exchange keeps on every trade, in both directions.
+const EXCHANGE_FEE: float = 0.05
+
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
 ]
@@ -61,13 +66,38 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 	money_changed.emit(bitcoin_balance, Constants.CurrencyType.BITCOIN)
 	return true
 
-## exchanges the fiat currency to Bitcoin
-func fiat_to_bitcoin(fiat_amount: float) -> float:
-	return fiat_amount / bitcoin_price
+## In-game price of 1 BTC in fiat. It rises with fiat inflation and with every halving,
+## mirroring how Bitcoin prices in the skill tree drop (see [method Timechain.get_deflation_multiplier]).
+func get_btc_price_in_fiat() -> float:
+	return BASE_BTC_PRICE_IN_FIAT * FED.get_total_inflation() / BitcoinNetwork.get_deflation_multiplier()
 
-## exchanges Bitcoin to fiat currency
+## Returns how many BTC the given fiat buys on the exchange, after the fee.
+func fiat_to_bitcoin(fiat_amount: float) -> float:
+	return fiat_amount * (1.0 - EXCHANGE_FEE) / get_btc_price_in_fiat()
+
+## Returns how much fiat the given BTC sells for on the exchange, after the fee.
 func bitcoin_to_fiat(bitcoin_amount: float) -> float:
-	return bitcoin_amount * bitcoin_price
+	return bitcoin_amount * get_btc_price_in_fiat() * (1.0 - EXCHANGE_FEE)
+
+## Spends [param fiat_amount] on the exchange and adds the BTC bought to the wallet.
+## Returns the BTC bought, or 0 if the balance is too low.
+func buy_bitcoin(fiat_amount: float) -> float:
+	if fiat_amount <= 0.0 or !spend_fiat(fiat_amount):
+		return 0.0
+	var btc: float = fiat_to_bitcoin(fiat_amount)
+	add_bitcoin(btc)
+	return btc
+
+## Sells [param btc_amount] on the exchange and adds the fiat to the wallet.
+## Returns the fiat received, or 0 if the balance is too low.
+func sell_bitcoin(btc_amount: float) -> float:
+	if btc_amount <= 0.0 or btc_amount > bitcoin_balance:
+		return 0.0
+	bitcoin_balance -= btc_amount
+	money_changed.emit(bitcoin_balance, Constants.CurrencyType.BITCOIN)
+	var fiat: float = bitcoin_to_fiat(btc_amount)
+	add_fiat(fiat)
+	return fiat
 
 func get_fiat_balance() -> float:
 	return fiat_balance
@@ -82,7 +112,8 @@ func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"btc_holdings": bitcoin_balance,
 		"fiat_holdings": fiat_balance,
-		"btc_price": bitcoin_price
+		"btc_price": bitcoin_price,
+		"economy_version": BitcoinNetwork.ECONOMY_VERSION
 	}
 
 func load_data():
@@ -93,6 +124,8 @@ func load_data():
 	bitcoin_balance = data["btc_holdings"]
 	fiat_balance = data["fiat_holdings"]
 	bitcoin_price = data["btc_price"]
+	if data.get("economy_version", 0) < BitcoinNetwork.ECONOMY_VERSION:
+		bitcoin_balance *= BitcoinNetwork.LEGACY_BTC_SCALE
 
 func _to_string() -> String:
 	return "BTC holdings: %d\n" % bitcoin_balance + "Fiat Holdings: %d" % fiat_balance + "Current BTC price: %d" % bitcoin_price

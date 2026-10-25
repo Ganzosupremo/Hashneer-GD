@@ -98,7 +98,7 @@ func _format_hash(hash_str: String) -> String:
 
 ## Formats Bitcoin amount with proper precision
 func _format_bitcoin_amount(amount: float) -> String:
-	return Utils.format_currency(amount, true)
+	return Utils.format_btc(amount)
 
 ## Generates a sample hash for testing
 func _generate_sample_hash() -> String:

@@ -32,14 +32,14 @@ func _update_chain_data() -> void:
 func _update_statistics() -> void:
 	# Update coin statistics
 	var coins_lost: float = BitcoinNetwork.get_coins_lost()
-	_coins_lost.text = "🔥 Coins Lost: %s BTC" % Utils.format_currency(coins_lost, true)
+	_coins_lost.text = "🔥 Coins Lost: %s BTC" % Utils.format_btc(coins_lost)
 	
 	var player_balance: float = BitcoinWallet.get_bitcoin_balance()
-	_coins_on_player.text = "💰 Player Wallet: %s BTC" % Utils.format_currency(player_balance, true)
+	_coins_on_player.text = "💰 Player Wallet: %s BTC" % Utils.format_btc(player_balance)
 	
 	var total_in_circulation: float = BitcoinNetwork.get_total_bitcoins_in_circulation()
 	var left_to_mine: float = BitcoinNetwork.TOTAL_COINS - total_in_circulation
-	_coins_left.text = "⛏️ Coins Left to Mine: %s BTC" % Utils.format_currency(left_to_mine, true)
+	_coins_left.text = "⛏️ Coins Left to Mine: %s BTC" % Utils.format_btc(left_to_mine)
 	
 	# Update block count
 	var total_blocks: int = _chain.size()

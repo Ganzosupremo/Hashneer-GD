@@ -216,7 +216,10 @@ func _update_skill_node_ui(_title_l: String, _description: String, _cost_l: floa
 		var texture: Texture2D = icon_on_maxed_out if _is_maxed_out else skill_icon
 		self._skill_node_texture.texture = texture
 		self._desc.text = _description
-		self._cost.text = Utils.format_currency(_cost_l, true)
+		if UpgradeService.current_currency == Constants.CurrencyType.BITCOIN:
+			self._cost.text = Utils.format_btc(_cost_l)
+		else:
+			self._cost.text = Utils.format_currency(_cost_l, true)
 		_update_cost_background()
 
 func _update_node_state() -> void:

@@ -16,10 +16,17 @@ signal halving_occurred(new_subsidy: float)
 ## This is used to calculate the block reward based on the current height of the blockchain.
 ## In the real Bitcoin network, this is set to 100,000,000 satoshis per bitcoin.
 const COIN_SUBSIDY_MULTIPLIER: int = 100
+## The subsidy paid by the first block, halved every [member halving_interval] blocks.
+## Same as the real Bitcoin genesis subsidy.
+const INITIAL_BLOCK_SUBSIDY: float = 50.0
 ## The total number of bitcoins that will ever be created in the game.
-## This is a fixed value that represents the maximum supply of bitcoins.
-## In the real Bitcoin network, this is capped at 21 million bitcoins.
-const TOTAL_COINS: float = 2_100_000.0
+## With [constant INITIAL_BLOCK_SUBSIDY] halved every 2 blocks the supply converges to 200 BTC,
+## the extra 10 BTC leave room for rounding so the cap never cuts a subsidy short.
+const TOTAL_COINS: float = 210.0
+## Version of the economy data in the save. Version 1 rescales saves from the old 525,000 BTC subsidy.
+const ECONOMY_VERSION: int = 1
+## Old saves paid 525,000 BTC for the first block, this brings them to the new scale.
+const LEGACY_BTC_SCALE: float = INITIAL_BLOCK_SUBSIDY / 525_000.0
 ## @deprecated: The total number of blocks in the game, which is used to determine the end of the game.
 ## This is a fixed value that represents the total number of blocks that can be mined.
 const TOTAL_BLOCKS: int = 21
@@ -67,8 +74,9 @@ var chain: Array = []
 var _loaded: bool = false
 
 # Deflation parameters
-## The prices will be halved on every halving.
-var deflation_rate: float = 0.5
+## Bitcoin prices drop by this rate on every halving. It is lower than the 50% subsidy cut,
+## so new coins get scarcer while the coins you HODL buy more after each halving.
+var deflation_rate: float = 0.25
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -199,14 +207,25 @@ func get_blockheight() -> int:
 ## It is used to adjust prices and economic events based on the current state of the blockchain.[br]
 ## @return float The deflation multiplier based on the current block height.
 func get_deflation_multiplier() -> float:
-	var halvings: int = height / halving_interval
-	return pow(1.0 - deflation_rate, halvings)
+	return pow(1.0 - deflation_rate, get_halvings_count())
+
+## Gets how many halvings have happened, based on the blocks mined so far.
+func get_halvings_count() -> int:
+	return height / halving_interval
+
+## Gets the number of blocks left until the next halving.
+func get_blocks_until_next_halving() -> int:
+	return halving_interval - (height % halving_interval)
 
 ## Gets the total bitcoins in circulation, including the current block subsidy.
 ## This method calculates the total bitcoins in circulation by adding the coins lost, coins spent, and the current block subsidy.
 ## It is used to track the overall supply of bitcoins in the game.
 func get_total_bitcoins_in_circulation() -> float:
-	return coins_lost + coins_spent + BitcoinWallet.get_bitcoin_balance()
+	# Coins bought on the exchange come from the market, only block subsidies create new coins.
+	var total: float = 0.0
+	for b in chain:
+		total += b.block_subsidy
+	return total
 
 ## Gets the total bitcoins spent in the game.
 func get_bitcoins_spent() -> float:
@@ -257,7 +276,7 @@ func _issue_block_reward(miner: String, subsidy: float) -> void:
 ## and then halves it for each halving that has occurred.
 ## It also emits the [signal halving_occurred] signal when a halving occurs.
 func _compute_block_reward() -> float:
-	var halvings: int = height / halving_interval
+	var halvings: int = get_halvings_count()
 	if halvings >= TOTAL_HALVINGS:
 		return 0.0
 
@@ -265,14 +284,13 @@ func _compute_block_reward() -> float:
 	if remaining_supply <= 0.0:
 		return 0.0
 
-	var subsidy: float = TOTAL_COINS / (halving_interval * 2)
-	subsidy /= pow(2.0, halvings)
+	var subsidy: float = INITIAL_BLOCK_SUBSIDY / pow(2.0, halvings)
 	subsidy = min(subsidy, remaining_supply)
 
-	var previous_subsidy: float = current_block_subsidy
 	current_block_subsidy = subsidy
 
-	if subsidy != previous_subsidy:
+	# The first block of every halving epoch, except the genesis block
+	if height > 0 and height % halving_interval == 0:
 		halving_occurred.emit(subsidy)
 
 	bitcoins_in_circulation += subsidy
@@ -310,7 +328,8 @@ func _build_dictionary_to_save() -> Dictionary:
 		"height": height,
 		"current_block_subsidy": current_block_subsidy,
 		"coins_lost": coins_lost,
-		"coins_spent": coins_spent
+		"coins_spent": coins_spent,
+		"economy_version": ECONOMY_VERSION
 	}
 
 ## Loads the network data from the save system.
@@ -331,5 +350,15 @@ func load_data():
 	current_block_subsidy = data["current_block_subsidy"]
 	coins_lost = data["coins_lost"]
 	coins_spent = data["coins_spent"]
+	if data.get("economy_version", 0) < ECONOMY_VERSION:
+		_migrate_legacy_amounts()
 	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
 	_loaded = true
+
+## Rescales Bitcoin amounts from saves made with the old 525,000 BTC subsidy.
+func _migrate_legacy_amounts() -> void:
+	for b in chain:
+		b.block_subsidy *= LEGACY_BTC_SCALE
+	current_block_subsidy *= LEGACY_BTC_SCALE
+	coins_lost *= LEGACY_BTC_SCALE
+	coins_spent *= LEGACY_BTC_SCALE

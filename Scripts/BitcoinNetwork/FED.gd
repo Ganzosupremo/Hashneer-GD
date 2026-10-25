@@ -1,7 +1,18 @@
 extends Node2D
 
-var inflation_rate: float = 0.02 # 2% inflation, which is the lowest it can go.
-var inflation_interval: int = 2 # Inflation will increase on every halving. Halving happens every 21 blocks
+## Emitted every time a block is found and the FED prints more money.
+signal inflation_applied(rate: float, total: float)
+
+## Inflation applied on every block before the first halving.
+const BASE_INFLATION_RATE: float = 0.04
+## The FED prints a bit faster after every halving.
+const INFLATION_INCREASE_PER_HALVING: float = 0.02
+## Fiat drops grow with the square root of the total inflation, so earnings lag behind prices
+## and holding fiat always loses purchasing power.
+const WAGE_INFLATION_EXPONENT: float = 0.5
+
+## The inflation rate applied on the last block.
+var inflation_rate: float = BASE_INFLATION_RATE
 var total_inflation: float = 1.0 # Accumulated inflation multiplier since the beginning of time.
 var fiat_currency_in_circulation: float = 0.0
 
@@ -13,13 +24,18 @@ const implements = [
 
 
 func _ready() -> void:
-	BitcoinNetwork.halving_occurred.connect(_on_halving_ocurred)
+	BitcoinNetwork.block_found.connect(_on_block_found)
 
-func _on_halving_ocurred(_new_subsidy: float) -> void:
-	inflation_rate = randf_range(0.02, 0.69)
+func _on_block_found(_block: BitcoinBlock) -> void:
+	inflation_rate = get_current_inflation_rate()
 	var inflation_factor: float = 1.0 + inflation_rate
 	fiat_currency_in_circulation *= inflation_factor
 	total_inflation *= inflation_factor
+	inflation_applied.emit(inflation_rate, total_inflation)
+
+## The inflation rate the FED applies on the next block, it grows with every halving.
+func get_current_inflation_rate() -> float:
+	return BASE_INFLATION_RATE + INFLATION_INCREASE_PER_HALVING * BitcoinNetwork.get_halvings_count()
 
 func add_currency_in_circulation(new_coins) -> void:
 	fiat_currency_in_circulation += new_coins
@@ -29,7 +45,6 @@ func get_currency_in_circulation() -> float:
 
 ## Tries to add the amount to the wallet, theres a chance it will be denied
 func authorize_transaction(amount: float) -> bool:
-	fiat_currency_in_circulation += amount
 	var prob: float = _probability_from_amount(amount)
 	if randf() < prob:
 		return false
@@ -43,7 +58,8 @@ func get_total_inflation() -> float:
 func get_fiat_subsidy() -> float:
 	var subsidy: float = randf_range(250.0, 2500.0)
 	if GameManager.get_level_args() != null:
-		subsidy = randf_range(250.0, 2500.0) * GameManager.get_level_args().fiat_drop_rate_factor
+		subsidy *= GameManager.get_level_args().fiat_drop_rate_factor
+	subsidy *= pow(total_inflation, WAGE_INFLATION_EXPONENT)
 	fiat_currency_in_circulation += subsidy
 	return subsidy
 
@@ -59,6 +75,7 @@ func save_data():
 func _build_dictionary_to_save() -> Dictionary:
 	return {
 		"total_inflation": total_inflation,
+		"inflation_rate": inflation_rate,
 		"fiat_currency_in_circulation": fiat_currency_in_circulation
 	}
 
@@ -67,4 +84,5 @@ func load_data():
 
 	var data: Dictionary = SaveSystem.get_var(FEDSaveName)
 	total_inflation = data.get("total_inflation", 1.0)
+	inflation_rate = data.get("inflation_rate", BASE_INFLATION_RATE)
 	fiat_currency_in_circulation = data.get("fiat_currency_in_circulation", 0.0)

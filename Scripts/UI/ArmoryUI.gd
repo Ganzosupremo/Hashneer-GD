@@ -58,7 +58,7 @@ func _update_stats_display() -> void:
 
 func _update_balance_display() -> void:
 	_fiat_balance_label.text = "Fiat: $%s" % Utils.format_currency(BitcoinWallet.get_fiat_balance(), true)
-	_bitcoin_balance_label.text = "Bitcoin: ₿%s" % Utils.format_currency(BitcoinWallet.get_bitcoin_balance(), true)
+	_bitcoin_balance_label.text = "Bitcoin: ₿%s" % Utils.format_btc(BitcoinWallet.get_bitcoin_balance())
 
 func _on_item_selected(index: int) -> void:
 	_current_item = _upgradeables_list.get_item_metadata(index)

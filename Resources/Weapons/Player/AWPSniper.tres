@@ -15,7 +15,7 @@ upgrade_levels = 10
 upgrade_power_per_level = 0.2
 base_cost = 146000.0
 requires_bitcoin = true
-bitcoin_base_cost = 100.0
+bitcoin_base_cost = 4.0
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_t3kxi"]
@@ -27,7 +27,7 @@ upgrade_power_per_level = 0.25
 base_cost = 250000.0
 cost_multiplier = 1.7
 requires_bitcoin = true
-bitcoin_base_cost = 150.0
+bitcoin_base_cost = 6.0
 bitcoin_cost_multiplier = 1.5
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 

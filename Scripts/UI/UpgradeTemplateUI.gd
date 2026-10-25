@@ -13,7 +13,7 @@ func _on_upgrade_button_pressed() -> void:
 
 func update_upgrade_details(level: int, fiat_price: float, bitcoin_price: float) -> void:
 	_fiat_price_label.text = "$ %s" % Utils.format_currency(fiat_price, true)
-	_bitcoin_price_label.text = "%s ₿" % Utils.format_currency(bitcoin_price, true)
+	_bitcoin_price_label.text = "%s ₿" % Utils.format_btc(bitcoin_price)
 	_upgrade_level.text = "Lv.%d" % level
 
 func set_upgrade_details(upgrade_name: String, level: int, description: String, fiat_cost: float, bitcoin_cost: float) -> void:
@@ -24,6 +24,6 @@ func set_upgrade_details(upgrade_name: String, level: int, description: String, 
 	
 	if bitcoin_cost > 0.0:
 		_bitcoin_price_label.visible = true
-		_bitcoin_price_label.text = "%s ₿" % Utils.format_currency(bitcoin_cost, true)
+		_bitcoin_price_label.text = "%s ₿" % Utils.format_btc(bitcoin_cost)
 	else:
 		_bitcoin_price_label.visible = false
