@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=10 format=3 uid="uid://cttyumyw2eyyf"]
+[gd_resource type="Resource" script_class="AmmoDetails" format=3 uid="uid://cttyumyw2eyyf"]
 
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_cq7nn"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_n11uh"]
@@ -46,7 +46,7 @@ bitcoin_base_cost = 120.0
 bitcoin_cost_multiplier = 1.5
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
-[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
+[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
 
 [sub_resource type="Gradient" id="Gradient_jbavf"]
 offsets = PackedFloat32Array(0, 0.38, 1)

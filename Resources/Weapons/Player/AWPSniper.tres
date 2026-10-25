@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=9 format=3 uid="uid://uns2b1g6hisu"]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://uns2b1g6hisu"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_ejixv"]
 [ext_resource type="Resource" uid="uid://j0b1rc1iki68" path="res://Resources/Weapons/Player/AWPSniperAmmo.tres" id="1_fq4yy"]

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=10 format=3 uid="uid://bivptbtajsp46"]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://bivptbtajsp46"]
 
 [ext_resource type="Resource" uid="uid://cmk3cg4rlabd6" path="res://Resources/Weapons/Player/Pistol_ammo.tres" id="1_wgbrq"]
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="2_psf4r"]

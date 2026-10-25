@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="UpgradeData" load_steps=5 format=3 uid="uid://c6lryfoxdvlix"]
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://c6lryfoxdvlix"]
 
 [ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_yfeta"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="2_o3h4n"]

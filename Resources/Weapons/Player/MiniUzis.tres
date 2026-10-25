@@ -1,14 +1,12 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=20 format=3 uid="uid://dm5wtcvtcwc3r"]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://dm5wtcvtcwc3r"]
 
 [ext_resource type="Resource" uid="uid://csv3xbukcg0c1" path="res://Resources/Weapons/Player/MiniUzisAmmo.tres" id="1_jn1f3"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_vm5p3"]
 [ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="2_jn1f3"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_uu3ky"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="4_juh0y"]
-[ext_resource type="Texture2D" uid="uid://bdkppyqrvrh47" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="5_2begr"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_78qb0"]
-load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
 
 [sub_resource type="Curve" id="Curve_yolsm"]
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
@@ -88,10 +86,13 @@ randomness = 0.3
 particle_texture = SubResource("CompressedTexture2D_78qb0")
 process_material = SubResource("ParticleProcessMaterial_lhlcm")
 
+[sub_resource type="Resource" id="Resource_fgikc"]
+metadata/__load_path__ = "res://Textures/WeaponSystem/Weapons/MiniUzis.png"
+
 [resource]
 script = ExtResource("1_vm5p3")
 weapon_name = "Uzi-Twins"
-weapon_texture = ExtResource("5_2begr")
+weapon_texture = SubResource("Resource_fgikc")
 fire_sound = ExtResource("2_jn1f3")
 ammo_details = ExtResource("1_jn1f3")
 weapon_shoot_effect = SubResource("Resource_55a3t")
