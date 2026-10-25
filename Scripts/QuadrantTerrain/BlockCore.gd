@@ -117,7 +117,7 @@ func _update_polygon_visual(source: Node2D, cut_info: Dictionary, fracture_color
 		_cur_fracture_color = color
 		_shatter_visualizer.self_modulate = _cur_fracture_color
 
-func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, _miner: String = "Player") -> void:
+func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: float, fracture_color: Color = Color.HONEYDEW, miner: String = "Player") -> void:
 	_cur_fracture_color = fracture_color
 
 	if !destroyed:
@@ -134,7 +134,9 @@ func _fracture_all(other_body: FracturableStaticBody2D, cuts: int, min_area: flo
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.SCREEN_FLASH, Transform2D.IDENTITY, null, 0.15)
 
 		_destroy_block_core(other_body, cuts, min_area)
-		random_drops.spawn_drops(1)
+		# Only the player gets the block reward drop, the AI already claimed its subsidy
+		if miner == "Player":
+			random_drops.spawn_drops(1)
 
 func _destroy_block_core(source, cuts: int, min_area: float) -> void:
 	visible = false
@@ -166,14 +168,6 @@ func _spawn_fracture_body(fracture_info: Dictionary, texture_info: Dictionary) -
 	body_instance.angular_velocity = _rng.randf_range(-1, 1)
 
 	body_instance.setTexture(PolygonLib.setTextureOffset(texture_info, fracture_info.centroid))
-
-func _mine_block(miner: String = "Player") -> void:
-	var level_id: int = GameManager.get_current_level()
-	var block: BitcoinBlock = null
-	if BitcoinNetwork.is_level_mined(level_id):
-			block = BitcoinNetwork.get_block_by_id(level_id)
-
-	BitcoinNetwork.mine_block(miner, block)
 
 func _on_slow_down_timer_timeout() -> void:
 	Engine.time_scale = 1.0

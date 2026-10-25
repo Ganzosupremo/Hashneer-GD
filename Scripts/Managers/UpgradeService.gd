@@ -27,13 +27,13 @@ func can_afford(data: UpgradeData, currency: Constants.CurrencyType = current_cu
 	var balance = BitcoinWallet.get_bitcoin_balance() if currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
 	return balance >= cost
 
-func purchase_upgrade(data: UpgradeData) -> bool:
+func purchase_upgrade(data: UpgradeData, currency: Constants.CurrencyType = current_currency) -> bool:
 	if data == null:
 		return false
 	
-	if !can_afford(data, current_currency):
+	if !can_afford(data, currency):
 		return false
-	if !data.buy_upgrade(current_currency):
+	if !data.buy_upgrade(currency):
 		return false
 	_emit_upgrade_event(data)
 	return true

@@ -28,5 +28,8 @@ func _process(_delta: float) -> void:
 	time_left_ui.update_label(str(roundf(ai_timer.time_left)))
 
 func on_timeout() -> void:
-	GameManager.complete_level()
+	if !BitcoinNetwork.is_level_mined(GameManager.get_level_index()):
+		BitcoinNetwork.mine_block("AI")
 	block_core.fracture(250 , 50.0, float("inf"),Color.WHITE, true, "AI")
+	GameManager.complete_level(Constants.ERROR_401)
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.LEVEL_COMPLETED_NEGATIVE_SOUND_T2, AudioManager.DestinationAudioBus.SFX)

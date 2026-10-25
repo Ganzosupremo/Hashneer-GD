@@ -72,8 +72,6 @@ enum StatType {
 
 @export var upgrade_max_level : int = 10
 
-## The threshold for the next tier of the upgrade. This is a percentage of the max level.
-var next_tier_threshold: int = int(upgrade_max_level * 0.6) # 60% of max level
 ## The current level of the upgrade. This is used to determine the current power of the upgrade.
 var upgrade_level: int = 0:
 	set(value):
@@ -139,31 +137,14 @@ func _buy_with_fiat() -> bool:
 	else:
 		return false
 
-## Buys the maximum number of upgrades possible with the current balance in the specified currency type.
-## If the currency type is not specified, it defaults to fiat.
-func buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> void:
-	if upgrade_level >= upgrade_max_level: return
-
-	if currency_type == Constants.CurrencyType.BITCOIN:
-		BitcoinWallet.spend_bitcoin(_buy_max(currency_type))
-	else:
-		BitcoinWallet.spend_fiat(_buy_max(currency_type))
-
-func _buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> float:
-	var balance: float = 0.0
-
-	balance = BitcoinWallet.get_bitcoin_balance() if currency_type == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
-	
-	var n: int = floor(_log((balance * (upgrade_cost_multiplier - 1.0)) / upgrade_cost(currency_type) + 1.0, upgrade_cost_multiplier))
-	if n >= upgrade_max_level: n = upgrade_max_level
-	upgrade_level += n
-	
-	if upgrade_level >= upgrade_max_level:
-		upgrade_level = upgrade_max_level
-	
-	check_next_tier_unlock()
-	check_upgrade_maxed_out()
-	return upgrade_cost(currency_type) * ((pow(upgrade_cost_multiplier, n) - 1.0) / (upgrade_cost_multiplier - 1.0))
+## Buys as many levels as the current balance allows in the specified currency type.
+## Each level goes through [UpgradeService] so stat bonuses, weapons and abilities are applied.
+## Returns the number of levels bought.
+func buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT) -> int:
+	var bought: int = 0
+	while upgrade_level < upgrade_max_level and UpgradeService.purchase_upgrade(self, currency_type):
+		bought += 1
+	return bought
 
 #endregion
 
@@ -360,8 +341,10 @@ func set_upgrade_cost_base_btc(value: float) -> void:
 
 #region Other
 
-func _log(value: float, base: float) -> float:
-	return 2.302585 / log(base) * (log(value) / log(10))
+## The threshold for the next tier of the upgrade, 60% of the max level.
+## Computed on demand because [member upgrade_max_level] is only set after the resource is created.
+func get_next_tier_threshold() -> int:
+	return int(upgrade_max_level * 0.6)
 
 ## Checks if the upgrade has reached its maximum level.
 func check_upgrade_maxed_out() -> bool:
@@ -375,7 +358,7 @@ func check_upgrade_maxed_out() -> bool:
 ## If no next tier nodes are provided, it uses the current _next_tier_nodes.
 ## Returns [code]true[/code] if the next tier is unlocked, [code]false[/code] otherwise.
 func check_next_tier_unlock(_next_tier_nodes_l: Array[SkillNode] = []) -> bool:
-	if upgrade_level > next_tier_threshold:
+	if upgrade_level > get_next_tier_threshold():
 		if _next_tier_nodes_l == []:
 			next_tier_unlocked.emit(self._next_tier_nodes)
 		else:
