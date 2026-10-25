@@ -126,6 +126,10 @@ func despawn(_ref: Node2D = null) -> void:
 	_t = 1.0
 
 func addForce(force : Vector2) -> void:
+	# A NaN/inf force (e.g. from a division by zero upstream) would poison _lin_vel for the
+	# shard's whole lifetime and spam normalize() warnings in _physics_process.
+	if not force.is_finite():
+		return
 	if _mass > 0.0:
 		force /= _mass
 	_lin_accel += force
@@ -151,7 +155,7 @@ func setColor(_color : Color) -> void:
 	self_modulate = _color
 
 func setMass(new_mass : float) -> void:
-	_mass = new_mass
+	_mass = new_mass if is_finite(new_mass) else 1.0
 
 func _on_Timer_timeout() -> void:
 	emit_signal("Despawn", self)
