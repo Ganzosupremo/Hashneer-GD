@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=3 uid="uid://d3na1ej4wmuwv"]
+[gd_scene load_steps=193 format=3 uid="uid://d3na1ej4wmuwv"]
 
 [ext_resource type="Script" uid="uid://qkct2flb4laa" path="res://Scripts/Managers/GameManager.gd" id="1_t86oc"]
 [ext_resource type="PackedScene" uid="uid://7c0kkjaw4yai" path="res://Scenes/VFX/VFXManager.tscn" id="1_vfxman"]
@@ -530,11 +530,696 @@ enemy_damage_multiplier = 2.5
 enemies_drop_table = SubResource("Resource_spcld")
 boss_drop_table = SubResource("Resource_8y3jg")
 
+[sub_resource type="Resource" id="Resource_l11p0c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p0c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 4
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p0c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p0c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p0c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 3
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p0"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l11p0c0"), SubResource("Resource_l11p0c1"), SubResource("Resource_l11p0c2"), SubResource("Resource_l11p0c3"), SubResource("Resource_l11p0c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l11p1c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 5
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p1c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 8
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p1c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 1
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p1c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p1c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 6
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p1"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l11p1c0"), SubResource("Resource_l11p1c1"), SubResource("Resource_l11p1c2"), SubResource("Resource_l11p1c3"), SubResource("Resource_l11p1c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l11p2c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 10
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 11
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 9
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c5"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2c6"]
+script = ExtResource("11_o0qoy")
+enemy_type = 7
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l11p2"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l11p2c0"), SubResource("Resource_l11p2c1"), SubResource("Resource_l11p2c2"), SubResource("Resource_l11p2c3"), SubResource("Resource_l11p2c4"), SubResource("Resource_l11p2c5"), SubResource("Resource_l11p2c6")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_level11"]
+script = ExtResource("7_dsf0w")
+debug_name = "11"
+quadrant_size = 480
+grid_size = Vector2(10, 10)
+map_shape = 4
+quadrant_texture = ExtResource("9_qgubg")
+normal_texture = ExtResource("5_px33u")
+initial_health = 13000.0
+fiat_drop_rate_factor = 2.15
+block_core_cuts_delaunay = 300
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_l11p0"), SubResource("Resource_l11p1"), SubResource("Resource_l11p2")])
+waves_per_phase = 3
+kills_to_spawn_boss = 150
+boss_scenes = Array[PackedScene]([ExtResource("22_fedboss"), ExtResource("21_attack51")])
+enemy_drops_count = 13
+enemy_damage_multiplier = 2.7
+enemies_drop_table = SubResource("Resource_spcld")
+boss_drop_table = SubResource("Resource_8y3jg")
+
+[sub_resource type="Resource" id="Resource_l12p0c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 6
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p0c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 4
+count = 6
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p0c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p0c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p0c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 3
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p0"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l12p0c0"), SubResource("Resource_l12p0c1"), SubResource("Resource_l12p0c2"), SubResource("Resource_l12p0c3"), SubResource("Resource_l12p0c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l12p1c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 5
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p1c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 8
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p1c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p1c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p1c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 6
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p1"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l12p1c0"), SubResource("Resource_l12p1c1"), SubResource("Resource_l12p1c2"), SubResource("Resource_l12p1c3"), SubResource("Resource_l12p1c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l12p2c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 10
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 11
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 9
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c5"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2c6"]
+script = ExtResource("11_o0qoy")
+enemy_type = 7
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l12p2"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l12p2c0"), SubResource("Resource_l12p2c1"), SubResource("Resource_l12p2c2"), SubResource("Resource_l12p2c3"), SubResource("Resource_l12p2c4"), SubResource("Resource_l12p2c5"), SubResource("Resource_l12p2c6")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_level12"]
+script = ExtResource("7_dsf0w")
+debug_name = "12"
+quadrant_size = 480
+grid_size = Vector2(11, 11)
+map_shape = 5
+quadrant_texture = ExtResource("9_1f4k2")
+normal_texture = ExtResource("5_px33u")
+initial_health = 18000.0
+fiat_drop_rate_factor = 2.3
+block_core_cuts_delaunay = 320
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_l12p0"), SubResource("Resource_l12p1"), SubResource("Resource_l12p2")])
+waves_per_phase = 3
+kills_to_spawn_boss = 160
+boss_scenes = Array[PackedScene]([ExtResource("21_attack51"), ExtResource("22_fedboss")])
+enemy_drops_count = 14
+enemy_damage_multiplier = 2.9
+enemies_drop_table = SubResource("Resource_spcld")
+boss_drop_table = SubResource("Resource_8y3jg")
+
+[sub_resource type="Resource" id="Resource_l13p0c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p0c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 4
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p0c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p0c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p0c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 3
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p0"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l13p0c0"), SubResource("Resource_l13p0c1"), SubResource("Resource_l13p0c2"), SubResource("Resource_l13p0c3"), SubResource("Resource_l13p0c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l13p1c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 5
+count = 6
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p1c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 8
+count = 6
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p1c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p1c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p1c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 6
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p1"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l13p1c0"), SubResource("Resource_l13p1c1"), SubResource("Resource_l13p1c2"), SubResource("Resource_l13p1c3"), SubResource("Resource_l13p1c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l13p2c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 10
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 11
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 9
+count = 6
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c5"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2c6"]
+script = ExtResource("11_o0qoy")
+enemy_type = 7
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l13p2"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l13p2c0"), SubResource("Resource_l13p2c1"), SubResource("Resource_l13p2c2"), SubResource("Resource_l13p2c3"), SubResource("Resource_l13p2c4"), SubResource("Resource_l13p2c5"), SubResource("Resource_l13p2c6")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_level13"]
+script = ExtResource("7_dsf0w")
+debug_name = "13"
+quadrant_size = 480
+grid_size = Vector2(11, 11)
+map_shape = 1
+quadrant_texture = ExtResource("9_qgubg")
+normal_texture = ExtResource("5_px33u")
+initial_health = 25000.0
+fiat_drop_rate_factor = 2.45
+block_core_cuts_delaunay = 340
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_l13p0"), SubResource("Resource_l13p1"), SubResource("Resource_l13p2")])
+waves_per_phase = 3
+kills_to_spawn_boss = 170
+boss_scenes = Array[PackedScene]([ExtResource("22_fedboss"), ExtResource("21_attack51"), ExtResource("20_squareboss")])
+enemy_drops_count = 15
+enemy_damage_multiplier = 3.1
+enemies_drop_table = SubResource("Resource_spcld")
+boss_drop_table = SubResource("Resource_8y3jg")
+
+[sub_resource type="Resource" id="Resource_l14p0c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p0c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 4
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p0c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p0c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p0c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 3
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p0"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l14p0c0"), SubResource("Resource_l14p0c1"), SubResource("Resource_l14p0c2"), SubResource("Resource_l14p0c3"), SubResource("Resource_l14p0c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l14p1c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 5
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p1c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 8
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p1c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p1c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p1c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 6
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p1"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l14p1c0"), SubResource("Resource_l14p1c1"), SubResource("Resource_l14p1c2"), SubResource("Resource_l14p1c3"), SubResource("Resource_l14p1c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l14p2c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 10
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 11
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 9
+count = 7
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c5"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2c6"]
+script = ExtResource("11_o0qoy")
+enemy_type = 7
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l14p2"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l14p2c0"), SubResource("Resource_l14p2c1"), SubResource("Resource_l14p2c2"), SubResource("Resource_l14p2c3"), SubResource("Resource_l14p2c4"), SubResource("Resource_l14p2c5"), SubResource("Resource_l14p2c6")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_level14"]
+script = ExtResource("7_dsf0w")
+debug_name = "14"
+quadrant_size = 480
+grid_size = Vector2(12, 12)
+map_shape = 2
+quadrant_texture = ExtResource("9_1f4k2")
+normal_texture = ExtResource("5_px33u")
+initial_health = 34000.0
+fiat_drop_rate_factor = 2.6
+block_core_cuts_delaunay = 360
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_l14p0"), SubResource("Resource_l14p1"), SubResource("Resource_l14p2")])
+waves_per_phase = 3
+kills_to_spawn_boss = 180
+boss_scenes = Array[PackedScene]([ExtResource("21_attack51"), ExtResource("22_fedboss")])
+enemy_drops_count = 16
+enemy_damage_multiplier = 3.3
+enemies_drop_table = SubResource("Resource_spcld")
+boss_drop_table = SubResource("Resource_8y3jg")
+
+[sub_resource type="Resource" id="Resource_l15p0c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 2
+count = 9
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p0c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 4
+count = 9
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p0c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p0c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p0c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 3
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p0"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l15p0c0"), SubResource("Resource_l15p0c1"), SubResource("Resource_l15p0c2"), SubResource("Resource_l15p0c3"), SubResource("Resource_l15p0c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l15p1c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 5
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p1c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 8
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p1c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p1c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 4
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p1c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 6
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p1"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l15p1c0"), SubResource("Resource_l15p1c1"), SubResource("Resource_l15p1c2"), SubResource("Resource_l15p1c3"), SubResource("Resource_l15p1c4")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_l15p2c0"]
+script = ExtResource("11_o0qoy")
+enemy_type = 10
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c1"]
+script = ExtResource("11_o0qoy")
+enemy_type = 11
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c2"]
+script = ExtResource("11_o0qoy")
+enemy_type = 9
+count = 8
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c3"]
+script = ExtResource("11_o0qoy")
+enemy_type = 13
+count = 5
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c4"]
+script = ExtResource("11_o0qoy")
+enemy_type = 12
+count = 2
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c5"]
+script = ExtResource("11_o0qoy")
+enemy_type = 14
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2c6"]
+script = ExtResource("11_o0qoy")
+enemy_type = 7
+count = 3
+metadata/_custom_type_script = "uid://d2ustuibdi8sb"
+
+[sub_resource type="Resource" id="Resource_l15p2"]
+script = ExtResource("10_f24ny")
+compositions = Array[ExtResource("11_o0qoy")]([SubResource("Resource_l15p2c0"), SubResource("Resource_l15p2c1"), SubResource("Resource_l15p2c2"), SubResource("Resource_l15p2c3"), SubResource("Resource_l15p2c4"), SubResource("Resource_l15p2c5"), SubResource("Resource_l15p2c6")])
+metadata/_custom_type_script = "uid://b2ne6r8s160qn"
+
+[sub_resource type="Resource" id="Resource_level15"]
+script = ExtResource("7_dsf0w")
+debug_name = "15"
+quadrant_size = 480
+grid_size = Vector2(12, 12)
+map_shape = 3
+quadrant_texture = ExtResource("9_qgubg")
+normal_texture = ExtResource("5_px33u")
+initial_health = 45000.0
+fiat_drop_rate_factor = 2.8
+block_core_cuts_delaunay = 400
+waves_phases = Array[ExtResource("10_f24ny")]([SubResource("Resource_l15p0"), SubResource("Resource_l15p1"), SubResource("Resource_l15p2")])
+waves_per_phase = 3
+kills_to_spawn_boss = 200
+boss_scenes = Array[PackedScene]([ExtResource("22_fedboss"), ExtResource("21_attack51"), ExtResource("22_fedboss")])
+enemy_drops_count = 18
+enemy_damage_multiplier = 3.6
+enemies_drop_table = SubResource("Resource_spcld")
+boss_drop_table = SubResource("Resource_8y3jg")
+
 [node name="GameManager" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_t86oc")
 player_details = ExtResource("2_vk5qk")
 main_progress_event_bus = ExtResource("3_lbc0e")
 main_event_bus = ExtResource("4_4lapq")
-game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8"), SubResource("Resource_o0qoy")])
+game_levels = Array[ExtResource("7_dsf0w")]([SubResource("Resource_2qui5"), SubResource("Resource_rmngw"), SubResource("Resource_885h5"), SubResource("Resource_2pchh"), SubResource("Resource_vq5xj"), SubResource("Resource_dxlcl"), SubResource("Resource_46rwd"), SubResource("Resource_3ywsn"), SubResource("Resource_mcmpw"), SubResource("Resource_2sqe8"), SubResource("Resource_o0qoy"), SubResource("Resource_level11"), SubResource("Resource_level12"), SubResource("Resource_level13"), SubResource("Resource_level14"), SubResource("Resource_level15")])
 
 [node name="VFXManager" parent="." instance=ExtResource("1_vfxman")]
