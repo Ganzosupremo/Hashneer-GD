@@ -23,7 +23,7 @@ upgrade_description = "+10% Damage output"
 upgrade_levels = 100
 base_cost = 100000.0
 requires_bitcoin = true
-bitcoin_base_cost = 500.0
+bitcoin_base_cost = 20.0
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_g5kaf"]

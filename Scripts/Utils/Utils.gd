@@ -200,6 +200,14 @@ static func format_currency(amount: float, use_short_format: bool = false) -> St
 		return format_short_currency(amount)
 	return format_full_currency(amount)
 
+## Formats a Bitcoin amount, keeping decimals for small amounts since subsidies get halved.
+static func format_btc(amount: float) -> String:
+	if amount >= 1000.0:
+		return format_short_currency(amount)
+	var decimals: int = 2 if amount >= 1.0 else 4
+	var text: String = String.num(amount, decimals)
+	return text
+
 static func format_full_currency(amount: float) -> String:
 	# Convert to integer if it's a whole number
 	if amount == floor(amount):

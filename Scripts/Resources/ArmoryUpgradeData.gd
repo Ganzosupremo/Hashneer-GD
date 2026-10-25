@@ -12,7 +12,7 @@ class_name ArmoryUpgradeData extends Resource
 @export var base_cost: float = 50000.0
 @export var cost_multiplier: float = 1.5
 @export var requires_bitcoin: bool = false
-@export var bitcoin_base_cost: float = 50.0
+@export var bitcoin_base_cost: float = 2.0
 @export var bitcoin_cost_multiplier: float = 1.1
 
 var level: int = 0

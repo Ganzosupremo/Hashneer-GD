@@ -28,7 +28,7 @@ func open_ui(title: String) -> void:
 	if _opened: return
 	_opened = true
 	title_label.text = title
-	btc_gained_label.text = Utils.format_currency(btc_gained_this_time, true)
+	btc_gained_label.text = Utils.format_btc(btc_gained_this_time)
 
 	if FED.authorize_transaction(fiat_gained_so_far):
 		fiat_gained_label.text = Utils.format_currency(fiat_gained_so_far, true)

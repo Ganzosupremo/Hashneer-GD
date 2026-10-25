@@ -131,7 +131,7 @@ func calculate_upgrade_cost(upgrade_data: ArmoryUpgradeData, current_level: int)
 func cannot_afford_upgrade(cost: float, bitcoin_cost: float, requires_bitcoin: bool = false) -> bool:
 	# Check if the player has enough resources to afford the upgrade
 	if requires_bitcoin:
-		return BitcoinWallet.get_fiat_balance() < cost and BitcoinWallet.get_bitcoin_balance() < bitcoin_cost
+		return BitcoinWallet.get_fiat_balance() < cost or BitcoinWallet.get_bitcoin_balance() < bitcoin_cost
 	return BitcoinWallet.get_fiat_balance() < cost
 
 ## Purchase the upgrade by spending the required fiat and bitcoin costs.[br]

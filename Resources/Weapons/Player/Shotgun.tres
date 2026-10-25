@@ -27,7 +27,7 @@ upgrade_power_per_level = 0.2
 base_cost = 125000.0
 cost_multiplier = 1.6
 requires_bitcoin = true
-bitcoin_base_cost = 75.0
+bitcoin_base_cost = 3.0
 bitcoin_cost_multiplier = 1.3
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
