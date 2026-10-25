@@ -113,7 +113,8 @@ func _setup_wave_spawner() -> void:
 	_wave_spawner.set_wave_spawner({
 		"waves_per_phase": level_args.waves_per_phase,
 		"wave_spawn_time": level_args.wave_spawn_time,
-		"wave_data": level_args.waves_phases
+		"wave_data": level_args.waves_phases,
+		"boss_scenes": level_args.boss_scenes
 	})
 								
 	_wave_spawner.wave_started.connect(_on_wave_started)
@@ -288,7 +289,7 @@ func _spawn_boss() -> void:
 	print("Spawning Boss #%d at %d kills" % [_boss_tracker.current_boss_number, _kill_count])
 	_wave_label.text = "Boss #{0} Active!".format([_boss_tracker.current_boss_number])
 								
-	_current_boss = _wave_spawner.spawn_boss()
+	_current_boss = _wave_spawner.spawn_boss(_boss_tracker.current_boss_number)
 	if _current_boss:
 		_connect_enemy_signals(_current_boss)
 		_current_boss.Died.connect(_on_boss_died)

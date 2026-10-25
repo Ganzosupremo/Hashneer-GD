@@ -22,6 +22,9 @@ var death_vfx: VFXEffectProperties
 var hit_vfx: VFXEffectProperties
 var gravity_force: Vector2 = Vector2.ZERO  # Store gravity force
 var speed: float = 200.0
+## Movement speed multiplier from slowing effects (1.0 = no slow).
+var _slow_multiplier: float = 1.0
+var _slow_time_left: float = 0.0
 var initial_weapon: WeaponDetails
 var dead_sound_effect: SoundEffectDetails
 
@@ -69,6 +72,7 @@ func _physics_process(delta) -> void:
 		if !can_move: return
 
 		velocity += gravity_force * delta
+		_process_slow(delta)
 		move(delta)
 		
 		gravity_force = Vector2.ZERO
@@ -144,6 +148,20 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time
 ## Applies a brief time slowdown effect (hitstop/freeze frame).[br]
 ## [param duration]: How long the hitstop lasts in seconds.[br]
 ## [param time_scale]: The time scale to apply (0.0 = full freeze, 1.0 = normal)
+## Slows the player's movement to [param multiplier] of its speed for [param duration] seconds.[br]
+## Overlapping slows keep the strongest one.
+func apply_slow(multiplier: float, duration: float) -> void:
+	if _slow_time_left <= 0.0 or multiplier < _slow_multiplier:
+		_slow_multiplier = multiplier
+	_slow_time_left = max(_slow_time_left, duration)
+
+func _process_slow(delta: float) -> void:
+	if _slow_time_left <= 0.0:
+		return
+	_slow_time_left -= delta
+	if _slow_time_left <= 0.0:
+		_slow_multiplier = 1.0
+
 func apply_hitstop(duration: float = 0.08, time_scale: float = 0.15) -> void:
 	Engine.time_scale = time_scale
 	await get_tree().create_timer(duration * time_scale, true, false,  true).timeout
@@ -186,7 +204,8 @@ func move(delta: float) -> void:
 			footstep_timer = 0.0  # Reset footstep timer when stopped
 		else:
 			# Steer-based movement for better responsiveness
-			var desired_velocity = input * Constants.Player_Max_Speed
+			var max_speed: float = Constants.Player_Max_Speed * _slow_multiplier
+			var desired_velocity = input * max_speed
 			
 			# Apply aim-aligned strafe assist
 			var aim_direction = (get_global_mouse_position() - global_position).normalized()
@@ -218,7 +237,7 @@ func move(delta: float) -> void:
 			velocity = velocity.lerp(desired_velocity, accel_factor)
 			
 			# Clamp to max speed
-			velocity = velocity.limit_length(Constants.Player_Max_Speed)
+			velocity = velocity.limit_length(max_speed)
 			
 			# Footstep cadence system
 			var speed_ratio = velocity.length() / Constants.Player_Max_Speed

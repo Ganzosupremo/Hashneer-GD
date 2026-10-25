@@ -546,6 +546,19 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 
 	return {"percent_cut" : percent_cut , "dead" : isDead()}
 
+## Adds an enemy spawned by this one (minion, clone) at [param pos], so the game mode tracks it.
+func spawn_extra_enemy(enemy: BaseEnemy, pos: Vector2) -> void:
+	var spawner: WaveSpawner = get_tree().get_first_node_in_group("WaveSpawner")
+	if spawner:
+		spawner.spawn_extra_enemy(enemy, pos)
+		return
+	var enemies_holder: Node = get_tree().get_first_node_in_group("EnemiesHolder")
+	if enemies_holder == null:
+		enemy.queue_free()
+		return
+	enemy.global_position = pos
+	enemies_holder.add_child(enemy)
+
 func kill(system_despawn: bool = false) -> void:
 	Died.emit(self, global_position, system_despawn)
 	hide()

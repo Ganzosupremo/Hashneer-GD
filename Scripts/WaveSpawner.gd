@@ -43,6 +43,9 @@ const ENEMY_SCENES = {
 	"Teleporter": preload("res://Scenes/Enemies/TeleporterEnemy.tscn"),
 	"Healer": preload("res://Scenes/Enemies/HealerEnemy.tscn"),
 	"Spinner": preload("res://Scenes/Enemies/SpinnerEnemy.tscn"),
+	"Money Printer": preload("res://Scenes/Enemies/MoneyPrinterEnemy.tscn"),
+	"Shielded Banker": preload("res://Scenes/Enemies/ShieldedBankerEnemy.tscn"),
+	"Mempool Spammer": preload("res://Scenes/Enemies/MempoolSpammerEnemy.tscn"),
 }
 
 const BOSS_SCENE = preload("res://Scenes/Enemies/SquareBoss.tscn")
@@ -58,9 +61,11 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 var _spawned_enemies: Array[BaseEnemy] = []
 # Define wave configurations using WavePhase resources
 var _wave_phases: Array[WavePhase] = []
+var _boss_scenes: Array[PackedScene] = []
 
 
 func _ready() -> void:
+	add_to_group("WaveSpawner")
 	_rng.randomize()
 	wave_timer = Timer.new()
 	add_child(wave_timer)
@@ -113,8 +118,12 @@ func start_next_wave() -> void:
 	wave_started.emit(current_wave)
 	_spawn_wave(wave_config)
 
-func spawn_boss() -> BaseEnemy:
-	var boss = BOSS_SCENE.instantiate() as BaseEnemy
+## Spawns the boss for [param boss_number] (1-based), cycling through the level's boss scenes.
+func spawn_boss(boss_number: int = 1) -> BaseEnemy:
+	var boss_scene: PackedScene = BOSS_SCENE
+	if not _boss_scenes.is_empty():
+		boss_scene = _boss_scenes[(max(boss_number, 1) - 1) % _boss_scenes.size()]
+	var boss = boss_scene.instantiate() as BaseEnemy
 	
 	if not boss:
 		push_error("WaveSpawner: Failed to instantiate boss")
@@ -132,6 +141,16 @@ func spawn_boss() -> BaseEnemy:
 	boss_wave_triggered.emit()
 	
 	return boss
+
+## Adds an enemy spawned by another enemy (minions, clones) at [param pos].[br]
+## The game mode tracks it like any other enemy, but it does not count towards the current wave.
+func spawn_extra_enemy(enemy: BaseEnemy, pos: Vector2) -> void:
+	enemy.global_position = pos
+	if enemies_holder:
+		enemies_holder.add_child(enemy)
+	else:
+		add_child(enemy)
+	enemy_spawned.emit(enemy)
 
 #endregion
 
@@ -190,6 +209,7 @@ func _get_wave_configuration(wave_num: int) -> Dictionary:
 			{"type": "Tank", "count": 3},
 			{"type": "Exploder", "count": 4},
 			{"type": "Charger", "count": 4},
+			{"type": "Mempool Spammer", "count": 2},
 		]
 	elif wave_num <= 12:
 		config.compositions = [
@@ -200,6 +220,8 @@ func _get_wave_configuration(wave_num: int) -> Dictionary:
 			{"type": "Healer", "count": 2},
 			{"type": "Spinner", "count": 3},
 			{"type": "Fast Dart", "count": 3},
+			{"type": "Money Printer", "count": 2},
+			{"type": "Shielded Banker", "count": 3},
 		]
 	else:
 		var enemy_types = ENEMY_SCENES.keys()
@@ -327,6 +349,8 @@ func set_wave_spawner(params: Dictionary) -> void:
 		initial_wave_delay = params["wave_spawn_time"]
 	if params.has("wave_data"):
 		set_waves_phases_data(params["wave_data"])
+	if params.has("boss_scenes"):
+		_boss_scenes = params["boss_scenes"]
 
 ## Sets the wave phases data programmatically.
 func set_waves_phases_data(wave_data: Array[WavePhase]) -> void:

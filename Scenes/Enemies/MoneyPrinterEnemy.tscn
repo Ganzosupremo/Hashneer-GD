@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Scripts/Enemies/MoneyPrinterEnemy.gd" id="2_script"]
+[ext_resource type="PackedScene" path="res://Scenes/Enemies/TriangleEnemy.tscn" id="3_minion"]
+
+[node name="MoneyPrinterEnemy" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+minion_scene = ExtResource("3_minion")
+print_interval_range = Vector2(3.5, 5)
+minions_per_print = 2
+max_alive_minions = 6
+color_default = Color(0.35, 0.75, 0.4, 1)
+knockback_resistance_base = 1.5
+shape_area_percent = 0.15
+max_speed = 55.0
+polygon_shape = 1
+rectangle_size = Vector2(110, 70)
+
+[node name="FractureBodyHealthComponent" parent="."]
+advanced_regeneration = false
+regeneration_interval_range = Vector2(0, 0)
+
+[node name="Line2D" parent="Shape3D"]
+default_color = Color(0.1, 0.35, 0.15, 1)

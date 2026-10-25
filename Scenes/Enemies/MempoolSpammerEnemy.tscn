@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
+[ext_resource type="Script" path="res://Scripts/Enemies/MempoolSpammerEnemy.gd" id="2_script"]
+
+[node name="MempoolSpammerEnemy" instance=ExtResource("1_base")]
+script = ExtResource("2_script")
+zone_interval_range = Vector2(2, 3)
+zone_radius = 80.0
+zone_lifetime = 6.0
+zone_slow_multiplier = 0.5
+zone_color = Color(1, 0.55, 0.1, 0.25)
+color_default = Color(1, 0.6, 0.2, 1)
+shape_area_percent = 0.2
+max_speed = 220.0
+polygon_shape = 0
+cir_radius = 28.0
+cir_smoothing = 2
+
+[node name="FractureBodyHealthComponent" parent="."]
+advanced_regeneration = false
+regeneration_interval_range = Vector2(0, 0)
+
+[node name="Line2D" parent="Shape3D"]
+default_color = Color(0.6, 0.3, 0.05, 1)

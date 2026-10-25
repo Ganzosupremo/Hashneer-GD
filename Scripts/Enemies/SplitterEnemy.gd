@@ -14,20 +14,14 @@ func kill(natural_death: bool = false) -> void:
 	super.kill(natural_death)
 
 func _spawn_mini_enemies() -> void:
-	var enemies_holder = get_tree().get_first_node_in_group("EnemiesHolder")
-	if not enemies_holder:
-		return
-	
 	for i in range(split_count):
 		var mini_enemy = mini_enemy_scene.instantiate()
 		if mini_enemy is SplitterEnemy:
 			mini_enemy.can_split = false
 		
-		enemies_holder.add_child(mini_enemy)
-		
 		var angle = (TAU / split_count) * i
 		var offset = Vector2(cos(angle), sin(angle)) * 50.0
-		mini_enemy.global_position = global_position + offset
+		spawn_extra_enemy(mini_enemy, global_position + offset)
 		mini_enemy.scale = Vector2.ONE * mini_size_scale
 		
 		if mini_enemy.has_method("setPolygon"):

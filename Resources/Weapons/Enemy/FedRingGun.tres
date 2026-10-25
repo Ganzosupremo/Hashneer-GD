@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="WeaponDetails" format=3]
+
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="2_wd"]
+[ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="3_sound"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="4_hit"]
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.4, 1, 0.5, 1, 0.1, 0.5, 0.2, 0)
+
+[sub_resource type="Resource" id="Resource_ammo"]
+script = ExtResource("1_ammo")
+ammo_name = "FED Ring Gun Ammo"
+min_lifetime = 3.0
+max_lifetime = 4.0
+bullet_damage = 0.0
+bullet_speed = 40.0
+bullet_pattern = 3
+pattern_arc_angle = 420.0
+fire_pattern_simultaneous = true
+size = 12
+bullets_per_shoot_min = 14
+bullets_per_shoot_max = 14
+bullet_spawn_interval_min = 45.0
+bullet_spawn_interval_max = 45.0
+trail_gradient = SubResource("Gradient_trail")
+trail_length = 12
+trail_width = 8.0
+bullet_hit_vfx = ExtResource("4_hit")
+is_child = true
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
+
+[resource]
+script = ExtResource("2_wd")
+weapon_name = "FED Ring Gun"
+fire_sound = ExtResource("3_sound")
+ammo_details = SubResource("Resource_ammo")
+shots_per_second = 2.0
+recoil_strength = 0.0
+recoil_kick_strength = 0.0
+trauma_shake_amount = 0.0
+metadata/_custom_type_script = "uid://c3oqvnse8erag"
