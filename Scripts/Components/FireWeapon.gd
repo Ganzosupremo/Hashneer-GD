@@ -80,27 +80,27 @@ func on_fire_weapon(has_fired: bool, fired_previous_frame: bool, player_damage_m
 ## It also handles the case where a laser beam is fired, updating its position and direction
 ## if it already exists, or creating a new laser beam instance if it does not.
 func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-		var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
-		var weapon: WeaponDetails = active_weapon_component.get_current_weapon()
-		if weapon != current_weapon:
-				_trigger_held_time = 0.0
-		current_weapon = weapon
-		_trigger_held = has_fired
+	var ammo: AmmoDetails = active_weapon_component.get_current_ammo()
+	var weapon: WeaponDetails = active_weapon_component.get_current_weapon()
+	if weapon != current_weapon:
+		_trigger_held_time = 0.0
+	current_weapon = weapon
+	_trigger_held = has_fired
 
-		if _laser_beam != null and !is_instance_valid(_laser_beam):
-				_laser_beam = null
-		# Handle laser beam termination on release or ammo change
-		if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
+	if _laser_beam != null and !is_instance_valid(_laser_beam):
+		_laser_beam = null
+	# Handle laser beam termination on release or ammo change
+	if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
 
-		if ammo.bullet_type == AmmoDetails.BulletType.LASER:
-				if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
-						# If the weapon is ready to fire, we can proceed with firing
-						_fire_laser(ammo, player_damage_multiplier, target_position)
-		else:
-				if ready_to_fire(has_fired, fired_previous_frame):
-						_trigger_camera_shake()
-						_fire_ammo(ammo, player_damage_multiplier, target_position)
-						reset_cooldown_timer()
+	if ammo.bullet_type == AmmoDetails.BulletType.LASER:
+		if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
+			# If the weapon is ready to fire, we can proceed with firing
+			_fire_laser(ammo, player_damage_multiplier, target_position)
+	else:
+		if ready_to_fire(has_fired, fired_previous_frame):
+			_trigger_camera_shake()
+			_fire_ammo(ammo, player_damage_multiplier, target_position)
+			reset_cooldown_timer()
 
 # Handles the termination of the laser beam based on the firing state and ammo type.
 func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool, ammo: AmmoDetails) -> bool:

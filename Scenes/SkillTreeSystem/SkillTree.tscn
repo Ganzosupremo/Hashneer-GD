@@ -239,6 +239,7 @@ size_flags_vertical = 4
 [node name="MiningFarmUI" parent="FrontLayer" unique_id=601998099 instance=ExtResource("56_farm_ui")]
 
 [node name="StatsScreenUI" parent="FrontLayer" unique_id=977071533 instance=ExtResource("57_stats_ui")]
+visible = false
 
 [node name="Settings" parent="FrontLayer" unique_id=1265309870 instance=ExtResource("22_u5dcr")]
 visible = false
