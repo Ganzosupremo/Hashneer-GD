@@ -91,15 +91,8 @@ func get_charge_damage() -> float:
 
 
 func setPolygon(new_polygon: PackedVector2Array, exclude_main_poly: bool = false):
-	_col_polygon.call_deferred("set_polygon", new_polygon)
+	super.setPolygon(new_polygon, exclude_main_poly)
 	_damage_area_polygon.call_deferred("set_polygon", new_polygon)
-	
-	if not exclude_main_poly:
-		_polygon.set_polygon(new_polygon)
-	
-	_hit_flash_poly.set_polygon(new_polygon)
-	new_polygon.append(new_polygon[0])
-	_line.points = new_polygon
 
 func _on_damage_area_area_entered(area: Area2D) -> void:
 	if _charge_state == ChargeState.CHARGING and area.get_parent() is PlayerController:
