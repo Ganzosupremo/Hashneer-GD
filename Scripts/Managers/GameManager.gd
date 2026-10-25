@@ -27,7 +27,9 @@ var loaded: bool = false
 
 const NetworkDataSaveName: String = "network_data"
 const WalletDataSaveName: String = "wallet_data"
-const GameManagerSaveName: String = "save_not_nigga"
+const GameManagerSaveName: String = "game_manager"
+## Key used by older saves, read once and replaced by [constant GameManagerSaveName].
+const LegacyGameManagerSaveName: String = "save_not_nigga"
 
 const implements = [
 	preload("res://Scripts/PersistenceDataSystem/IPersistenceData.gd")
@@ -112,6 +114,9 @@ func _build_dictionary_to_save() -> Dictionary:
 func load_data() -> void:
 	if loaded: return
 	
+	if !SaveSystem.has(GameManagerSaveName) and SaveSystem.has(LegacyGameManagerSaveName):
+		SaveSystem.set_var(GameManagerSaveName, SaveSystem.get_var(LegacyGameManagerSaveName))
+		SaveSystem.delete(LegacyGameManagerSaveName)
 	if !SaveSystem.has(GameManagerSaveName): return
 	var data: Dictionary = SaveSystem.get_var(GameManagerSaveName)
 

@@ -29,7 +29,7 @@ extends Node
 # The file path of your save data. You can freely modify this.
 const file_path : String = "user://saves/"
 const use_encryption : bool = false
-const default_file_name: String = "NOT_A_SAVE_FILE_NIGGA.sav"
+const default_file_name: String = "default.sav"
 
 var var_file_name: String = ""
 var current_state_dictionary := {}

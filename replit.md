@@ -151,7 +151,7 @@ base_step_interval = 0.45       # Time between steps at full speed
 
 ### Configuration
 - Main scene: `res://Scenes/UI/MainMenu.tscn`
-- Custom user directory: "Nigga_pls"
+- Custom user directory: "Hasheneer"
 - Forward Plus rendering
 - No default gravity (2D top-down game)
 

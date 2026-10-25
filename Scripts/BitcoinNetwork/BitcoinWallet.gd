@@ -2,6 +2,8 @@ extends Node2D
 class_name BWallet
 
 signal money_changed(amount_changed: float, currency: Constants.CurrencyType) 
+## Emitted with the amount every time fiat enters the wallet.
+signal fiat_added(amount: float)
 
 const API_REQUEST: String = "https://bitcoinexplorer.org/api/price"
 @onready var request: HTTPRequest = $HTTPRequest
@@ -42,6 +44,7 @@ func add_fiat(amount: float) -> void:
 	
 	fiat_balance += amount
 	money_changed.emit(fiat_balance, Constants.CurrencyType.FIAT)
+	fiat_added.emit(amount)
 
 func spend_fiat(amount_to_spend: float) -> bool:
 	if amount_to_spend > fiat_balance:
