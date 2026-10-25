@@ -53,12 +53,4 @@ func _on_back_button_pressed() -> void:
 	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.MAIN_MENU)
 
 func _load_save_file(file_name: String) -> void:
-	SaveSystem.var_file_name = file_name
-	if SaveSystem.has_save_file(file_name):
-		PersistenceDataManager.load_game(true)
-	else:
-		PersistenceDataManager.save_game(true)
-	_navigate_to_skill_tree_scene()
-
-func _navigate_to_skill_tree_scene():
-	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)
+	PersistenceDataManager.select_slot(file_name)

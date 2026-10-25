@@ -81,10 +81,9 @@ var upgrade_level: int = 0:
 			check_next_tier_unlock()
 			check_upgrade_maxed_out()
 
-## Store original cost values to restore when events expire
-var _original_upgrade_cost_base: float = 0.0
-var _original_upgrade_cost_base_btc: float = 0.0
-var _has_stored_original_values: bool = false
+## Cost multipliers set by the active economic event, 1.0 when there is none
+var _event_cost_multiplier_fiat: float = 1.0
+var _event_cost_multiplier_btc: float = 1.0
 
 var _next_tier_nodes: Array[SkillNode]
 var _id: int = 0
@@ -151,134 +150,36 @@ func buy_max(currency_type: Constants.CurrencyType = Constants.CurrencyType.FIAT
 #region Cost
 
 ## Applies a random economic event to this upgrade.
-## This function will modify the upgrade cost based on the economic event's impact.
+## The event sets a cost multiplier per currency, the base costs of the resource are never changed,
+## so applying the same event again (e.g. when the save is loaded) doesn't stack.
 ## The event will not apply if the upgrade is already maxed out or if the event is null.
 func apply_random_economic_event(_economic_event: EconomicEvent) -> void:
 	if !_economic_event or upgrade_level >= upgrade_max_level:
 		return
 
-	# Store original values before applying the event (only once)
-	_store_original_cost_values()
+	var multiplier: float = 1.0 + _economic_event.impact if _raises_prices(_economic_event) else max(1.0 - _economic_event.impact, 0.01)
+	var currency: Constants.CurrencyType = _economic_event.currency_affected
+	# Natural disasters hit both currencies
+	if _economic_event.event_type == EconomicEvent.EventType.NATURAL_DISASTER:
+		currency = Constants.CurrencyType.BOTH
 
-	match _economic_event.event_type:
-		EconomicEvent.EventType.INFLATION:
-			_apply_inflation_event(_economic_event)
-		EconomicEvent.EventType.DEFLATION:
-			_apply_deflation_event(_economic_event)
-		EconomicEvent.EventType.MARKET_CRASH:
-			_apply_market_crash_event(_economic_event)
-		EconomicEvent.EventType.MARKET_BOOM:
-			_apply_market_boom_event(_economic_event)
-		EconomicEvent.EventType.TAX_CHANGE:
-			_apply_tax_change_event(_economic_event)
-		EconomicEvent.EventType.TECHNOLOGY_ADVANCEMENT:
-			_apply_technology_advancement_event(_economic_event)
-		EconomicEvent.EventType.NATURAL_DISASTER:
-			_apply_natural_disaster_event(_economic_event)
-	
+	_event_cost_multiplier_fiat = multiplier if currency != Constants.CurrencyType.BITCOIN else 1.0
+	_event_cost_multiplier_btc = multiplier if currency != Constants.CurrencyType.FIAT else 1.0
 	update_ui.emit()  # Emit signal to update UI after applying the economic event
 
-## Reverts all economic event effects and restores original cost values.
+## Reverts all economic event effects, so costs go back to their normal values.
 ## This should be called when an economic event expires.
 func revert_economic_event_effects() -> void:
-	if !_has_stored_original_values:
-		return
-	
-	# Restore original cost values
-	upgrade_cost_base = _original_upgrade_cost_base
-	upgrade_cost_base_btc = _original_upgrade_cost_base_btc
-	
-	# _debug_log("Reverted economic event effects for upgrade: " + upgrade_name)
-	# _debug_log("  Fiat cost restored to: " + str(upgrade_cost_base))
-	# _debug_log("  Bitcoin cost restored to: " + str(upgrade_cost_base_btc))
-	
-	# Clear the stored values flag so new events can store fresh values
-	_has_stored_original_values = false
-	
+	_event_cost_multiplier_fiat = 1.0
+	_event_cost_multiplier_btc = 1.0
 	update_ui.emit()  # Emit signal to update UI after reverting
 
-## Stores the original cost values before applying economic events.
-## This is called automatically when the first economic event is applied.
-func _store_original_cost_values() -> void:
-	if _has_stored_original_values:
-		return  # Already stored, don't overwrite
-	
-	_original_upgrade_cost_base = upgrade_cost_base
-	_original_upgrade_cost_base_btc = upgrade_cost_base_btc
-	_has_stored_original_values = true
-	
-	# _debug_log("Stored original cost values for upgrade: " + upgrade_name)
-	# _debug_log("  Original fiat cost: " + str(_original_upgrade_cost_base))
-	# _debug_log("  Original bitcoin cost: " + str(_original_upgrade_cost_base_btc))
-
-#region Economic Event Handlers
-
-func _apply_inflation_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-
-func _apply_deflation_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-
-func _apply_market_crash_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-
-
-func _apply_market_boom_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-
-func _apply_tax_change_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 + _economic_event.impact)
-			upgrade_cost_base_btc *= (1 + _economic_event.impact)
-
-func _apply_technology_advancement_event(_economic_event: EconomicEvent) -> void:
-	match _economic_event.currency_affected:
-		Constants.CurrencyType.FIAT:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BITCOIN:
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-		Constants.CurrencyType.BOTH:
-			upgrade_cost_base *= (1 - _economic_event.impact)
-			upgrade_cost_base_btc *= (1 - _economic_event.impact)
-
-func _apply_natural_disaster_event(_economic_event: EconomicEvent) -> void:
-	upgrade_cost_base *= (1 + _economic_event.impact)
-	upgrade_cost_base_btc *= (1 + _economic_event.impact)
-
-#endregion
+## Returns [code]true[/code] if the event makes upgrades more expensive.
+func _raises_prices(_economic_event: EconomicEvent) -> bool:
+	match _economic_event.event_type:
+		EconomicEvent.EventType.DEFLATION, EconomicEvent.EventType.MARKET_BOOM, EconomicEvent.EventType.TECHNOLOGY_ADVANCEMENT:
+			return false
+	return true
 
 ## Returns the cost of the upgrade in the specified currency type.
 ## If no currency type is specified, it defaults to fiat.
@@ -288,11 +189,11 @@ func upgrade_cost(currency_type: Constants.CurrencyType = Constants.CurrencyType
 
 func _upgrade_cost_fiat() -> float:
 	var inflation_adjustment = FED.get_total_inflation()
-	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment
+	return upgrade_cost_base * pow(upgrade_cost_multiplier, upgrade_level) * inflation_adjustment * _event_cost_multiplier_fiat
 
 func _upgrade_cost_btc() -> float:
 	var deflation_adjustment = BitcoinNetwork.get_deflation_multiplier()
-	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level) * deflation_adjustment
+	return upgrade_cost_base_btc * pow(upgrade_cost_multiplier_btc, upgrade_level) * deflation_adjustment * _event_cost_multiplier_btc
 
 func upgrade_cost_string() -> String:
 	return str(_upgrade_cost_fiat())
@@ -314,23 +215,11 @@ func get_current_power() -> float:
 
 #region Getters and Setters
 
-func get_original_upgrade_cost_base() -> float:
-	return _original_upgrade_cost_base
-
-func get_original_upgrade_cost_base_btc() -> float:
-	return _original_upgrade_cost_base_btc
-
 func get_upgrade_cost_base() -> float:
 	return upgrade_cost_base
 
 func get_upgrade_cost_base_btc() -> float:
 	return upgrade_cost_base_btc
-
-func set_original_upgrade_cost_base(value: float) -> void:
-	_original_upgrade_cost_base = value
-
-func set_original_upgrade_cost_base_btc(value: float) -> void:
-	_original_upgrade_cost_base_btc = value
 
 func set_upgrade_cost_base(value: float) -> void:
 	upgrade_cost_base = value
