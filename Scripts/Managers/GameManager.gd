@@ -72,6 +72,12 @@ func shake_camera_with_magnitude(magnitude: Constants.ShakeMagnitude) -> void:
 
 #endregion
 
+## Locks every level except the first one for a new epoch.
+func reset_for_new_epoch() -> void:
+	_levels_unlocked = 1
+	_previous_levels_unlocked_index = 0
+	current_level = 0
+
 #region Level Management
 func _set_level_index(index: int) -> void:
 	print("Setting Level Index: {0}".format([index]))

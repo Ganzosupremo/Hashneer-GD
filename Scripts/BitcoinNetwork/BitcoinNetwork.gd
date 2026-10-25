@@ -355,6 +355,15 @@ func load_data():
 	bitcoins_in_circulation = get_total_bitcoins_in_circulation()
 	_loaded = true
 
+## Clears the chain for a new epoch, see [method MiningFarm.start_new_epoch].
+func reset_for_new_epoch() -> void:
+	chain = []
+	height = 0
+	current_block_subsidy = 0.0
+	coins_lost = 0.0
+	coins_spent = 0.0
+	bitcoins_in_circulation = 0.0
+
 ## Rescales Bitcoin amounts from saves made with the old 525,000 BTC subsidy.
 func _migrate_legacy_amounts() -> void:
 	for b in chain:

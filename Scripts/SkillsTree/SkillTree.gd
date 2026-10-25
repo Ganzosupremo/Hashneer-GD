@@ -22,7 +22,42 @@ func _ready() -> void:
 		node.set_node_identifier(id)
 		id += 1
 
+	_add_mining_farm_ui()
 	DebugLogger.info("SkillTreeManager initialized.")
+
+func _add_mining_farm_ui() -> void:
+	var farm_ui: MiningFarmUI = MiningFarmUI.new()
+	$FrontLayer.add_child(farm_ui)
+	farm_ui.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT, Control.PRESET_MODE_KEEP_SIZE, 14)
+	farm_ui.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	farm_ui.position.y = 73.0
+	farm_ui.new_epoch_requested.connect(start_new_epoch)
+
+## Starts a new epoch (prestige): resets the chain, wallet, inflation, levels, upgrades and miners,
+## and keeps the HODL points earned. See [method MiningFarm.start_new_epoch].
+func start_new_epoch() -> void:
+	if !MiningFarm.can_start_new_epoch(): return
+
+	# Expire the active economic event first so upgrade costs go back to their base values
+	EconomicEventsManager.force_expire_event()
+	var points: int = MiningFarm.start_new_epoch()
+
+	for node in _skill_nodes:
+		var key: String = node.save_name if !node.save_name.is_empty() else node.skillnode_data.upgrade_name
+		SaveSystem.delete(key)
+		node.skillnode_data.upgrade_level = 0
+		# Keep the scene switch from saving the old node state back, nodes reload with their defaults
+		node.remove_from_group("PersistentNodes")
+
+	BitcoinNetwork.reset_for_new_epoch()
+	BitcoinWallet.reset_for_new_epoch()
+	FED.reset_for_new_epoch()
+	GameManager.reset_for_new_epoch()
+	PlayerStatsManager.reset_for_new_epoch()
+
+	PersistenceDataManager.save_game(true)
+	NotificationManager.show_notification("Epoch %d begins! +%d HODL points" % [MiningFarm.epoch, points], 4.0)
+	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)
 
 # func _on_random_economic_event_picked(economic_event: EconomicEvent) -> void:
 # 	for node in _skill_nodes:

@@ -99,6 +99,13 @@ func sell_bitcoin(btc_amount: float) -> float:
 	add_fiat(fiat)
 	return fiat
 
+## Empties the wallet for a new epoch, see [method MiningFarm.start_new_epoch].
+func reset_for_new_epoch() -> void:
+	bitcoin_balance = 0.0
+	fiat_balance = 0.0
+	money_changed.emit(bitcoin_balance, Constants.CurrencyType.BITCOIN)
+	money_changed.emit(fiat_balance, Constants.CurrencyType.FIAT)
+
 func get_fiat_balance() -> float:
 	return fiat_balance
 

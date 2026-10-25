@@ -16,7 +16,8 @@ func _ready() -> void:
 	GameManager.get_player().get_health_node().zero_health.connect(_on_zero_power)
 	GameManager._current_block_core.onBlockDestroyed.connect(stop_mining)
 	GameManager.main_event_bus.level_completed.connect(stop_mining)
-	ai_timer.start(time)
+	# The player's hashrate makes it harder for the AI to find the block first
+	ai_timer.start(time * MiningFarm.get_ai_timer_multiplier())
 
 func stop_mining(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 	ai_timer.stop()

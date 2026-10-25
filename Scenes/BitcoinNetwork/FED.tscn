@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://bs2j8akia81jp" path="res://Scripts/BitcoinNetwork/FED.gd" id="1_5xcds"]
 
-[node name="FED" type="Node2D"]
+[node name="FED" type="Node2D" groups=["PersistentNodes"]]
 script = ExtResource("1_5xcds")
