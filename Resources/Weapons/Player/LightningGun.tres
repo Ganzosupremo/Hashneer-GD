@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponDetails" format=3]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://civ5efpaf6n0"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_wd"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/LightningAmmo.tres" id="3_ammo"]
-[ext_resource type="Resource" path="res://Resources/Audio/PistolFire.tres" id="4_sound"]
-[ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="5_tex"]
+[ext_resource type="Resource" uid="uid://rpba38s4x4av" path="res://Resources/Weapons/Player/LightningAmmo.tres" id="3_ammo"]
+[ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="4_sound"]
+[ext_resource type="Texture2D" uid="uid://nl3r1u3tru2l" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="5_tex"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="6_fx"]
 
 [sub_resource type="Resource" id="Resource_damage"]
@@ -13,7 +13,6 @@ upgrade_type = 1
 upgrade_name = "More damage"
 upgrade_description = "+10% damage output"
 upgrade_levels = 5
-upgrade_power_per_level = 0.1
 base_cost = 260000.0
 cost_multiplier = 1.6
 requires_bitcoin = true
@@ -29,8 +28,6 @@ weapon_texture = ExtResource("5_tex")
 fire_sound = ExtResource("4_sound")
 ammo_details = ExtResource("3_ammo")
 weapon_shoot_effect = ExtResource("6_fx")
-shots_per_second = 1.0
-spread = 0.0
 shake_trans = 10
 recoil_strength = 0.0
 recoil_kick_strength = 0.0

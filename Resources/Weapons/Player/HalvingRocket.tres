@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="WeaponDetails" format=3]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://c66m5c8krk8et"]
 
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_wd"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/HalvingRocketAmmo.tres" id="3_ammo"]
-[ext_resource type="Resource" path="res://Resources/Audio/ShotgunFire.tres" id="4_sound"]
-[ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/HalvingRocket.png" id="5_tex"]
+[ext_resource type="Resource" uid="uid://c01f301miho0l" path="res://Resources/Weapons/Player/HalvingRocketAmmo.tres" id="3_ammo"]
+[ext_resource type="Resource" uid="uid://bjfvowjccw2j3" path="res://Resources/Audio/ShotgunFire.tres" id="4_sound"]
+[ext_resource type="Texture2D" uid="uid://cy3q5wkverxur" path="res://Textures/WeaponSystem/Weapons/HalvingRocket.png" id="5_tex"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="6_fx"]
 
 [sub_resource type="Resource" id="Resource_fire_rate"]
@@ -14,7 +14,6 @@ upgrade_description = "+15% fire rate"
 upgrade_levels = 6
 upgrade_power_per_level = 0.15
 base_cost = 220000.0
-cost_multiplier = 1.5
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Resource" id="Resource_damage"]
@@ -23,7 +22,6 @@ upgrade_type = 1
 upgrade_name = "More damage"
 upgrade_description = "+10% damage output"
 upgrade_levels = 5
-upgrade_power_per_level = 0.1
 base_cost = 320000.0
 cost_multiplier = 1.6
 requires_bitcoin = true
@@ -41,10 +39,10 @@ ammo_details = ExtResource("3_ammo")
 weapon_shoot_effect = ExtResource("6_fx")
 shots_per_second = 0.8
 spread = 0.02
-shake_trans = 10
 amplitude = 5.0
 frequency = 8.0
 duration = 0.6
+shake_trans = 10
 recoil_strength = 600.0
 recoil_kick_strength = 30.0
 trauma_shake_amount = 0.35

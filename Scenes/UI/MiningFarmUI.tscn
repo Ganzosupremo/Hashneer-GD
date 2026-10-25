@@ -1,92 +1,99 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://bl0l4bqvn5hgr"]
 
 [ext_resource type="Script" uid="uid://d1vtbfiv1vtjl" path="res://Scripts/UI/MiningFarmUI.gd" id="1_farm"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
 
-[node name="MiningFarmUI" type="PanelContainer"]
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_oassp"]
+color = Color(0.0156863, 0.4, 0.784314, 1)
+thickness = 2
+
+[node name="MiningFarmUI" type="PanelContainer" unique_id=718792353]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -14.0
-offset_top = 73.0
-offset_right = -14.0
-offset_bottom = 73.0
+offset_left = -304.0
+offset_top = 93.0
+offset_bottom = 350.0
 grow_horizontal = 0
 theme = ExtResource("2_theme")
 script = ExtResource("1_farm")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1967078760]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1620660420]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1794791451]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme = ExtResource("2_theme")
+theme_override_font_sizes/font_size = 20
 text = "Mining Farm"
 
-[node name="HashrateLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="HashrateLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=503710927]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme = ExtResource("2_theme")
+theme_override_font_sizes/font_size = 13
 text = "Hashrate: 0 TH/s (0.0% of network)"
 
-[node name="FeesLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="FeesLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=785013479]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 12
 text = "Fees: 0 BTC/h  ·  AI timer x1.00"
 
-[node name="MinerButtons" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MinerButtons" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=213790914]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="CpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+[node name="CpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons" unique_id=1053341598]
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 13
 text = "CPU Miner x0  ·  Buy $5K"
 metadata/miner_id = "cpu"
 
-[node name="GpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+[node name="GpuButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons" unique_id=152144754]
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 13
 text = "GPU Rig x0  ·  Buy $60K"
 metadata/miner_id = "gpu"
 
-[node name="AsicButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons"]
+[node name="AsicButton" type="Button" parent="MarginContainer/VBoxContainer/MinerButtons" unique_id=1424234605]
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 13
 text = "ASIC x0  ·  Buy $750K"
 metadata/miner_id = "asic"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1507590758]
 layout_mode = 2
+theme = ExtResource("2_theme")
+theme_override_styles/separator = SubResource("StyleBoxLine_oassp")
 
-[node name="AchievementsLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="AchievementsLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=163178538]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 12
 text = "Achievements: 0/0"
 
-[node name="EpochLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="EpochLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=826394053]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 12
 text = "Epoch 1  ·  HODL points 0 (+0% hashrate, +0% fiat)"
 
-[node name="EpochButton" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="EpochButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=1262489116]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 15
 text = "New Epoch: mine every block first"
 
-[node name="ConfirmDialog" type="ConfirmationDialog" parent="."]
+[node name="ConfirmDialog" type="ConfirmationDialog" parent="." unique_id=999048350]
 unique_name_in_owner = true
 title = "Start a new epoch?"
 

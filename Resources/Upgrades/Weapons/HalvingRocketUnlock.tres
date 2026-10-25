@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="UpgradeData" format=3]
+[gd_resource type="Resource" script_class="UpgradeData" format=3 uid="uid://b5bo3n2rurb0x"]
 
 [ext_resource type="Script" uid="uid://btlradxupcwig" path="res://Scripts/SkillsTree/UpgradeData.gd" id="1_upg"]
 [ext_resource type="Script" uid="uid://c6p2fiuy6emj6" path="res://Scripts/SkillsTree/SkillNodeWeaponData.gd" id="2_wdata"]
-[ext_resource type="Resource" path="res://Resources/Weapons/Player/HalvingRocket.tres" id="3_weapon"]
+[ext_resource type="Resource" uid="uid://c66m5c8krk8et" path="res://Resources/Weapons/Player/HalvingRocket.tres" id="3_weapon"]
 
 [sub_resource type="Resource" id="Resource_weapon"]
 script = ExtResource("2_wdata")

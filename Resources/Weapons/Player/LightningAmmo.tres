@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+[gd_resource type="Resource" script_class="AmmoDetails" format=3 uid="uid://rpba38s4x4av"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
@@ -13,7 +13,6 @@ upgrade_description = "+15% lightning damage"
 upgrade_levels = 8
 upgrade_power_per_level = 0.15
 base_cost = 180000.0
-cost_multiplier = 1.5
 requires_bitcoin = true
 bitcoin_base_cost = 4.0
 bitcoin_cost_multiplier = 1.3
@@ -40,7 +39,6 @@ min_lifetime = 30.0
 max_lifetime = 30.0
 bullet_damage = 28.0
 bullet_type = 1
-laser_beam_scene = ExtResource("3_beam")
 laser_length = 650.0
 laser_damage_cooldown = 0.12
 laser_collision_mask = 3384

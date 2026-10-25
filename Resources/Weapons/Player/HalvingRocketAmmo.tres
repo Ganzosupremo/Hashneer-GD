@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+[gd_resource type="Resource" script_class="AmmoDetails" format=3 uid="uid://c01f301miho0l"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="3_hit"]
+[ext_resource type="PackedScene" uid="uid://7d552s0kq75w" path="res://Scenes/WeaponSystem/LaserBeam.tscn" id="3_ttirs"]
 
 [sub_resource type="Resource" id="Resource_radius"]
 script = ExtResource("2_upg")
@@ -26,7 +27,6 @@ upgrade_description = "+20% explosion damage"
 upgrade_levels = 6
 upgrade_power_per_level = 0.2
 base_cost = 220000.0
-cost_multiplier = 1.5
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
 [sub_resource type="Gradient" id="Gradient_trail"]
@@ -44,7 +44,6 @@ bullet_speed = 650.0
 bullet_type = 2
 explosion_radius = 130.0
 explosion_layer_mask = 312
-explosion_fail_chance = 0.0
 size = 14
 trail_gradient = SubResource("Gradient_trail")
 trail_length = 18
