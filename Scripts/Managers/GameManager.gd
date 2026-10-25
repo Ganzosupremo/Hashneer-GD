@@ -44,6 +44,9 @@ func _ready() -> void:
 func complete_level(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
 	if player_in_completed_level(): return
+	# The chain only moves forward once this level's block exists, whoever mined it.
+	# Dying or quitting leaves the block unmined, so the next level stays locked.
+	if !BitcoinNetwork.is_level_mined(current_level): return
 	
 	_levels_unlocked = clamp(_levels_unlocked + 1, 1, game_levels.size())
 	_previous_levels_unlocked_index = _levels_unlocked - 1

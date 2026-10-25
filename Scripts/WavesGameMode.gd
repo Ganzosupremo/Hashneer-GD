@@ -71,7 +71,7 @@ func _ready() -> void:
 
 	_bitcoin_check_timer = Timer.new()
 	_bitcoin_check_timer.one_shot = true
-	# _bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
+	_bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
 	add_child(_bitcoin_check_timer)
 
 
@@ -319,12 +319,10 @@ func _on_boss_item_spawned(event: SpawnEvent) -> void:
 			print("Bitcoin spawned from boss!")
 			_boss_tracker.bitcoin_spawned = true
 		else:
+			# Other drops may come before the Bitcoin one, let the check timer decide
 			print("Non-Bitcoin item spawned from boss.")
-			_escalate_boss_threshold()
-			_boss_tracker.checking_drops = false
 	else:
 		print("Spawned node has no Pickup2D component. ", spawned_node)
-		_boss_tracker.checking_drops = false
 
 func _on_item_picked(event: PickupEvent) -> void:
 	var pickup = event.pickup

@@ -31,6 +31,14 @@ const TOTAL_HALVINGS: int = 10
 const _API_REQUEST: String = "https://bitcoinexplorer.org/api/quotes/all"
 var _request: HTTPRequest = null
 var quotes_for_fun: Array = []
+## Used when the quotes API can't be reached (offline, API down), so mining never depends on the network.
+const FALLBACK_QUOTES: Array[String] = [
+	"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks",
+	"Running bitcoin",
+	"If you don't believe me or don't get it, I don't have time to try to convince you, sorry.",
+	"Lost coins only make everyone else's coins worth slightly more.",
+	"It might make sense just to get some in case it catches on.",
+]
 
 ## The current amount of bitcoins in circulation.
 var bitcoins_in_circulation: float = 0.0
@@ -94,9 +102,10 @@ func mine_block(miner: String, new_block: BitcoinBlock = null) -> void:
 		return
 	
 	if chain.size() == 0:
-		block.previous_hash = block.block_hash
+		block.previous_hash = "0".repeat(64)
 	else:
 		block.previous_hash = get_latest_block().block_hash
+	block.block_hash = block.calculate_block_hash()
 	
 	block.mined = true
 	
@@ -121,7 +130,6 @@ func is_current_level_block(block: BitcoinBlock) -> bool:
 ## [param block]: The BitcoinBlock to check[br]
 ## @return bool Whether the block has already been mined
 func is_block_already_mined(block: BitcoinBlock) -> bool:
-	if chain.size() == 0: return false
 	if block.mined: return true
 	
 	for b in chain:
@@ -168,12 +176,15 @@ func get_block_by_hash(_hash: String) -> BitcoinBlock:
 ## Returns the last BitcoinBlock in the chain, or null if the chain is empty.[br]
 ## @return BitcoinBlock The latest block in the blockchain.
 func get_latest_block() -> BitcoinBlock:
+	if chain.is_empty(): return null
 	return chain.back()
 
-## Creates a new BitcoinBlock with the current height and timestamp.
-## This method generates a new block with the current height, timestamp, and miner's name.
+## Creates a new BitcoinBlock for the current level with the current timestamp.
+## The block height is the level index, so [method is_level_mined] can find it
+## even if levels are not mined in order.
 func create_block(miner: String) -> BitcoinBlock:
-	return BitcoinBlock.new(height, Time.get_datetime_string_from_system(false, true), quotes_for_fun[randi() % quotes_for_fun.size()], miner)
+	var quotes: Array = quotes_for_fun if !quotes_for_fun.is_empty() else FALLBACK_QUOTES
+	return BitcoinBlock.new(GameManager.get_level_index(), Time.get_datetime_string_from_system(false, true), quotes[randi() % quotes.size()], miner)
 
 ## Gets the current block height.
 ## This method returns the current height of the blockchain, which is the number of blocks that have been mined so far.
@@ -216,9 +227,6 @@ func get_coins_lost() -> float:
 ## Checks if the new block is valid and hasn't been mined before, returns [code]true[/code] if block has
 ## already been mined before, [code]false[/code] otherwise
 func should_stop_mining(new_block: BitcoinBlock) -> bool:
-	# we don't check since it's the genesis block
-	if chain.size() == 1: return false
-	
 	if new_block == null: return true
 	if height > TOTAL_BLOCKS:
 		return true

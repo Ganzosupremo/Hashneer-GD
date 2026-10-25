@@ -58,7 +58,7 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 	
 	bitcoin_balance -= amount_to_spend
 	BitcoinNetwork.add_coins_spent(amount_to_spend)
-	money_changed.emit(bitcoin_balance, true)
+	money_changed.emit(bitcoin_balance, Constants.CurrencyType.BITCOIN)
 	return true
 
 ## exchanges the fiat currency to Bitcoin

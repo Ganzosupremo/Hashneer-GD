@@ -25,8 +25,8 @@ func calculate_block_hash() -> String:
 	var sha = HashingContext.new()
 	sha.start(HashingContext.HASH_SHA256)
 	
-	var hash_data = str_to_var(str(height) + timestamp + data + previous_hash)
-	sha.update(var_to_bytes_with_objects(hash_data))
+	var hash_data: String = str(height) + timestamp + data + previous_hash
+	sha.update(hash_data.to_utf8_buffer())
 	
 	var res = sha.finish()
 	return res.hex_encode()

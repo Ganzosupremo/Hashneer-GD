@@ -116,12 +116,13 @@ func _expire_current_event(force_expiry: bool = false) -> void:
 	if _current_event == null:
 		return
 		
+	var expired_name: String = _current_event.name
 	event_expired.emit(_current_event)
 	main_event_bus.emit_economy_event_expired(_current_event, !force_expiry)
 	_current_event = null
 	_event_duration = 0
 	
-	DebugLogger.info("Economic event expired: " + _current_event.name if _current_event else "None")
+	DebugLogger.info("Economic event expired: " + expired_name)
 	# Save the cleared state
 	save_data()
 

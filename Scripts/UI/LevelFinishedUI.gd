@@ -9,6 +9,7 @@ class_name LevelCompletedUI extends Control
 
 var fiat_gained_so_far: float = 0.0
 var btc_gained_this_time: float = 0.0
+var _opened: bool = false
 
 func _ready() -> void:
 	GameManager.get_player().get_health_node().zero_health.connect(_on_zero_health)
@@ -17,12 +18,15 @@ func _ready() -> void:
 	hide()
 
 func _on_zero_health() -> void:
+	if _opened: return
 	GameManager.complete_level(Constants.ERROR_404)
 
 func _on_level_completed(args: MainEventBus.LevelCompletedArgs) -> void:
 	open_ui(args.code)
 
 func open_ui(title: String) -> void:
+	if _opened: return
+	_opened = true
 	title_label.text = title
 	btc_gained_label.text = Utils.format_currency(btc_gained_this_time, true)
 
