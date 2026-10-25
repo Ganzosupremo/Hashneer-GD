@@ -10,8 +10,10 @@ func _physics_process(delta: float) -> void:
 	_handle_screen_wrapping()
 	var input: Vector2 = Vector2.ZERO
 	
-	if target and !is_player_dead:
-		var to_target = target.global_position - global_position
+	# Nobody assigns [member target] to spawned enemies, so fall back to the shooting target (the player).
+	var chase: Node2D = target if hasTarget() else _fire_target
+	if is_instance_valid(chase) and !is_player_dead:
+		var to_target = chase.global_position - global_position
 		var current_distance = to_target.length()
 		
 		if current_distance < preferred_distance - distance_tolerance:

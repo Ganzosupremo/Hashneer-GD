@@ -207,7 +207,8 @@ func cutFracture(source_polygon : PackedVector2Array, cut_polygon : PackedVector
 			var shape_info : Dictionary = PolygonLib.getShapeInfoSimple(source_trans_global, shape, triangulation)
 			shape_infos.append(shape_info)
 	
-	return {"shapes" : shape_infos, "fractures" : fracture_infos}
+	var intersected : bool = cut_info.intersected and cut_info.intersected.size() > 0
+	return {"shapes" : shape_infos, "fractures" : fracture_infos, "intersected" : intersected}
 
 
 #returns an array of PoolVector2Arrays -> each PoolVector2Array consists of two Vector2 [start, end]
