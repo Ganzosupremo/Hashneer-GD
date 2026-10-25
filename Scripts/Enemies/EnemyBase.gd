@@ -512,10 +512,11 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_hit_flash_anim_player.play("hit-flash")
 		return {"percent_cut" : 0.0, "dead" : false}
 																
-	var p : float = cut_shape_area / cur_area
+	var area_ref : float = max(cur_area, 0.001)
+	var p : float = cut_shape_area / area_ref
 	for fracture in fracture_info.fractures:
 		for shard in fracture:
-			Fractured.emit(self, shard, mass * (shard.area / cur_area), getCurColor(), fracture_force, p)
+			Fractured.emit(self, shard, mass * (shard.area / area_ref), getCurColor(), fracture_force, p)
 																
 	if _health_component.is_dead() or not fracture_info or not fracture_info.shapes or fracture_info.shapes.size() <= 0:
 		if hasRegeneration():
@@ -653,7 +654,8 @@ func restore() -> void:
 		poly = PolygonLib.restorePolygon(_polygon.get_polygon(), start_poly, total_frame_heal_amount)
 		area = PolygonLib.getPolygonArea(poly)
 																
-	if area / start_area > _health_component.heal_treshold:
+	# The restorer stack ran out (more heals than saved shapes): that means back to the start shape.
+	if poly.size() < 3 or area / start_area > _health_component.heal_treshold:
 		cur_area = start_area
 		setPolygon(start_poly)
 		_health_component.set_current_health(start_area)
@@ -753,8 +755,12 @@ func setPolygon(new_polygon : PackedVector2Array, exclude_main_poly : bool = fal
 		_polygon.set_polygon(new_polygon)
 																
 	_hit_flash_poly.set_polygon(new_polygon)
-	new_polygon.append(new_polygon[0])
-	_line.points = new_polygon
+	# Close the outline on a copy: the array is shared with the caller (start_poly) and the deferred
+	# collision polygon, and a repeated closing point makes its convex decomposition fail, so bullets
+	# went through the enemy once it healed back to start_poly.
+	var outline: PackedVector2Array = new_polygon.duplicate()
+	outline.append(outline[0])
+	_line.points = outline
 
 #endregion
 

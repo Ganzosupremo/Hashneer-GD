@@ -198,6 +198,7 @@ func absorb_damage(amount: float, impact_point_global: Vector2) -> float:
 	
 	var absorbed: float = min(amount, current_shield)
 	var remaining: float = amount - absorbed
+	var shield_before_hit: float = current_shield
 	
 	# Apply damage to shield
 	current_shield -= absorbed
@@ -206,7 +207,7 @@ func absorb_damage(amount: float, impact_point_global: Vector2) -> float:
 	# Apply visual fracture effect
 	if absorbed > 0:
 		# _apply_fracture_effect(absorbed, impact_point_global)
-		_create_shield_fracture(absorbed, impact_point_global)
+		_create_shield_fracture(absorbed, impact_point_global, shield_before_hit)
 	
 	# Check if shield is depleted
 	if current_shield <= 0:
@@ -238,7 +239,9 @@ func _apply_fracture_effect(damage_amount: float, impact_point: Vector2) -> void
 		shader_mat.set_shader_parameter("hit_effect", 1.0)
 		shader_mat.set_shader_parameter("shield_strength", current_shield / max_shield)
 
-func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2) -> void:
+## shield_before_hit is the shield value before this hit was subtracted. The shard mass and force
+## are relative to it; using current_shield divides by zero on the hit that breaks the shield.
+func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2, shield_before_hit: float) -> void:
 	# Create actual fracture effect on the shield polygon
 	if destroyed or original_polygon.is_empty():
 		return
@@ -266,10 +269,11 @@ func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2)
 		3      # Max fractures
 	)
 
-	var p : float = cut_shape_area / current_shield
+	var shield_ref: float = max(shield_before_hit, 0.001)
+	var p : float = cut_shape_area / shield_ref
 	for fracture in fracture_info.fractures:
 		for shard in fracture:
-			fractured.emit(self, shard, 100.0 * (shard.area / current_shield), getCurColor(), 250.0, p)
+			fractured.emit(self, shard, 100.0 * (shard.area / shield_ref), getCurColor(), 250.0, p)
 	
 	# Process fracture results
 	if fracture_info and fracture_info.has("shapes") and not fracture_info.shapes.is_empty():
