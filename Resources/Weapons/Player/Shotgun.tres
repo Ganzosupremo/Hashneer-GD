@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=16 format=3 uid="uid://cda54difj00ou"]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://cda54difj00ou"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_1feeq"]
 [ext_resource type="Resource" uid="uid://bkec27w83ebdb" path="res://Resources/Weapons/Player/ShotgunAmmo.tres" id="1_a8ja3"]
@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="4_1c5fr"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
-[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="5_7fgsi"]
 
 [sub_resource type="Resource" id="Resource_a8ja3"]
 script = ExtResource("4_1c5fr")
@@ -30,6 +29,9 @@ requires_bitcoin = true
 bitcoin_base_cost = 3.0
 bitcoin_cost_multiplier = 1.3
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_83u4u"]
+metadata/__load_path__ = "res://Textures/VFX/1x1 Square.png"
 
 [sub_resource type="Gradient" id="Gradient_1c5fr"]
 offsets = PackedFloat32Array(0, 0.282353, 0.588235, 0.788235)
@@ -73,7 +75,7 @@ amount = 21
 lifetime = 0.35
 one_shot = true
 explosiveness = 1.0
-particle_texture = ExtResource("5_7fgsi")
+particle_texture = SubResource("Resource_83u4u")
 process_material = SubResource("ParticleProcessMaterial_rf6gg")
 
 [resource]

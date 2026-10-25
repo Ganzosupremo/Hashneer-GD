@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d4bsaxj0j3hoc"]
+[gd_scene format=3 uid="uid://d4bsaxj0j3hoc"]
 
 [ext_resource type="Script" uid="uid://bi7u7tu0t1h1k" path="res://Scripts/UI/Main_menu.gd" id="1_n1dpb"]
 [ext_resource type="Resource" uid="uid://b756jcbypcr0h" path="res://Resources/Audio/Music/MainMenuMusic.tres" id="2_mjmdf"]
@@ -29,7 +29,7 @@ shader_parameter/density = 1.0
 shader_parameter/node_color = Color(1, 0.6, 0, 0.15)
 shader_parameter/connection_color = Color(0.2, 0.5, 1, 0.1)
 
-[node name="MainMenu" type="Control"]
+[node name="MainMenu" type="Control" unique_id=1437353591]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,10 +40,10 @@ mouse_filter = 2
 script = ExtResource("1_n1dpb")
 main_menu_music = ExtResource("2_mjmdf")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=282490907]
 environment = SubResource("Environment_kv8h2")
 
-[node name="Background" type="Control" parent="."]
+[node name="Background" type="Control" parent="." unique_id=1011603936]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -52,7 +52,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="GradientBG" type="TextureRect" parent="Background"]
+[node name="GradientBG" type="TextureRect" parent="Background" unique_id=981534286]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -62,7 +62,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = SubResource("GradientTexture2D_bg")
 
-[node name="NetworkLayer" type="ColorRect" parent="Background"]
+[node name="NetworkLayer" type="ColorRect" parent="Background" unique_id=852329782]
 material = SubResource("ShaderMaterial_network")
 layout_mode = 1
 anchors_preset = 15
@@ -72,11 +72,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="AnimationTimer" type="Timer" parent="Background"]
+[node name="AnimationTimer" type="Timer" parent="Background" unique_id=1215439312]
 wait_time = 0.05
 autostart = true
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1322351278]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -90,7 +90,7 @@ theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 120
 metadata/_edit_lock_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1898977419]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -99,7 +99,7 @@ theme_override_constants/separation = 60
 alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1532299305]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
@@ -107,7 +107,7 @@ theme_override_font_sizes/font_size = 72
 text = "HASHENEER"
 horizontal_alignment = 1
 
-[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1772515228]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
@@ -115,13 +115,13 @@ theme_override_constants/separation = 20
 alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="StartGame" parent="MarginContainer/VBoxContainer/ButtonContainer" instance=ExtResource("4_k8um8")]
+[node name="StartGame" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=173358335 instance=ExtResource("4_k8um8")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_next = NodePath("../QuitGame")
 text = "Start Game"
 
-[node name="QuitGame" parent="MarginContainer/VBoxContainer/ButtonContainer" instance=ExtResource("4_k8um8")]
+[node name="QuitGame" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=607715148 instance=ExtResource("4_k8um8")]
 unique_name_in_owner = true
 layout_mode = 2
 focus_neighbor_top = NodePath("../StartGame")

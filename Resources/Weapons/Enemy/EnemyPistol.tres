@@ -1,14 +1,12 @@
-[gd_resource type="Resource" script_class="WeaponDetails" load_steps=23 format=3 uid="uid://dxgjejnnjd8a6"]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://dxgjejnnjd8a6"]
 
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_6khr4"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_jdhiw"]
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="3_36wup"]
 [ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="4_a8oq1"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="5_cpcso"]
-[ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="6_oxhxd"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_xg7bx"]
-load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
 
 [sub_resource type="Gradient" id="Gradient_nx4ij"]
 offsets = PackedFloat32Array(0, 0.37013, 0.75974, 1)
@@ -52,7 +50,7 @@ particle_texture = SubResource("CompressedTexture2D_xg7bx")
 process_material = SubResource("ParticleProcessMaterial_r5nha")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
-[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
+[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
 
 [sub_resource type="Gradient" id="Gradient_q13lb"]
 
@@ -68,6 +66,9 @@ trail_gradient = SubResource("Gradient_q13lb")
 trail_length = 30
 bullet_hit_vfx = SubResource("Resource_ayku6")
 metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
+
+[sub_resource type="Resource" id="Resource_jdhiw"]
+metadata/__load_path__ = "res://Textures/VFX/1x1 Square.png"
 
 [sub_resource type="Gradient" id="Gradient_4y2qm"]
 offsets = PackedFloat32Array(0, 0.327161, 0.697531, 1)
@@ -107,7 +108,7 @@ amount = 21
 lifetime = 0.35
 one_shot = true
 explosiveness = 1.0
-particle_texture = ExtResource("6_oxhxd")
+particle_texture = SubResource("Resource_jdhiw")
 process_material = SubResource("ParticleProcessMaterial_6mcbm")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 

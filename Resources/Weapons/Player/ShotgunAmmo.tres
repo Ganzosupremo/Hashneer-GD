@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="AmmoDetails" load_steps=8 format=3 uid="uid://bkec27w83ebdb"]
+[gd_resource type="Resource" script_class="AmmoDetails" format=3 uid="uid://bkec27w83ebdb"]
 
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_ou5uc"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="2_nn25n"]
@@ -26,7 +26,7 @@ base_cost = 60000.0
 cost_multiplier = 1.4
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
-[sub_resource type="PackedScene" id="PackedScene_jdhiw"]
+[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
 
 [sub_resource type="Gradient" id="Gradient_ubo30"]
 offsets = PackedFloat32Array(0, 0.571721, 1)

@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="VFXEffectProperties" load_steps=8 format=3 uid="uid://s1urxs0syyaf"]
+[gd_resource type="Resource" script_class="VFXEffectProperties" format=3 uid="uid://s1urxs0syyaf"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_jkgnd"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_cck4r"]
-load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
 
 [sub_resource type="Gradient" id="Gradient_ftr2o"]
 interpolation_mode = 2

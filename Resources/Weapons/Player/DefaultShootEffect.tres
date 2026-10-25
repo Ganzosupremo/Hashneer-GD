@@ -1,9 +1,8 @@
-[gd_resource type="Resource" script_class="VFXEffectProperties" load_steps=14 format=3 uid="uid://dc2dkl7no6bnt"]
+[gd_resource type="Resource" script_class="VFXEffectProperties" format=3 uid="uid://dc2dkl7no6bnt"]
 
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="1_o3i6u"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_sin88"]
-load_path = "res://.godot/imported/1x1 Square.png-da8d82358cc781b0a0591faadfbd4797.ctex"
 
 [sub_resource type="Curve" id="Curve_8m3vi"]
 _data = [Vector2(0, -360), 0.0, 0.0, 0, 0, Vector2(1, 360), 1008.0, 0.0, 0, 0]
