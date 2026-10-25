@@ -47,6 +47,8 @@ NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
 EconomicEventsManager="*res://Scenes/Manager/EcnomicEventsManager.tscn"
 PathfindingManager="*res://Scripts/Autoload/PathfindingManager.gd"
+MiningFarm="*res://Scripts/BitcoinNetwork/MiningFarm.gd"
+Achievements="*res://Scripts/BitcoinNetwork/Achievements.gd"
 
 [display]
 

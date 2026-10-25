@@ -52,6 +52,12 @@ func authorize_transaction(amount: float) -> bool:
 	BitcoinWallet.add_fiat(amount)
 	return true
 
+## Resets prices for a new epoch, see [method MiningFarm.start_new_epoch].
+func reset_for_new_epoch() -> void:
+	inflation_rate = BASE_INFLATION_RATE
+	total_inflation = 1.0
+	fiat_currency_in_circulation = 0.0
+
 func get_total_inflation() -> float:
 	return total_inflation
 
@@ -60,6 +66,7 @@ func get_fiat_subsidy() -> float:
 	if GameManager.get_level_args() != null:
 		subsidy *= GameManager.get_level_args().fiat_drop_rate_factor
 	subsidy *= pow(total_inflation, WAGE_INFLATION_EXPONENT)
+	subsidy *= MiningFarm.get_fiat_drop_multiplier()
 	fiat_currency_in_circulation += subsidy
 	return subsidy
 

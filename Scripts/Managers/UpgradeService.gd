@@ -10,6 +10,7 @@ const implements = [
 const SaveName: String = "upgrade_service_data"
 
 func _ready() -> void:
+	add_to_group("PersistentNodes")
 	if progress_event_bus == null:
 		progress_event_bus = preload("res://Resources/Upgrades/MainPlayerProgressEventBus.tres")
 	if main_event_bus == null:

@@ -51,6 +51,8 @@ func get_current_scene() -> Node:
 
 
 func _deferred_switch_scene_with_packed(scene_to_load: PackedScene) -> void:
+	# Keep purchases made in this scene, the next scene reloads every system from the save data
+	PersistenceDataManager.save_game()
 	current_scene.free()
 	
 	screen_transition_background.visible = true

@@ -120,6 +120,16 @@ func reset_upgrades() -> void:
 		upgrade_bonuses[key] = 0.0
 	stats_updated.emit()
 
+## Removes every bonus, weapon and ability bought in the skill tree, for a new epoch.
+func reset_for_new_epoch() -> void:
+	for key in upgrade_bonuses.keys():
+		upgrade_bonuses[key] = 0.0
+	for key in percent_bonuses.keys():
+		percent_bonuses[key] = 0.0
+	unlocked_weapons.clear()
+	unlocked_abilities.clear()
+	stats_updated.emit(null)
+
 func save_data() -> void:
 	SaveSystem.set_var(SAVE_NAME, _build_save_data())
 
