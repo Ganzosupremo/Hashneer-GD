@@ -32,3 +32,6 @@ Logs_md/
 venv/
 
 *.dll
+*.tmp
+
+*.dll

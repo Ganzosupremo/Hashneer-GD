@@ -70,6 +70,12 @@ class_name WeaponDetails extends IUpgradeable
 ## The amount of trauma-based shake to add to the camera when the weapon is fired.
 @export_range(0.0, 1.0, 0.01) var trauma_shake_amount: float = 0.1
 
+@export_group("Spin Up")
+## Seconds the trigger has to be held to reach the maximum fire rate. 0 disables spin up.
+@export_range(0.0, 10.0, 0.1) var spin_up_time: float = 0.0
+## Fire rate multiplier reached after holding the trigger for [member spin_up_time] seconds.
+@export_range(1.0, 10.0, 0.1) var spin_up_max_multiplier: float = 1.0
+
 
 const implements = [
 	preload("res://Scripts/Resources/IUpgradeable.gd"),
@@ -121,14 +127,21 @@ func _apply_upgrade_modifier(upgrade_name: String, level: int, upgrade_power_per
 	_upgrade_modifiers[upgrade_name] = level * upgrade_power_per_level
 
 func get_current_stats() -> Dictionary:
+	var level: int = get_total_upgrade_level()
+	var damage: float = 0.0
+	if ammo_details:
+		level += ammo_details.get_total_upgrade_level()
+		# Per bullet, before the player's own damage multiplier
+		damage = ammo_details.get_final_damage(1.0, get_damage_multiplier())
 	var stats: Dictionary = {
 		"Weapon Name": weapon_name,
 		"Weapon Texture": weapon_texture,
-		"Damage": str(get_damage_multiplier()),
-		"ShotsPerSecond": str(get_fire_rate()),
-		"PrechargeTime": str(get_precharge_time()),
-		"Spread": str(get_spread()),
-		"Level": str(get_total_upgrade_level()),
+		"Damage": "%.1f" % damage,
+		"DamageMultiplier": "%.2f" % (1.0 + get_damage_multiplier()),
+		"ShotsPerSecond": "%.2f" % get_fire_rate(),
+		"PrechargeTime": "%.2f" % get_precharge_time(),
+		"Spread": "%.2f" % get_spread(),
+		"Level": str(level),
 	}
 	return stats
 
@@ -147,7 +160,7 @@ func get_random_spread() -> float:
 
 ## Returns the fire rate of the weapon, applying any fire rate upgrades.
 func get_fire_rate() -> float:
-	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
+	var shots_per_second_upgrade: float = _upgrade_modifiers.get("fire_rate", 0.0)
 	return shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0)
 
 ## Returns the damage multiplier of the weapon, applying any damage multiplier upgrades.
@@ -160,11 +173,11 @@ func get_precharge_time() -> float:
 	var precharge_time_reduction: float = _upgrade_modifiers.get("precharge_time_reduction", 0.0)
 	return max(precharge_time - precharge_time_reduction, 0.0)
 
-## Returns the total upgrade level across all available upgrades.
+## Returns the total upgrade level bought across all available upgrades.
 func get_total_upgrade_level() -> int:
 	var total_level: int = 0
 	for upgrade in available_upgrades:
-		total_level += upgrade.upgrade_levels
+		total_level += PlayerStatsManager.get_armory_level(get_upgrade_id(), upgrade.upgrade_type)
 	return total_level
 
 ## Sets the fire rate of the weapon, controlling how many shots can be fired per second.
@@ -176,9 +189,15 @@ func set_precharge_time(value: float) -> void:
 	precharge_time = value
 
 ## Returns the cooldown time for firing the weapon, calculated based on the fire rate.
-func get_fire_cooldown() -> float:
-	var shots_per_second_upgrade: float = _upgrade_modifiers.get("shots_per_second", 0.0)
-	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
+func get_fire_cooldown(held_time: float = 0.0) -> float:
+	var shots_per_second_upgrade: float = _upgrade_modifiers.get("fire_rate", 0.0)
+	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0) * get_spin_up_multiplier(held_time))
+
+## Returns the fire rate multiplier after holding the trigger for [param held_time] seconds.
+func get_spin_up_multiplier(held_time: float) -> float:
+	if spin_up_time <= 0.0:
+		return 1.0
+	return lerpf(1.0, spin_up_max_multiplier, clampf(held_time / spin_up_time, 0.0, 1.0))
 
 ## Returns the ammo details for this weapon, providing information about the bullets fired by this weapon.
 func get_ammo_details() -> AmmoDetails:

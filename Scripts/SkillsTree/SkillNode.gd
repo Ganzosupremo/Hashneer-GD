@@ -334,12 +334,6 @@ func _build_save_dictionary() -> Dictionary:
 		"node_state": _node_state,
 		"is_unlocked": is_unlocked,
 		"is_maxed_out": _is_maxed_out,
-		# Save economic event related data
-		"original_upgrade_cost_base": skillnode_data.get_original_upgrade_cost_base(),
-		"original_upgrade_cost_base_btc": skillnode_data.get_original_upgrade_cost_base_btc(),
-		"has_stored_original_values": skillnode_data._has_stored_original_values,
-		"current_upgrade_cost_base": skillnode_data.get_upgrade_cost_base(),
-		"current_upgrade_cost_base_btc": skillnode_data.get_upgrade_cost_base_btc()
 	}
 
 func load_data() -> void:
@@ -353,15 +347,8 @@ func load_data() -> void:
 	_is_maxed_out = data["is_maxed_out"]
 	is_unlocked = data["is_unlocked"]
 	
-	# Restore economic event related data
-	if data.has("has_stored_original_values") and data["has_stored_original_values"]:
-		skillnode_data.set_original_upgrade_cost_base(data.get("original_upgrade_cost_base", skillnode_data.get_original_upgrade_cost_base()))
-		skillnode_data.set_original_upgrade_cost_base_btc(data.get("original_upgrade_cost_base_btc", skillnode_data.get_original_upgrade_cost_base_btc()))
-		skillnode_data._has_stored_original_values = true
-		
-		# Restore the modified costs (in case an event was active when saved)
-		skillnode_data.set_upgrade_cost_base(data.get("current_upgrade_cost_base", skillnode_data.get_upgrade_cost_base()))
-		skillnode_data.set_upgrade_cost_base_btc(data.get("current_upgrade_cost_base_btc", skillnode_data.get_upgrade_cost_base_btc()))
+	# Older saves also stored the costs changed by economic events, they are ignored now:
+	# the active event is re-applied as a multiplier when the event picker loads.
 
 	is_next_tier_unlocked()
 	is_this_skill_maxed_out()

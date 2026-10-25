@@ -254,7 +254,7 @@ func _explode() -> void:
 	AudioManager.create_2d_audio_at_location(global_position, SoundEffectDetails.SoundEffectType.QUADRANT_CORE_DESTROYED, AudioManager.DestinationAudioBus.SFX)
 
 	var circle: CircleShape2D = CircleShape2D.new()
-	circle.radius = _ammo_details.explosion_radius
+	circle.radius = _ammo_details.get_explosion_radius()
 
 	var params: PhysicsShapeQueryParameters2D = PhysicsShapeQueryParameters2D.new()
 	params.shape = circle
@@ -274,8 +274,7 @@ func _explode() -> void:
 
 
 func _can_explode() -> bool:
-	# 90% chance to explode
-	if randf() < 0.1:
+	if randf() < _ammo_details.explosion_fail_chance:
 		return false
 	if _ammo_details.explosion_radius <= 0.0:
 		return false
