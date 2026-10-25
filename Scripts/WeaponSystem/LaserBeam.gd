@@ -35,7 +35,7 @@ func spawn(pos: Vector2, origin_transform: Transform2D, launch_vector: Vector2, 
 	_quadrant_builder = quadrant_builder
 	_direction = launch_vector.normalized()
 	_launch_velocity = launch_vector.length()
-	_length = ammo_data.laser_length
+	_length = ammo_data.get_laser_length()
 	_line.width = width
 	global_transform = origin_transform
 	global_position = pos

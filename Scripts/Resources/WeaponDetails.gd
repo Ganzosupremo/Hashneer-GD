@@ -70,6 +70,12 @@ class_name WeaponDetails extends IUpgradeable
 ## The amount of trauma-based shake to add to the camera when the weapon is fired.
 @export_range(0.0, 1.0, 0.01) var trauma_shake_amount: float = 0.1
 
+@export_group("Spin Up")
+## Seconds the trigger has to be held to reach the maximum fire rate. 0 disables spin up.
+@export_range(0.0, 10.0, 0.1) var spin_up_time: float = 0.0
+## Fire rate multiplier reached after holding the trigger for [member spin_up_time] seconds.
+@export_range(1.0, 10.0, 0.1) var spin_up_max_multiplier: float = 1.0
+
 
 const implements = [
 	preload("res://Scripts/Resources/IUpgradeable.gd"),
@@ -183,9 +189,15 @@ func set_precharge_time(value: float) -> void:
 	precharge_time = value
 
 ## Returns the cooldown time for firing the weapon, calculated based on the fire rate.
-func get_fire_cooldown() -> float:
+func get_fire_cooldown(held_time: float = 0.0) -> float:
 	var shots_per_second_upgrade: float = _upgrade_modifiers.get("fire_rate", 0.0)
-	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0))
+	return 1.0 / (shots_per_second * max(shots_per_second_upgrade + 1.0, 1.0) * get_spin_up_multiplier(held_time))
+
+## Returns the fire rate multiplier after holding the trigger for [param held_time] seconds.
+func get_spin_up_multiplier(held_time: float) -> float:
+	if spin_up_time <= 0.0:
+		return 1.0
+	return lerpf(1.0, spin_up_max_multiplier, clampf(held_time / spin_up_time, 0.0, 1.0))
 
 ## Returns the ammo details for this weapon, providing information about the bullets fired by this weapon.
 func get_ammo_details() -> AmmoDetails:

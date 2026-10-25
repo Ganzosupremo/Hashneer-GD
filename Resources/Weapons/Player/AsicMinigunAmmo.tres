@@ -1,0 +1,53 @@
+[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="3_hit"]
+
+[sub_resource type="Resource" id="Resource_dmg"]
+script = ExtResource("2_upg")
+upgrade_type = 4
+upgrade_name = "Better chips"
+upgrade_description = "+10% bullet damage"
+upgrade_levels = 10
+upgrade_power_per_level = 0.1
+base_cost = 200000.0
+cost_multiplier = 1.4
+requires_bitcoin = true
+bitcoin_base_cost = 3.0
+bitcoin_cost_multiplier = 1.25
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Resource" id="Resource_speed"]
+script = ExtResource("2_upg")
+upgrade_type = 5
+upgrade_name = "Faster hashes"
+upgrade_description = "+10% bullet speed"
+upgrade_levels = 3
+upgrade_power_per_level = 0.1
+base_cost = 90000.0
+cost_multiplier = 1.5
+metadata/_custom_type_script = "uid://crn0k51u6kiwt"
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(0.5, 1, 0.6, 0.9, 0.5, 1, 0.6, 0)
+
+[resource]
+script = ExtResource("1_ammo")
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Resource_dmg"), SubResource("Resource_speed")])
+ammo_name = "Hash Rounds"
+min_lifetime = 1.5
+max_lifetime = 2.5
+bullet_damage = 14.0
+bullet_speed = 1300.0
+bullet_pattern = 2
+size = 5
+trail_gradient = SubResource("Gradient_trail")
+trail_length = 6
+trail_width = 3.0
+fracture_force = 4000.0
+bullet_hit_vfx = ExtResource("3_hit")
+is_child = true
+upgrade_description = "Tiny hashes, but a lot of them."
+metadata/_custom_type_script = "uid://dkw4e6pdtdy1p"
