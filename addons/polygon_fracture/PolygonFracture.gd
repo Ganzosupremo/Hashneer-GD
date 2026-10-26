@@ -191,8 +191,7 @@ func cutFracture(source_polygon : PackedVector2Array, cut_polygon : PackedVector
 			if area < fracture_min_area:
 				continue
 			
-			var fracture_info : Array = fractureDelaunay(shape, source_trans_global, fractures, shard_min_area)
-			fracture_infos.append(fracture_info)
+			fracture_infos.append(_fractureOrWhole(shape, source_trans_global, fractures, shard_min_area))
 	
 	var shape_infos : Array = []
 	if cut_info.final and cut_info.final.size() > 0:
@@ -200,8 +199,8 @@ func cutFracture(source_polygon : PackedVector2Array, cut_polygon : PackedVector
 			var triangulation : Dictionary = PolygonLib.triangulatePolygon(shape)
 			var shape_area : float = triangulation.area#PolygonLib.getPolygonArea(shape)
 			if shape_area < cut_min_area:
-				var fracture_info : Array = fractureDelaunay(shape, source_trans_global, fractures, shard_min_area)
-				fracture_infos.append(fracture_info)
+				if shape_area >= shard_min_area:
+					fracture_infos.append(_fractureOrWhole(shape, source_trans_global, fractures, shard_min_area))
 				continue
 			
 			var shape_info : Dictionary = PolygonLib.getShapeInfoSimple(source_trans_global, shape, triangulation)
@@ -210,6 +209,18 @@ func cutFracture(source_polygon : PackedVector2Array, cut_polygon : PackedVector
 	var intersected : bool = cut_info.intersected and cut_info.intersected.size() > 0
 	return {"shapes" : shape_infos, "fractures" : fracture_infos, "intersected" : intersected}
 
+
+#fractureDelaunay mostly makes thin slivers on small pieces, and they all fall under shard_min_area
+#-> nothing was spawned for small cuts. In that case the whole piece becomes a single shard.
+func _fractureOrWhole(shape : PackedVector2Array, source_trans_global : Transform2D, fractures : int, shard_min_area : float) -> Array:
+	var fracture_info : Array = fractureDelaunay(shape, source_trans_global, fractures, shard_min_area)
+	if fracture_info.size() > 0:
+		return fracture_info
+	var triangulation : Dictionary = PolygonLib.triangulatePolygon(shape, true, true)
+	if triangulation.area <= 0.0:
+		return fracture_info
+	fracture_info.append(PolygonLib.getShapeInfoSimple(source_trans_global, shape, triangulation))
+	return fracture_info
 
 #returns an array of PoolVector2Arrays -> each PoolVector2Array consists of two Vector2 [start, end]
 #is used in the func fracture 

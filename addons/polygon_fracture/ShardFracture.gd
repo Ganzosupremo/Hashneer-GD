@@ -42,8 +42,9 @@ signal Despawn(ref)
 
 
 
-@export_range(0.0, 256.0, 0.05) var lin_drag: float = 0.0 # (float, 0.0, 256.0, 0.05)
-@export_range(0.0, 256.0, 0.05) var ang_drag: float = 0.0 # (float, 0.0, 256.0, 0.05)
+## Velocity damping per second (exponential). 3 = loses ~95% of its speed in one second.
+@export_range(0.0, 32.0, 0.05) var lin_drag: float = 0.0
+@export_range(0.0, 32.0, 0.05) var ang_drag: float = 0.0
 @export var gravity_direction: Vector2 = Vector2(0, 1)
 @export var gravity_scale: float = 10.0
 
@@ -81,17 +82,16 @@ func _process(delta: float) -> void:
 		global_scale = lerp(_scale_lerp_start, Vector2.ZERO, p)
 
 func _physics_process(delta: float) -> void:
-	addForce(gravity_direction.normalized() * gravity_scale * delta)
+	# Gravity is an acceleration (px/s²): going through addForce divided it by the mass, so tiny
+	# shards fell hundreds of times faster than big ones.
+	_lin_vel += gravity_direction.normalized() * gravity_scale * delta
 	_lin_vel += _lin_accel
 	_ang_vel += _ang_accel
 	
-	var lin_drag_magnitude : float = _lin_vel.length() * lin_drag * delta
-	var lin_drag_force : Vector2 = -1.0 * _lin_vel.normalized() * lin_drag_magnitude
-	_lin_vel += lin_drag_force
-	
-	var ang_drag_magnitude : float = _ang_vel * ang_drag * delta
-	var ang_drag_force : float = sign(_ang_vel) * -1.0 * ang_drag_magnitude
-	_ang_vel += ang_drag_force
+	# Exponential damping: the old "v -= v * drag * delta" overshoots once drag * delta > 1
+	# (125 * 1/60 = 2.08), flipping and growing the velocity every frame.
+	_lin_vel *= exp(-lin_drag * delta)
+	_ang_vel *= exp(-ang_drag * delta)
 	
 	global_position += _lin_vel * delta
 	global_rotation += _ang_vel * delta
@@ -139,8 +139,9 @@ func addTorque(torque : float) -> void:
 
 func setPolygon(poly : PackedVector2Array, c : Color, texture_info : Dictionary) -> void:
 	set_polygon(poly)
-	poly.append(poly[0])
-	_line.points = poly
+	var outline : PackedVector2Array = poly.duplicate()
+	outline.append(outline[0])
+	_line.points = outline
 	setColor(c)
 	setTexture(texture_info)
 
