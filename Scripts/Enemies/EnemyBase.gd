@@ -85,12 +85,12 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var max_neighbors_check: int = 20
 
 @export_group("Pathfinding")
-## Steer with the [NavigationAgent2D] path. Off, the enemy flies straight at its target.
+## Steer along a path from the [NavigationServer2D]. Off, the enemy flies straight at its target.
 @export var use_pathfinding: bool = true
-@export var navigation_agent_radius: float = 20.0
+## Seconds between path queries (each enemy starts at a random offset to spread them out).
 @export_range(0.1, 2.0, 0.05) var path_recalc_interval: float = 0.5
+## Query a new path early when the target moved this far from where the last path ended.
 @export_range(50.0, 500.0, 10.0) var path_recalc_distance_threshold: float = 100.0
-@export var use_staggered_pathfinding: bool = true
 
 @export_category("Audio and VFX")
 @export var sound_on_hurt: SoundEffectDetails
@@ -158,9 +158,6 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @onready var _hit_flash_anim_player: AnimationPlayer = $AnimationPlayer
 @onready var _invincible_timer: Timer = $InvincibleTimer
 
-## Pathfinding node
-@onready var pathfinding_node: NavigationAgent2D = $PathfindingNode
-
 var cur_area : float = 0.0
 var start_area : float = 0.0
 var target_pos := Vector3.ZERO
@@ -179,9 +176,11 @@ var is_player_dead: bool = false
 var desired_velocity: Vector2 = Vector2.ZERO
 
 
-## Staggered pathfinding variables
+## Pathfinding: the last queried path and the point the enemy is heading to
 var path_recalc_timer: float = 0.0
 var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
+var _nav_path: PackedVector2Array = PackedVector2Array()
+var _nav_path_index: int = 0
 
 
 func _ready() -> void:
@@ -242,10 +241,6 @@ func _createPolygonShape() -> PackedVector2Array:
 
 func _process(delta: float) -> void:
 	_processKnockbackTimer(delta)
-		
-		# Update staggered pathfinding timer
-	if use_pathfinding and use_staggered_pathfinding and path_recalc_timer > 0.0:
-		path_recalc_timer -= delta
 
 func _physics_process(delta):
 	if isKnockbackActive(): return
@@ -260,35 +255,8 @@ func _physics_process(delta):
 								
 		if chase_stop_distance > 0.0 and hasTarget() and global_position.distance_squared_to(cur_target_pos) < chase_stop_distance * chase_stop_distance:
 			pass # Close enough: hold position (input stays zero, so it slows down)
-		elif use_pathfinding and pathfinding_node:
-			# Staggered pathfinding: only update target when timer expires or target moved significantly
-			if use_staggered_pathfinding:
-				var should_recalc: bool = false
-				
-				# Check if timer expired
-				if path_recalc_timer <= 0.0:
-					should_recalc = true
-					path_recalc_timer = path_recalc_interval
-				
-				# Check if target moved significantly
-				var target_moved_distance = last_pathfinding_target_pos.distance_squared_to(cur_target_pos)
-				if target_moved_distance > path_recalc_distance_threshold * path_recalc_distance_threshold:
-					should_recalc = true
-					path_recalc_timer = path_recalc_interval
-			
-				if should_recalc:
-					pathfinding_node.target_position = cur_target_pos
-					last_pathfinding_target_pos = cur_target_pos
-			else:
-				# Non-staggered: update every frame (old behavior)
-				pathfinding_node.target_position = cur_target_pos
-			
-			if not pathfinding_node.is_navigation_finished():
-				var next_path_pos = pathfinding_node.get_next_path_position()
-				input = (next_path_pos - global_position).normalized()
-			# No path yet (map not synced) or the target is outside the navigation region: go straight.
-			if input == Vector2.ZERO:
-				input = _get_direct_direction(cur_target_pos)
+		elif use_pathfinding:
+			input = _get_path_direction(delta, cur_target_pos)
 		else:
 			input = _get_direct_direction(cur_target_pos)
 
@@ -296,8 +264,7 @@ func _physics_process(delta):
 			var flocking_force = _calculate_flocking_force()
 			input = (input + flocking_force).normalized()
 				
-	# Setting velocity towards target. The NavigationAgent2D only gives the direction: its avoidance
-	# (velocity_computed) is not enabled, so handing it the velocity left the enemy standing still.
+	# Setting velocity towards target.
 	desired_velocity = input * max_speed
 	if input != Vector2.ZERO:
 		var increase : Vector2 = input * getCurAccel() * delta
@@ -313,6 +280,26 @@ func _physics_process(delta):
 												
 	if rotate_towards_velocity:
 		global_rotation = linear_velocity.angle()
+
+## Follows a path queried from the navigation map every [member path_recalc_interval] seconds.
+## The NavigationAgent2D used before re-queried its path inside get_next_path_position() almost
+## every physics frame (the target always moves and flocking/knockback push the enemy off the
+## path), which cost ~0.6 ms per enemy and made 20 enemies lag.
+func _get_path_direction(delta: float, target_position: Vector2) -> Vector2:
+	path_recalc_timer -= delta
+	var target_moved: bool = last_pathfinding_target_pos.distance_squared_to(target_position) > path_recalc_distance_threshold * path_recalc_distance_threshold
+	if path_recalc_timer <= 0.0 or target_moved:
+		path_recalc_timer = path_recalc_interval
+		last_pathfinding_target_pos = target_position
+		_nav_path = NavigationServer2D.map_get_path(get_world_2d().navigation_map, global_position, target_position, true)
+		_nav_path_index = 1 # Point 0 is the enemy position
+	# Skip the points already reached
+	while _nav_path_index < _nav_path.size() and global_position.distance_squared_to(_nav_path[_nav_path_index]) < target_reached_tolerance_sq:
+		_nav_path_index += 1
+	# Last point reached, no path (map not synced yet) or the target is outside the navigation region: go straight.
+	if _nav_path_index >= _nav_path.size() - 1:
+		return _get_direct_direction(target_position)
+	return global_position.direction_to(_nav_path[_nav_path_index])
 
 func _get_direct_direction(target_position: Vector2) -> Vector2:
 	var target_vec: Vector2 = target_position - global_position
@@ -337,23 +324,9 @@ func _setup_navigation_agent() -> void:
 		else:
 			setNewRandomTargetPos()
 		
-	if !use_pathfinding:
-		return
-								
-	if hasTarget():
-		pathfinding_node.target_position = target.global_position
-	else:
-		pathfinding_node.target_position = Vector2(target_pos.x, target_pos.y)
-	
-	pathfinding_node.radius = navigation_agent_radius
-	pathfinding_node.max_speed = max_speed
-	pathfinding_node.path_desired_distance = 10.0
-	pathfinding_node.target_desired_distance = target_reached_tolerance
-				
-	# Initialize staggered pathfinding with random offset to spread out calculations
-	if use_staggered_pathfinding:
-		path_recalc_timer = _rng.randf_range(0.0, path_recalc_interval)
-		last_pathfinding_target_pos = Vector2(target_pos.x, target_pos.y)
+	# Random offset so the enemies don't all query their paths on the same frame
+	path_recalc_timer = _rng.randf_range(0.0, path_recalc_interval)
+	last_pathfinding_target_pos = Vector2(target_pos.x, target_pos.y)
 
 func _calculate_flocking_force() -> Vector2:
 	if !use_flocking:

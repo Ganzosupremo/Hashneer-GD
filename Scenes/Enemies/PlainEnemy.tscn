@@ -295,8 +295,6 @@ sound_on_heal = ExtResource("5_bo7sv")
 hit_vfx = SubResource("Resource_8rp6w")
 death_vfx = SubResource("Resource_rerji")
 
-[node name="PathfindingNode" type="NavigationAgent2D" parent="."]
-
 [node name="FractureBodyHealthComponent" type="Node2D" parent="."]
 script = ExtResource("2_m1s7c")
 advanced_regeneration = true
