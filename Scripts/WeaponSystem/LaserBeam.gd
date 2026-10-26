@@ -86,6 +86,9 @@ func update_beam(origin: Vector2, launch_vector: Vector2 = _direction) -> void:
 	if results.is_empty(): return
 	
 	var collider = results.collider
+	# Chargers and bosses carry a DamageArea on the enemy layer: the beam stopped on it and did nothing
+	if collider is Area2D and collider is not ShieldComponent and collider.get_parent() is BaseEnemy:
+		collider = collider.get_parent()
 	if collider is Node2D:
 		var hit_pos: Vector2 = results.position
 		_line.add_point(to_local(hit_pos))
@@ -97,16 +100,24 @@ func _apply_damage(body: Node2D, hit_pos: Vector2) -> void:
 	var last: float = _hit_timestamps.get(body, 0.0)
 	if now - last < _damage_cooldown * 1000.0:
 		return
+	# Without this the cooldown never applied and the beam cut a tiny bit every frame
+	_hit_timestamps[body] = now
 	
 	var damage_to_deal = _ammo_details.damage_final
 	
-	if body is FracturableStaticBody2D and body is not BlockCore and _quadrant_builder:
+	if body is ShieldComponent:
+		body.absorb_damage(damage_to_deal, hit_pos)
+	elif body is BaseEnemy and body.has_active_shield():
+		body.shield.absorb_damage(damage_to_deal, hit_pos)
+	elif body is FracturableStaticBody2D and body is not BlockCore and _quadrant_builder:
 		_quadrant_builder.call_deferred("fracture_quadrant_on_collision", hit_pos, body, _launch_velocity, damage_to_deal, _ammo_details.bullet_speed)
 	elif body is BlockCore and _quadrant_builder:
 		_quadrant_builder.call_deferred("fracture_block_core", damage_to_deal, "Player")
 	elif body is BaseEnemy:
 		var force: Vector2 = (body.global_position - global_position).normalized() * _ammo_details.fracture_force
-		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.25, hit_pos, force, 0.25, modulate)
+		# Same cut size as a bullet with this damage: at 0.25 each tick removed a 7 px dot that the
+		# enemy regeneration healed faster than the beam cut.
+		body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.5, hit_pos, force, 0.25, modulate)
 	elif body is PlayerController:
 		body.damage(damage_to_deal)
 

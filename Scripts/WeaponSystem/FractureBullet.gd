@@ -200,6 +200,9 @@ func _deal_damage(body: Node2D, pos: Vector2) -> void:
 			_quadrant_builder.fracture_quadrant_on_collision(pos, body, _launch_velocity, damage_to_deal, _ammo_details.bullet_speed)
 	elif body is BlockCore and _quadrant_builder:
 			_quadrant_builder.fracture_block_core(damage_to_deal, "Player")
+	elif body is BaseEnemy and body.has_active_shield():
+			# An active shield takes the hit for its owner (explosions used to go straight through it)
+			body.shield.absorb_damage(damage_to_deal, pos)
 	elif body is BaseEnemy:
 			var force: Vector2 = (body.global_position - global_position).normalized() * _ammo_details.fracture_force
 			body.call_deferred("damage", Vector2(damage_to_deal, damage_to_deal) * 0.5, global_position, force, 0.25, Color.MISTY_ROSE)
@@ -239,9 +242,18 @@ func _process_hit(body: Node2D) -> void:
 		_:
 			_schedule_destruction()
 
+## Called by a [ShieldComponent] that stopped this bullet and already took its damage. Explosive
+## bullets still blow up (they used to vanish on shields), without hitting that shield's owner again.
+func hit_shield(shield: ShieldComponent) -> void:
+	if _bullet_type == AmmoDetails.BulletType.EXPLOSIVE:
+		call_deferred("_explode", shield.parent_entity)
+	else:
+		_schedule_destruction()
+
 #region Helpers
 
-func _explode() -> void:
+## [param spared] is left out of the blast (the shielded enemy that already took the hit).
+func _explode(spared: Node2D = null) -> void:
 	if !_can_explode():
 		# Create a failed explosion visual and sound effect here
 		GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.BLANK_EFFECT, global_transform, _ammo_details.failed_explosion_vfx)
@@ -270,7 +282,8 @@ func _explode() -> void:
 	var results: Array = space_state.intersect_shape(params, 32)
 	for result in results:
 		var body = result.collider
-		if body is Node2D:
+		# Shields are hit through their owner in _deal_damage, so each enemy is damaged once
+		if body is Node2D and body != spared and body is not ShieldComponent:
 			_deal_damage(body, global_position)
 	_schedule_destruction()
 

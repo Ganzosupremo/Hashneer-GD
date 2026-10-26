@@ -296,9 +296,6 @@ hit_vfx = SubResource("Resource_8rp6w")
 death_vfx = SubResource("Resource_rerji")
 
 [node name="PathfindingNode" type="NavigationAgent2D" parent="."]
-path_postprocessing = 1
-debug_enabled = true
-debug_path_custom_color = Color(0, 0.448929, 0.886795, 1)
 
 [node name="FractureBodyHealthComponent" type="Node2D" parent="."]
 script = ExtResource("2_m1s7c")
