@@ -10,8 +10,8 @@ normal_texture = ExtResource("3_al4en")
 texture_repeat = 2
 
 [node name="SquareEnemy" unique_id=1518902879 instance=ExtResource("1_pyqee")]
-invincible_time = 0.0
-shape_area_percent = 0.47
+invincible_time = 0.01
+shape_area_percent = 0.4
 fractures = 10
 max_speed = 75.0
 use_flocking = false

@@ -26,8 +26,6 @@ base_cost = 60000.0
 cost_multiplier = 1.4
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
-[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
-
 [sub_resource type="Gradient" id="Gradient_ubo30"]
 offsets = PackedFloat32Array(0, 0.571721, 1)
 colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238, 1, 0.993, 0.649, 0, 0.666)

@@ -39,8 +39,6 @@ bitcoin_base_cost = 7.0
 bitcoin_cost_multiplier = 1.6
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
-[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
-
 [sub_resource type="Gradient" id="Gradient_xsvdn"]
 offsets = PackedFloat32Array(0, 0.495413, 1)
 colors = PackedColorArray(0.044306, 0.40851, 0.366935, 1, 0.281376, 0.561392, 0.28835, 1, 0.136992, 0.685775, 0.866122, 1)

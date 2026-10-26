@@ -50,8 +50,6 @@ particle_texture = SubResource("CompressedTexture2D_6iw8x")
 process_material = SubResource("ParticleProcessMaterial_xjqfy")
 metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
-[sub_resource type="PackedScene" id="PackedScene_c5tnd"]
-
 [sub_resource type="Gradient" id="Gradient_37v23"]
 
 [resource]

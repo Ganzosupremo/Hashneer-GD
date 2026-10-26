@@ -1,12 +1,12 @@
-[gd_resource type="Resource" script_class="WeaponDetails" format=3]
+[gd_resource type="Resource" script_class="WeaponDetails" format=3 uid="uid://myqy1yb42ygo"]
 
 [ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="1_stntf"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="2_wd"]
 [ext_resource type="Resource" uid="uid://dminafrjjckj7" path="res://Resources/Audio/EnemyPistolFire.tres" id="3_sound"]
 [ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="4_hit"]
 
 [sub_resource type="Gradient" id="Gradient_trail"]
-offsets = PackedFloat32Array(0, 1)
 colors = PackedColorArray(0.4, 1, 0.5, 1, 0.1, 0.5, 0.2, 0)
 
 [sub_resource type="Resource" id="Resource_ammo"]
