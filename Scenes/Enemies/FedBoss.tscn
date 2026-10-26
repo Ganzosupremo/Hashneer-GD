@@ -34,6 +34,7 @@ metadata/_custom_type_script = "uid://cqmxiok1cwu5s"
 [node name="FedBoss" instance=ExtResource("1_base")]
 mass = 15.0
 script = ExtResource("2_script")
+chase_stop_distance = 350.0
 final_phase_weapon = ExtResource("4_spiral")
 volley_interval_per_phase = Array[float]([2.8, 2.2, 1.2])
 phase_thresholds = Vector2(0.66, 0.33)

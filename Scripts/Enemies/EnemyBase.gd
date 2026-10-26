@@ -31,13 +31,12 @@ signal Died(ref: BaseEnemy, pos: Vector2, natural_death: bool)
 signal Damaged(enemy: BaseEnemy, pos: Vector2, shape: PackedVector2Array, color: Color, fade_speed: float)
 signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, color: Color, fracture_force: float, p: float)
 
-signal target_position_reached()
-
 @export_category("Main Event Bus")
 @export var main_event_bus: MainEventBus
 
 @export_category("General")
-@export var invincible_time: float = 0.5
+## Seconds the enemy ignores hits after being cut. 0 = every hit cuts and fractures.
+@export var invincible_time: float = 0.0
 @export var color_default: Color = Color.ANTIQUE_WHITE
 ## 1.0 = no change. 2.0 means twice as fast over. 0.5 means takes longer twice as much
 @export_range(0.0, 2.0, 0.5, "or_greater") var knockback_resistance_base: float = 1.0
@@ -48,6 +47,9 @@ signal target_position_reached()
 @export_range(0.0, 1.0, 0.01, "or_greater") var shape_area_percent : float = 0.25
 @export var fractures: int = 2
 @export var fracture_force: float = 200.0
+## Cut pieces and fracture shards smaller than this (px²) are not spawned. Kept small so weak
+## bullets (shotgun pellets, minigun) still throw shards.
+@export var shard_min_area: float = 12.0
 
 @export_category("Collision")
 @export var collision_damage := Vector2(10, 20)
@@ -56,6 +58,10 @@ signal target_position_reached()
 
 @export_category("Targeting")
 @export var target: Node2D = null
+## Go after the player. Off, the enemy roams towards random points past the map edges.
+@export var chase_player: bool = true
+## While chasing the player, stop closing in below this distance (shooters keep their range). 0 = no limit.
+@export var chase_stop_distance: float = 0.0
 @export var find_new_target_pos_tolerance: float = 50.0
 @export var target_reached_tolerance: float = 10.0
 @export var target_pos_interval_range := Vector2(0.5, 1.5)
@@ -79,10 +85,8 @@ signal target_position_reached()
 @export var max_neighbors_check: int = 20
 
 @export_group("Pathfinding")
-## True to use the [NavigationAgent2D] A* pathfinding
-@export var use_pathfinding: bool = false
-## True to use game's custom A* pathfinding implementation
-@export var use_custom_pathfinding: bool = false
+## Steer with the [NavigationAgent2D] path. Off, the enemy flies straight at its target.
+@export var use_pathfinding: bool = true
 @export var navigation_agent_radius: float = 20.0
 @export_range(0.1, 2.0, 0.05) var path_recalc_interval: float = 0.5
 @export_range(50.0, 500.0, 10.0) var path_recalc_distance_threshold: float = 100.0
@@ -175,12 +179,6 @@ var is_player_dead: bool = false
 var desired_velocity: Vector2 = Vector2.ZERO
 
 
-# Custom Pathfinding
-var _current_pathfinding_path: PackedVector2Array
-var _current_waypoint_index: int = 0
-var _last_pathfinding_target_pos: Vector2 = Vector2.ZERO
-
-
 ## Staggered pathfinding variables
 var path_recalc_timer: float = 0.0
 var last_pathfinding_target_pos: Vector2 = Vector2.ZERO
@@ -260,7 +258,9 @@ func _physics_process(delta):
 				
 		var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
 								
-		if use_pathfinding and pathfinding_node:
+		if chase_stop_distance > 0.0 and hasTarget() and global_position.distance_squared_to(cur_target_pos) < chase_stop_distance * chase_stop_distance:
+			pass # Close enough: hold position (input stays zero, so it slows down)
+		elif use_pathfinding and pathfinding_node:
 			# Staggered pathfinding: only update target when timer expires or target moved significantly
 			if use_staggered_pathfinding:
 				var should_recalc: bool = false
@@ -289,8 +289,6 @@ func _physics_process(delta):
 			# No path yet (map not synced) or the target is outside the navigation region: go straight.
 			if input == Vector2.ZERO:
 				input = _get_direct_direction(cur_target_pos)
-		elif use_custom_pathfinding and PathfindingManager.is_pathfinding_grid_valid():
-			input = _get_pathfinding_direction(delta, cur_target_pos)
 		else:
 			input = _get_direct_direction(cur_target_pos)
 
@@ -322,48 +320,6 @@ func _get_direct_direction(target_position: Vector2) -> Vector2:
 		return target_vec.normalized()
 	return Vector2.ZERO
 
-func _get_pathfinding_direction(delta: float, target_position: Vector2) -> Vector2:
-	if !PathfindingManager.is_pathfinding_grid_valid():
-		return (target_position - global_position).normalized()
-	
-	if PathfindingManager.is_target_position_reached(global_position, target_position, target_reached_tolerance):
-		setNewRandomTargetPos()
-		target_position_reached.emit()
-		return Vector2.ZERO
-
-	path_recalc_timer -= delta
-	
-	var should_recalculate: bool = false
-
-	if _current_pathfinding_path.is_empty():
-		should_recalculate = true
-	elif path_recalc_timer <= 0.0:
-		should_recalculate = true
-	elif target_position.distance_to(_last_pathfinding_target_pos) > path_recalc_distance_threshold:
-		should_recalculate =  true
-	
-	if should_recalculate:
-		_current_pathfinding_path = PathfindingManager.get_pathfinding_path(global_position, target_position)
-		_last_pathfinding_target_pos = target_position
-		_current_waypoint_index = 0
-		path_recalc_timer = path_recalc_interval
-	
-	if _current_pathfinding_path.is_empty():
-		return (target_position - global_position).normalized()
-	
-	if _current_waypoint_index >= _current_pathfinding_path.size():
-		_current_waypoint_index = _current_pathfinding_path.size() - 1
-	
-	var waypoint: Vector2 = _current_pathfinding_path[_current_waypoint_index]
-	var direction_to_waypoint: Vector2 = (waypoint - global_position).normalized()
-
-	if global_position.distance_to(waypoint) < target_reached_tolerance:
-		_current_waypoint_index += 1
-		if _current_waypoint_index >= _current_pathfinding_path.size():
-			_current_waypoint_index = _current_pathfinding_path.size() - 1
-
-	return direction_to_waypoint
-
 func _processKnockbackTimer(delta : float) -> void:
 	if knockback_timer > 0.0:
 		knockback_timer -= delta * knockback_resistance
@@ -372,8 +328,14 @@ func _processKnockbackTimer(delta : float) -> void:
 
 func _setup_navigation_agent() -> void:
 	await get_tree().physics_frame
-	# setTarget(GameManager.get_player())
-	setNewRandomTargetPos()
+	# Nobody else assigns targets to spawned enemies: without this they roamed off the map edges
+	# and wrapped around the screen, so they (and the boss) rarely came after the player.
+	if !hasTarget():
+		var player: Node2D = GameManager.get_player()
+		if chase_player and player:
+			setTarget(player)
+		else:
+			setNewRandomTargetPos()
 		
 	if !use_pathfinding:
 		return
@@ -392,9 +354,6 @@ func _setup_navigation_agent() -> void:
 	if use_staggered_pathfinding:
 		path_recalc_timer = _rng.randf_range(0.0, path_recalc_interval)
 		last_pathfinding_target_pos = Vector2(target_pos.x, target_pos.y)
-
-func _on_navigation_velocity_computed(safe_velocity: Vector2) -> void:
-	linear_velocity = safe_velocity
 
 func _calculate_flocking_force() -> Vector2:
 	if !use_flocking:
@@ -505,7 +464,7 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 	Damaged.emit(self, point, cut_shape, damage_color, 5.0)
 	var angle: float = (-knockback_force).angle()
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_HIT, Transform2D(angle, point), hit_vfx)
-	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, 300, 50, fractures)
+	var fracture_info : Dictionary = _poly_fracture.cutFracture(_polygon.get_polygon(), cut_shape, get_global_transform(), Transform2D(0.0, point), start_area * shape_area_percent, shard_min_area, shard_min_area, fractures)
 	# The cut missed the polygon (the hit point lands on the bullet, just outside the edge, and the
 	# damage is applied deferred). Nothing was removed, so the enemy must not die from it.
 	if not fracture_info.get("intersected", true):
@@ -551,7 +510,10 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		_health_component.set_current_health(cur_shape.area)
 		_drop_poly.modulate.a = lerp(0.2, 0.7, 1.0 - getHealthPercent())
 																																
-		_invincible_timer.start(invincible_time)
+		# Timer.start(0.0) keeps the old wait_time (1 s by default), so a 0 invincible_time
+		# made the enemy ignore every hit for a whole second.
+		if invincible_time > 0.0:
+			_invincible_timer.start(invincible_time)
 		if hasRegeneration() and canRegenerate():
 			_health_component.regenerate(self)
 
@@ -684,6 +646,9 @@ func restore() -> void:
 
 func canBeHealed() -> bool:
 	return _health_component.can_be_healed()
+
+func has_active_shield() -> bool:
+	return shield != null and is_instance_valid(shield) and shield.is_active()
 
 func hasTarget() -> bool:
 	return target != null and is_instance_valid(target)

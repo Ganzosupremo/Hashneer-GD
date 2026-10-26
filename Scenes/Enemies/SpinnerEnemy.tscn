@@ -16,6 +16,7 @@ texture_repeat = 2
 
 [node name="SpinnerEnemy" instance=ExtResource("1_base")]
 script = ExtResource("2_script")
+chase_stop_distance = 250.0
 spin_speed = 3.0
 bullet_spread_count = 8
 can_shoot = true
@@ -25,8 +26,6 @@ shooting_cooldown_interval = Vector2(2, 4)
 color_default = Color(1, 0.5, 0.5, 1)
 shape_area_percent = 0.13
 max_speed = 110.0
-use_pathfinding = false
-use_custom_pathfinding = true
 polygon_shape = 4
 s_p_number = 4
 s_a = 55.0

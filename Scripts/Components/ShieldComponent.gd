@@ -14,6 +14,9 @@ signal fractured(ref: ShieldComponent, fracture_shard: Dictionary, new_mass: flo
 @export var shield_fracture_cut_extents_min_max: Vector2 = Vector2(20, 50) 
 ## Min percentage of area to keep after fracture
 @export var shield_min_area_percent: float = 0.1 
+## A hit that leaves less than this fraction of the full shield on screen breaks it. Otherwise a big
+## hit (Halving Rocket) left a thin crescent that read as the shield coming back.
+@export_range(0.0, 1.0, 0.05) var shield_break_area_percent: float = 0.25
   
 @export_group("Visual Effects")
 @export var hit_effect_duration: float = 1.0
@@ -35,6 +38,8 @@ signal fractured(ref: ShieldComponent, fracture_shard: Dictionary, new_mass: flo
 var current_shield: float = 0.0
 var original_polygon: PackedVector2Array
 var initial_polygon_area: float = 0.0
+## Area of the unbroken (scaled) shield polygon
+var _full_area: float = 0.0
 var destroyed: bool = false
 var regen_timer: float = 0.0
 var regeneration_active: bool = false
@@ -52,6 +57,7 @@ func _ready() -> void:
 	#var shield_area = PolygonLib.getPolygonArea(polygon)
 	current_shield = max_shield
 	_setup_shield_polygon(polygon, true)
+	_full_area = PolygonLib.getPolygonArea(_polygon2d.polygon)
 	
 	# Set up regeneration timer
 	_regeneration_timer = Timer.new()
@@ -101,9 +107,12 @@ func _process(delta: float) -> void:
 			var shader_mat = _polygon2d.material as ShaderMaterial
 			shader_mat.set_shader_parameter("hit_effect", _hit_effect_timer / hit_effect_duration)
 	
-	# Handle regeneration delay timer
+	# Handle regeneration delay timer. absorb_damage only resets the delay, so regeneration has to be
+	# restarted here once it runs out (it never came back after the first hit before).
 	if can_regenerate and regen_timer > 0:
 		regen_timer -= delta
+		if regen_timer <= 0 and not destroyed and current_shield < max_shield:
+			_start_regeneration()
 		
 	# Follow parent entity (uncommented and improved)
 	if parent_entity and is_instance_valid(parent_entity):
@@ -123,12 +132,9 @@ func _on_body_entered(body: Node2D) -> void:
 		var damage = bullet._ammo_details.damage_final if bullet._ammo_details else 10.0
 		var impact_point = bullet.global_position
 		
-		# Absorb damage and apply fracture effect
-		var remaining_damage = absorb_damage(damage, impact_point)
-		
-		# Stop the bullet (destroy it since shield blocked it)
-		bullet.call_deferred("destroy")
-		
+		absorb_damage(damage, impact_point)
+		# The shield stops the bullet (explosive ones still blow up, sparing this shield's owner)
+		bullet.hit_shield(self)
 		return
 	
 	# Handle other damage sources
@@ -167,13 +173,15 @@ func _on_regeneration_tick() -> void:
 	
 	# Apply regeneration
 	current_shield = min(current_shield + regeneration_amount, max_shield)
-	shield_changed.emit(current_shield)
+	shield_changed.emit(self, current_shield)
 	
 	# Continue regenerating if not fully healed
 	if current_shield < max_shield:
-		_start_regeneration()
+		_regeneration_timer.start()
 	else:
 		regeneration_active = false
+		# Fully healed: put back the unbroken polygon (fractures only ever shrank it)
+		_setup_shield_polygon(PolygonLib.createCirclePolygon(shield_radius, 16), true)
 		# Restore to full visibility when fully healed
 		if _polygon2d:
 			_polygon2d.visible = true
@@ -204,10 +212,11 @@ func absorb_damage(amount: float, impact_point_global: Vector2) -> float:
 	current_shield -= absorbed
 	shield_changed.emit(self, current_shield)
 	
-	# Apply visual fracture effect
-	if absorbed > 0:
-		# _apply_fracture_effect(absorbed, impact_point_global)
-		_create_shield_fracture(absorbed, impact_point_global, shield_before_hit)
+	# Apply visual fracture effect. A cut that leaves nothing of the shield breaks it: before, the
+	# untouched polygon stayed on screen with shield left, so it looked like it came back.
+	if absorbed > 0 and !_create_shield_fracture(absorbed, impact_point_global, shield_before_hit):
+		current_shield = 0.0
+		shield_changed.emit(self, current_shield)
 	
 	# Check if shield is depleted
 	if current_shield <= 0:
@@ -240,11 +249,12 @@ func _apply_fracture_effect(damage_amount: float, impact_point: Vector2) -> void
 		shader_mat.set_shader_parameter("shield_strength", current_shield / max_shield)
 
 ## shield_before_hit is the shield value before this hit was subtracted. The shard mass and force
-## are relative to it; using current_shield divides by zero on the hit that breaks the shield.
-func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2, shield_before_hit: float) -> void:
+## are relative to it; using current_shield divides by zero on the hit that breaks the shield.[br]
+## Returns false when the cut left too little of the shield to keep (see [member shield_break_area_percent]).
+func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2, shield_before_hit: float) -> bool:
 	# Create actual fracture effect on the shield polygon
 	if destroyed or original_polygon.is_empty():
-		return
+		return true
 	
 	# Generate a cut shape based on damage amount
 	var damage_vector = Vector2(damage_amount, damage_amount)
@@ -286,13 +296,13 @@ func _create_shield_fracture(damage_amount: float, impact_point_global: Vector2,
 				largest_area = shape.area
 				main_shape = shape
 		
-		if !main_shape.is_empty():
-			# Update shield with fractured polygon
-			_setup_shield_polygon(main_shape.shape)
-	else:
-		# No valid fracture - shield might be too damaged
-		if current_shield <= max_shield * 0.1:  # If shield is very low, destroy it
-			_on_shield_depleted()
+		if main_shape.is_empty() or largest_area < _full_area * shield_break_area_percent:
+			return false
+		# Update shield with fractured polygon
+		_setup_shield_polygon(main_shape.shape)
+		return true
+	# The cut covered the whole shield (or left only crumbs)
+	return !fracture_info.get("intersected", true)
 
 # Shield-specific signal handlers
 func _on_shield_damaged(damage_amount: float, impact_point: Vector2) -> void:
@@ -306,7 +316,7 @@ func _on_shield_healed(amount: float) -> void:
 
 func _on_health_changed(new_value: float) -> void:
 	# Emit shield-specific signal
-	shield_changed.emit(new_value)
+	shield_changed.emit(self, new_value)
 	
 	# Start regeneration if needed
 	if can_regenerate and regen_timer <= 0 and new_value < max_shield and not regeneration_active:
@@ -349,7 +359,7 @@ func reset_shield() -> void:
 	if _line2d:
 		_line2d.visible = true
 	
-	shield_changed.emit(current_shield)
+	shield_changed.emit(self, current_shield)
 
 func getCurColor() -> Color:
 	# Return the current shield color based on its state

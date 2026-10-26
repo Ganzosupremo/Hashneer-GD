@@ -19,8 +19,6 @@ pulse_speed = 3.0
 color_default = Color(1, 0.6, 0.2, 1)
 shape_area_percent = 0.12
 max_speed = 180.0
-use_pathfinding = false
-use_custom_pathfinding = true
 cir_radius = 40.0
 cir_smoothing = 3
 

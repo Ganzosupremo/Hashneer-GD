@@ -8,10 +8,10 @@ point_count = 2
 
 [node name="Polygon2D" type="Polygon2D"]
 script = ExtResource("1_2mrbc")
-lin_drag = 125.0
-ang_drag = 256.0
+lin_drag = 3.0
+ang_drag = 2.5
 gravity_direction = Vector2(1, 1)
-gravity_scale = 2.0
+gravity_scale = 40.0
 lifetime_scale_curve = SubResource("Curve_qaurp")
 
 [node name="Line2D" type="Line2D" parent="."]
