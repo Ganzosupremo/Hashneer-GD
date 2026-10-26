@@ -20,6 +20,7 @@ const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 @onready var _enemies_killed_label: Label = %EnemiesKilledLabel
 @onready var _wave_label: Label = %WaveLabel
 @onready var _boss_progress_bar: ProgressBar = %BossProgressBar
+@onready var _boss_label: Label = %BossLabel
 @onready var _wave_completed_label: Label = %WaveCompletedLabel
 
 ## Level Configuration Arguments
@@ -68,6 +69,7 @@ func _ready() -> void:
 								
 	_boss_progress_bar.max_value = _boss_tracker.kills_for_next_boss
 	_boss_progress_bar.value = 0.0
+	_update_kill_display()
 
 	_bitcoin_check_timer = Timer.new()
 	_bitcoin_check_timer.one_shot = true
@@ -79,7 +81,6 @@ func _ready() -> void:
 	_wave_completed_label.visible = false
 
 	_setup_navigation_region()
-	PathfindingManager.initialize_grid(_world_map_rect, 50)
 	_setup_wave_spawner()
 	Tutorial.show_once.call_deferred("waves")
 
@@ -122,6 +123,7 @@ func _setup_wave_spawner() -> void:
 	_wave_spawner.enemy_spawned.connect(_connect_enemy_signals)
 
 func _process(_delta: float) -> void:
+	_update_boss_health_display()
 	_check_enemy_lifetime()
 	_check_enemy_cap()
 	_process_despawn_queue()
@@ -136,7 +138,7 @@ func _check_enemy_lifetime() -> void:
 			_spawned_enemies_array.remove_at(i)
 			continue
 																
-		if _enemies_to_despawn_queue.has(enemy):
+		if _enemies_to_despawn_queue.has(enemy) or _is_boss(enemy):
 			continue
 
 		var enemy_spawn_time = enemy.spawn_timestamp
@@ -161,7 +163,7 @@ func _check_enemy_cap() -> void:
 								
 	var enemies_with_distance = []
 	for enemy in _spawned_enemies_array:
-		if not is_instance_valid(enemy) or _enemies_to_despawn_queue.has(enemy):
+		if not is_instance_valid(enemy) or _enemies_to_despawn_queue.has(enemy) or _is_boss(enemy):
 			continue
 																
 		var distance = enemy.global_position.distance_squared_to(player_pos)
@@ -174,6 +176,10 @@ func _check_enemy_cap() -> void:
 		if not _enemies_to_despawn_queue.has(enemy):
 			_enemies_to_despawn_queue.append(enemy)
 			_spawned_enemies_array.erase(enemy)
+
+## Bosses never despawn: the boss that got despawned after 120 s left "Boss Active" on forever.
+func _is_boss(enemy: BaseEnemy) -> bool:
+	return enemy == _current_boss
 
 func _process_despawn_queue() -> void:
 	while not _enemies_to_despawn_queue.is_empty() and _despawn_count < MAX_DESPAWNS_PER_FRAME:
@@ -271,17 +277,34 @@ func on_enemy_died(ref: BaseEnemy, _pos: Vector2, system_despawn: bool) -> void:
 	else:
 		_kill_count += 1
 		_update_kill_display()
-		_boss_progress_bar.value = _kill_count
 
 		if _kill_count >= _boss_tracker.kills_for_next_boss and not _boss_tracker.boss_active:
 			_spawn_boss()
 
 func _update_kill_display() -> void:
+	if _boss_tracker.boss_active:
+		# The kill goal is met while the boss is up, so "60/40" only confused
+		_enemies_killed_label.text = "Kills: {0} | Despawned: {1}".format([_kill_count, _despawn_count])
+		return
 	_enemies_killed_label.text = "Kills: {0}/{1} | Despawned: {2}".format([
 		_kill_count,
 		_boss_tracker.kills_for_next_boss,
 		_despawn_count
 	])
+	_boss_label.text = "Boss #{0} incoming: {1}/{2} kills".format([
+		_boss_tracker.current_boss_number,
+		mini(_kill_count, _boss_tracker.kills_for_next_boss),
+		_boss_tracker.kills_for_next_boss
+	])
+	_boss_progress_bar.max_value = _boss_tracker.kills_for_next_boss
+	_boss_progress_bar.value = mini(_kill_count, _boss_tracker.kills_for_next_boss)
+
+## While a boss is up the bottom bar shows its health instead of the kill goal.
+func _update_boss_health_display() -> void:
+	if not _boss_tracker.boss_active or not is_instance_valid(_current_boss):
+		return
+	_boss_progress_bar.max_value = 100.0
+	_boss_progress_bar.value = _current_boss.getHealthPercent() * 100.0
 
 static func get_world_map_rect() -> Rect2:
 	return _world_map_rect
@@ -294,21 +317,33 @@ func _spawn_boss() -> void:
 	print("Spawning Boss #%d at %d kills" % [_boss_tracker.current_boss_number, _kill_count])
 	_wave_label.text = "Boss #{0} Active!".format([_boss_tracker.current_boss_number])
 								
+	_boss_label.text = "Boss #{0}".format([_boss_tracker.current_boss_number])
+	_update_kill_display()
 	_current_boss = _wave_spawner.spawn_boss(_boss_tracker.current_boss_number)
 	if _current_boss:
 		_connect_enemy_signals(_current_boss)
 		_current_boss.Died.connect(_on_boss_died)
+	else:
+		_boss_tracker.boss_active = false
 
 func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false) -> void:
+	_current_boss = null
+	_boss_tracker.boss_active = false
 	if system_despawn:
+		# Should not happen (bosses are skipped by the despawn checks), but never leave the boss
+		# fight stuck without a boss: bring it back.
+		_spawn_boss()
+		_boss_tracker.total_bosses_spawned -= 1
 		return
 	
-	_boss_tracker.boss_active = false
 	_boss_tracker.bitcoin_spawned = false
 	_boss_tracker.checking_drops = true
 	AudioManager.change_music_clip(music)
 								
 	print("Boss #%d defeated!" % _boss_tracker.current_boss_number)
+	# Set the next goal right away. The kill count stayed above the old goal until the 3 s drop
+	# check, and the next kill spawned the same boss again.
+	_escalate_boss_threshold()
 	_bitcoin_check_timer.start(3.0)
 
 func _on_boss_item_spawned(event: SpawnEvent) -> void:
@@ -348,8 +383,7 @@ func _on_bitcoin_check_timeout() -> void:
 	_boss_tracker.checking_drops = false
 								
 	if not _boss_tracker.bitcoin_spawned:
-		print("Boss defeated but no Bitcoin dropped. Escalating threshold...")
-		_escalate_boss_threshold()
+		print("Boss defeated but no Bitcoin dropped.")
 	else:
 		print("Bitcoin dropped by boss. Waiting for player to collect it...")
 
@@ -368,8 +402,6 @@ func _escalate_boss_threshold() -> void:
 	_boss_tracker.current_boss_number += 1
 	_boss_tracker.kills_for_next_boss = _boss_tracker.base_threshold + (_boss_tracker.current_boss_number - 1) * boss_kill_threshold_increment
 								
-	_boss_progress_bar.max_value = _boss_tracker.kills_for_next_boss
-	_boss_progress_bar.value = 0
 	_update_kill_display()
 	_wave_label.text = "Next Boss: #{0} at {1} kills".format([_boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
 								
@@ -382,9 +414,5 @@ func force_next_boss() -> bool:
 	_spawn_boss()
 	return true
 
-func _on_boss_progress_bar_value_changed(value: float) -> void:
-	if value >= _boss_progress_bar.max_value and not _boss_tracker.boss_active:
-		_spawn_boss()
-																
 func _on_exit_button_pressed() -> void:
 	GameManager.emit_level_completed(Constants.ERROR_210)

@@ -12,6 +12,7 @@ texture_repeat = 2
 
 [node name="HealerEnemy" unique_id=1283613287 instance=ExtResource("1_base")]
 script = ExtResource("2_script")
+chase_player = false
 heal_radius = 250.0
 heal_interval = 2.0
 heal_amount_range = Vector2(10, 20)

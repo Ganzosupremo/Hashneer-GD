@@ -1,7 +1,5 @@
 class_name Boss extends BaseEnemy
 
-signal target_pos_reached(pos: Vector3)
-
 @export_category("Charge Attack")
 @export var charge_cooldown_range: Vector2 = Vector2(1.5, 3.0)
 @export var charge_duration: float = 0.6
@@ -15,7 +13,6 @@ var _charge_direction: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
 	super._ready()
-	target_pos_reached.connect(_on_target_pos_reached)
 	_state_timer = Timer.new()
 	add_child(_state_timer)
 	_state_timer.timeout.connect(_on_state_timer_timeout)
@@ -34,10 +31,6 @@ func kill(natural_death: bool = false) -> void:
 		random_drops.spawn_drops(1)
 		AudioManager.create_2d_audio_at_location(position, sound_on_dead.sound_type, sound_on_dead.destination_audio_bus)
 	queue_free()
-
-func _on_target_pos_reached(_pos: Vector3) -> void:
-	if target_pos.z == 0.0:
-		setNewRandomTargetPos()
 
 #func _on_body_entered(body: Node2D) -> void:
 	#if _state == State.CHARGE and body is PlayerController:

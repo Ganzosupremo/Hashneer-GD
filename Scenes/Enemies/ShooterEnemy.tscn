@@ -9,6 +9,7 @@
 
 [node name="ShooterEnemy" unique_id=1463225960 instance=ExtResource("1_k4fs6")]
 script = ExtResource("2_hxamy")
+chase_stop_distance = 300.0
 can_shoot = true
 weapon = ExtResource("3_hxamy")
 shooting_duration_interval = Vector2(2, 3)
