@@ -105,6 +105,10 @@ enum BulletPattern {
 @export_category("Fracture Parameters")
 ## Force applied to fractured objects, i.e. an enemy.
 @export var fracture_force: float = 15_000.0
+## Scales the piece cut out of an enemy on a direct hit (radius = damage * 0.5 * this).
+## Enemy health is their area, so this also scales enemy damage, but not damage to the player,
+## blocks or shields.
+@export_range(0.1, 2.0, 0.05) var enemy_cut_multiplier: float = 1.0
 
 @export_category("VFX")
 ## The VFX effect to spawn when the bullet collides with an object.

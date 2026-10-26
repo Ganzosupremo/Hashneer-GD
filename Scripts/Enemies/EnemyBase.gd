@@ -535,9 +535,13 @@ func kill(system_despawn: bool = false) -> void:
 	GameManager.vfx_manager.spawn_effect(VFXManager.EffectType.ENEMY_DEATH, global_transform, death_vfx)
 	_play_sound(sound_on_dead)
 								
-	if !system_despawn:
-		for i in range(drops_count):
-			random_drops.spawn_drops(drops_count)
+	# One pickup worth drops_count instead of drops_count pickups: hundreds of loose pickups
+	# (each a rigid body with a light) made long waves runs lag.
+	if !system_despawn and drops_count > 0:
+		var drop: Node = random_drops.spawn_drops(1)
+		var pickup: Pickup2D = drop.get_node_or_null("Pickup2D") as Pickup2D if drop else null
+		if pickup:
+			pickup.stack_count = drops_count
 	call_deferred("queue_free")
 
 ## Applies healing to the enemy and manages related visual effects

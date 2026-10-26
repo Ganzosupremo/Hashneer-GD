@@ -17,6 +17,9 @@ signal picked_up(data: PickupEvent)
 ## How many of the pickup's resource is represented by this node.
 @export var resource_count: float = 1
 
+## How many pickups this node stands for. Fiat pickups are worth the current subsidy times this.
+var stack_count: int = 1
+
 ## File path to the resource file for the pickup item.
 @export_file("*.tres", "*.res") var pickup_resource_file: String
 
