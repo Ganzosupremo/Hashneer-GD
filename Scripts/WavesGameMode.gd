@@ -11,6 +11,8 @@ class_name WavesGameMode extends Node2D
 const ENEMY_LIFETIME_SECONDS: float = 120.0
 const MAX_DESPAWNS_PER_FRAME: int = 15
 const MAX_ACTIVE_ENEMIES: int = 250
+## Loose pickups beyond this are collected for the player, oldest first
+const MAX_LOOSE_PICKUPS: int = 60
 const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 
 @onready var _enemies_holder: Node2D = %EnemiesHolder
@@ -39,6 +41,8 @@ const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 var _wave_spawner  # Type: WaveSpawner (type hint removed due to Godot loading order)
 var _kill_count: int = 0
 var _despawn_count: int = 0
+var _despawns_this_frame: int = 0
+var _loose_pickups: Array[Pickup2D] = []
 var _spawned_enemies_array: Array = []
 var _enemies_to_despawn_queue: Array = []
 static var _world_map_rect: Rect2 = Rect2(-100, -100, 2200, 2200)
@@ -59,6 +63,7 @@ var _current_boss: BaseEnemy = null
 func _ready() -> void:
 	item_drops_bus.item_picked.connect(_on_item_picked)
 	item_drops_bus.item_spawned.connect(_on_boss_item_spawned)
+	item_drops_bus.item_spawned.connect(_track_loose_pickup)
 
 	AudioManager.change_music_clip(music)
 	level_args = GameManager.get_level_args()
@@ -181,11 +186,32 @@ func _check_enemy_cap() -> void:
 func _is_boss(enemy: BaseEnemy) -> bool:
 	return enemy == _current_boss
 
+## [member _despawn_count] is the run total shown in the UI. It used to be the per-frame limit too,
+## so after a few despawns the queue was never processed again and old enemies were never removed.
 func _process_despawn_queue() -> void:
-	while not _enemies_to_despawn_queue.is_empty() and _despawn_count < MAX_DESPAWNS_PER_FRAME:
+	_despawns_this_frame = 0
+	while not _enemies_to_despawn_queue.is_empty() and _despawns_this_frame < MAX_DESPAWNS_PER_FRAME:
 		var enemy_to_despawn: BaseEnemy = _enemies_to_despawn_queue.pop_front()
-		enemy_to_despawn.kill(true)
-		_despawn_count += 1
+		_despawns_this_frame += 1
+		if not is_instance_valid(enemy_to_despawn) or enemy_to_despawn.isDead():
+			continue
+		enemy_to_despawn.kill(true) # on_enemy_died counts it
+
+## Keeps the number of pickups lying around bounded. The oldest one goes straight to the
+## player's inventory, so no money is lost.
+func _track_loose_pickup(event: SpawnEvent) -> void:
+	var spawned: Node = event.spawned
+	var pickup: Pickup2D = spawned.get_node_or_null("Pickup2D") as Pickup2D if spawned else null
+	if not pickup:
+		return
+	_loose_pickups = _loose_pickups.filter(func(p): return is_instance_valid(p) and not p.is_queued_for_deletion())
+	_loose_pickups.append(pickup)
+	if _loose_pickups.size() <= MAX_LOOSE_PICKUPS:
+		return
+	var player: Node = GameManager.get_player()
+	var collector: PickupsCollector2D = player.get_node_or_null("PickupsCollector2D") as PickupsCollector2D if player else null
+	if collector:
+		collector.try_pick_up(_loose_pickups.pop_front())
 
 func _on_wave_started(wave_number: int) -> void:
 	if _boss_tracker.boss_active:

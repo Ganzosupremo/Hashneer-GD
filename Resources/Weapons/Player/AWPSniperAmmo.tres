@@ -58,5 +58,6 @@ trail_gradient = SubResource("Gradient_xsvdn")
 trail_length = 15
 trail_width = 15.0
 fracture_force = 25000.0
+enemy_cut_multiplier = 0.45
 bullet_hit_vfx = ExtResource("1_h5r0u")
 is_child = true
