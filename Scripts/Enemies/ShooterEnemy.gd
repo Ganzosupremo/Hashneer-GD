@@ -10,6 +10,15 @@ class_name ShooterEnemy extends BaseEnemy
 ## The duration of the cooldown
 @export var shooting_cooldown_interval: Vector2 = Vector2.ZERO
 
+@export_category("Strafing")
+## Keep this distance band from the player and circle around it, switching side now and then.
+## Off, the enemy uses the plain chase (with [member BaseEnemy.chase_stop_distance]).
+@export var strafe_around_target: bool = false
+@export var strafe_distance_range: Vector2 = Vector2(260.0, 380.0)
+@export var strafe_flip_interval: Vector2 = Vector2(1.5, 3.0)
+## Speed while the weapon is firing (steadier aim).
+@export var strafe_shooting_speed_scale: float = 0.35
+
 @onready var _active_weapon_component: ActiveWeaponComponent = $ShotingMechanics/ActiveWeaponComponent
 @onready var _fire_weapon: FireWeaponComponent = $ShotingMechanics/FireWeapon
 
@@ -19,6 +28,8 @@ var fire_cooldown_time_reseter: float = 0.0
 enum State { COOLDOWN, SHOOTING }
 var _state: State = State.COOLDOWN
 var _state_timer: Timer
+var _strafe_clockwise: bool = true
+var _strafe_flip_timer: float = 0.0
 
 func _ready() -> void:
 	super._ready()
@@ -63,5 +74,19 @@ func _enter_state(new_state: State) -> void:
 			can_shoot = false
 			_state_timer.start(_rng.randf_range(shooting_cooldown_interval.x, shooting_cooldown_interval.y))
 	
+func _get_movement_input(delta: float) -> Vector2:
+	var threat: Node2D = get_threat()
+	if !strafe_around_target or threat == null:
+		return super._get_movement_input(delta)
+	_strafe_flip_timer -= delta
+	if _strafe_flip_timer <= 0.0:
+		_strafe_flip_timer = _rng.randf_range(strafe_flip_interval.x, strafe_flip_interval.y)
+		_strafe_clockwise = _rng.randf() > 0.5
+	if _state == State.SHOOTING:
+		move_speed_scale = strafe_shooting_speed_scale
+	var dist: float = global_position.distance_to(threat.global_position)
+	var radius: float = clampf(dist, strafe_distance_range.x, strafe_distance_range.y)
+	return orbit_direction(threat.global_position, radius, _strafe_clockwise)
+
 func isReadyToFire() -> bool:
 	return can_shoot and !_fired_previous_frame

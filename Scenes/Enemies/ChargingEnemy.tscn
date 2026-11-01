@@ -13,7 +13,7 @@ texture_repeat = 2
 [node name="ChargingEnemy" instance=ExtResource("1_pyqee")]
 script = ExtResource("4_script")
 charge_cooldown_range = Vector2(2, 6)
-charge_windup_time = 0.3
+charge_windup_time = 0.55
 charge_duration = 1.0
 charge_speed = 600.0
 charge_damage_range = Vector2(10, 15)
