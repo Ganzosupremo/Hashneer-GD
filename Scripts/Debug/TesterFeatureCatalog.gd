@@ -144,7 +144,7 @@ static func _register_waves(tester: Node) -> void:
 		var mode: WavesGameMode = _get_tree().current_scene as WavesGameMode
 		if mode and not mode.force_next_boss():
 			tester.report("A boss is already active"),
-		"Spawns the next boss like reaching the kill goal, its Bitcoin drop completes the level")
+		"Spawns the next boss like reaching the kill goal, if it drops Bitcoin picking it up mines the block")
 	tester.add_action("Waves", "Kill All Enemies", WAVES, func() -> void:
 		var killed: int = 0
 		for enemy in _get_tree().get_first_node_in_group("Enemies").get_children():

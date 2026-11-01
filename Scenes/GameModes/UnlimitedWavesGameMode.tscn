@@ -567,6 +567,7 @@ vertical_alignment = 1
 
 [node name="LevelCompletedUI" parent="MainUI" instance=ExtResource("1_87mxq")]
 unique_name_in_owner = true
+end_level_on_bitcoin = false
 visible = false
 
 [connection signal="pressed" from="MainUI/UIContainer/TopBar/MarginContainer/TopBarContainer/RightSection/ScoreSection/TerminateSessionButton" to="." method="_on_exit_button_pressed"]

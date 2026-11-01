@@ -45,13 +45,29 @@ func _ready() -> void:
 #region Public API
 func complete_level(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))
+	unlock_next_level()
+
+## Unlocks the level after the current one, without ending the current level.
+## The chain only moves forward once this level's block exists, whoever mined it.
+## Dying or quitting leaves the block unmined, so the next level stays locked.
+func unlock_next_level() -> void:
 	if player_in_completed_level(): return
-	# The chain only moves forward once this level's block exists, whoever mined it.
-	# Dying or quitting leaves the block unmined, so the next level stays locked.
 	if !BitcoinNetwork.is_level_mined(current_level): return
 	
 	_levels_unlocked = clamp(_levels_unlocked + 1, 1, game_levels.size())
 	_previous_levels_unlocked_index = _levels_unlocked - 1
+
+## Returns true if [param level_index] exists and the player can play it.
+func is_level_unlocked(level_index: int) -> bool:
+	return level_index >= 0 and level_index < game_levels.size() and level_index < _levels_unlocked
+
+## Makes [param level_index] the current level (used by waves mode to move to the next block
+## without leaving the run). Returns false if that level is locked or doesn't exist.
+func switch_to_level(level_index: int) -> bool:
+	if !is_level_unlocked(level_index): return false
+	_set_level_index(level_index)
+	select_builder_args(level_index)
+	return true
 
 func emit_level_completed(code: String = "") -> void:
 	main_event_bus.level_completed.emit(MainEventBus.LevelCompletedArgs.new(code))

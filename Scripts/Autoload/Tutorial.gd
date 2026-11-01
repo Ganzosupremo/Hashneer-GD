@@ -16,7 +16,8 @@ const TUTORIALS: Dictionary = {
 	],
 	"waves": [
 		"Waves mode: survive the enemy waves and fill the boss bar with kills.",
-		"Defeat the boss and grab the Bitcoin it drops to mine this level's block. No Bitcoin? Another boss comes later.",
+		"Bosses may drop Bitcoin: grab it to mine the block and move on to the next one without stopping. No Bitcoin? The next boss has a better chance.",
+		"The waves never end and get harder every wave. Leave with the exit button or survive as long as you can.",
 	],
 	"skill_tree": [
 		"This is your base. Spend fiat or Bitcoin on upgrades, use the toggle in the top left to switch currency.",

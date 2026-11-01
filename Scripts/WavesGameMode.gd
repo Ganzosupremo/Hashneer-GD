@@ -4,6 +4,8 @@ class_name WavesGameMode extends Node2D
 ## Game mode features:[br]
 ## - WaveSpawner integration for enemy waves[br]
 ## - Boss spawning based on kill thresholds[br]
+## - Endless loop: a defeated boss may drop Bitcoin, picking it up mines the block and the run
+##   moves on to the next block (level) while the waves keep coming, harder every wave[br]
 ## - Enemy lifetime and despawn management[br]
 ## - Navigation region setup for pathfinding[br]
 ## - Music management for waves and bosses[br]
@@ -14,6 +16,8 @@ const MAX_ACTIVE_ENEMIES: int = 250
 ## Loose pickups beyond this are collected for the player, oldest first
 const MAX_LOOSE_PICKUPS: int = 60
 const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
+const BTC_PICKUP_SCENE = preload("res://Scenes/Pickups/BTCPickup.tscn")
+const FIAT_PICKUP_SCENE = preload("res://Scenes/Pickups/FiatPickup.tscn")
 
 @onready var _enemies_holder: Node2D = %EnemiesHolder
 @onready var _pool_cut_visualizer: PoolFracture = $PoolFractureCutVisualizer
@@ -38,6 +42,15 @@ const WAVE_SPAWNER = preload("res://Scenes/GameModes/WaveSpawner.tscn")
 ## The ItemDropsBus resource that will be used to listen for item spawn and pickup events
 @export var item_drops_bus: ItemDropsBus
 
+@export_group("Boss Drops")
+## Chance that a defeated boss drops Bitcoin (mines the block) instead of fiat
+@export_range(0.0, 1.0, 0.01) var boss_bitcoin_drop_chance: float = 0.35
+## Added to the chance after every boss that didn't drop Bitcoin, reset when one does.
+## With 0.35 and 0.15 the 6th boss in a row always drops it.
+@export_range(0.0, 1.0, 0.01) var boss_bitcoin_chance_per_miss: float = 0.15
+## A boss that drops fiat drops this many times what a normal enemy drops
+@export var boss_fiat_drop_multiplier: int = 10
+
 var _wave_spawner  # Type: WaveSpawner (type hint removed due to Godot loading order)
 var _kill_count: int = 0
 var _despawn_count: int = 0
@@ -53,16 +66,18 @@ var _boss_tracker = {
 	"kills_for_next_boss": 0,
 	"total_bosses_spawned": 0,
 	"boss_active": false,
-	"bitcoin_spawned": false,
-	"checking_drops": false
+	## Bosses defeated since the current block started, each one needs more kills
+	"bosses_in_block": 0,
 }
 
-var _bitcoin_check_timer: Timer
 var _current_boss: BaseEnemy = null
+## Bosses defeated in a row without a Bitcoin drop, raises the next chance
+var _bitcoin_drop_misses: int = 0
+## Blocks mined (or moved past) in this run
+var _blocks_advanced: int = 0
 
 func _ready() -> void:
 	item_drops_bus.item_picked.connect(_on_item_picked)
-	item_drops_bus.item_spawned.connect(_on_boss_item_spawned)
 	item_drops_bus.item_spawned.connect(_track_loose_pickup)
 
 	AudioManager.change_music_clip(music)
@@ -75,12 +90,6 @@ func _ready() -> void:
 	_boss_progress_bar.max_value = _boss_tracker.kills_for_next_boss
 	_boss_progress_bar.value = 0.0
 	_update_kill_display()
-
-	_bitcoin_check_timer = Timer.new()
-	_bitcoin_check_timer.one_shot = true
-	_bitcoin_check_timer.timeout.connect(_on_bitcoin_check_timeout)
-	add_child(_bitcoin_check_timer)
-
 
 	_wave_completed_label.modulate.a = 0.0
 	_wave_completed_label.visible = false
@@ -202,8 +211,8 @@ func _process_despawn_queue() -> void:
 func _track_loose_pickup(event: SpawnEvent) -> void:
 	var spawned: Node = event.spawned
 	var pickup: Pickup2D = spawned.get_node_or_null("Pickup2D") as Pickup2D if spawned else null
-	if not pickup:
-		return
+	if not pickup or _is_bitcoin_pickup(pickup):
+		return # The boss Bitcoin waits for the player, it is never collected automatically
 	_loose_pickups = _loose_pickups.filter(func(p): return is_instance_valid(p) and not p.is_queued_for_deletion())
 	_loose_pickups.append(pickup)
 	if _loose_pickups.size() <= MAX_LOOSE_PICKUPS:
@@ -214,10 +223,13 @@ func _track_loose_pickup(event: SpawnEvent) -> void:
 		collector.try_pick_up(_loose_pickups.pop_front())
 
 func _on_wave_started(wave_number: int) -> void:
+	var player: PlayerController = GameManager.get_player()
+	if player:
+		player.incoming_damage_multiplier = _wave_spawner.get_damage_multiplier()
 	if _boss_tracker.boss_active:
-		_wave_label.text = "Boss #{0} Active | Wave: {1}".format([_boss_tracker.current_boss_number, wave_number])
+		_wave_label.text = "Block #{0} | Boss #{1} Active | Wave: {2}".format([GameManager.get_current_level(), _boss_tracker.current_boss_number, wave_number])
 	else:
-		_wave_label.text = "Wave: {0} | Next Boss: #{1} at {2} kills".format([wave_number, _boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
+		_wave_label.text = "Block #{0} | Wave: {1} | Next Boss: #{2} at {3} kills".format([GameManager.get_current_level(), wave_number, _boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
 
 		_wave_completed_label.visible = true
 		_wave_completed_label.text = "Wave {0} Started!".format([wave_number])
@@ -348,11 +360,12 @@ func _spawn_boss() -> void:
 	_current_boss = _wave_spawner.spawn_boss(_boss_tracker.current_boss_number)
 	if _current_boss:
 		_connect_enemy_signals(_current_boss)
+		_current_boss.drops_count = 0 # _spawn_boss_drop decides what it drops
 		_current_boss.Died.connect(_on_boss_died)
 	else:
 		_boss_tracker.boss_active = false
 
-func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false) -> void:
+func _on_boss_died(ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false) -> void:
 	_current_boss = null
 	_boss_tracker.boss_active = false
 	if system_despawn:
@@ -362,56 +375,88 @@ func _on_boss_died(_ref: BaseEnemy, _pos: Vector2, system_despawn: bool = false)
 		_boss_tracker.total_bosses_spawned -= 1
 		return
 	
-	_boss_tracker.bitcoin_spawned = false
-	_boss_tracker.checking_drops = true
 	AudioManager.change_music_clip(music)
-								
 	print("Boss #%d defeated!" % _boss_tracker.current_boss_number)
-	# Set the next goal right away. The kill count stayed above the old goal until the 3 s drop
-	# check, and the next kill spawned the same boss again.
+	_spawn_boss_drop(ref)
+	# Set the next goal right away, the kill count is still above the old goal
 	_escalate_boss_threshold()
-	_bitcoin_check_timer.start(3.0)
 
-func _on_boss_item_spawned(event: SpawnEvent) -> void:
-	if !_boss_tracker.checking_drops:
-		print("Not checking drops, ignoring.")
+## Bosses don't use their own drops table: the game mode rolls the Bitcoin chance here.
+## [param boss] is hidden but still in the tree (it is freed deferred), so its spawner still works.
+func _spawn_boss_drop(boss: BaseEnemy) -> void:
+	var spawner: SceneSpawner2D = boss.getSceneSpawner() if is_instance_valid(boss) else null
+	if not spawner:
 		return
-								
-	var spawned_node = event.spawned
-	if spawned_node and spawned_node.has_node("Pickup2D"):
-		var pickup = spawned_node.get_node("Pickup2D") as Pickup2D
-		if !pickup: return
+	var chance: float = get_bitcoin_drop_chance()
+	if _can_advance_block() and _rng.randf() < chance:
+		_bitcoin_drop_misses = 0
+		spawner.spawn(BTC_PICKUP_SCENE)
+		_show_banner("The boss dropped Bitcoin! Grab it to mine the block")
+		print("Boss dropped Bitcoin (chance %.0f%%)" % (chance * 100.0))
+		return
+	
+	_bitcoin_drop_misses += 1
+	var drop: Node = spawner.spawn(FIAT_PICKUP_SCENE)
+	var pickup: Pickup2D = drop.get_node_or_null("Pickup2D") as Pickup2D if drop else null
+	if pickup:
+		pickup.stack_count = maxi(1, level_args.enemy_drops_count * boss_fiat_drop_multiplier)
+	print("Boss dropped fiat (Bitcoin chance was %.0f%%)" % (chance * 100.0))
 
-		var resource = pickup.get_pickup_resource()
-		if resource is CurrencyPickupResource and resource.currency_type == Constants.CurrencyType.BITCOIN:
-			print("Bitcoin spawned from boss!")
-			_boss_tracker.bitcoin_spawned = true
-		else:
-			# Other drops may come before the Bitcoin one, let the check timer decide
-			print("Non-Bitcoin item spawned from boss.")
-	else:
-		print("Spawned node has no Pickup2D component. ", spawned_node)
+## Chance that the next boss drops Bitcoin, including the bonus for the bosses that didn't.
+func get_bitcoin_drop_chance() -> float:
+	return clampf(boss_bitcoin_drop_chance + boss_bitcoin_chance_per_miss * _bitcoin_drop_misses, 0.0, 1.0)
 
+## False once the last block of the chain is mined: there is nothing left to mine, so bosses drop fiat.
+func _can_advance_block() -> bool:
+	var level: int = GameManager.get_current_level()
+	return not BitcoinNetwork.is_level_mined(level) or level + 1 < GameManager.game_levels.size()
+
+func _is_bitcoin_pickup(pickup: Pickup2D) -> bool:
+	var resource = pickup.get_pickup_resource()
+	return resource is CurrencyPickupResource and resource.currency_type == Constants.CurrencyType.BITCOIN
+
+## Picking up Bitcoin mines the block (CurrencyInventory does that before this signal), then the run
+## moves on to the next block. Deferred so the end-of-run summary counts the pickup first.
 func _on_item_picked(event: PickupEvent) -> void:
 	var pickup = event.pickup
 	if !pickup: return
+	if _is_bitcoin_pickup(pickup):
+		_advance_block.call_deferred()
 
-	var resource = pickup.get_pickup_resource()
-	if resource is CurrencyPickupResource and resource.currency_type == Constants.CurrencyType.BITCOIN:
-		print("Bitcoin picked up! Level completed!")
-		_boss_tracker.checking_drops = false
-								# _complete_level()
-
-func _on_bitcoin_check_timeout() -> void:
-	if not _boss_tracker.checking_drops:
+## Moves the run to the next level (block) without leaving the scene: the next waves, bosses and
+## drops use that level's settings. The wave count and difficulty keep going up.
+func _advance_block() -> void:
+	var mined_level: int = GameManager.get_current_level()
+	var block: BitcoinBlock = BitcoinNetwork.get_block_by_id(mined_level)
+	GameManager.unlock_next_level()
+	PersistenceDataManager.save_game()
+	
+	var reward: String = ""
+	if block and block.miner == "Player":
+		reward = " +%s BTC" % Utils.format_btc(block.block_subsidy)
+	
+	if not GameManager.switch_to_level(mined_level + 1):
+		_show_banner("Block #%d mined!%s The chain is complete, keep surviving" % [mined_level, reward])
 		return
-								
-	_boss_tracker.checking_drops = false
-								
-	if not _boss_tracker.bitcoin_spawned:
-		print("Boss defeated but no Bitcoin dropped.")
-	else:
-		print("Bitcoin dropped by boss. Waiting for player to collect it...")
+	
+	_blocks_advanced += 1
+	level_args = GameManager.get_level_args()
+	_wave_spawner.set_wave_spawner({
+		"waves_per_phase": level_args.waves_per_phase,
+		"wave_data": level_args.waves_phases,
+		"boss_scenes": level_args.boss_scenes
+	})
+	_boss_tracker.base_threshold = level_args.kills_to_spawn_boss
+	_boss_tracker.bosses_in_block = 0
+	if not _boss_tracker.boss_active:
+		_boss_tracker.kills_for_next_boss = _boss_tracker.base_threshold
+	_update_kill_display()
+	_wave_label.text = "Block #{0} | Next Boss: #{1} at {2} kills".format([GameManager.get_current_level(), _boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
+	_show_banner("Block #%d mined!%s Now mining block #%d" % [mined_level, reward, GameManager.get_current_level()])
+	print("Advanced to block #%d" % GameManager.get_current_level())
+
+func _show_banner(text: String) -> void:
+	NotificationManager.show_notification(text)
 
 func _complete_level() -> void:
 	print("=== LEVEL COMPLETED ===")
@@ -426,10 +471,11 @@ func _complete_level() -> void:
 func _escalate_boss_threshold() -> void:
 	_kill_count = 0
 	_boss_tracker.current_boss_number += 1
-	_boss_tracker.kills_for_next_boss = _boss_tracker.base_threshold + (_boss_tracker.current_boss_number - 1) * boss_kill_threshold_increment
+	_boss_tracker.bosses_in_block += 1
+	_boss_tracker.kills_for_next_boss = _boss_tracker.base_threshold + _boss_tracker.bosses_in_block * boss_kill_threshold_increment
 								
 	_update_kill_display()
-	_wave_label.text = "Next Boss: #{0} at {1} kills".format([_boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
+	_wave_label.text = "Block #{0} | Next Boss: #{1} at {2} kills".format([GameManager.get_current_level(), _boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
 								
 	print("Next boss (#%d) will spawn at %d kills" % [_boss_tracker.current_boss_number, _boss_tracker.kills_for_next_boss])
 
