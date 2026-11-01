@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/ShieldAbility.gd" id="1_shab"]
+[ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="2_shcm"]
+
+[node name="ShieldAbility" type="Node2D"]
+script = ExtResource("1_shab")
+ability_name = "Shield"
+ability_description = "Unlocks a shield that protects you from damage. It comes back a while after it breaks."
+ability_cooldown = 15.0
+
+[node name="ShieldComponent" parent="." instance=ExtResource("2_shcm")]
+max_shield = 150.0
+shield_radius = 40.0

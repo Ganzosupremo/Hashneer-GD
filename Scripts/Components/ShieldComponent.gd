@@ -349,9 +349,9 @@ func reset_shield() -> void:
 	regeneration_active = false
 	_hit_effect_timer = 0.0
 	
-	# Restore original polygon
-	if !original_polygon.is_empty():
-		_setup_shield_polygon(original_polygon)
+	# Restore the unbroken polygon. original_polygon is overwritten by every fracture, so it would
+	# bring back the last broken piece (and unscaled).
+	_setup_shield_polygon(PolygonLib.createCirclePolygon(shield_radius, 16), true)
 	
 	# Make shield visible again
 	if _polygon2d:
