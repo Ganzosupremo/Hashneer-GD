@@ -33,3 +33,4 @@ venv/
 
 *.dll
 *.tmp
+.vscode/
