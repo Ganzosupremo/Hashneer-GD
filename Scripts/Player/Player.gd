@@ -90,14 +90,6 @@ func set_player() -> void:
 	_health.set_max_health(player_details.max_health)
 	
 	_apply_stats()
-	if !player_details: return
-	
-	_unlock_saved_abilities()
-	speed = player_details.speed
-	player_damage_multiplier_percent = player_details.damage_multiplier_percent
-	_health.set_max_health(player_details.max_health)
-	
-	_apply_stats()
 
 	initial_weapon = player_details.initial_weapon
 	weapons_array = player_details.weapons_array.duplicate(true)
@@ -177,7 +169,12 @@ func _unlock_saved_abilities() -> void:
 		if ability_scene == null:
 			DebugLogger.error("Ability with label '%s' not found in unlocked abilities." % ability_label)
 			continue
-		var ability: BaseAbility = ability_scene.instantiate()
+		var node: Node = ability_scene.instantiate()
+		if not node is BaseAbility:
+			DebugLogger.error("Ability '%s' scene (%s) is not a BaseAbility, skipping it." % [ability_label, ability_scene.resource_path])
+			node.free()
+			continue
+		var ability: BaseAbility = node
 		add_child(ability)
 		abilities.append(ability)
 		ability.enable()
