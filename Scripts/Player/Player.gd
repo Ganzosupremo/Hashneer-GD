@@ -40,6 +40,8 @@ var fired_previous_frame: bool = false
 var can_move: bool = true
 var input: Vector2 = Vector2.ZERO
 var player_damage_multiplier_percent: float = 1.0
+## Scales the damage the player takes. Waves mode raises it every wave, other modes leave it at 1.
+var incoming_damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
 var abilities: Array = []
@@ -143,7 +145,7 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time
 
 	if slow_down_time:
 		GameManager.vfx_manager.slow_time(hitstop_duration, time_scale, hitstop_duration * 0.5)
-	get_health_node().take_damage(_damage)
+	get_health_node().take_damage(_damage * incoming_damage_multiplier)
 
 ## Applies a brief time slowdown effect (hitstop/freeze frame).[br]
 ## [param duration]: How long the hitstop lasts in seconds.[br]

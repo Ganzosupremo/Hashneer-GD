@@ -171,6 +171,9 @@ var regeneration_started : bool = false
 var polygon_restorer : PolygonRestorer = null
 var spawn_timestamp : int = 0
 var drops_count : int = 0
+## Health multiplier set by the wave spawner as waves get harder. Health is the polygon area, so
+## instead of a bigger shape every cut removes 1/toughness of the area it would normally remove.
+var toughness: float = 1.0
 var is_player_dead: bool = false
 
 var desired_velocity: Vector2 = Vector2.ZERO
@@ -424,7 +427,8 @@ func damage(damage_to_apply : Vector2, point : Vector2, knockback_force : Vector
 		return {"percent_cut" : 0.0, "dead" : false}
 																
 																# Handle shield damage first
-	var remaining_damage: Vector2 = damage_to_apply
+	# Cut area grows with the square of the cut size
+	var remaining_damage: Vector2 = damage_to_apply / sqrt(maxf(toughness, 0.01))
 
 	var percent_cut : float = 0.0
 	var cut_shape : PackedVector2Array = _poly_fracture.generateRandomPolygon(

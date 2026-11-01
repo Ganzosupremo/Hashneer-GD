@@ -30,6 +30,16 @@ signal enemy_spawned(enemy: BaseEnemy)
 ## Number of waves before advancing to the next phase
 @export var waves_per_phase: int = 4  
 
+@export_group("Difficulty Scaling")
+## Every wave after the first spawns this much more enemies (0.08 = +8% per wave, wave 11 is x1.8).
+@export var enemy_count_growth_per_wave: float = 0.08
+## Cap for the enemy count multiplier, so late waves don't flood the arena.
+@export var max_enemy_count_multiplier: float = 2.5
+## Every wave after the first makes enemies and bosses this much tougher (0.1 = +10% health per wave).
+@export var enemy_toughness_growth_per_wave: float = 0.10
+## Every wave after the first makes enemies hit the player this much harder (0.05 = +5% per wave).
+@export var enemy_damage_growth_per_wave: float = 0.05
+
 const ENEMY_SCENES = {
 	"Basic Square": preload("res://Scenes/Enemies/SquareEnemy.tscn"),
 	"Basic Triangle": preload("res://Scenes/Enemies/TriangleEnemy.tscn"),
@@ -112,7 +122,7 @@ func start_next_wave() -> void:
 		print("WaveSpawner: Advanced to Phase ", current_phase + 1, " (Wave ", current_wave, ")")
 		phase_changed.emit(current_phase, current_wave)
 	
-	var wave_config = _get_wave_configuration(current_wave)
+	var wave_config = _scale_wave_configuration(_get_wave_configuration(current_wave))
 	enemies_in_wave = wave_config.total_count
 	
 	wave_started.emit(current_wave)
@@ -133,6 +143,7 @@ func spawn_boss(boss_number: int = 1) -> BaseEnemy:
 	var offset = Vector2(_rng.randf_range(-200, 200), _rng.randf_range(-200, 200))
 	boss.global_position = center_pos + offset
 	
+	apply_wave_scaling(boss)
 	if enemies_holder:
 		enemies_holder.add_child(boss)
 	else:
@@ -146,15 +157,44 @@ func spawn_boss(boss_number: int = 1) -> BaseEnemy:
 ## The game mode tracks it like any other enemy, but it does not count towards the current wave.
 func spawn_extra_enemy(enemy: BaseEnemy, pos: Vector2) -> void:
 	enemy.global_position = pos
+	apply_wave_scaling(enemy)
 	if enemies_holder:
 		enemies_holder.add_child(enemy)
 	else:
 		add_child(enemy)
 	enemy_spawned.emit(enemy)
 
+## Makes [param enemy] as tough as the current wave asks for.
+func apply_wave_scaling(enemy: BaseEnemy) -> void:
+	if enemy:
+		enemy.toughness = get_toughness_multiplier()
+
+## Health multiplier of the enemies spawned in the current wave.
+func get_toughness_multiplier() -> float:
+	return 1.0 + enemy_toughness_growth_per_wave * maxi(current_wave - 1, 0)
+
+## Multiplier of the damage enemies deal to the player in the current wave.
+func get_damage_multiplier() -> float:
+	return 1.0 + enemy_damage_growth_per_wave * maxi(current_wave - 1, 0)
+
+## Multiplier of the enemy count of the current wave.
+func get_count_multiplier() -> float:
+	return minf(1.0 + enemy_count_growth_per_wave * maxi(current_wave - 1, 0), max_enemy_count_multiplier)
+
 #endregion
 
 #region Internal Functions
+
+## Multiplies every composition count by [method get_count_multiplier] and recomputes the total,
+## which is what the wave waits for before it completes.
+func _scale_wave_configuration(config: Dictionary) -> Dictionary:
+	var multiplier: float = get_count_multiplier()
+	var total: int = 0
+	for comp in config.compositions:
+		comp.count = maxi(1, roundi(comp.count * multiplier)) if comp.count > 0 else 0
+		total += comp.count
+	config.total_count = total
+	return config
 
 func _get_wave_configuration(wave_num: int) -> Dictionary:
 	var config = {
@@ -272,6 +312,7 @@ func _spawn_enemy(enemy_type: String) -> BaseEnemy:
 	var spawn_pos: Vector2 = _get_spawn_position()
 	enemy.global_position = spawn_pos
 		
+	apply_wave_scaling(enemy)
 	if enemies_holder:
 		enemies_holder.add_child(enemy)
 	else:
