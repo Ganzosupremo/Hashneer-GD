@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="2_or7oj"]
 
 [node name="TriangleEnemy" unique_id=2126742521 node_paths=PackedStringArray("shield") instance=ExtResource("1_qwjiq")]
+behavior = 2
 invincible_time = 0.0
 knockback_resistance_base = 0.5
 shield = NodePath("ShieldComponent")

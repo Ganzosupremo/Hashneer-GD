@@ -52,9 +52,15 @@ signal Fractured(enemy: BaseEnemy, fracture_shard: Dictionary, new_mass: float, 
 @export var shard_min_area: float = 12.0
 
 @export_category("Collision")
-@export var collision_damage := Vector2(10, 20)
+@export var collision_damage := Vector2(4, 7)
 @export var collision_knockback_force: float = 10000
 @export var collision_knockback_time: float = 0.15
+## Touching the player deals [member collision_damage].
+@export var contact_damage_enabled: bool = true
+## Seconds between two contact hits from this enemy.
+@export var contact_damage_cooldown: float = 1.0
+## Reach added to the enemy's own size (roughly the player's radius).
+@export var contact_reach_padding: float = 16.0
 
 @export_category("Targeting")
 @export var target: Node2D = null
@@ -174,6 +180,15 @@ var drops_count : int = 0
 var is_player_dead: bool = false
 
 var desired_velocity: Vector2 = Vector2.ZERO
+## Speed multiplier the current behaviour wants this frame (reset to 1 every physics frame).
+var move_speed_scale: float = 1.0
+
+## Minimum time between contact hits from any enemy, so a swarm can't melt the player in one frame.
+const CONTACT_HIT_GLOBAL_COOLDOWN_MSEC: int = 300
+static var _last_contact_hit_msec: int = -100000
+var _contact_cooldown_left: float = 0.0
+## Distance from the origin to the farthest polygon point, updated in [method setPolygon].
+var _body_radius: float = 0.0
 
 
 ## Pathfinding: the last queried path and the point the enemy is heading to
@@ -245,41 +260,97 @@ func _process(delta: float) -> void:
 func _physics_process(delta):
 	if isKnockbackActive(): return
 	_handle_screen_wrapping()
-	var input: Vector2 = Vector2.ZERO
-				
-	if target_pos.z == 1.0:
-		if hasTarget():
-			setTargetPosition(target.global_position)
-				
-		var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
-								
-		if chase_stop_distance > 0.0 and hasTarget() and global_position.distance_squared_to(cur_target_pos) < chase_stop_distance * chase_stop_distance:
-			pass # Close enough: hold position (input stays zero, so it slows down)
-		elif use_pathfinding:
-			input = _get_path_direction(delta, cur_target_pos)
-		else:
-			input = _get_direct_direction(cur_target_pos)
-
-		if use_flocking and input != Vector2.ZERO:
-			var flocking_force = _calculate_flocking_force()
-			input = (input + flocking_force).normalized()
-				
-	# Setting velocity towards target.
-	desired_velocity = input * max_speed
-	if input != Vector2.ZERO:
-		var increase : Vector2 = input * getCurAccel() * delta
-		linear_velocity += increase
-		if linear_velocity.length_squared() > getCurMaxSpeedSq():
-			linear_velocity = linear_velocity.normalized() * getCurMaxSpeed()
-	else:
-		var decrease : Vector2 = linear_velocity.normalized() * getCurDecel() * delta
-		if decrease.length_squared() >= linear_velocity.length_squared():
-			linear_velocity = Vector2.ZERO
-		else:
-			linear_velocity -= decrease
-												
+	_process_contact_damage(delta)
+	move_speed_scale = 1.0
+	var input: Vector2 = _get_movement_input(delta)
+	if use_flocking and input != Vector2.ZERO:
+		input = (input + _calculate_flocking_force()).normalized()
+	_apply_steering(input, delta)
 	if rotate_towards_velocity:
 		global_rotation = linear_velocity.angle()
+
+## Direction the enemy wants to move this frame (zero = brake). Each enemy type overrides this to
+## get its own movement, and can lower [member move_speed_scale]. The default chases [member target].
+func _get_movement_input(delta: float) -> Vector2:
+	if target_pos.z != 1.0:
+		return Vector2.ZERO
+	if hasTarget():
+		setTargetPosition(target.global_position)
+	var cur_target_pos: Vector2 = Vector2(target_pos.x, target_pos.y)
+	if chase_stop_distance > 0.0 and hasTarget() and global_position.distance_squared_to(cur_target_pos) < chase_stop_distance * chase_stop_distance:
+		return Vector2.ZERO # Close enough: hold position
+	if use_pathfinding:
+		return _get_path_direction(delta, cur_target_pos)
+	return _get_direct_direction(cur_target_pos)
+
+## Accelerates along [param input] up to the current max speed (scaled by [member move_speed_scale]),
+## or brakes when the input is zero.
+func _apply_steering(input: Vector2, delta: float) -> void:
+	desired_velocity = input * max_speed * move_speed_scale
+	if input != Vector2.ZERO:
+		linear_velocity += input * getCurAccel() * delta
+		var limit: float = getCurMaxSpeed() * move_speed_scale
+		if linear_velocity.length_squared() > limit * limit:
+			# Ease down instead of snapping when a behaviour lowers the speed
+			linear_velocity = linear_velocity.move_toward(linear_velocity.normalized() * limit, getCurDecel() * delta)
+	else:
+		linear_velocity = linear_velocity.move_toward(Vector2.ZERO, getCurDecel() * delta)
+
+#region Behaviour helpers
+
+## The player while it can be attacked, else null.
+func get_threat() -> Node2D:
+	if is_player_dead:
+		return null
+	if hasTarget():
+		return target
+	return GameManager.get_player()
+
+## Direction that circles [param center] at [param radius] ([param clockwise] picks the side),
+## pulling in or out when the enemy is off the ring.
+func orbit_direction(center: Vector2, radius: float, clockwise: bool, radial_strength: float = 1.5) -> Vector2:
+	var offset: Vector2 = global_position - center
+	var dist: float = offset.length()
+	if dist < 0.001:
+		return Vector2.RIGHT
+	var radial: Vector2 = offset / dist
+	var tangent: Vector2 = radial.orthogonal() if clockwise else -radial.orthogonal()
+	var correction: float = clampf((radius - dist) / maxf(radius * 0.5, 1.0), -1.0, 1.0)
+	return (tangent + radial * correction * radial_strength).normalized()
+
+## True when [param node] is within reach of the enemy's body (+ [param extra] px).
+func is_touching(node: Node2D, extra: float = 0.0) -> bool:
+	var reach: float = _body_radius + contact_reach_padding + extra
+	return global_position.distance_squared_to(node.global_position) <= reach * reach
+
+## Damages the player by a random amount in [param damage_range] (scaled by the level's enemy damage).
+func deal_damage_to_player(damage_range: Vector2, slow_down_time: bool = false) -> void:
+	var player: PlayerController = GameManager.get_player()
+	if player == null or is_player_dead:
+		return
+	var args: LevelBuilderArgs = GameManager.get_level_args()
+	var multiplier: float = args.enemy_damage_multiplier if args else 1.0
+	player.damage(_rng.randf_range(damage_range.x, damage_range.y) * multiplier, global_position, slow_down_time)
+
+## Plain enemies used to be harmless to touch (enemies and player don't collide): now touching
+## the player hurts, with a per-enemy and a global cooldown.
+func _process_contact_damage(delta: float) -> void:
+	if _contact_cooldown_left > 0.0:
+		_contact_cooldown_left -= delta
+		return
+	if !contact_damage_enabled or is_player_dead or collision_damage == Vector2.ZERO:
+		return
+	var player: PlayerController = GameManager.get_player()
+	if player == null or !is_touching(player):
+		return
+	var now: int = Time.get_ticks_msec()
+	if now - _last_contact_hit_msec < CONTACT_HIT_GLOBAL_COOLDOWN_MSEC:
+		return
+	_last_contact_hit_msec = now
+	_contact_cooldown_left = contact_damage_cooldown
+	deal_damage_to_player(collision_damage)
+
+#endregion
 
 ## Follows a path queried from the navigation map every [member path_recalc_interval] seconds.
 ## The NavigationAgent2D used before re-queried its path inside get_next_path_position() almost
@@ -697,6 +768,10 @@ func setPolygon(new_polygon : PackedVector2Array, exclude_main_poly : bool = fal
 		_polygon.set_polygon(new_polygon)
 																
 	_hit_flash_poly.set_polygon(new_polygon)
+	var radius_sq: float = 0.0
+	for point in new_polygon:
+		radius_sq = maxf(radius_sq, point.length_squared())
+	_body_radius = sqrt(radius_sq)
 	# Close the outline on a copy: the array is shared with the caller (start_poly) and the deferred
 	# collision polygon, and a repeated closing point makes its convex decomposition fail, so bullets
 	# went through the enemy once it healed back to start_poly.
