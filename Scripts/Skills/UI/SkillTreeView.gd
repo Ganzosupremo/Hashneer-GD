@@ -1,10 +1,10 @@
 class_name SkillTreeView extends Control
 ## Builds the skill tree from [SkillProgress]: one column per [member SkillDefinition.branch],
-## one row per tier, and lines from each skill to its requirements.
+## each laid out as a grid in tier order.
 ##
 ## Nothing is placed by hand: a new [SkillDefinition] file shows up in its branch on the next run.
-## A requirement line lights up once it is met.[br]
-## The view lives in the UI layer and scales itself down to fit its parent, so it never moves or zooms.
+## The view lives in the UI layer and picks the grid shape that fills its parent best, so it never
+## moves or zooms. Locked skills show it on the node, their requirements are in the details panel.
 
 ## Emitted when a node is pressed.
 signal skill_selected(skill: SkillDefinition)
@@ -13,24 +13,24 @@ signal skill_selected(skill: SkillDefinition)
 const BRANCH_ORDER: PackedStringArray = ["Defense", "Offense", "Utility", "Weapons"]
 
 @export var node_scene: PackedScene
-@export var node_size: Vector2 = Vector2(64, 64)
+@export var node_size: Vector2 = Vector2(76, 76)
 ## Width of one node slot, a column is as wide as its busiest row.
-@export var slot_width: float = 92.0
-@export var row_height: float = 82.0
+@export var slot_width: float = 100.0
+@export var row_height: float = 92.0
 @export var column_gap: float = 14.0
 @export var header_height: float = 38.0
-@export var line_width: float = 3.0
 ## Shows the skill name under each node. The name is always in the tooltip and the details panel.
 @export var show_node_names: bool = false
-## The tree is scaled down to fit its parent, never above this.
-@export var max_scale: float = 1.0
-@export var line_met_color: Color = Color(1.0, 0.843, 0.0, 0.85)
-@export var line_unmet_color: Color = Color(0.45, 0.45, 0.52, 0.55)
+## The tree is scaled to fill its parent, never above this.
+@export var max_scale: float = 2.0
 @export var column_color: Color = Color(0.04, 0.04, 0.07, 0.55)
 @export var column_border_color: Color = Color(1.0, 0.843, 0.0, 0.2)
 
 var _nodes: Dictionary = {}  # StringName id -> SkillTreeNode
 var _columns: Array[Dictionary] = []  # {branch, rect}
+var _branch_order: Array = []
+var _branch_skills: Dictionary = {}  # branch -> Array of skills, in tier order
+var _headers: Dictionary = {}  # branch -> Label
 var _selected_id: StringName = &""
 var _mode_filter: int = 0
 
@@ -86,70 +86,93 @@ func _build() -> void:
 	for skill in skills:
 		_get_tier(skill, tiers, [])
 
-	# branch -> tier -> skills
-	var branches: Dictionary = {}
-	var max_tier: int = 0
+	# Inside a branch the skills go in tier order, so the cheap ones come first
+	var branches: Dictionary = {}  # branch -> Array of skills
 	for skill in skills:
-		var tier: int = tiers[skill.id]
-		max_tier = maxi(max_tier, tier)
-		var by_tier: Dictionary = branches.get_or_add(skill.branch, {})
-		by_tier.get_or_add(tier, []).append(skill)
+		branches.get_or_add(skill.branch, []).append(skill)
+	_branch_order = _sorted_branches(branches.keys())
+	for branch in _branch_order:
+		var list: Array = branches[branch]
+		list.sort_custom(func(a: SkillDefinition, b: SkillDefinition) -> bool:
+			if tiers[a.id] != tiers[b.id]:
+				return tiers[a.id] < tiers[b.id]
+			return String(a.id) < String(b.id))
+		_branch_skills[branch] = list
+		for skill in list:
+			_add_node(skill)
+		_headers[branch] = _add_header(branch)
 
-	var height: float = header_height + row_height * (max_tier + 1)
+## Places every branch as a grid of [param rows] rows (wider when it has more skills)
+## and returns the size of the whole tree.
+func _layout(rows: int) -> Vector2:
+	_columns.clear()
 	var x: float = 0.0
-	for branch in _sorted_branches(branches.keys()):
-		var by_tier: Dictionary = branches[branch]
-		var slots: int = 1
-		for tier in by_tier:
-			slots = maxi(slots, by_tier[tier].size())
-		var width: float = slots * slot_width
-
-		for tier in by_tier:
-			var row: Array = by_tier[tier]
-			var row_start: float = x + (width - row.size() * slot_width) * 0.5
-			for i in row.size():
-				var center := Vector2(row_start + slot_width * (i + 0.5), header_height + row_height * (tier + 0.5))
-				_add_node(row[i], center)
-
-		_add_header(branch, x, width)
-		_columns.append({"branch": branch, "rect": Rect2(x, 0.0, width, height)})
+	for branch in _branch_order:
+		var list: Array = _branch_skills[branch]
+		var cols: int = maxi(ceili(float(list.size()) / rows), 1)
+		var width: float = cols * slot_width
+		for i in list.size():
+			var center := Vector2(x + slot_width * (i % cols + 0.5), header_height + row_height * (floori(float(i) / cols) + 0.5))
+			var node: SkillTreeNode = _nodes[list[i].id]
+			node.position = center - node_size * 0.5
+		var header: Label = _headers[branch]
+		header.position = Vector2(x, 0.0)
+		header.size = Vector2(width, header_height)
+		_columns.append({"branch": branch, "rect": Rect2(x, 0.0, width, header_height + row_height * rows)})
 		x += width + column_gap
+	return Vector2(maxf(x - column_gap, 0.0), header_height + row_height * rows)
 
-	custom_minimum_size = Vector2(maxf(x - column_gap, 0.0), height)
-	size = custom_minimum_size
-	queue_redraw()
+## Most skills in one branch, the most rows a layout can need.
+func _get_max_branch_size() -> int:
+	var most: int = 1
+	for branch in _branch_order:
+		most = maxi(most, _branch_skills[branch].size())
+	return most
 
-func _add_node(skill: SkillDefinition, center: Vector2) -> void:
+func _add_node(skill: SkillDefinition) -> void:
 	var node: SkillTreeNode = node_scene.instantiate()
 	node.setup(skill)
 	add_child(node)
 	node.size = node_size
-	node.position = center - node_size * 0.5
 	node.set_name_visible(show_node_names)
 	node.pressed.connect(_on_node_pressed.bind(skill.id))
 	_nodes[skill.id] = node
 
-func _add_header(branch: String, x: float, width: float) -> void:
+func _add_header(branch: String) -> Label:
 	var label := Label.new()
 	label.text = branch.to_upper()
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.position = Vector2(x, 0.0)
-	label.size = Vector2(width, header_height)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	label.add_theme_font_size_override("font_size", 18)
 	label.add_theme_color_override("font_color", Color(1.0, 0.843, 0.0, 1.0))
 	add_child(label)
+	return label
 
-## Scales the tree down to fit the parent and centers it horizontally.
+## Picks the number of rows that lets the tree be the biggest in the parent, then scales it to fit
+## and centers it. Runs again when the parent is resized.
 func _fit_to_parent() -> void:
 	var parent_control: Control = get_parent() as Control
-	if parent_control == null or custom_minimum_size.x <= 0.0 or custom_minimum_size.y <= 0.0:
+	if parent_control == null or _branch_order.is_empty():
 		return
 	var area: Vector2 = parent_control.size
-	var fit: float = minf(minf(area.x / custom_minimum_size.x, area.y / custom_minimum_size.y), max_scale)
+	if area.x <= 0.0 or area.y <= 0.0:
+		return
+	var best_rows: int = 1
+	var best_fit: float = 0.0
+	for rows in range(1, _get_max_branch_size() + 1):
+		var content: Vector2 = _layout(rows)
+		var fit: float = minf(area.x / content.x, area.y / content.y)
+		if fit > best_fit + 0.001:
+			best_fit = fit
+			best_rows = rows
+	var tree_size: Vector2 = _layout(best_rows)
+	var fit: float = minf(best_fit, max_scale)
+	custom_minimum_size = tree_size
+	size = tree_size
 	scale = Vector2(fit, fit)
-	position = Vector2((area.x - custom_minimum_size.x * fit) * 0.5, 0.0)
+	position = Vector2((area.x - tree_size.x * fit) * 0.5, (area.y - tree_size.y * fit) * 0.5)
+	queue_redraw()
 
 ## Row of a skill: [member SkillDefinition.tier] if set, otherwise one below its deepest requirement.
 func _get_tier(skill: SkillDefinition, cache: Dictionary, visiting: Array) -> int:
@@ -192,13 +215,6 @@ func _draw() -> void:
 	for column in _columns:
 		draw_style_box(column_box, column.rect.grow(10.0))
 
-	for node in _nodes.values():
-		for requirement in node.skill.requirements:
-			if requirement == null or requirement.skill == null or not _nodes.has(requirement.skill.id):
-				continue
-			var from: Vector2 = _nodes[requirement.skill.id].get_center()
-			var color: Color = line_met_color if requirement.is_met() else line_unmet_color
-			draw_line(from, node.get_center(), color, line_width, true)
 
 #endregion
 

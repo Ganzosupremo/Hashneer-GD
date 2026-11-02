@@ -11,7 +11,7 @@ Cada skill es **un archivo `.tres`** con el script `SkillDefinition` dentro de `
 | `SkillRequirement` | La skill X tiene que llegar al nivel N antes de poder comprar esta. |
 | `SkillProgress` (autoload) | Compra niveles, calcula precios (inflación, halvings, eventos económicos) y guarda **solo** `{id: nivel}` en la clave `skill_progress`. |
 | `PlayerLoadout` | Lo que dan las skills en un modo: stats, armas y habilidades. Se recalcula cada vez que empieza un modo con `SkillProgress.build_loadout(modo)`. |
-| `SkillTreeView` / `SkillTreeNode` / `SkillDetailPanel` (`Scripts/Skills/UI/`) | La UI: una columna por rama, una fila por tier, y el panel de la izquierda para comprar. |
+| `SkillTreeView` / `SkillTreeNode` / `SkillDetailPanel` (`Scripts/Skills/UI/`) | La UI: una columna por rama (una grilla ordenada por tier, que se acomoda para ocupar el espacio disponible) y el panel de la izquierda para comprar. |
 
 Como nada se guarda dos veces, si cambiás un valor en un `.tres` (por ejemplo, la vida por nivel), las partidas existentes también lo ven.
 
@@ -19,7 +19,7 @@ Como nada se guarda dos veces, si cambiás un valor en un `.tres` (por ejemplo, 
 
 1. En el FileSystem del editor: clic derecho sobre `Resources/Skills/Stats/` → **New Resource…** → `SkillDefinition`.
 2. Completá **Identity**: `id` (único, en snake_case, y no lo cambies después porque es la clave del guardado), `display_name`, `description` e `icon`.
-3. En **Tree**, elegí la `branch` (columna). Dejá `tier` en -1 para que quede una fila debajo de su requisito más profundo.
+3. En **Tree**, elegí la `branch` (columna). `tier` ordena la skill dentro de su columna: con -1 va después de su requisito más profundo.
 4. En **Game Modes**, marcá Mining, Waves o los dos.
 5. En **Requirements**, agregá un `SkillRequirement` y arrastrá el `.tres` de la skill que tiene que comprarse antes, con su `min_level`. Si no ponés requisitos, la skill está disponible desde el inicio. `requires_all` decide si basta con uno de los requisitos o hacen falta todos.
 6. En **Effects**, agregá un `StatSkillEffect`: `stat` (Health, Speed, Damage), `is_percentage` (0.1 = +10%), `value_per_level` y `value_multiplier` (1.0 da lo mismo en cada nivel).
