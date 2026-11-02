@@ -17,6 +17,10 @@ var _length: float = 300.0
 var _launch_velocity: float = 0.0
 var _hit_timestamps: Dictionary = {}
 var _damage_cooldown: float = 0.1
+## The beam closes itself when nobody updated it for this long (the weapon stopped calling
+## update_beam, e.g. it was dropped or the release was missed), so it can never keep firing alone.
+const UPDATE_TIMEOUT: float = 0.15
+var _time_since_update: float = 0.0
 
 # Tween related variables
 var _progress_tween: Tween
@@ -28,6 +32,13 @@ func _ready() -> void:
 	
 	# Set initial progress to 0 (invisible)
 	_set_shader_progress(0.0)
+
+func _physics_process(delta: float) -> void:
+	if _is_fading_out:
+		return
+	_time_since_update += delta
+	if _time_since_update > UPDATE_TIMEOUT:
+		destroy()
 
 func spawn(pos: Vector2, origin_transform: Transform2D, launch_vector: Vector2, lifetime: float, quadrant_builder: QuadrantBuilder, ammo_data: AmmoDetails) -> void:
 	_ammo_details = ammo_data
@@ -60,6 +71,7 @@ func _finish_destroy() -> void:
 	queue_free()
 
 func update_beam(origin: Vector2, launch_vector: Vector2 = _direction) -> void:
+	_time_since_update = 0.0
 	global_position = origin
 	_direction = launch_vector.normalized()
 	rotation = _direction.angle()
