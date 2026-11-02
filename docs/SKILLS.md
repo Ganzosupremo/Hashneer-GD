@@ -37,6 +37,21 @@ Con eso el arma aparece en el árbol y en la Armería al comprarla, y también e
 1. Creá la escena con raíz `BaseAbility` en `Scenes/Player/Abilities/`.
 2. Creá una `SkillDefinition` en `Resources/Skills/Abilities/` con un `UnlockAbilitySkillEffect`: `ability_scene` y `ability_name`.
 
+### Pasivas y activas
+
+En la escena, `BaseAbility.ability_kind` dice de qué tipo es:
+
+- **Passive**: soporte (Magnet, Regen, Shield, Block Core Finder). Corre sola cada `ability_cooldown` segundos. El jugador equipa hasta 3.
+- **Active**: suma daño (Fury, Pulse, Drones). Se usa con **Q** (acción `Active_Ability`) y después recarga `ability_cooldown`. El jugador equipa 1.
+
+## Equipamiento (Armería → Loadout)
+
+El autoload `Equipment` guarda, por modo, qué lleva el jugador: 2 armas, 3 pasivas y 1 activa. Solo puede elegir entre lo que desbloquean las skills de ese modo (`SkillProgress.build_loadout(modo)`) más las armas iniciales de `PlayerDetails.tres`. Se guardan ids (el id del arma y la ruta de la escena de la habilidad). Lo que deja de estar disponible se descarta al leer, y los slots vacíos se llenan solos, así que un arma o habilidad recién desbloqueada entra directo si hay lugar. `Player.set_player()` instancia solo lo equipado.
+
+## Especiales de arma
+
+Cada `WeaponDetails` tiene un `special` (`WeaponSpecialShot` o `WeaponSpecialBuff`, en `Scripts/WeaponSystem/Specials/`), que se usa con click derecho. Para darle una especial a un arma nueva, creá un `.tres` en `Resources/Weapons/Specials/` y asignalo al arma.
+
 ## Skills por modo
 
 `modes` es un flag. El jugador compra la skill una sola vez, y sus efectos solo se aplican en los modos marcados. En el árbol, cada nodo muestra una insignia **M** (Mining) y/o **W** (Waves), y el filtro *Show* del panel atenúa las skills que no sirven en el modo elegido.

@@ -45,6 +45,11 @@ var incoming_damage_multiplier: float = 1.0
 var weapons_array: Array = []
 var gravity_sources: Array = []
 var abilities: Array = []
+## The equipped active ability (used with Q), or null. See [Equipment].
+var active_ability: BaseAbility = null
+# Damage boost from an active ability (Fury)
+var _damage_boost: float = 1.0
+var _damage_boost_left: float = 0.0
 
 # Footstep system
 var footstep_timer: float = 0.0
@@ -63,11 +68,13 @@ func _ready() -> void:
 		set_player()
 		edge_polygon.polygon = PolygonLib.createCirclePolygon(20.0, 6)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 		if !can_move: return
 		
 		fire()
 		use_weapon_special()
+		use_active_ability()
+		_process_damage_boost(delta)
 		switch_weapon()
 		rotation_container.look_at(get_global_mouse_position())
 
@@ -86,15 +93,19 @@ func set_player() -> void:
 	if !player_details: return
 
 	# Skills only count in the modes they are made for, see SkillDefinition.modes
-	var loadout: PlayerLoadout = SkillProgress.build_loadout(SkillProgress.get_mode_for(self))
-	_unlock_saved_abilities(loadout)
+	var mode: int = SkillProgress.get_mode_for(self)
+	var loadout: PlayerLoadout = SkillProgress.build_loadout(mode)
+	# Only what is equipped in the Armory for this mode: 2 weapons, 3 passives and 1 active
+	_unlock_saved_abilities(Equipment.get_equipped_abilities(mode, loadout))
 	var stats: Dictionary = player_details.apply_stats(loadout)
 	speed = stats.Speed
 	player_damage_multiplier_percent = stats.Damage
 	_health.set_max_health(stats.Health)
 
-	initial_weapon = player_details.initial_weapon
-	weapons_array = stats.Weapons.duplicate()
+	weapons_array = Equipment.get_equipped_weapons(mode, loadout)
+	if weapons_array.is_empty():
+		weapons_array = [player_details.initial_weapon]
+	initial_weapon = weapons_array[0]
 	dead_sound_effect = player_details.dead_sound_effect
 	move_sound_effect = player_details.move_sound_effect
 	hit_sound_effect = player_details.hit_sound_effect
@@ -165,8 +176,8 @@ func apply_hitstop(duration: float = 0.08, time_scale: float = 0.15) -> void:
 
 #endregion
 
-func _unlock_saved_abilities(loadout: PlayerLoadout) -> void:
-	for ability_scene in loadout.abilities:
+func _unlock_saved_abilities(ability_scenes: Array) -> void:
+	for ability_scene in ability_scenes:
 		var node: Node = ability_scene.instantiate()
 		if not node is BaseAbility:
 			DebugLogger.error("Ability scene %s is not a BaseAbility, skipping it." % ability_scene.resource_path)
@@ -176,6 +187,8 @@ func _unlock_saved_abilities(loadout: PlayerLoadout) -> void:
 		add_child(ability)
 		abilities.append(ability)
 		ability.enable()
+		if ability.is_active_kind():
+			active_ability = ability
 
 #region Input
 
@@ -296,16 +309,43 @@ func apply_weapon_recoil(recoil_direction: Vector2, recoil_strength: float = 80.
 func fire() -> void:
 	if Input.is_action_pressed("Fire"):
 		fired_previous_frame = true
-		fire_weapon.fire_weapon.emit(true, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
+		fire_weapon.fire_weapon.emit(true, fired_previous_frame, get_attack_damage_multiplier(), get_global_mouse_position())
 	else:
 		fired_previous_frame = false
-		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
+		fire_weapon.fire_weapon.emit(false, fired_previous_frame, get_attack_damage_multiplier(), get_global_mouse_position())
 
 
 ## Uses the current weapon's special ability on right click (see [WeaponSpecial]).
 func use_weapon_special() -> void:
 	if Input.is_action_just_pressed("Weapon_Special"):
-		fire_weapon.try_use_special(player_damage_multiplier_percent, get_global_mouse_position())
+		fire_weapon.try_use_special(get_attack_damage_multiplier(), get_global_mouse_position())
+
+## Uses the equipped active ability on Q (see [BaseAbility.AbilityKind]).
+func use_active_ability() -> void:
+	if active_ability and Input.is_action_just_pressed("Active_Ability"):
+		active_ability.try_activate()
+
+## Damage multiplier of the player's attacks right now: skills and active ability boosts.
+func get_attack_damage_multiplier() -> float:
+	return player_damage_multiplier_percent * _damage_boost
+
+## Multiplies the player's damage by [param multiplier] for [param duration] seconds (Fury).
+func apply_damage_boost(multiplier: float, duration: float, tint: Color = Color.WHITE) -> void:
+	_damage_boost = multiplier
+	_damage_boost_left = duration
+	rotation_container.modulate = tint
+
+## Seconds left of the damage boost, 0 if none.
+func get_damage_boost_time_left() -> float:
+	return max(_damage_boost_left, 0.0)
+
+func _process_damage_boost(delta: float) -> void:
+	if _damage_boost_left <= 0.0:
+		return
+	_damage_boost_left -= delta
+	if _damage_boost_left <= 0.0:
+		_damage_boost = 1.0
+		rotation_container.modulate = Color.WHITE
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):

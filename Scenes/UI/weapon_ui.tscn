@@ -83,3 +83,12 @@ theme_type_variation = &"TooltipLabel"
 text = "RIGHT CLICK: SPECIAL"
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="ActiveLabel" type="Label" parent="WeaponContainer/WeaponPanel/MarginContainer/HBoxContainer/WeaponInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme = ExtResource("1_85mv8")
+theme_type_variation = &"TooltipLabel"
+text = "Q: ACTIVE"
+horizontal_alignment = 1
+autowrap_mode = 3

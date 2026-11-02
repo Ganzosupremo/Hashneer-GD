@@ -4,6 +4,7 @@ class_name WeaponStateUI extends Control
 @onready var weapon_name: Label = %WeaponName
 @onready var weapon_slot: Label = %WeaponSlot
 @onready var special_label: Label = get_node_or_null("%SpecialLabel")
+@onready var active_label: Label = get_node_or_null("%ActiveLabel")
 @onready var player: PlayerController = %Player
 
 const READY_COLOR: Color = Color(0.55, 1.0, 0.6)
@@ -20,6 +21,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	_update_special_state()
+	_update_active_state()
 
 func _on_weapon_setted(weapon: WeaponDetails) -> void:
 	_current_weapon = weapon
@@ -58,3 +60,26 @@ func _update_special_state() -> void:
 	else:
 		special_label.text = "%s: RMB" % special_name
 		special_label.modulate = READY_COLOR
+
+# Shows the equipped active ability (Q) and whether it's ready, running or recharging.
+func _update_active_state() -> void:
+	if active_label == null:
+		return
+	var ability: BaseAbility = player.active_ability
+	if ability == null:
+		active_label.hide()
+		return
+	active_label.show()
+	var running_left: float = player.get_damage_boost_time_left()
+	if ability is DronesAbility:
+		running_left = ability.get_time_left()
+	var cooldown_left: float = ability.get_cooldown_left()
+	if running_left > 0.0 and ability is not PulseAbility:
+		active_label.text = "%s: %.1fs" % [ability.ability_name, running_left]
+		active_label.modulate = ACTIVE_COLOR
+	elif cooldown_left > 0.0:
+		active_label.text = "%s (%.1fs)" % [ability.ability_name, cooldown_left]
+		active_label.modulate = COOLDOWN_COLOR
+	else:
+		active_label.text = "%s: Q" % ability.ability_name
+		active_label.modulate = READY_COLOR

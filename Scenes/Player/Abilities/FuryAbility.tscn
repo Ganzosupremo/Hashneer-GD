@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/FuryAbility.gd" id="1_ability"]
+
+[node name="FuryAbility" type="Node2D"]
+script = ExtResource("1_ability")
+ability_name = "Fury"
+ability_description = "For 5 seconds every weapon deals 50% more damage."
+ability_cooldown = 20.0
+ability_kind = 1

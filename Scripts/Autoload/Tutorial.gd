@@ -10,7 +10,7 @@ const TUTORIALS: Dictionary = {
 	"mining": [
 		"Welcome to Hasheneer! Every level is a Bitcoin block waiting to be mined.",
 		"Shoot the terrain to break it. Broken quadrants drop fiat money.",
-		"Right click uses your weapon's special ability. Every weapon has its own; the weapon panel shows when it's ready again.",
+		"Right click uses your weapon's special ability. Every weapon has its own; the weapon panel shows when it's ready again. Q uses your active ability, if you have one.",
 		"Somewhere in the map is the Block Core. Destroy it and pick up the Bitcoin it drops to mine the block.",
 		"Hurry! The AI miner is racing you. If its timer reaches zero it mines the block and you get nothing.",
 		"Hitting the core hurts you too, keep an eye on your health. Good luck, miner!",
@@ -27,6 +27,7 @@ const TUTORIALS: Dictionary = {
 		"Use the exchange in the top left to trade fiat for Bitcoin, with a 5% fee.",
 		"The Mining Farm (top right) earns Bitcoin fees over time, even while the game is closed. More hashrate also slows the AI down.",
 		"Mine every block to start a New Epoch: you lose everything except HODL points, which boost you forever.",
+		"In the Armory, the Loadout tab picks what you take into each mode: 2 weapons, 3 passive abilities and 1 active ability (Q).",
 		"Press Start Game to pick a level. Stats shows your progress and lets you replay this tutorial.",
 	],
 }
