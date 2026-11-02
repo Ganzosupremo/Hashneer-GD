@@ -183,6 +183,12 @@ func _make_button(text: String, icon: Texture2D, min_size: Vector2) -> Button:
 	button.expand_icon = true
 	button.add_theme_constant_override("icon_max_width", ICON_WIDTH)
 	button.custom_minimum_size = min_size
+	# Fixed size: without clipping a Button grows to fit its text, so a long weapon name widened
+	# the whole row (and pushed it off screen) and a short one shrank it. Long names get "..." and
+	# the full text shows as a tooltip.
+	button.clip_text = true
+	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	button.tooltip_text = text
 	return button
 
 func _clear(container: Node) -> void:
