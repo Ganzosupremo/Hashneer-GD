@@ -28,6 +28,7 @@ weapon_texture = ExtResource("5_tex")
 fire_sound = ExtResource("4_sound")
 ammo_details = ExtResource("3_ammo")
 weapon_shoot_effect = ExtResource("6_fx")
+precharge_time = 0.35
 shake_trans = 10
 recoil_strength = 0.0
 recoil_kick_strength = 0.0

@@ -89,36 +89,42 @@ func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_mult
 
 	if _laser_beam != null and !is_instance_valid(_laser_beam):
 		_laser_beam = null
-	# Handle laser beam termination on release or ammo change
-	if _handle_laser_beam_termination(has_fired, fired_previous_frame, ammo): return
+	# Stop the beam if the ammo type changed
+	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
+		_stop_laser()
+		return
 
 	if ammo.bullet_type == AmmoDetails.BulletType.LASER:
-		if ready_to_fire(has_fired, fired_previous_frame) or (_laser_beam != null):
-			# If the weapon is ready to fire, we can proceed with firing
-			_fire_laser(ammo, player_damage_multiplier, target_position)
+		_process_laser(has_fired, ammo, player_damage_multiplier, target_position)
 	else:
 		if ready_to_fire(has_fired, fired_previous_frame):
 			_trigger_camera_shake()
 			_fire_ammo(ammo, player_damage_multiplier, target_position)
 			reset_cooldown_timer()
 
-# Handles the termination of the laser beam based on the firing state and ammo type.
-func _handle_laser_beam_termination(has_fired: bool, fired_previous_frame: bool, ammo: AmmoDetails) -> bool:
-	# Stop on release
-	if !has_fired and fired_previous_frame and _laser_beam:
+# Laser weapons only depend on whether the trigger is held right now.
+# fired_previous_frame is not used here: the player sets it before emitting, so on release it
+# arrived as false and the old "stop on release" check never ran. The beam then lived for its
+# whole lifetime (30 s on the Lightning Gun) and kept cutting after the button was released.
+func _process_laser(has_fired: bool, ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2) -> void:
+	if !has_fired:
+		_stop_laser()
+		return
+	# Charge up: the beam only opens after the trigger was held for the weapon's precharge time
+	if _laser_beam == null and _trigger_held_time < current_weapon.get_precharge_time():
+		return
+	_fire_laser(ammo, player_damage_multiplier, target_position)
+
+# Closes the laser beam (if any) and stops its camera shake.
+func _stop_laser() -> void:
+	if _laser_beam == null:
+		return
+	if !is_enemy_weapon and GameManager._player_camera:
 		GameManager._player_camera.stop_constant_shake()
+	if is_instance_valid(_laser_beam):
 		_laser_beam.destroy()
-		_laser_beam = null
-		reset_cooldown_timer()
-		return true
-	# Stop if ammo type changed
-	if _laser_beam and ammo.bullet_type != AmmoDetails.BulletType.LASER:
-		GameManager._player_camera.stop_constant_shake()
-		_laser_beam.destroy()
-		_laser_beam = null
-		reset_cooldown_timer()
-		return true
-	return false
+	_laser_beam = null
+	reset_cooldown_timer()
 
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
@@ -138,7 +144,8 @@ func _trigger_camera_shake() -> void:
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
-	GameManager.get_main_camera().start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
+	if !is_enemy_weapon and GameManager.get_main_camera():
+		GameManager.get_main_camera().start_constant_shake_with_preset(Constants.ShakeMagnitude.Medium)
 	var initial_vector: Vector2 = target_position - bullet_spawn_position.global_position
 	
 	if !_laser_beam:
