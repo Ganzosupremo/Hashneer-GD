@@ -15,6 +15,7 @@ MainWorldEnvironment.tres
 # Godot-specific files to exclude
 *.import
 .vscode/
+*.uid
 
 # Build/export results
 /android/
