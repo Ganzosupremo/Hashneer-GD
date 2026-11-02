@@ -3,7 +3,8 @@ class_name SkillTreeView extends Control
 ## one row per tier, and lines from each skill to its requirements.
 ##
 ## Nothing is placed by hand: a new [SkillDefinition] file shows up in its branch on the next run.
-## A requirement line lights up once it is met.
+## A requirement line lights up once it is met.[br]
+## The view lives in the UI layer and scales itself down to fit its parent, so it never moves or zooms.
 
 ## Emitted when a node is pressed.
 signal skill_selected(skill: SkillDefinition)
@@ -12,13 +13,17 @@ signal skill_selected(skill: SkillDefinition)
 const BRANCH_ORDER: PackedStringArray = ["Defense", "Offense", "Utility", "Weapons"]
 
 @export var node_scene: PackedScene
-@export var node_size: Vector2 = Vector2(76, 76)
+@export var node_size: Vector2 = Vector2(64, 64)
 ## Width of one node slot, a column is as wide as its busiest row.
-@export var slot_width: float = 140.0
-@export var row_height: float = 120.0
-@export var column_gap: float = 30.0
-@export var header_height: float = 60.0
-@export var line_width: float = 4.0
+@export var slot_width: float = 92.0
+@export var row_height: float = 82.0
+@export var column_gap: float = 14.0
+@export var header_height: float = 38.0
+@export var line_width: float = 3.0
+## Shows the skill name under each node. The name is always in the tooltip and the details panel.
+@export var show_node_names: bool = false
+## The tree is scaled down to fit its parent, never above this.
+@export var max_scale: float = 1.0
 @export var line_met_color: Color = Color(1.0, 0.843, 0.0, 0.85)
 @export var line_unmet_color: Color = Color(0.45, 0.45, 0.52, 0.55)
 @export var column_color: Color = Color(0.04, 0.04, 0.07, 0.55)
@@ -32,6 +37,10 @@ var _mode_filter: int = 0
 
 func _ready() -> void:
 	_build()
+	var parent_control: Control = get_parent() as Control
+	if parent_control:
+		parent_control.resized.connect(_fit_to_parent)
+	_fit_to_parent.call_deferred()
 	SkillProgress.skill_changed.connect(_on_skill_changed)
 	SkillProgress.progress_reset.connect(refresh)
 	SkillProgress.costs_changed.connect(refresh)
@@ -116,6 +125,7 @@ func _add_node(skill: SkillDefinition, center: Vector2) -> void:
 	add_child(node)
 	node.size = node_size
 	node.position = center - node_size * 0.5
+	node.set_name_visible(show_node_names)
 	node.pressed.connect(_on_node_pressed.bind(skill.id))
 	_nodes[skill.id] = node
 
@@ -127,9 +137,19 @@ func _add_header(branch: String, x: float, width: float) -> void:
 	label.position = Vector2(x, 0.0)
 	label.size = Vector2(width, header_height)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_font_size_override("font_size", 18)
 	label.add_theme_color_override("font_color", Color(1.0, 0.843, 0.0, 1.0))
 	add_child(label)
+
+## Scales the tree down to fit the parent and centers it horizontally.
+func _fit_to_parent() -> void:
+	var parent_control: Control = get_parent() as Control
+	if parent_control == null or custom_minimum_size.x <= 0.0 or custom_minimum_size.y <= 0.0:
+		return
+	var area: Vector2 = parent_control.size
+	var fit: float = minf(minf(area.x / custom_minimum_size.x, area.y / custom_minimum_size.y), max_scale)
+	scale = Vector2(fit, fit)
+	position = Vector2((area.x - custom_minimum_size.x * fit) * 0.5, 0.0)
 
 ## Row of a skill: [member SkillDefinition.tier] if set, otherwise one below its deepest requirement.
 func _get_tier(skill: SkillDefinition, cache: Dictionary, visiting: Array) -> int:

@@ -45,6 +45,9 @@ func setup(_skill: SkillDefinition) -> void:
 	if is_node_ready():
 		refresh()
 
+func set_name_visible(value: bool) -> void:
+	_name_label.visible = value
+
 ## Center of the node in the parent's coordinates, used to draw the requirement lines.
 func get_center() -> Vector2:
 	return position + size * 0.5
