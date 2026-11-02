@@ -400,11 +400,12 @@ columns = 4
 
 [node name="InfoLabel" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
+max_lines_visible = 3
 
 [node name="Footer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2
