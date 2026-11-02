@@ -81,8 +81,9 @@ func get_all_weapons() -> Array[WeaponDetails]:
 	var weapons: Array[WeaponDetails] = []
 	for skill in _skill_list:
 		for effect in skill.effects:
-			if effect is UnlockWeaponSkillEffect and effect.weapon and not weapons.has(effect.weapon):
-				weapons.append(effect.weapon)
+			var weapon_effect: UnlockWeaponSkillEffect = effect as UnlockWeaponSkillEffect
+			if weapon_effect and weapon_effect.weapon and not weapons.has(weapon_effect.weapon):
+				weapons.append(weapon_effect.weapon)
 	return weapons
 
 ## Every ability some skill can unlock, as [code]{name, scene, modes}[/code] dictionaries.
@@ -90,8 +91,9 @@ func get_all_abilities() -> Array[Dictionary]:
 	var abilities: Array[Dictionary] = []
 	for skill in _skill_list:
 		for effect in skill.effects:
-			if effect is UnlockAbilitySkillEffect and effect.ability_scene:
-				abilities.append({"name": effect.get_ability_name(), "scene": effect.ability_scene, "modes": skill.modes})
+			var ability_effect: UnlockAbilitySkillEffect = effect as UnlockAbilitySkillEffect
+			if ability_effect and ability_effect.ability_scene:
+				abilities.append({"name": ability_effect.get_ability_name(), "scene": ability_effect.ability_scene, "modes": skill.modes})
 	return abilities
 
 #endregion
