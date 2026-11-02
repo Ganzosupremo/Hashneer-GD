@@ -57,6 +57,11 @@ func spawn(pos: Vector2, origin_transform: Transform2D, launch_vector: Vector2, 
 	# Start fade-in animation
 	_start_fade_in()
 
+## Scales the beam width (weapon special boosts), 1.0 is the normal [member width].
+func set_width_multiplier(multiplier: float) -> void:
+	if _line:
+		_line.width = width * multiplier
+
 func destroy() -> void:
 	if !_is_fading_out:
 		_start_fade_out()

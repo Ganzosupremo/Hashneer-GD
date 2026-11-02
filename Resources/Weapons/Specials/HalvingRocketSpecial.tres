@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="WeaponSpecialShot" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialShot.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Halving"
+description = "A rocket that splits into two halves on impact, and each half splits again."
+cooldown = 12.0
+split_generations = 2
+size_multiplier = 1.25

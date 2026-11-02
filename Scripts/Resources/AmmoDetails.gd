@@ -118,6 +118,11 @@ enum BulletPattern {
 
 ## Dictionary storing upgrade modifiers for this ammo.
 var upgrade_modifiers: Dictionary = {}
+## Runtime only, set on copies made by weapon specials: piercing bullets also go through terrain.
+var pierce_terrain: bool = false
+## Runtime only, set on copies made by weapon specials: explosive bullets split in two halves on
+## impact this many times (see [method FractureBullet._split]).
+var split_generations: int = 0
 var _chached_id: String = ""  # Cached ID for the ammo, generated from the resource path
 ## Calculated final damage after applying multipliers.
 var damage_final: float = 0.0
@@ -218,6 +223,17 @@ func _generate_id_from_path() -> String:
 #endregion
 
 #region Getters and Setters
+
+## Returns a copy of this ammo for a single special shot, keeping its Armory upgrades.[br]
+## The copy can be changed freely: the original (shared by every normal shot) stays the same.
+func make_runtime_copy() -> AmmoDetails:
+	var copy: AmmoDetails = duplicate()
+	copy.upgrade_modifiers = upgrade_modifiers.duplicate()
+	copy.pierce_terrain = pierce_terrain
+	copy.split_generations = split_generations
+	copy.damage_final = damage_final
+	copy._chached_id = get_upgrade_id()
+	return copy
 
 ## Returns the total number of pierces this ammo can perform, including upgrades.
 func get_total_pierce() -> int:

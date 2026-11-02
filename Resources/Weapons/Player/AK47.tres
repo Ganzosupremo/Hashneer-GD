@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://bvnbe11jqemd8" path="res://Resources/Audio/AK47Fire.tres" id="2_gphs5"]
 [ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="2_vxpuo"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_gua3f"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/AK47Special.tres" id="9_special"]
 
 [sub_resource type="Resource" id="Resource_c2e5b"]
 script = ExtResource("2_c2e5b")
@@ -41,12 +42,33 @@ metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 atlas = ExtResource("2_vxpuo")
 region = Rect2(0, 0, 31, 17)
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("2_c2e5b")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("2_c2e5b")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
 [resource]
 script = ExtResource("1_6hkbf")
-available_upgrades = Array[ExtResource("2_c2e5b")]([SubResource("Resource_c2e5b"), SubResource("Resource_052dw"), SubResource("Resource_g5kaf")])
+available_upgrades = Array[ExtResource("2_c2e5b")]([SubResource("Resource_c2e5b"), SubResource("Resource_052dw"), SubResource("Resource_g5kaf"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power")])
 weapon_name = "AK-47"
 weapon_texture = SubResource("AtlasTexture_j52in")
 fire_sound = ExtResource("2_gphs5")
+special = ExtResource("9_special")
 ammo_details = ExtResource("1_vd2v8")
 weapon_shoot_effect = ExtResource("4_gua3f")
 shots_per_second = 4.0

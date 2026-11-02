@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="WeaponSpecialBuff" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialBuff.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Overclock"
+description = "Instant full spin and x1.5 fire rate for a few seconds, then it overheats for 1 s."
+cooldown = 15.0
+duration = 4.0
+fire_rate_multiplier = 1.5
+instant_spin_up = true
+overheat_time = 1.0

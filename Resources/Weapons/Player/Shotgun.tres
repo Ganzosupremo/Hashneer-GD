@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="4_1c5fr"]
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="4_6sosy"]
 [ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_faobk"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/ShotgunSpecial.tres" id="9_special"]
 
 [sub_resource type="Resource" id="Resource_a8ja3"]
 script = ExtResource("4_1c5fr")
@@ -78,12 +79,33 @@ explosiveness = 1.0
 particle_texture = SubResource("Resource_83u4u")
 process_material = SubResource("ParticleProcessMaterial_rf6gg")
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
 [resource]
 script = ExtResource("4_6sosy")
-available_upgrades = Array[ExtResource("4_1c5fr")]([SubResource("Resource_a8ja3"), SubResource("Resource_7fgsi")])
+available_upgrades = Array[ExtResource("4_1c5fr")]([SubResource("Resource_a8ja3"), SubResource("Resource_7fgsi"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power")])
 weapon_name = "Shotgun"
 weapon_texture = ExtResource("4_faobk")
 fire_sound = ExtResource("3_kfa2b")
+special = ExtResource("9_special")
 ammo_details = ExtResource("1_a8ja3")
 weapon_shoot_effect = SubResource("Resource_eukx2")
 shots_per_second = 1.3

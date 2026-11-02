@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponSpecialBuff" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialBuff.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Burst"
+description = "Double fire rate and no spread for a few seconds."
+cooldown = 12.0
+duration = 3.0
+fire_rate_multiplier = 2.0
+spread_multiplier = 0.0
