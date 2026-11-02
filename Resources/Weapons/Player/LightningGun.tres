@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://bgdfcsdetl4x8" path="res://Resources/Audio/PistolFire.tres" id="4_sound"]
 [ext_resource type="Texture2D" uid="uid://nl3r1u3tru2l" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="5_tex"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="6_fx"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/LightningGunSpecial.tres" id="9_special"]
 
 [sub_resource type="Resource" id="Resource_damage"]
 script = ExtResource("2_upg")
@@ -20,12 +21,43 @@ bitcoin_base_cost = 5.0
 bitcoin_cost_multiplier = 1.3
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("2_upg")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("2_upg")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("2_upg")
+upgrade_type = 3
+upgrade_name = "Capacitor"
+upgrade_description = "-0.05 s charge up per level"
+upgrade_levels = 4
+upgrade_power_per_level = 0.05
+base_cost = 60000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("1_wd")
-available_upgrades = Array[ExtResource("2_upg")]([SubResource("Resource_damage")])
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Resource_damage"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power"), SubResource("Resource_armory_0")])
 weapon_name = "Lightning Gun"
 weapon_texture = ExtResource("5_tex")
 fire_sound = ExtResource("4_sound")
+special = ExtResource("9_special")
 ammo_details = ExtResource("3_ammo")
 weapon_shoot_effect = ExtResource("6_fx")
 precharge_time = 0.35

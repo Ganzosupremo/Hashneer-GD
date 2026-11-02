@@ -20,6 +20,10 @@ class_name WeaponDetails extends IUpgradeable
 ## This multiplier is applied to the base damage defined in the [AmmoDetails] resource.
 @export_range(0.0, 1.0, 0.05) var weapon_damage_multiplier_percent: float = 0.0
 
+@export_category("Special Ability")
+## The weapon's special ability, used with right click. See [WeaponSpecial].
+@export var special: WeaponSpecial
+
 @export_category("Ammo Details")
 ## The details of the ammo used by this weapon, including bullet type, damage, speed, lifetime, and other properties. See [AmmoDetails] for more details.
 @export var ammo_details: AmmoDetails
@@ -116,6 +120,10 @@ func apply_upgrade(upgrade_type: Constants.ArmoryUpgradeType, level: int, upgrad
 			_apply_upgrade_modifier("spread_reduction", level, upgrade_power_per_level)
 		Constants.ArmoryUpgradeType.WEAPON_PRECHARGE_TIME_REDUCTION:
 			_apply_upgrade_modifier("precharge_time_reduction", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.SPECIAL_COOLDOWN_REDUCTION:
+			_apply_upgrade_modifier("special_cooldown_reduction", level, upgrade_power_per_level)
+		Constants.ArmoryUpgradeType.SPECIAL_POWER:
+			_apply_upgrade_modifier("special_power", level, upgrade_power_per_level)
 		_:
 			DebugLogger.error("Unknown upgrade type: " + str(upgrade_type))
 
@@ -141,6 +149,8 @@ func get_current_stats() -> Dictionary:
 		"ShotsPerSecond": "%.2f" % get_fire_rate(),
 		"PrechargeTime": "%.2f" % get_precharge_time(),
 		"Spread": "%.2f" % get_spread(),
+		"Special": special.special_name if special else "",
+		"SpecialSummary": special.get_summary(self) if special else "",
 		"Level": str(level),
 	}
 	return stats
@@ -172,6 +182,17 @@ func get_damage_multiplier() -> float:
 func get_precharge_time() -> float:
 	var precharge_time_reduction: float = _upgrade_modifiers.get("precharge_time_reduction", 0.0)
 	return max(precharge_time - precharge_time_reduction, 0.0)
+
+## Returns the special's cooldown after Armory upgrades (at most 70% shorter).
+func get_special_cooldown() -> float:
+	if special == null:
+		return 0.0
+	var reduction: float = _upgrade_modifiers.get("special_cooldown_reduction", 0.0)
+	return special.cooldown * max(1.0 - reduction, 0.3)
+
+## Returns the multiplier the Armory "power" upgrades give the special (1.0 = no upgrades).
+func get_special_power_multiplier() -> float:
+	return 1.0 + _upgrade_modifiers.get("special_power", 0.0)
 
 ## Returns the total upgrade level bought across all available upgrades.
 func get_total_upgrade_level() -> int:

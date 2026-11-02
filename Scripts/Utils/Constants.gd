@@ -159,4 +159,8 @@ enum ArmoryUpgradeType {
 	AMMO_BULLET_COUNT,
 	AMMO_LASER_LENGTH,
 	AMMO_LASER_DAMAGE,
+
+	# Weapon special ability. Keep new types at the end: saves store the enum value.
+	SPECIAL_COOLDOWN_REDUCTION,
+	SPECIAL_POWER,
 }

@@ -68,9 +68,29 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 offsets = PackedFloat32Array(0, 0.534653, 0.727723, 1)
 colors = PackedColorArray(0.129412, 0.313726, 0.882353, 0.470588, 0.121569, 0.607843, 0.913725, 0.470588, 0.572549, 0.807843, 0.956863, 0.470588, 1, 1, 1, 0.470588)
 
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("1_ek8o0")
+upgrade_type = 4
+upgrade_name = "Hollow points"
+upgrade_description = "+10% bullet damage per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 30000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Resource_armory_1"]
+script = ExtResource("1_ek8o0")
+upgrade_type = 5
+upgrade_name = "Hot loads"
+upgrade_description = "+10% bullet speed per level"
+upgrade_levels = 4
+upgrade_power_per_level = 0.1
+base_cost = 20000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("1_kb2pf")
-available_upgrades = Array[ExtResource("1_ek8o0")]([SubResource("Resource_ek8o0")])
+available_upgrades = Array[ExtResource("1_ek8o0")]([SubResource("Resource_ek8o0"), SubResource("Resource_armory_0"), SubResource("Resource_armory_1")])
 ammo_name = "Pistol Ammo"
 min_lifetime = 2.0
 max_lifetime = 4.0

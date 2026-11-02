@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponSpecialShot" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialShot.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Deadeye"
+description = "A heavy shot that hits three times as hard and goes through 2 enemies."
+cooldown = 6.0
+damage_multiplier = 3.0
+extra_pierce = 2
+size_multiplier = 1.5
+speed_multiplier = 1.3
+recoil_multiplier = 2.0

@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="3_a8fhq"]
 [ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="4_hdk3o"]
 [ext_resource type="Texture2D" uid="uid://bblt6cn06281m" path="res://Textures/WeaponSystem/Weapons/Glock 17.png" id="6_uonrp"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/PistolSpecial.tres" id="9_special"]
 
 [sub_resource type="Resource" id="Resource_wgbrq"]
 script = ExtResource("2_wgbrq")
@@ -33,12 +34,43 @@ metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 atlas = ExtResource("6_uonrp")
 region = Rect2(4, 0, 24, 14)
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("2_wgbrq")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("2_wgbrq")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("2_wgbrq")
+upgrade_type = 2
+upgrade_name = "Steady hands"
+upgrade_description = "-0.04 spread per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.04
+base_cost = 25000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("3_a8fhq")
-available_upgrades = Array[ExtResource("2_wgbrq")]([SubResource("Resource_wgbrq"), SubResource("Resource_psf4r")])
+available_upgrades = Array[ExtResource("2_wgbrq")]([SubResource("Resource_wgbrq"), SubResource("Resource_psf4r"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power"), SubResource("Resource_armory_0")])
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_psf4r")
+special = ExtResource("9_special")
 ammo_details = ExtResource("1_wgbrq")
 weapon_shoot_effect = ExtResource("4_hdk3o")
 shots_per_second = 3.0

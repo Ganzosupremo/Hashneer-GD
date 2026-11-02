@@ -35,6 +35,14 @@ theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 16
 text = "Lv.1"
 
+[node name="LevelBar" type="ProgressBar" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 6)
+layout_mode = 2
+max_value = 5.0
+step = 1.0
+show_percentage = false
+
 [node name="UpgradeDescription" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 10)
@@ -74,4 +82,13 @@ layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 text = "0.025₿"
+horizontal_alignment = 2
+
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBoxContainer/UpgradeActionContainer/PriceContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 12
+text = "Not enough fiat"
 horizontal_alignment = 2

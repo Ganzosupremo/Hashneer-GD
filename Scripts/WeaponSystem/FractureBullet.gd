@@ -39,6 +39,12 @@ var _remaining_pierce: int = 0
 var _remaining_bounce: int = 0
 var _last_collision_body: Node2D = null
 var _prev_linear_velocity: Vector2 = Vector2.ZERO
+## Bodies this bullet passes through (terrain pierced by a special shot), cleared on every spawn
+## because pooled bullets are reused.
+var _pierced_bodies: Array = []
+const BULLET_SCENE_PATH: String = "res://Scenes/QuadrantTerrain/FractureBullet.tscn"
+## Angle (radians) between the two halves of a split bullet and the way back from the impact.
+const SPLIT_ANGLE: float = 0.9
 
 
 func _ready() -> void:
@@ -82,6 +88,7 @@ func spawn(pos : Vector2, launch_vector : Vector2, lifetime : float, q_b: Quadra
 	self._bullet_type = ammo_data.bullet_type
 	# Pooled bullets keep the body they last touched; a fresh bullet must be able to hit it again.
 	self._last_collision_body = null
+	_clear_pierced_bodies()
 
 	setPolygon(PolygonLib.createCirclePolygon(ammo_data.size, 8))
 	set_velocity(launch_vector)
@@ -232,6 +239,10 @@ func _process_hit(body: Node2D) -> void:
 			if _remaining_pierce > 0 and _can_pierce_through(body):
 				_remaining_pierce -= 1
 				linear_velocity = _prev_linear_velocity
+				if _ammo_details.pierce_terrain and body is PhysicsBody2D:
+					# Pass through the block instead of getting stuck pushing against it
+					add_collision_exception_with(body)
+					_pierced_bodies.append(body)
 			else:
 				_schedule_destruction()
 		AmmoDetails.BulletType.BOUNCING:
@@ -285,7 +296,45 @@ func _explode(spared: Node2D = null) -> void:
 		# Shields are hit through their owner in _deal_damage, so each enemy is damaged once
 		if body is Node2D and body != spared and body is not ShieldComponent:
 			_deal_damage(body, global_position)
+	if _ammo_details.split_generations > 0:
+		# Read the incoming velocity now, the collision changes it before the deferred call
+		call_deferred("_split", -_prev_linear_velocity, _prev_linear_velocity.length())
 	_schedule_destruction()
+
+## Halving Rocket special: spawns two halves of this bullet (half damage, smaller blast) that fly
+## back from the impact, each able to split again until [member AmmoDetails.split_generations] runs out.
+func _split(back: Vector2, incoming_speed: float) -> void:
+	if back.length_squared() < 1.0:
+		back = Vector2.RIGHT.rotated(global_rotation) * -1.0
+	var speed: float = max(incoming_speed * 0.6, 300.0)
+	for side in [-1.0, 1.0]:
+		var half_ammo: AmmoDetails = _ammo_details.make_runtime_copy()
+		half_ammo.split_generations = _ammo_details.split_generations - 1
+		half_ammo.bullet_damage *= 0.5
+		half_ammo.damage_final = _ammo_details.damage_final * 0.5
+		half_ammo.explosion_radius *= 0.75
+		half_ammo.size = max(2, int(half_ammo.size * 0.75))
+		var bullet: FractureBullet = _get_new_bullet()
+		if bullet == null:
+			return
+		var direction: Vector2 = back.normalized().rotated(SPLIT_ANGLE * side)
+		var start: Vector2 = global_position + direction * (half_ammo.size * 2.0 + 4.0)
+		bullet.spawn(start, direction * speed, randf_range(half_ammo.min_lifetime, half_ammo.max_lifetime), _quadrant_builder, half_ammo)
+		bullet.global_rotation = direction.angle()
+
+func _get_new_bullet() -> FractureBullet:
+	if use_object_pool:
+		var pool: PoolFracture = get_tree().get_first_node_in_group("PBulletsPool")
+		return pool.getInstance() if pool else null
+	var bullet: FractureBullet = load(BULLET_SCENE_PATH).instantiate()
+	get_parent().add_child(bullet)
+	return bullet
+
+func _clear_pierced_bodies() -> void:
+	for body in _pierced_bodies:
+		if is_instance_valid(body):
+			remove_collision_exception_with(body)
+	_pierced_bodies.clear()
 
 
 func _can_explode() -> bool:
@@ -307,6 +356,9 @@ func _can_bounce_off(body: Node2D) -> bool:
 	return false
 
 func _can_pierce_through(body: Node2D) -> bool:
+	# Special shots go through breakable blocks (not walls or shields)
+	if _ammo_details.pierce_terrain and (body is FracturableStaticBody2D or body is BlockCore):
+		return true
 	if body is StaticBody2D or body is FracturableStaticBody2D or body is BlockCore:
 		return false
 	elif body is TileMapLayer:

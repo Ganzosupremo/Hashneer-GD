@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponSpecialBuff" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialBuff.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Overcharge"
+description = "The beam gets wider and deals double damage for a few seconds."
+cooldown = 14.0
+duration = 3.0
+damage_multiplier = 2.0
+laser_width_multiplier = 2.5

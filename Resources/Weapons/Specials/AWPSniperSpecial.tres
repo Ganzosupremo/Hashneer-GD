@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="WeaponSpecialShot" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialShot.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Piercing Round"
+description = "A round that goes through every enemy and block in its line."
+cooldown = 10.0
+damage_multiplier = 2.0
+extra_pierce = 12
+pierce_terrain = true
+speed_multiplier = 1.5
+recoil_multiplier = 2.0

@@ -67,6 +67,7 @@ func _process(_delta: float) -> void:
 		if !can_move: return
 		
 		fire()
+		use_weapon_special()
 		switch_weapon()
 		rotation_container.look_at(get_global_mouse_position())
 
@@ -300,6 +301,11 @@ func fire() -> void:
 		fired_previous_frame = false
 		fire_weapon.fire_weapon.emit(false, fired_previous_frame, player_damage_multiplier_percent, get_global_mouse_position())
 
+
+## Uses the current weapon's special ability on right click (see [WeaponSpecial]).
+func use_weapon_special() -> void:
+	if Input.is_action_just_pressed("Weapon_Special"):
+		fire_weapon.try_use_special(player_damage_multiplier_percent, get_global_mouse_position())
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):

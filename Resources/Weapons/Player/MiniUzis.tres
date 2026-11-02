@@ -5,6 +5,7 @@
 [ext_resource type="Resource" uid="uid://st6ywkowjfe6" path="res://Resources/Audio/MiniUziFire.tres" id="2_jn1f3"]
 [ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_uu3ky"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="4_juh0y"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/MiniUzisSpecial.tres" id="9_special"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_78qb0"]
 
@@ -89,11 +90,63 @@ process_material = SubResource("ParticleProcessMaterial_lhlcm")
 [sub_resource type="Resource" id="Resource_fgikc"]
 metadata/__load_path__ = "res://Textures/WeaponSystem/Weapons/MiniUzis.png"
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("2_uu3ky")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("2_uu3ky")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("2_uu3ky")
+upgrade_type = 0
+upgrade_name = "Lighter bolts"
+upgrade_description = "+10% fire rate per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 40000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Resource_armory_1"]
+script = ExtResource("2_uu3ky")
+upgrade_type = 1
+upgrade_name = "Twin focus"
+upgrade_description = "+10% weapon damage per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 50000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Resource_armory_2"]
+script = ExtResource("2_uu3ky")
+upgrade_type = 2
+upgrade_name = "Grip tape"
+upgrade_description = "-0.03 spread per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.03
+base_cost = 35000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("1_vm5p3")
+available_upgrades = Array[ExtResource("2_uu3ky")]([SubResource("Resource_special_cooldown"), SubResource("Resource_special_power"), SubResource("Resource_armory_0"), SubResource("Resource_armory_1"), SubResource("Resource_armory_2")])
 weapon_name = "Uzi-Twins"
 weapon_texture = SubResource("Resource_fgikc")
 fire_sound = ExtResource("2_jn1f3")
+special = ExtResource("9_special")
 ammo_details = ExtResource("1_jn1f3")
 weapon_shoot_effect = SubResource("Resource_55a3t")
 shots_per_second = 4.5

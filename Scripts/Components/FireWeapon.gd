@@ -39,6 +39,20 @@ var _laser_beam: LaserBeam
 var _trigger_held_time: float = 0.0
 var _trigger_held: bool = false
 
+#region Special ability state
+## Emitted when a weapon's special is used. [param cooldown] is the seconds until it's ready again.
+signal special_used(weapon: WeaponDetails, cooldown: float)
+## Seconds left before each weapon's special is ready, by weapon id. Timers run for every weapon.
+var _special_cooldowns: Dictionary = {}
+## Active boost from a [WeaponSpecialBuff], only applied while [member _buff_weapon] is in hand.
+var _buff: WeaponSpecialBuff = null
+var _buff_weapon: WeaponDetails = null
+var _buff_time_left: float = 0.0
+## Seconds the weapon can't fire after a boost with overheat ended.
+var _overheat_left: float = 0.0
+var _overheat_weapon: WeaponDetails = null
+#endregion
+
 func _ready() -> void:
 		quadrant_builder = get_tree().get_first_node_in_group("QuadrantBuilder")
 		_initialize_bullet_pools()
@@ -50,6 +64,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 		fire_rate_cooldown_timer -= delta
+		_process_specials(delta)
 		if _trigger_held:
 				_trigger_held_time += delta
 		else:
@@ -94,6 +109,11 @@ func weapon_fire(has_fired: bool, fired_previous_frame: bool, player_damage_mult
 		_stop_laser()
 		return
 
+	if _is_overheated():
+		_stop_laser()
+		return
+
+	player_damage_multiplier *= _get_buff_damage_multiplier()
 	if ammo.bullet_type == AmmoDetails.BulletType.LASER:
 		_process_laser(has_fired, ammo, player_damage_multiplier, target_position)
 	else:
@@ -128,7 +148,7 @@ func _stop_laser() -> void:
 
 # Performs firing effects such as spawning visual effects and shaking the camera.
 # This method is called when the weapon is fired to create visual feedback for the player.
-func _trigger_camera_shake() -> void:
+func _trigger_camera_shake(recoil_multiplier: float = 1.0) -> void:
 		if shake_camera_on_fire and GameManager._player_camera:
 				# Add trauma-based shake (small amount for firing)
 				GameManager._player_camera.add_trauma(current_weapon.trauma_shake_amount)
@@ -140,7 +160,7 @@ func _trigger_camera_shake() -> void:
 				# Apply weapon recoil to player velocity (if not enemy weapon)
 				if !is_enemy_weapon and GameManager.get_player():
 						var recoil_direction = GameManager.get_player().get_global_mouse_position() - GameManager.get_player().global_position
-						GameManager.get_player().apply_weapon_recoil(recoil_direction, current_weapon.recoil_strength)
+						GameManager.get_player().apply_weapon_recoil(recoil_direction, current_weapon.recoil_strength * recoil_multiplier)
 
 # Fires a laser beam based on the provided ammo details and target position.
 func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_position: Vector2 = Vector2.ZERO) -> void:
@@ -157,8 +177,11 @@ func _fire_laser(ammo: AmmoDetails, player_damage_multiplier: float, target_posi
 		ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
 		_laser_beam.spawn(bullet_spawn_position.global_position, bullet_spawn_position.global_transform, initial_vector, lifetime, quadrant_builder, ammo)
 	else:
+		# The damage is read on every hit, so a boost started mid beam applies right away
+		ammo.get_final_damage(player_damage_multiplier, current_weapon.get_damage_multiplier())
 		# If the laser beam already exists, we just update its position and direction
 		_laser_beam.update_beam(bullet_spawn_position.global_position, initial_vector)
+	_laser_beam.set_width_multiplier(_get_buff_laser_width_multiplier())
 
 
 # Fires ammo based on the provided ammo details and target position.
@@ -195,7 +218,7 @@ func _fire_ammo(ammo: AmmoDetails, player_damage_multiplier: float, target_posit
 		if not bullet: return
 
 		var launch_vector: Vector2 = launch_vectors[bullet_counter - 1]
-		var launch_magnitude: float = ammo.bullet_speed
+		var launch_magnitude: float = ammo.get_ammo_speed()
 
 		bullet.spawn(bullet_spawn_position.position, launch_vector * launch_magnitude, randf_range(ammo.min_lifetime, ammo.max_lifetime), quadrant_builder, ammo)
 		bullet.transform = bullet_spawn_position.global_transform
@@ -224,7 +247,10 @@ func ready_to_fire(has_fired: bool, fired_previous_frame: bool) -> bool:
 ## This method is called to reset the cooldown timer after firing a weapon or when the weapon is not ready to fire.
 ## It sets the cooldown timer to the current weapon's fire cooldown value.
 func reset_cooldown_timer() -> void:
-	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown(_trigger_held_time)
+	var held_time: float = _trigger_held_time
+	if _buff_applies() and _buff.instant_spin_up:
+		held_time = current_weapon.spin_up_time
+	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown(held_time) / _get_buff_fire_rate_multiplier()
 
 # Checks if the provided pool is valid for use.
 func _is_pool_valid(pool: PoolFracture) -> bool:
@@ -270,7 +296,7 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			# For SINGLE pattern, just return the initial vector normalized
 			launch_vectors.append(initial_vector.normalized())
 		AmmoDetails.BulletPattern.RANDOM_SPREAD:
-			var angle: float = randf_range(-PI, PI) * current_weapon.get_spread()
+			var angle: float = randf_range(-PI, PI) * _get_spread()
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.ARC:
 			var step: float = 0.0
@@ -281,20 +307,20 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			var angle: float = - arc_spread + step * index
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.SPREAD:
-			var angle: float = randf_range(-current_weapon.get_spread(), current_weapon.get_spread())
+			var angle: float = randf_range(-_get_spread(), _get_spread())
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.CIRCLE:
 			var angle_step: float = TAU / float(bullet_per_shot)
 			launch_vectors.append(Vector2.RIGHT.rotated(angle_step * index))
 		AmmoDetails.BulletPattern.SPIRAL:
 			var step = deg_to_rad(ammo.pattern_arc_angle)
-			var angle: float = step * (index - 1) + current_weapon.get_random_spread()
+			var angle: float = step * (index - 1) + _get_spread() * randf_range(-PI, PI)
 			launch_vectors.append(Vector2.RIGHT.rotated(angle))
 		AmmoDetails.BulletPattern.DOUBLE_SPIRAL:
 			var step = deg_to_rad(ammo.pattern_arc_angle)
 			var pair_index: int = int((index - 1) / 2)
 			var dir = 1 if index % 2 == 0 else -1
-			var angle: float = step * pair_index * dir + current_weapon.get_random_spread()
+			var angle: float = step * pair_index * dir + _get_spread() * randf_range(-PI, PI)
 			launch_vectors.append(Vector2.RIGHT.rotated(angle))
 		AmmoDetails.BulletPattern.WAVE:
 			var wave_step = TAU / max(bullet_per_shot, 1)
@@ -338,6 +364,97 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			launch_vectors.append(initial_vector.normalized())
 	return launch_vectors
 
+
+#region Special ability
+
+## Uses the current weapon's special if it has one and it's ready.[br]
+## Returns true if it was used. Called by the player on the [code]Weapon_Special[/code] action.
+func try_use_special(player_damage_multiplier: float, target_position: Vector2) -> bool:
+	var weapon: WeaponDetails = active_weapon_component.get_current_weapon()
+	if weapon == null or weapon.special == null:
+		return false
+	current_weapon = weapon
+	if get_special_cooldown_left(weapon) > 0.0 or _is_overheated():
+		return false
+	if !weapon.special.activate(self, weapon, player_damage_multiplier * _get_buff_damage_multiplier(), target_position):
+		return false
+	var cooldown: float = weapon.get_special_cooldown()
+	_special_cooldowns[weapon.get_upgrade_id()] = cooldown
+	special_used.emit(weapon, cooldown)
+	return true
+
+## Seconds left before [param weapon]'s special can be used again (0 = ready).
+func get_special_cooldown_left(weapon: WeaponDetails) -> float:
+	if weapon == null:
+		return 0.0
+	return _special_cooldowns.get(weapon.get_upgrade_id(), 0.0)
+
+## Seconds left of the boost on [param weapon], 0 if none.
+func get_special_buff_time_left(weapon: WeaponDetails) -> float:
+	return _buff_time_left if _buff != null and weapon == _buff_weapon else 0.0
+
+## Fires [param volleys] volleys of [param ammo] (a copy made by a [WeaponSpecialShot]),
+## ignoring the fire cooldown.
+func fire_special_volleys(ammo: AmmoDetails, volleys: int, interval: float, player_damage_multiplier: float, target_position: Vector2, recoil_multiplier: float) -> void:
+	var weapon: WeaponDetails = current_weapon
+	for i in volleys:
+		# The player may have switched weapons while waiting for the next volley
+		if weapon != active_weapon_component.get_current_weapon():
+			return
+		_trigger_camera_shake(recoil_multiplier)
+		_fire_ammo(ammo, player_damage_multiplier, target_position if i == 0 else _current_aim(target_position))
+		if interval > 0.0 and i < volleys - 1:
+			await get_tree().create_timer(interval, false).timeout
+			if !is_inside_tree():
+				return
+	reset_cooldown_timer()
+
+## Starts a [WeaponSpecialBuff] on [param weapon] for [param duration] seconds.
+func start_special_buff(buff: WeaponSpecialBuff, weapon: WeaponDetails, duration: float) -> void:
+	_buff = buff
+	_buff_weapon = weapon
+	_buff_time_left = duration
+
+func _process_specials(delta: float) -> void:
+	for id in _special_cooldowns.keys():
+		_special_cooldowns[id] = max(_special_cooldowns[id] - delta, 0.0)
+	if _overheat_left > 0.0:
+		_overheat_left -= delta
+	if _buff == null:
+		return
+	_buff_time_left -= delta
+	if _buff_time_left <= 0.0:
+		if _buff.overheat_time > 0.0:
+			_overheat_left = _buff.overheat_time
+			_overheat_weapon = _buff_weapon
+		_buff = null
+		_buff_weapon = null
+
+func _current_aim(fallback: Vector2) -> Vector2:
+	if !is_enemy_weapon and GameManager.get_player():
+		return GameManager.get_player().get_global_mouse_position()
+	return fallback
+
+func _buff_applies() -> bool:
+	return _buff != null and current_weapon == _buff_weapon
+
+func _is_overheated() -> bool:
+	return _overheat_left > 0.0 and current_weapon == _overheat_weapon
+
+func _get_buff_damage_multiplier() -> float:
+	return _buff.damage_multiplier if _buff_applies() else 1.0
+
+func _get_buff_fire_rate_multiplier() -> float:
+	return max(_buff.fire_rate_multiplier, 0.01) if _buff_applies() else 1.0
+
+func _get_buff_laser_width_multiplier() -> float:
+	return _buff.laser_width_multiplier if _buff_applies() else 1.0
+
+func _get_spread() -> float:
+	var weapon_spread: float = current_weapon.get_spread()
+	return weapon_spread * _buff.spread_multiplier if _buff_applies() else weapon_spread
+
+#endregion
 
 # Spawns a brief muzzle flash light effect for visual impact
 func _spawn_muzzle_flash_light() -> void:

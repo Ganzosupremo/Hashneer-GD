@@ -30,9 +30,19 @@ metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 offsets = PackedFloat32Array(0, 0.571721, 1)
 colors = PackedColorArray(0.873461, 0.115407, 0, 1, 0.921504, 0.435319, 0.188238, 1, 0.993, 0.649, 0, 0.666)
 
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("1_ou5uc")
+upgrade_type = 5
+upgrade_name = "Magnum shells"
+upgrade_description = "+10% pellet speed per level"
+upgrade_levels = 4
+upgrade_power_per_level = 0.1
+base_cost = 30000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("4_riq1q")
-available_upgrades = Array[ExtResource("1_ou5uc")]([SubResource("Resource_1c5fr"), SubResource("Resource_hgibs")])
+available_upgrades = Array[ExtResource("1_ou5uc")]([SubResource("Resource_1c5fr"), SubResource("Resource_hgibs"), SubResource("Resource_armory_0")])
 ammo_name = "Shotgun Ammo"
 max_lifetime = 1.5
 bullet_damage = 20.0

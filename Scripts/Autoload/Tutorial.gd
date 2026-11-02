@@ -10,12 +10,14 @@ const TUTORIALS: Dictionary = {
 	"mining": [
 		"Welcome to Hasheneer! Every level is a Bitcoin block waiting to be mined.",
 		"Shoot the terrain to break it. Broken quadrants drop fiat money.",
+		"Right click uses your weapon's special ability. Every weapon has its own; the weapon panel shows when it's ready again.",
 		"Somewhere in the map is the Block Core. Destroy it and pick up the Bitcoin it drops to mine the block.",
 		"Hurry! The AI miner is racing you. If its timer reaches zero it mines the block and you get nothing.",
 		"Hitting the core hurts you too, keep an eye on your health. Good luck, miner!",
 	],
 	"waves": [
 		"Waves mode: survive the enemy waves and fill the boss bar with kills.",
+		"Don't forget your weapon's special ability on right click, it recharges on its own.",
 		"Bosses may drop Bitcoin: grab it to mine the block and move on to the next one without stopping. No Bitcoin? The next boss has a better chance.",
 		"The waves never end and get harder every wave. Leave with the exit button or survive as long as you can.",
 	],

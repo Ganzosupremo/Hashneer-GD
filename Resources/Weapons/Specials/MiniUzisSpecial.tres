@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="WeaponSpecialShot" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialShot.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Lead Rain"
+description = "Sprays a ring of 24 bullets all around you."
+cooldown = 10.0
+bullet_count = 24
+override_pattern = true
+bullet_pattern = 3
