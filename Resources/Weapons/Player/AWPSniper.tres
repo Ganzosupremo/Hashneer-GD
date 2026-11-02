@@ -52,9 +52,19 @@ upgrade_power_per_level = 0.12
 base_cost = 60000.0
 cost_multiplier = 1.6
 
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("2_gtgx1")
+upgrade_type = 2
+upgrade_name = "Scope"
+upgrade_description = "-0.005 spread per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.005
+base_cost = 60000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("1_ejixv")
-available_upgrades = Array[ExtResource("2_gtgx1")]([SubResource("Resource_804t7"), SubResource("Resource_t3kxi"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power")])
+available_upgrades = Array[ExtResource("2_gtgx1")]([SubResource("Resource_804t7"), SubResource("Resource_t3kxi"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power"), SubResource("Resource_armory_0")])
 weapon_name = "Sniper"
 weapon_texture = ExtResource("4_o7c4p")
 fire_sound = ExtResource("2_pqhfw")

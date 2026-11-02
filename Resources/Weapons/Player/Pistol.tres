@@ -54,9 +54,19 @@ upgrade_power_per_level = 0.12
 base_cost = 60000.0
 cost_multiplier = 1.6
 
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("2_wgbrq")
+upgrade_type = 2
+upgrade_name = "Steady hands"
+upgrade_description = "-0.04 spread per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.04
+base_cost = 25000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("3_a8fhq")
-available_upgrades = Array[ExtResource("2_wgbrq")]([SubResource("Resource_wgbrq"), SubResource("Resource_psf4r"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power")])
+available_upgrades = Array[ExtResource("2_wgbrq")]([SubResource("Resource_wgbrq"), SubResource("Resource_psf4r"), SubResource("Resource_special_cooldown"), SubResource("Resource_special_power"), SubResource("Resource_armory_0")])
 weapon_name = "Pistol"
 weapon_texture = SubResource("AtlasTexture_soxot")
 fire_sound = ExtResource("2_psf4r")

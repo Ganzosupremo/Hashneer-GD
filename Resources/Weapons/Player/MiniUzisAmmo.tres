@@ -52,8 +52,29 @@ metadata/_custom_type_script = "uid://doc7qvahbxu0j"
 
 [sub_resource type="Gradient" id="Gradient_37v23"]
 
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("1_w7mvb")
+upgrade_type = 4
+upgrade_name = "Better rounds"
+upgrade_description = "+10% bullet damage per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 40000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Resource_armory_1"]
+script = ExtResource("1_w7mvb")
+upgrade_type = 5
+upgrade_name = "Faster rounds"
+upgrade_description = "+10% bullet speed per level"
+upgrade_levels = 4
+upgrade_power_per_level = 0.1
+base_cost = 30000.0
+cost_multiplier = 1.5
+
 [resource]
 script = ExtResource("1_np5ir")
+available_upgrades = Array[ExtResource("1_w7mvb")]([SubResource("Resource_armory_0"), SubResource("Resource_armory_1")])
 ammo_name = "Mini Uzis Ammo"
 min_lifetime = 2.0
 max_lifetime = 4.0

@@ -16,16 +16,42 @@ var _registered_items: Array[IUpgradeable] = []  # List of items that can be upg
 func _ready() -> void:
 	_register_weapons()
 
+## The player's starting weapons (the Pistol), always available even if no skill unlocked them.
+const PLAYER_DETAILS: PlayerDetails = preload("res://Resources/Player/PlayerDetails.tres")
+
 func _register_weapons() -> void:
-	# Register all weapons in the game that implement IUpgradeable
-	var unlocked_weapons: Dictionary = PlayerStatsManager.get_unlocked_weapons().duplicate()
-	for weapon in unlocked_weapons.values():
+	for weapon in get_armory_weapons():
 		register_item(weapon)
 		# Register ammo as child item with special handling
 		var ammo_details: AmmoDetails = weapon.get_ammo_details()
 		if ammo_details:
 			ammo_details.is_child = true
 			register_item(ammo_details)
+
+## Returns the weapons the player can upgrade: the starting weapons plus every unlocked one,
+## without repeats.
+func get_armory_weapons() -> Array[WeaponDetails]:
+	var weapons: Array[WeaponDetails] = []
+	var candidates: Array = [PLAYER_DETAILS.initial_weapon]
+	candidates.append_array(PLAYER_DETAILS.weapons_array)
+	var unlocked = PlayerStatsManager.get_unlocked_weapons()
+	candidates.append_array(unlocked.values() if unlocked is Dictionary else unlocked)
+	for weapon in candidates:
+		if weapon is WeaponDetails and !weapons.has(weapon):
+			weapons.append(weapon)
+	return weapons
+
+## Returns why the upgrade can't be bought right now, or an empty string if it can.
+func get_block_reason(item: IUpgradeable, upgrade_data: ArmoryUpgradeData) -> String:
+	var level: int = get_upgrade_level(item.get_upgrade_id(), upgrade_data.upgrade_type)
+	if level >= upgrade_data.upgrade_levels:
+		return "Maxed out"
+	var costs: Array[float] = calculate_upgrade_cost(upgrade_data, level)
+	if BitcoinWallet.get_fiat_balance() < costs[0]:
+		return "Not enough fiat"
+	if upgrade_data.requires_bitcoin and BitcoinWallet.get_bitcoin_balance() < costs[1]:
+		return "Not enough Bitcoin"
+	return ""
 
 ## Registers an item for upgrades in the Armory.[br]
 ## [param item]: The item implementing IUpgradeable to register.[br]
