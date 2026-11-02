@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_magnet"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_magnet"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_magnet"]
+[ext_resource type="Texture2D" uid="uid://bp7paapjimldy" path="res://Textures/Player/Abilities/Magnet.png" id="4_magnet"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/speed_1.tres" id="5_magnet"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockAbilitySkillEffect.gd" id="6_magnet"]
+[ext_resource type="PackedScene" uid="uid://bwv6468intk6r" path="res://Scenes/Player/Abilities/Magnet.tscn" id="7_magnet"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_magnet")
+skill = ExtResource("5_magnet")
+min_level = 7
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_magnet")
+ability_scene = ExtResource("7_magnet")
+ability_name = "Magnet"
+
+[resource]
+script = ExtResource("1_magnet")
+id = &"magnet"
+display_name = "Magnet"
+description = "It attracts MONEY!!!"
+icon = ExtResource("4_magnet")
+branch = "Utility"
+requirements = Array[ExtResource("2_magnet")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_magnet")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 300000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 7.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "MagnetUnlock"

@@ -1,0 +1,36 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_shield"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_shield"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_shield"]
+[ext_resource type="Texture2D" uid="uid://0l5oixv15uvc" path="res://Textures/Misc/Rombo.png" id="4_shield"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/speed_1.tres" id="5_shield"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockAbilitySkillEffect.gd" id="6_shield"]
+[ext_resource type="PackedScene" path="res://Scenes/Player/Abilities/ShieldAbility.tscn" id="7_shield"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_shield")
+skill = ExtResource("5_shield")
+min_level = 7
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_shield")
+ability_scene = ExtResource("7_shield")
+ability_name = "Shield"
+
+[resource]
+script = ExtResource("1_shield")
+id = &"shield"
+display_name = "Shield"
+description = "Unlocks a shield that protects you from damage. It comes back 15 s after it breaks."
+icon = ExtResource("4_shield")
+branch = "Defense"
+modes = 2
+requirements = Array[ExtResource("2_shield")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_shield")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 500000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 9.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "ShieldUnlock"

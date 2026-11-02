@@ -2,7 +2,7 @@ class_name TesterFeatureCatalog extends RefCounted
 ## Default features of the Feature Tester, grouped by the game mode they belong to.
 ##
 ## Enemies come from [constant WaveSpawner.ENEMY_SCENES], bosses from every level's
-## [member LevelBuilderArgs.boss_scenes], weapons and abilities from [code]PlayerStatsManager[/code].
+## [member LevelBuilderArgs.boss_scenes], weapons, abilities and skills from [SkillProgress].
 ## Adding content there is enough for it to show up here.[br]
 ## For a new kind of feature add a function like the ones below and call it from [method register_defaults].
 
@@ -10,11 +10,6 @@ const MINING: Array[StringName] = [TesterFeature.MINING]
 const WAVES: Array[StringName] = [TesterFeature.WAVES]
 const MENU: Array[StringName] = [TesterFeature.MENU]
 const ALL: Array[StringName] = []
-
-## Abilities that only work in some modes, by their key in [code]PlayerStatsManager.ability_scenes_dictionary[/code].
-const ABILITY_MODES: Dictionary = {
-	"Block Core Finder": MINING,
-}
 
 const FIAT_STEP: float = 100000.0
 const BITCOIN_STEP: float = 1.0
@@ -25,6 +20,7 @@ static func register_defaults(tester: Node) -> void:
 	_register_player(tester)
 	_register_weapons(tester)
 	_register_abilities(tester)
+	_register_skills(tester)
 	_register_currency(tester)
 	_register_mining(tester)
 	_register_enemies(tester)
@@ -53,7 +49,7 @@ static func _register_weapons(tester: Node) -> void:
 	var weapons: Array[WeaponDetails] = []
 	if GameManager.player_details and GameManager.player_details.initial_weapon:
 		weapons.append(GameManager.player_details.initial_weapon)
-	for weapon in PlayerStatsManager.weapon_details_dictionary.values():
+	for weapon in SkillProgress.get_all_weapons():
 		if weapon and not weapons.has(weapon):
 			weapons.append(weapon)
 
@@ -69,15 +65,33 @@ static func _register_weapons(tester: Node) -> void:
 			tester.report("%d weapons added, switch with the mouse wheel" % weapons.size()))
 
 static func _register_abilities(tester: Node) -> void:
-	for ability_key in PlayerStatsManager.ability_scenes_dictionary:
-		var scene: PackedScene = PlayerStatsManager.ability_scenes_dictionary[ability_key]
+	for ability in SkillProgress.get_all_abilities():
+		var scene: PackedScene = ability.scene
+		var ability_key: String = ability.name
 		if not _is_ability_scene(scene):
 			continue
-		var modes: Array = ABILITY_MODES.get(ability_key, TesterFeature.GAMEPLAY)
-		tester.add_action("Abilities", ability_key, modes, func() -> void:
+		tester.add_action("Abilities", ability_key, _tester_modes(ability.modes), func() -> void:
 			if _require_player(tester):
 				_give_ability(tester, ability_key, scene),
 			"Enables the ability for this level only")
+
+static func _register_skills(tester: Node) -> void:
+	tester.add_action("Skills (saved)", "Max All Skills", MENU, func() -> void:
+		for skill in SkillProgress.get_all_skills():
+			SkillProgress.set_level(skill.id, skill.max_level)
+		tester.report("Every skill maxed"),
+		"Sets every skill to its max level without paying")
+	tester.add_action("Skills (saved)", "+1 Level To Unlocked", MENU, func() -> void:
+		var raised: int = 0
+		for skill in SkillProgress.get_all_skills():
+			if SkillProgress.is_unlocked(skill.id) and not SkillProgress.is_maxed(skill.id):
+				SkillProgress.set_level(skill.id, SkillProgress.get_level(skill.id) + tester.get_quantity())
+				raised += 1
+		tester.report("%d skills raised" % raised),
+		"Multiplied by Quantity. Only skills whose requirements are met")
+	tester.add_action("Skills (saved)", "Reset All Skills", MENU, func() -> void:
+		SkillProgress.reset_all()
+		tester.report("Every skill back to level 0"))
 
 static func _register_currency(tester: Node) -> void:
 	tester.add_action("Currency (saved)", "+%d Fiat" % FIAT_STEP, ALL, func() -> void:
@@ -162,6 +176,15 @@ static func _register_menus(tester: Node) -> void:
 #endregion
 
 #region Helpers
+
+## Feature Tester modes for a [member SkillDefinition.modes] value.
+static func _tester_modes(skill_modes: int) -> Array:
+	var modes: Array[StringName] = []
+	if skill_modes == 0 or skill_modes & Constants.GameModeFlag.MINING:
+		modes.append(TesterFeature.MINING)
+	if skill_modes == 0 or skill_modes & Constants.GameModeFlag.WAVES:
+		modes.append(TesterFeature.WAVES)
+	return modes
 
 static func _get_tree() -> SceneTree:
 	return Engine.get_main_loop() as SceneTree

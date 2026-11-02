@@ -1,0 +1,167 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/UI/SkillTreeNode.gd" id="1_node"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mining"]
+bg_color = Color(0.86, 0.6, 0.1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_waves"]
+bg_color = Color(0.78, 0.2, 0.26, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+content_margin_left = 4.0
+content_margin_right = 4.0
+
+[node name="SkillTreeNode" type="Button"]
+custom_minimum_size = Vector2(76, 76)
+offset_right = 76.0
+offset_bottom = 76.0
+mouse_default_cursor_shape = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_node")
+
+[node name="Icon" type="TextureRect" parent="."]
+unique_name_in_owner = true
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 9.0
+offset_right = -12.0
+offset_bottom = -21.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LockLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.75, 0.75, 0.8, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 11
+text = "LOCKED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -22.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 12
+text = "0/1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelProgress" type="ProgressBar" parent="."]
+unique_name_in_owner = true
+modulate = Color(1, 0.843, 0, 1)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = -7.0
+offset_right = -10.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+max_value = 1.0
+show_percentage = false
+
+[node name="Badges" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = -8.0
+offset_right = 6.0
+offset_bottom = 8.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 2
+alignment = 2
+
+[node name="MiningBadge" type="PanelContainer" parent="Badges"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+tooltip_text = "Works in Mining"
+theme_override_styles/panel = SubResource("StyleBoxFlat_mining")
+
+[node name="Label" type="Label" parent="Badges/MiningBadge"]
+layout_mode = 2
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 10
+text = "M"
+horizontal_alignment = 1
+
+[node name="WavesBadge" type="PanelContainer" parent="Badges"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+tooltip_text = "Works in Waves"
+theme_override_styles/panel = SubResource("StyleBoxFlat_waves")
+
+[node name="Label" type="Label" parent="Badges/WavesBadge"]
+layout_mode = 2
+theme_override_constants/outline_size = 0
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 10
+text = "W"
+horizontal_alignment = 1
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -32.0
+offset_top = 80.0
+offset_right = 108.0
+offset_bottom = 112.0
+mouse_filter = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 12
+text = "Skill"
+horizontal_alignment = 1
+autowrap_mode = 3
+max_lines_visible = 2
