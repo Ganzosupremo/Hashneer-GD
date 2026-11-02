@@ -4,7 +4,7 @@ Hashneer is a Godot 4 project focused on Bitcoin themed gameplay. Players mine b
 
 ## Gameplay Overview
 - **Bitcoin mining**: The `Timechain` (`BitcoinNetwork.gd`) simulates mining blocks. Each mined block grants a Bitcoin subsidy which is sent to the player's wallet.
-- **Upgrades**: Upgrades are defined in `Scripts/SkillsTree` and can be purchased with fiat or Bitcoin. Costs scale with inflation or deflation, encouraging strategic spending.
+- **Skill tree**: Every skill is one `SkillDefinition` file in `Resources/Skills/`, bought with fiat or Bitcoin. Each skill says which modes it works in (mining, waves or both). Costs scale with inflation or deflation, encouraging strategic spending. See [docs/SKILLS.md](docs/SKILLS.md) to add skills, weapons or abilities.
 - **Halving**: Every block pays a subsidy that starts at 50 BTC and halves every 2 blocks. Bitcoin prices only drop 25% per halving, so new coins get scarcer while the coins you hold buy more.
 - **Inflation**: The `FED.gd` node inflates fiat prices on every block, 4% per block plus 2% more after each halving. Fiat drops only grow with the square root of inflation, so saving in fiat always loses value.
 - **Mining farm**: Buy CPU, GPU and ASIC miners with fiat. Their hashrate earns Bitcoin transaction fees over time, also while the game is closed (up to 8 hours), and makes the AI miner slower to find the block. Fees come from the network, so they never add to the coin supply.

@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_mini_u"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_mini_u"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_mini_u"]
+[ext_resource type="Texture2D" uid="uid://easstpdleud7" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="4_mini_u"]
+[ext_resource type="Resource" path="res://Resources/Skills/Weapons/shotgun.tres" id="5_mini_u"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="6_mini_u"]
+[ext_resource type="Resource" uid="uid://dm5wtcvtcwc3r" path="res://Resources/Weapons/Player/MiniUzis.tres" id="7_mini_u"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_mini_u")
+skill = ExtResource("5_mini_u")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_mini_u")
+weapon = ExtResource("7_mini_u")
+
+[resource]
+script = ExtResource("1_mini_u")
+id = &"mini_uzis"
+display_name = "Meet the deadliest Twins"
+description = "I gotta stop with  goofy ass names..."
+icon = ExtResource("4_mini_u")
+branch = "Weapons"
+requirements = Array[ExtResource("2_mini_u")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_mini_u")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 625000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 10.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "MiniUzisUnlock"

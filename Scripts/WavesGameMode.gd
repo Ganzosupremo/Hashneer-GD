@@ -76,6 +76,10 @@ var _bitcoin_drop_misses: int = 0
 ## Blocks mined (or moved past) in this run
 var _blocks_advanced: int = 0
 
+## Skills marked for this mode apply here, see [method SkillProgress.get_mode_for].
+func get_skill_mode() -> int:
+	return Constants.GameModeFlag.WAVES
+
 func _ready() -> void:
 	item_drops_bus.item_picked.connect(_on_item_picked)
 	item_drops_bus.item_spawned.connect(_track_loose_pickup)

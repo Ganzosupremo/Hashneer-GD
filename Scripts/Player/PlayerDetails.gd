@@ -19,25 +19,22 @@ class_name PlayerDetails extends Resource
 func _init(_speed: float = 250.0) -> void:
 	speed = _speed
 
-func add_weapon_to_array(weapon: WeaponDetails) -> void:
-	if weapons_array.has(weapon): return
-	weapons_array.append(weapon)
- 
-## Apply the stats bonuses to the player.
-## and also adds the unlocked weapons to the [param  PlayerDetails.weapons_array]
-func apply_stats() -> Dictionary:
-	_add_unlocked_weapons()
-	speed = PlayerStatsManager.get_stat_final_value("Speed")
-	damage_multiplier_percent = PlayerStatsManager.get_stat_final_value("Damage")
-	max_health = PlayerStatsManager.get_stat_final_value("Health")
-	
+## Applies the skill bonuses of [param loadout] (see [method SkillProgress.build_loadout]) to the base stats.
+## Returns the final stats and the weapons: [member weapons_array] plus the ones unlocked by skills.
+## The resource is shared by every mode, so the unlocked weapons are not added to [member weapons_array].
+func apply_stats(loadout: PlayerLoadout) -> Dictionary:
+	speed = loadout.get_stat("Speed", PlayerStatsManager.base_stats.Speed)
+	damage_multiplier_percent = loadout.get_stat("Damage", PlayerStatsManager.base_stats.Damage)
+	max_health = loadout.get_stat("Health", PlayerStatsManager.base_stats.Health)
+
+	var weapons: Array[WeaponDetails] = weapons_array.duplicate()
+	for weapon in loadout.weapons:
+		if not weapons.has(weapon):
+			weapons.append(weapon)
+
 	return {
 		"Speed": speed,
 		"Damage": damage_multiplier_percent,
 		"Health": max_health,
+		"Weapons": weapons,
 	}
-
-func _add_unlocked_weapons() -> void:
-	for weapon_id in PlayerStatsManager.get_unlocked_weapons().keys():
-		var weapon: WeaponDetails = PlayerStatsManager.get_unlocked_weapons().get(weapon_id, null)
-		add_weapon_to_array(weapon)

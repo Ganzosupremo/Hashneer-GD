@@ -18,8 +18,7 @@ func _ready() -> void:
 
 func _register_weapons() -> void:
 	# Register all weapons in the game that implement IUpgradeable
-	var unlocked_weapons: Dictionary = PlayerStatsManager.get_unlocked_weapons().duplicate()
-	for weapon in unlocked_weapons.values():
+	for weapon in PlayerStatsManager.get_unlocked_weapons():
 		register_item(weapon)
 		# Register ammo as child item with special handling
 		var ammo_details: AmmoDetails = weapon.get_ammo_details()
