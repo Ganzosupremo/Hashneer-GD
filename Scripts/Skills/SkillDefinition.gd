@@ -18,7 +18,7 @@ class_name SkillDefinition extends Resource
 @export_category("Tree")
 ## Column of the tree. A new branch only needs a new name here and in [constant SkillTreeView.BRANCH_ORDER].
 @export_enum("Defense", "Offense", "Utility", "Weapons") var branch: String = "Defense"
-## Row of the tree, -1 places it one row below its deepest requirement.
+## Order inside its branch, -1 puts it after its deepest requirement.
 @export var tier: int = -1
 
 @export_category("Game Modes")
