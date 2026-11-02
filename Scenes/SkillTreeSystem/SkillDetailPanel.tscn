@@ -1,0 +1,217 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/UI/SkillDetailPanel.gd" id="1_panel"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="3_btc"]
+[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="4_fiat"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_separator"]
+color = Color(1, 0.843, 0, 0.35)
+thickness = 2
+
+[node name="SkillDetailPanel" type="PanelContainer"]
+offset_left = 14.0
+offset_top = 235.0
+offset_right = 314.0
+offset_bottom = 300.0
+theme = ExtResource("2_theme")
+script = ExtResource("1_panel")
+bitcoin_icon = ExtResource("3_btc")
+fiat_icon = ExtResource("4_fiat")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/FilterRow"]
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 13
+text = "Show"
+
+[node name="FilterAll" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "All"
+
+[node name="FilterMining" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "Mining"
+
+[node name="FilterWaves" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+text = "Waves"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_separator")
+
+[node name="Placeholder" type="Label" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 14
+text = "Click a skill to see what it does."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Details" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Details/Header"]
+unique_name_in_owner = true
+texture_filter = 1
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Titles" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Details/Header"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="NameLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/Header/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 18
+text = "Skill name"
+autowrap_mode = 3
+
+[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/Header/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 14
+text = "Level 0/1"
+
+[node name="ModesLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/Header/Titles"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 12
+text = "Defense  ·  Mining + Waves"
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.85, 0.85, 0.88, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 13
+text = "Description"
+autowrap_mode = 3
+
+[node name="EffectsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.85, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 14
+text = "Health +91  ->  +182"
+autowrap_mode = 3
+
+[node name="RequirementsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 13
+text = "Requires ..."
+autowrap_mode = 3
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer/Details"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_separator")
+
+[node name="CostRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="CostIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/Details/CostRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 22)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CostLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/CostRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/outline_size = 4
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 0
+theme_override_font_sizes/font_size = 18
+text = "0"
+
+[node name="BuyRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BuyButton" type="Button" parent="MarginContainer/VBoxContainer/Details/BuyRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ModernMainButton"
+theme_override_font_sizes/font_size = 16
+text = "Buy"
+
+[node name="BuyMaxButton" type="Button" parent="MarginContainer/VBoxContainer/Details/BuyRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_default_cursor_shape = 2
+theme_type_variation = &"ModernMainButton"
+theme_override_font_sizes/font_size = 16
+text = "Buy Max"

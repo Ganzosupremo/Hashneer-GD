@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_sniper"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_sniper"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_sniper"]
+[ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="4_sniper"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/damage_2.tres" id="5_sniper"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="6_sniper"]
+[ext_resource type="Resource" uid="uid://uns2b1g6hisu" path="res://Resources/Weapons/Player/AWPSniper.tres" id="7_sniper"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_sniper")
+skill = ExtResource("5_sniper")
+min_level = 10
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_sniper")
+weapon = ExtResource("7_sniper")
+
+[resource]
+script = ExtResource("1_sniper")
+id = &"sniper"
+display_name = "Sniper rifle is here"
+description = "Unlocks the powerful sniper rifle.
+Can pierce through objects"
+icon = ExtResource("4_sniper")
+branch = "Weapons"
+requirements = Array[ExtResource("2_sniper")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_sniper")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 1250000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 30.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "AWPSniperUnlock"

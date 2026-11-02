@@ -7,7 +7,6 @@ extends Node2D
 ## Used to easily modify/upgrade the values needed for the player like speed, health, etc.
 @export var player_details: PlayerDetails
 @export_category("Main Event Buses")
-@export var main_progress_event_bus: PlayerProgressEventBus
 @export var main_event_bus: MainEventBus
 
 @export_category("Levels")

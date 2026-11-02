@@ -3,51 +3,24 @@
 [ext_resource type="Script" uid="uid://btxnhfo74054e" path="res://Scripts/SkillsTree/SkillTree.gd" id="1_6oa8x"]
 [ext_resource type="AudioStream" uid="uid://b2ia750xiv8cj" path="res://Audio/Music/Sonata No. 11 III .mp3" id="2_madtc"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_r00sj"]
-[ext_resource type="PackedScene" uid="uid://dekniu7v110w4" path="res://Scenes/SkillTreeSystem/SkillNode.tscn" id="2_riue2"]
 [ext_resource type="Script" uid="uid://so4m0io4gjtt" path="res://Scripts/Resources/MusicDetails.gd" id="3_0xv7s"]
 [ext_resource type="PackedScene" uid="uid://brtsijxypeeo5" path="res://Scenes/UI/LevelSelectorNew.tscn" id="3_23vid"]
 [ext_resource type="AudioStream" uid="uid://bl2mie652q6h" path="res://Audio/Music/Cello Suite 1 in G - Prelude.mp3" id="3_r00sj"]
 [ext_resource type="AudioStream" uid="uid://cpa0t8fmwgsr5" path="res://Audio/Music/Préludes, Opus 28.mp3" id="4_g7g25"]
-[ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_wkdkc"]
 [ext_resource type="Script" uid="uid://l3j7jfe1glvs" path="res://Scripts/SkillsTree/SkillTreeCamera.gd" id="5_duwky"]
 [ext_resource type="AudioStream" uid="uid://cr6bfprtr6640" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="5_r00sj"]
-[ext_resource type="Resource" uid="uid://3lpfb6tkf1so" path="res://Resources/Upgrades/Stats/PlayerHealthUpgradeFiat1.tres" id="6_26cjf"]
-[ext_resource type="Resource" uid="uid://vynimae5q6bh" path="res://Resources/Upgrades/Stats/PlayerSpeedUpgradeFiat1.tres" id="6_aog38"]
-[ext_resource type="Resource" uid="uid://cd4d7vwiv68a7" path="res://Resources/Upgrades/Stats/PlayerDamageUpgradeFiat1.tres" id="7_4c22w"]
-[ext_resource type="Texture2D" uid="uid://gamxr680nvpj" path="res://Textures/WeaponSystem/Weapons/AWP Sniper.png" id="7_076p6"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
-[ext_resource type="Resource" uid="uid://cv5phm62w12fs" path="res://Resources/Upgrades/Stats/PlayerHealthUpgradeBitcoin1.tres" id="8_yacem"]
 [ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="9_hobie"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="10_oevro"]
-[ext_resource type="Resource" uid="uid://1kqapcb8f2vj" path="res://Resources/Upgrades/Stats/PlayerDamageUpgrade.tres" id="11_6em56"]
-[ext_resource type="Resource" uid="uid://c6lryfoxdvlix" path="res://Resources/Upgrades/Weapons/SniperUnlock.tres" id="13_a2onp"]
-[ext_resource type="Resource" uid="uid://db5qwlvsonwhq" path="res://Resources/Upgrades/MainPlayerProgressEventBus.tres" id="15_hsn28"]
-[ext_resource type="Texture2D" uid="uid://cibtqx5hs7a0c" path="res://Textures/Player/Abilities/RegenHealthOverTime.png" id="19_pm0d4"]
-[ext_resource type="Resource" uid="uid://bk3blai1anpdr" path="res://Resources/Upgrades/Weapons/ShotgunUnlock.tres" id="20_cet81"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="21_custom"]
-[ext_resource type="Texture2D" uid="uid://0l5oixv15uvc" path="res://Textures/Misc/Rombo.png" id="21_r00sj"]
-[ext_resource type="Texture2D" uid="uid://bp7paapjimldy" path="res://Textures/Player/Abilities/Magnet.png" id="22_5t31m"]
-[ext_resource type="Resource" uid="uid://cvagqjdlwwcu4" path="res://Resources/Upgrades/Abilities/Shield.tres" id="22_g7g25"]
-[ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="22_jhrlo"]
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
-[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="23_gapw6"]
-[ext_resource type="Resource" uid="uid://bidjra86l58ip" path="res://Resources/Upgrades/Weapons/AK47Unlock.tres" id="23_lm8ko"]
-[ext_resource type="Resource" uid="uid://bjrfc5yj77v5q" path="res://Resources/Upgrades/Abilities/Magnet.tres" id="24_r00sj"]
-[ext_resource type="Texture2D" uid="uid://qrr8lwryvg3u" path="res://Textures/Skill Tree/SkillNodeIcons.png" id="28_2l470"]
-[ext_resource type="Resource" uid="uid://cbwgvq0rara7k" path="res://Resources/Upgrades/Abilities/BlockCoreFinder.tres" id="29_5uag3"]
-[ext_resource type="Texture2D" uid="uid://easstpdleud7" path="res://Textures/WeaponSystem/Weapons/MiniUzis.png" id="33_14fyc"]
-[ext_resource type="Resource" uid="uid://dgre5rwbotifk" path="res://Resources/Upgrades/Abilities/SlowGenOverTime.tres" id="33_oevro"]
-[ext_resource type="Resource" uid="uid://dmhj12bd5owxg" path="res://Resources/Upgrades/Weapons/MiniUzisUnlock.tres" id="35_k7n60"]
 [ext_resource type="Script" uid="uid://kw1klri7wheu" path="res://Scripts/BitcoinNetwork/EconomicEventExample.gd" id="41_g7g25"]
-[ext_resource type="Resource" uid="uid://cs4pl5k0jrurv" path="res://Resources/Upgrades/Weapons/LightningGunUnlock.tres" id="50_lightning"]
-[ext_resource type="Resource" uid="uid://b5bo3n2rurb0x" path="res://Resources/Upgrades/Weapons/HalvingRocketUnlock.tres" id="51_rocket"]
-[ext_resource type="Resource" uid="uid://dm31sl4d7urfd" path="res://Resources/Upgrades/Weapons/AsicMinigunUnlock.tres" id="52_minigun"]
-[ext_resource type="Texture2D" uid="uid://nl3r1u3tru2l" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="53_lightning_tex"]
-[ext_resource type="Texture2D" uid="uid://cy3q5wkverxur" path="res://Textures/WeaponSystem/Weapons/HalvingRocket.png" id="54_rocket_tex"]
-[ext_resource type="Texture2D" uid="uid://bniqy544xhvmn" path="res://Textures/WeaponSystem/Weapons/AsicMinigun.png" id="55_minigun_tex"]
 [ext_resource type="PackedScene" uid="uid://bl0l4bqvn5hgr" path="res://Scenes/UI/MiningFarmUI.tscn" id="56_farm_ui"]
 [ext_resource type="PackedScene" uid="uid://wp6p7rv0v6i0" path="res://Scenes/UI/StatsScreenUI.tscn" id="57_stats_ui"]
+[ext_resource type="Script" path="res://Scripts/Skills/UI/SkillTreeView.gd" id="60_tree_view"]
+[ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillTreeNode.tscn" id="61_tree_node"]
+[ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillDetailPanel.tscn" id="62_detail_panel"]
 
 [sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_xfqgc"]
 shuffle = true
@@ -82,62 +55,6 @@ shader_parameter/contrast = 2.0
 shader_parameter/spin_amount = 0.36
 shader_parameter/pixel_filter = 700.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_egfro"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_r00sj"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gfhby"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(164, 8, 24, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xfqgc"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(132, 8, 24, 16)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_cbc7e"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(96, 0, 33, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_6ck1a"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(67, 2, 27, 27)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0kd05"]
-atlas = ExtResource("23_gapw6")
-region = Rect2(0, 0, 32, 17)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_8vthq"]
-atlas = ExtResource("23_gapw6")
-region = Rect2(0, 0, 32, 17)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vvd2m"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(99, 2, 27, 27)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_g7g25"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(67, 2, 27, 27)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_xcwr7"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_oc2wu"]
-atlas = ExtResource("4_wkdkc")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mq3cn"]
-atlas = ExtResource("28_2l470")
-region = Rect2(2, 2, 12, 12)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_rutge"]
-atlas = ExtResource("28_2l470")
-region = Rect2(2, 2, 12, 12)
-
 [node name="SkillTree" type="Control" unique_id=1026256818 groups=["SkillsTree"]]
 process_mode = 1
 layout_mode = 3
@@ -157,7 +74,7 @@ environment = SubResource("Environment_kv8h2")
 light_mask = 64
 visibility_layer = 64
 position = Vector2(580, 327)
-zoom = Vector2(0.8, 0.8)
+zoom = Vector2(0.7, 0.7)
 limit_left = -100000
 limit_top = -100000
 limit_right = 100000
@@ -236,6 +153,9 @@ offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
+[node name="SkillDetailPanel" parent="FrontLayer" instance=ExtResource("62_detail_panel")]
+unique_name_in_owner = true
+
 [node name="MiningFarmUI" parent="FrontLayer" unique_id=601998099 instance=ExtResource("56_farm_ui")]
 
 [node name="StatsScreenUI" parent="FrontLayer" unique_id=977071533 instance=ExtResource("57_stats_ui")]
@@ -258,350 +178,17 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="UpgradesHolder" type="Control" parent="SkillTreeContainer" unique_id=1084117011]
+[node name="SkillTreeView" type="Control" parent="SkillTreeContainer"]
 unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-metadata/_edit_lock_ = true
-
-[node name="HealthUpgradeI" parent="SkillTreeContainer/UpgradesHolder" unique_id=1840338733 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
 layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -662.0
-offset_top = 1010.0
-offset_right = -332.0
-offset_bottom = 1340.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-expand_icon = false
-progress_event_bus = ExtResource("15_hsn28")
-is_unlocked = true
-next_tier_nodes = [NodePath("../SpeedUpgradeI"), NodePath("../DamageUpgradeI"), NodePath("../HealthUpgradeII")]
-icon_on_maxed_out = SubResource("AtlasTexture_egfro")
-skill_icon = SubResource("AtlasTexture_r00sj")
-skillnode_data = ExtResource("6_26cjf")
-save_name = "PlayerHealthUpgradeFiatT1"
-
-[node name="SpeedUpgradeI" parent="SkillTreeContainer/UpgradesHolder" unique_id=1421592972 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 24.0
-offset_top = 522.0
-offset_right = 354.0
-offset_bottom = 852.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../ShotgunUnlock"), NodePath("../MagnetAbility"), NodePath("../ShieldUnlock")]
-icon_on_maxed_out = SubResource("AtlasTexture_gfhby")
-skill_icon = SubResource("AtlasTexture_xfqgc")
-skillnode_data = ExtResource("6_aog38")
-save_name = "PlayerSpeedUpgradeFiatT1"
-
-[node name="ShieldUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=1029643821 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 33.0
-offset_top = -124.0
-offset_right = 363.0
-offset_bottom = 206.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../ShotgunUnlock")]
-icon_on_maxed_out = ExtResource("21_r00sj")
-skill_icon = ExtResource("21_r00sj")
-skillnode_data = ExtResource("22_g7g25")
-save_name = "ShieldUnlock"
-
-[node name="ShotgunUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=703873822 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 580.0
-offset_top = 265.0
-offset_right = 910.0
-offset_bottom = 595.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../MiniUzisUnlock"), NodePath("../RegenHealthOverTime")]
-icon_on_maxed_out = ExtResource("22_jhrlo")
-skill_icon = ExtResource("22_jhrlo")
-skillnode_data = ExtResource("20_cet81")
-save_name = "ShotgunUnlock"
-
-[node name="MagnetAbility" parent="SkillTreeContainer/UpgradesHolder" unique_id=1924442074 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 584.0
-offset_top = 892.0
-offset_right = 914.0
-offset_bottom = 1222.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../RegenHealthOverTime")]
-icon_on_maxed_out = ExtResource("22_5t31m")
-skill_icon = ExtResource("22_5t31m")
-skillnode_data = ExtResource("24_r00sj")
-save_name = "MagnetUnlock"
-
-[node name="DamageUpgradeII" parent="SkillTreeContainer/UpgradesHolder" unique_id=1568645754 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 571.0
-offset_top = 1595.0
-offset_right = 901.0
-offset_bottom = 1925.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../SniperUnlock"), NodePath("../AK47Unlock")]
-icon_on_maxed_out = SubResource("AtlasTexture_cbc7e")
-skill_icon = SubResource("AtlasTexture_6ck1a")
-skillnode_data = ExtResource("11_6em56")
-save_name = "PlayerDamageUpgradeBitcoinT2"
-
-[node name="SniperUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=892418749 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1090.0
-offset_top = 1693.0
-offset_right = 1420.0
-offset_bottom = 2023.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../HalvingRocketUnlock")]
-icon_on_maxed_out = ExtResource("7_076p6")
-skill_icon = ExtResource("7_076p6")
-skillnode_data = ExtResource("13_a2onp")
-save_name = "AWPSniperUnlock"
-
-[node name="AK47Unlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=2034672811 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1097.0
-offset_top = 1182.0
-offset_right = 1427.0
-offset_bottom = 1512.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
-icon_on_maxed_out = SubResource("AtlasTexture_0kd05")
-skill_icon = SubResource("AtlasTexture_8vthq")
-skillnode_data = ExtResource("23_lm8ko")
-save_name = "AK47Unlock"
-
-[node name="DamageUpgradeI" parent="SkillTreeContainer/UpgradesHolder" unique_id=1548799013 instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 24.0
-offset_top = 1030.0
-offset_right = 354.0
-offset_bottom = 1360.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-expand_icon = false
-progress_event_bus = ExtResource("15_hsn28")
-icon_on_maxed_out = SubResource("AtlasTexture_vvd2m")
-skill_icon = SubResource("AtlasTexture_g7g25")
-skillnode_data = ExtResource("7_4c22w")
-save_name = "PlayerDamageUpgradeFiatT1"
-
-[node name="HealthUpgradeII" parent="SkillTreeContainer/UpgradesHolder" unique_id=1879452922 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 0.0
-offset_top = 1585.0
-offset_right = 330.0
-offset_bottom = 1915.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../DamageUpgradeII")]
-icon_on_maxed_out = SubResource("AtlasTexture_xcwr7")
-skill_icon = SubResource("AtlasTexture_oc2wu")
-skillnode_data = ExtResource("8_yacem")
-save_name = "PlayerHealthUpgradeBitcoinT2"
-
-[node name="RegenHealthOverTime" parent="SkillTreeContainer/UpgradesHolder" unique_id=1395722520 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1115.0
-offset_top = 672.0
-offset_right = 1445.0
-offset_bottom = 1002.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../BlockCoreFinderUnlock")]
-icon_on_maxed_out = ExtResource("19_pm0d4")
-skill_icon = ExtResource("19_pm0d4")
-skillnode_data = ExtResource("33_oevro")
-save_name = "RegenHealthOverTimeUnlock"
-
-[node name="MiniUzisUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=49833511 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1115.0
-offset_top = 190.0
-offset_right = 1445.0
-offset_bottom = 520.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../LightningGunUnlock")]
-icon_on_maxed_out = ExtResource("33_14fyc")
-skill_icon = ExtResource("33_14fyc")
-skillnode_data = ExtResource("35_k7n60")
-save_name = "MiniUzisUnlock"
-
-[node name="BlockCoreFinderUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=1540959470 node_paths=PackedStringArray("next_tier_nodes") instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1773.0
-offset_top = 920.0
-offset_right = 2103.0
-offset_bottom = 1250.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-next_tier_nodes = [NodePath("../AsicMinigunUnlock")]
-icon_on_maxed_out = SubResource("AtlasTexture_mq3cn")
-skill_icon = SubResource("AtlasTexture_rutge")
-skillnode_data = ExtResource("29_5uag3")
-save_name = "BlockCoreFinderUnlock"
-
-[node name="LightningGunUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=630042171 instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1773.0
-offset_top = 190.0
-offset_right = 2103.0
-offset_bottom = 520.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-icon_on_maxed_out = ExtResource("53_lightning_tex")
-skill_icon = ExtResource("53_lightning_tex")
-skillnode_data = ExtResource("50_lightning")
-save_name = "LightningGunUnlock"
-
-[node name="HalvingRocketUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=1393171319 instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 1773.0
-offset_top = 1693.0
-offset_right = 2103.0
-offset_bottom = 2023.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-icon_on_maxed_out = ExtResource("54_rocket_tex")
-skill_icon = ExtResource("54_rocket_tex")
-skillnode_data = ExtResource("51_rocket")
-save_name = "HalvingRocketUnlock"
-
-[node name="AsicMinigunUnlock" parent="SkillTreeContainer/UpgradesHolder" unique_id=1447802117 instance=ExtResource("2_riue2")]
-layout_mode = 0
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 2430.0
-offset_top = 920.0
-offset_right = 2760.0
-offset_bottom = 1250.0
-grow_horizontal = 1
-grow_vertical = 1
-mouse_default_cursor_shape = 2
-progress_event_bus = ExtResource("15_hsn28")
-icon_on_maxed_out = ExtResource("55_minigun_tex")
-skill_icon = ExtResource("55_minigun_tex")
-skillnode_data = ExtResource("52_minigun")
-save_name = "AsicMinigunUnlock"
+offset_left = 229.0
+offset_top = -7.0
+offset_right = 1159.0
+offset_bottom = 893.0
+mouse_filter = 2
+theme = ExtResource("7_c7c56")
+script = ExtResource("60_tree_view")
+node_scene = ExtResource("61_tree_node")
 
 [node name="EconomicEventTester" type="Node2D" parent="." unique_id=865283114]
 script = ExtResource("41_g7g25")
@@ -610,3 +197,6 @@ script = ExtResource("41_g7g25")
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StatsButton" to="FrontLayer/StatsScreenUI" method="open"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="new_epoch_requested" from="FrontLayer/MiningFarmUI" to="." method="start_new_epoch"]
+
+[connection signal="skill_selected" from="SkillTreeContainer/SkillTreeView" to="FrontLayer/SkillDetailPanel" method="show_skill"]
+[connection signal="mode_filter_changed" from="FrontLayer/SkillDetailPanel" to="SkillTreeContainer/SkillTreeView" method="set_mode_filter"]

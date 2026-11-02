@@ -1,19 +1,27 @@
-[gd_scene load_steps=7 format=3 uid="uid://c1dadqf0kdojp"]
+[gd_scene format=3 uid="uid://c1dadqf0kdojp"]
 
 [ext_resource type="PackedScene" uid="uid://d1ck5inf3bdcq" path="res://Scenes/Enemies/PlainEnemy.tscn" id="1_base"]
 [ext_resource type="Script" uid="uid://csqevbqgbbo7c" path="res://Scripts/Enemies/TankEnemy.gd" id="2_script"]
 [ext_resource type="PackedScene" uid="uid://dwdagjqqbaxkd" path="res://Scenes/Components/ShieldComponent.tscn" id="3_shield"]
-[ext_resource type="Texture2D" uid="uid://774dd4m2hj67" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
-[ext_resource type="Texture2D" uid="uid://bfa66a08ajs0u" path="res://Textures/Enemies/Bricks Normal.png" id="5_norm"]
+[ext_resource type="Texture2D" uid="uid://dbldilvm2ld03" path="res://Textures/Enemies/Bricks .png" id="4_tex"]
+[ext_resource type="Texture2D" uid="uid://doioemavatgvn" path="res://Textures/Enemies/Bricks Normal.png" id="5_norm"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_tank"]
 diffuse_texture = ExtResource("4_tex")
 normal_texture = ExtResource("5_norm")
 texture_repeat = 2
 
-[node name="TankEnemy" node_paths=PackedStringArray("shield") instance=ExtResource("1_base")]
+[node name="TankEnemy" unique_id=1609965061 node_paths=PackedStringArray("shield") instance=ExtResource("1_base")]
 script = ExtResource("2_script")
 armor_reduction = 0.5
+stomp_interval_range = Vector2(4, 6)
+stomp_windup_time = 0.9
+stomp_radius = 170.0
+stomp_damage_range = Vector2(12, 20)
+stomp_slow_multiplier = 0.5
+stomp_slow_time = 1.2
+stomp_trigger_distance = 230.0
+stomp_color = Color(1, 0.75, 0.3, 0.35)
 color_default = Color(0.6, 0.6, 0.6, 1)
 knockback_resistance_base = 2.0
 shield = NodePath("ShieldComponent")
@@ -37,9 +45,9 @@ advanced_regeneration = false
 has_shield = true
 shield = NodePath("../ShieldComponent")
 
-[node name="ShieldComponent" parent="." index="1" instance=ExtResource("3_shield")]
+[node name="ShieldComponent" parent="." index="1" unique_id=1280748840 instance=ExtResource("3_shield")]
 collision_layer = 32
-collision_mask = 1104
+collision_mask = 3289
 shield_min_area_percent = 0.3
 
 [node name="Polygon2D" parent="Shape3D" index="0"]

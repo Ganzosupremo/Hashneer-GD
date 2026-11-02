@@ -1,0 +1,41 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_regen_"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_regen_"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_regen_"]
+[ext_resource type="Texture2D" uid="uid://cibtqx5hs7a0c" path="res://Textures/Player/Abilities/RegenHealthOverTime.png" id="4_regen_"]
+[ext_resource type="Resource" path="res://Resources/Skills/Weapons/shotgun.tres" id="5_regen_"]
+[ext_resource type="Resource" path="res://Resources/Skills/Abilities/magnet.tres" id="6_regen_"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockAbilitySkillEffect.gd" id="7_regen_"]
+[ext_resource type="PackedScene" uid="uid://cblr1jidfo5cn" path="res://Scenes/Player/Abilities/RegenHealthOverTime.tscn" id="8_regen_"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_regen_")
+skill = ExtResource("5_regen_")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_req2"]
+script = ExtResource("2_regen_")
+skill = ExtResource("6_regen_")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("7_regen_")
+ability_scene = ExtResource("8_regen_")
+ability_name = "Slow Gen"
+
+[resource]
+script = ExtResource("1_regen_")
+id = &"regen_health"
+display_name = "Slow Gen"
+description = "Regenerates 50 HP every 5 seconds."
+icon = ExtResource("4_regen_")
+branch = "Defense"
+requirements = Array[ExtResource("2_regen_")]([SubResource("Resource_req1"), SubResource("Resource_req2")])
+effects = Array[ExtResource("3_regen_")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 650000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 10.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "RegenHealthOverTimeUnlock"

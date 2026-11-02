@@ -5,22 +5,13 @@ class_name SkillTreeManager extends Control
 
 @onready var _level_selector_new: LevelSelectorMenu = %LevelSelectorNew
 
-var _skill_nodes: Array = []
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_READY:
 		PersistenceDataManager.load_game()
 		EconomicEventsManager.pick_random_event()
 
 func _ready() -> void:
-	_skill_nodes.append_array(_get_skill_nodes())
 	AudioManager.change_music_clip(music_details)
-	
-	var id: int = 0
-	for node in _skill_nodes:
-		node.pressed.connect(Callable(node, "_on_skill_pressed"))
-		node.set_node_identifier(id)
-		id += 1
 
 	Tutorial.show_once.call_deferred("skill_tree")
 	DebugLogger.info("SkillTreeManager initialized.")
@@ -34,13 +25,7 @@ func start_new_epoch() -> void:
 	EconomicEventsManager.force_expire_event()
 	var points: int = MiningFarm.start_new_epoch()
 
-	for node in _skill_nodes:
-		var key: String = node.save_name if !node.save_name.is_empty() else node.skillnode_data.upgrade_name
-		SaveSystem.delete(key)
-		node.skillnode_data.upgrade_level = 0
-		# Keep the scene switch from saving the old node state back, nodes reload with their defaults
-		node.remove_from_group("PersistentNodes")
-
+	SkillProgress.reset_all()
 	BitcoinNetwork.reset_for_new_epoch()
 	BitcoinWallet.reset_for_new_epoch()
 	FED.reset_for_new_epoch()
@@ -50,21 +35,6 @@ func start_new_epoch() -> void:
 	PersistenceDataManager.save_game(true)
 	NotificationManager.show_notification("Epoch %d begins! +%d HODL points" % [MiningFarm.epoch, points], 4.0)
 	SceneManager.switch_scene_with_enum(SceneManager.MainScenes.SKILL_TREE)
-
-# func _on_random_economic_event_picked(economic_event: EconomicEvent) -> void:
-# 	for node in _skill_nodes:
-# 		node.apply_random_economic_event(economic_event)
-
-# func _on_random_economic_event_expired(_economic_event: EconomicEvent) -> void:
-# 	for node in _skill_nodes:
-# 		node.revert_economic_event_effects()
-
-func _get_skill_nodes() -> Array:
-	var nodes: Array = []
-	for child in %UpgradesHolder.get_children():
-		if child is SkillNode:
-			nodes.append(child)
-	return nodes
 
 func _on_start_game_pressed() -> void:
 	PersistenceDataManager.save_game(true)

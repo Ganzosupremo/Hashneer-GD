@@ -135,6 +135,15 @@ enum CurrencyType {
 		BOTH,
 }
 
+## Game modes as bit flags, a [SkillDefinition] lists the modes it works in with them.
+## 0 means every mode, see [method SkillDefinition.applies_in].
+## For a new mode add a flag here, to the [code]@export_flags[/code] of [member SkillDefinition.modes]
+## and a [code]get_skill_mode()[/code] function to the root script of the mode scene.
+enum GameModeFlag {
+		MINING = 1,
+		WAVES = 2,
+}
+
 enum ArmoryUpgradeType {
 	WEAPON_FIRE_RATE,
 	WEAPON_DAMAGE_MULTIPLIER,

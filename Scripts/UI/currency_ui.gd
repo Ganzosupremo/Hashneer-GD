@@ -24,6 +24,8 @@ func _ready() -> void:
 	FED.inflation_applied.connect(_on_inflation_applied)
 	_buy_button.tooltip_text = "Spend %d%% of your fiat on Bitcoin (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
 	_sell_button.tooltip_text = "Sell %d%% of your Bitcoin for fiat (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
+	# The currency picked is saved by SkillProgress, keep the toggle in sync with it
+	use_btc_button.set_pressed_no_signal(SkillProgress.current_currency == Constants.CurrencyType.BITCOIN)
 	_set_textes()
 
 func _exit_tree() -> void:

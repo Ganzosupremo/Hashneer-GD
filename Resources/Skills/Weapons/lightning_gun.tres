@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_lightn"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_lightn"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_lightn"]
+[ext_resource type="Texture2D" uid="uid://nl3r1u3tru2l" path="res://Textures/WeaponSystem/Weapons/LightningGun.png" id="4_lightn"]
+[ext_resource type="Resource" path="res://Resources/Skills/Weapons/mini_uzis.tres" id="5_lightn"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="6_lightn"]
+[ext_resource type="Resource" uid="uid://civ5efpaf6n0" path="res://Resources/Weapons/Player/LightningGun.tres" id="7_lightn"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_lightn")
+skill = ExtResource("5_lightn")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_lightn")
+weapon = ExtResource("7_lightn")
+
+[resource]
+script = ExtResource("1_lightn")
+id = &"lightning_gun"
+display_name = "Open a Lightning channel"
+description = "Unlocks the Lightning Gun.
+A continuous beam, hold to fire."
+icon = ExtResource("4_lightn")
+branch = "Weapons"
+requirements = Array[ExtResource("2_lightn")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_lightn")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 2000000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 40.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "LightningGunUnlock"

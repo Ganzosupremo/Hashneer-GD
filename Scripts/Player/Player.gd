@@ -84,16 +84,17 @@ func _physics_process(delta) -> void:
 
 func set_player() -> void:
 	if !player_details: return
-	
-	_unlock_saved_abilities()
-	speed = player_details.speed
-	player_damage_multiplier_percent = player_details.damage_multiplier_percent
-	_health.set_max_health(player_details.max_health)
-	
-	_apply_stats()
+
+	# Skills only count in the modes they are made for, see SkillDefinition.modes
+	var loadout: PlayerLoadout = SkillProgress.build_loadout(SkillProgress.get_mode_for(self))
+	_unlock_saved_abilities(loadout)
+	var stats: Dictionary = player_details.apply_stats(loadout)
+	speed = stats.Speed
+	player_damage_multiplier_percent = stats.Damage
+	_health.set_max_health(stats.Health)
 
 	initial_weapon = player_details.initial_weapon
-	weapons_array = player_details.weapons_array.duplicate(true)
+	weapons_array = stats.Weapons.duplicate()
 	dead_sound_effect = player_details.dead_sound_effect
 	move_sound_effect = player_details.move_sound_effect
 	hit_sound_effect = player_details.hit_sound_effect
@@ -164,15 +165,11 @@ func apply_hitstop(duration: float = 0.08, time_scale: float = 0.15) -> void:
 
 #endregion
 
-func _unlock_saved_abilities() -> void:
-	for ability_label in PlayerStatsManager.get_unlocked_abilities().keys():
-		var ability_scene: PackedScene = PlayerStatsManager.get_unlocked_abilities().get(ability_label, null)
-		if ability_scene == null:
-			DebugLogger.error("Ability with label '%s' not found in unlocked abilities." % ability_label)
-			continue
+func _unlock_saved_abilities(loadout: PlayerLoadout) -> void:
+	for ability_scene in loadout.abilities:
 		var node: Node = ability_scene.instantiate()
 		if not node is BaseAbility:
-			DebugLogger.error("Ability '%s' scene (%s) is not a BaseAbility, skipping it." % [ability_label, ability_scene.resource_path])
+			DebugLogger.error("Ability scene %s is not a BaseAbility, skipping it." % ability_scene.resource_path)
 			node.free()
 			continue
 		var ability: BaseAbility = node
@@ -180,13 +177,6 @@ func _unlock_saved_abilities() -> void:
 		abilities.append(ability)
 		ability.enable()
 
-func _apply_stats() -> void:
-	var stats: Dictionary = player_details.apply_stats()
-	
-	speed = stats.Speed
-	player_damage_multiplier_percent = stats.Damage
-	_health.set_max_health(stats.Health)
-	
 #region Input
 
 func move(delta: float) -> void:

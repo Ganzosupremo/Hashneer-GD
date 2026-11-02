@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_health"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_health"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_health"]
+[ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_health"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/health_1.tres" id="5_health"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/StatSkillEffect.gd" id="6_health"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("4_health")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("4_health")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_health")
+skill = ExtResource("5_health")
+min_level = 13
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_health")
+stat = "Health"
+value_per_level = 1000.0
+value_multiplier = 1.0
+
+[resource]
+script = ExtResource("1_health")
+id = &"health_2"
+display_name = "A Piece of Heart"
+description = "Increase Max Health by 1000 HP"
+icon = SubResource("AtlasTexture_1")
+icon_maxed = SubResource("AtlasTexture_2")
+branch = "Defense"
+requirements = Array[ExtResource("2_health")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_health")]([SubResource("Resource_effect1")])
+max_level = 12
+cost_fiat_base = 14000.0
+cost_fiat_multiplier = 1.2
+cost_btc_base = 1.0
+cost_btc_multiplier = 1.1
+legacy_save_key = "PlayerHealthUpgradeBitcoinT2"
