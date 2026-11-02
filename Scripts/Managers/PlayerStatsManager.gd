@@ -65,6 +65,8 @@ func _apply_armory_levels_to(item: IUpgradeable) -> void:
 func reset_for_new_epoch() -> void:
 	armory_levels.clear()
 	_apply_armory_levels()
+	# The loadout refills itself with whatever gets unlocked again
+	Equipment.reset()
 
 func save_data() -> void:
 	SaveSystem.set_var(SAVE_NAME, {

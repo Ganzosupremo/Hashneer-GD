@@ -73,3 +73,14 @@ theme_override_font_sizes/font_size = 18
 text = "RIGHT CLICK: SPECIAL"
 horizontal_alignment = 1
 autowrap_mode = 3
+
+[node name="ActiveLabel" type="Label" parent="WeaponContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+theme = ExtResource("1_ek5it")
+theme_type_variation = &"TooltipLabel"
+theme_override_font_sizes/font_size = 18
+text = "Q: ACTIVE"
+horizontal_alignment = 1
+autowrap_mode = 3

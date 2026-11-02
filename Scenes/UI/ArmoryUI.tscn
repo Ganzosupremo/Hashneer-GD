@@ -4,6 +4,7 @@
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_tapuc"]
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
 [ext_resource type="Script" uid="uid://ctjeq4gdevwd2" path="res://Scripts/Managers/ArmoryManager.gd" id="8_y8qb1"]
+[ext_resource type="Script" path="res://Scripts/UI/LoadoutPanel.gd" id="9_loadout"]
 
 [node name="ArmoryUI" type="Control"]
 layout_mode = 3
@@ -46,49 +47,55 @@ size_flags_vertical = 3
 theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
-[node name="Columns" type="HBoxContainer" parent="VBoxContainer/Body"]
+[node name="Tabs" type="TabContainer" parent="VBoxContainer/Body"]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+
+[node name="Upgrades" type="HBoxContainer" parent="VBoxContainer/Body/Tabs"]
+metadata/_tab_index = 0
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="LeftBar" type="VBoxContainer" parent="VBoxContainer/Body/Columns"]
+[node name="LeftBar" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
 custom_minimum_size = Vector2(230, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="WeaponsTitle" type="Label" parent="VBoxContainer/Body/Columns/LeftBar"]
+[node name="WeaponsTitle" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 20
 text = "Weapons"
 horizontal_alignment = 1
 
-[node name="ListPanel" type="PanelContainer" parent="VBoxContainer/Body/Columns/LeftBar"]
+[node name="ListPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"LevelSelectorBackground"
 
-[node name="IUpgradeableList" type="ItemList" parent="VBoxContainer/Body/Columns/LeftBar/ListPanel"]
+[node name="IUpgradeableList" type="ItemList" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/ListPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 allow_search = false
 fixed_icon_size = Vector2i(48, 28)
 
-[node name="WalletPanel" type="PanelContainer" parent="VBoxContainer/Body/Columns/LeftBar"]
+[node name="WalletPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar"]
 layout_mode = 2
 theme_type_variation = &"ArmoryPricePanel"
 
-[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Columns/LeftBar/WalletPanel"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/WalletPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 6
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 6
 
-[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Columns/LeftBar/WalletPanel/Margin"]
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/WalletPanel/Margin"]
 layout_mode = 2
 
-[node name="FiatBalanceLabel" type="Label" parent="VBoxContainer/Body/Columns/LeftBar/WalletPanel/Margin/VBox"]
+[node name="FiatBalanceLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/WalletPanel/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"NormalText"
@@ -96,7 +103,7 @@ theme_override_font_sizes/font_size = 16
 text = "Fiat: $0"
 horizontal_alignment = 1
 
-[node name="BitcoinBalanceLabel" type="Label" parent="VBoxContainer/Body/Columns/LeftBar/WalletPanel/Margin/VBox"]
+[node name="BitcoinBalanceLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/WalletPanel/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"NormalText"
@@ -104,175 +111,300 @@ theme_override_font_sizes/font_size = 16
 text = "Bitcoin: ₿0"
 horizontal_alignment = 1
 
-[node name="CentralBar" type="PanelContainer" parent="VBoxContainer/Body/Columns"]
+[node name="CentralBar" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
 custom_minimum_size = Vector2(380, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"SettingsBackground"
 
-[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Columns/CentralBar"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar"]
 layout_mode = 2
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 12
 
-[node name="Scroll" type="ScrollContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin"]
+[node name="Scroll" type="ScrollContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll"]
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="TitleRow" type="HBoxContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox"]
+[node name="TitleRow" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="WeaponIcon" type="TextureRect" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/TitleRow"]
+[node name="WeaponIcon" type="TextureRect" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/TitleRow"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(96, 56)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="NameBox" type="VBoxContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/TitleRow"]
+[node name="NameBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/TitleRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 alignment = 1
 
-[node name="WeaponName" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/TitleRow/NameBox"]
+[node name="WeaponName" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/TitleRow/NameBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HeaderMedium"
 theme_override_font_sizes/font_size = 28
 text = "Weapon"
 
-[node name="LevelLabel" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/TitleRow/NameBox"]
+[node name="LevelLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/TitleRow/NameBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"TooltipLabel"
 text = "Upgrade level 0"
 
-[node name="WeaponDescriptionLabel" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox"]
+[node name="WeaponDescriptionLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
-[node name="StatsTitle" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox"]
+[node name="StatsTitle" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 22
 text = "📊 Stats"
 
-[node name="StatsGrid" type="GridContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox"]
+[node name="StatsGrid" type="GridContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 4
 columns = 2
 
-[node name="SpecialPanel" type="PanelContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox"]
+[node name="SpecialPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 layout_mode = 2
 theme_type_variation = &"ArmoryUpgradePanel"
 
-[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/SpecialPanel"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/SpecialPanel"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 8
 
-[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin"]
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin"]
 layout_mode = 2
 
-[node name="SpecialNameLabel" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin/VBox"]
+[node name="SpecialNameLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 18
 text = "Special"
 
-[node name="SpecialDescriptionLabel" type="Label" parent="VBoxContainer/Body/Columns/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin/VBox"]
+[node name="SpecialDescriptionLabel" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/SpecialPanel/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
-[node name="RightBar" type="PanelContainer" parent="VBoxContainer/Body/Columns"]
+[node name="RightBar" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
 custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 theme_type_variation = &"LevelSelectorBackground"
 
-[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Columns/RightBar"]
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar"]
 layout_mode = 2
 theme_override_constants/margin_left = 12
 theme_override_constants/margin_top = 12
 theme_override_constants/margin_right = 12
 theme_override_constants/margin_bottom = 12
 
-[node name="Scroll" type="ScrollContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin"]
+[node name="Scroll" type="ScrollContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="Sections" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll"]
+[node name="Sections" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 14
 
-[node name="WeaponSection" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections"]
+[node name="WeaponSection" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/WeaponSection"]
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/WeaponSection"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 22
 text = "⬆️ Weapon"
 horizontal_alignment = 1
 
-[node name="UpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/WeaponSection"]
+[node name="UpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/WeaponSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="AmmoSection" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections"]
+[node name="AmmoSection" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/AmmoSection"]
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/AmmoSection"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 22
 text = "🔫 Ammo"
 horizontal_alignment = 1
 
-[node name="AmmoUpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/AmmoSection"]
+[node name="AmmoUpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/AmmoSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="SpecialSection" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections"]
+[node name="SpecialSection" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="Title" type="Label" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/SpecialSection"]
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/SpecialSection"]
 layout_mode = 2
 theme_type_variation = &"HeaderSmall"
 theme_override_font_sizes/font_size = 22
 text = "✨ Special"
 horizontal_alignment = 1
 
-[node name="SpecialUpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Columns/RightBar/Margin/Scroll/Sections/SpecialSection"]
+[node name="SpecialUpgradesContainer" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/SpecialSection"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
+
+[node name="Loadout" type="VBoxContainer" parent="VBoxContainer/Body/Tabs"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+metadata/_tab_index = 1
+script = ExtResource("9_loadout")
+
+[node name="TopRow" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ModeLabel" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/TopRow"]
+layout_mode = 2
+theme_type_variation = &"NormalText"
+text = "Mode:"
+
+[node name="ModeOption" type="OptionButton" parent="VBoxContainer/Body/Tabs/Loadout/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+
+[node name="HintLabel" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"TooltipLabel"
+text = "Click a slot, then pick what goes in it. Each mode has its own loadout."
+autowrap_mode = 3
+
+[node name="SlotsRow" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout"]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="WeaponsBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/WeaponsBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 20
+text = "Weapons"
+horizontal_alignment = 1
+
+[node name="WeaponSlots" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/WeaponsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="PassivesBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/PassivesBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 20
+text = "Passive abilities"
+horizontal_alignment = 1
+
+[node name="PassiveSlots" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/PassivesBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="ActiveBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow"]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/ActiveBox"]
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 20
+text = "Active ability (Q)"
+horizontal_alignment = 1
+
+[node name="ActiveSlots" type="HBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/SlotsRow/ActiveBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="PickerPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Loadout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"LevelSelectorBackground"
+
+[node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="PickerTitle" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderSmall"
+theme_override_font_sizes/font_size = 20
+text = "Pick a weapon"
+
+[node name="Scroll" type="ScrollContainer" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="PickerGrid" type="GridContainer" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+columns = 4
+
+[node name="InfoLabel" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_type_variation = &"NormalText"
+theme_override_font_sizes/font_size = 14
+autowrap_mode = 3
 
 [node name="Footer" type="MarginContainer" parent="VBoxContainer"]
 layout_mode = 2

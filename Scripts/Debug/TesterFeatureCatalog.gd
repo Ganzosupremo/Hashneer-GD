@@ -227,6 +227,11 @@ static func _give_ability(tester: Node, ability_key: String, scene: PackedScene)
 	player.add_child(ability)
 	player.abilities.append(ability)
 	ability.enable()
+	# Only one active ability (Q) at a time: the given one replaces the equipped one
+	if ability.is_active_kind():
+		if player.active_ability and is_instance_valid(player.active_ability):
+			player.active_ability.disable()
+		player.active_ability = ability
 
 static func _spawn_enemies(tester: Node, scene: PackedScene, count: int) -> void:
 	var spawner: WaveSpawner = _get_tree().get_first_node_in_group("WaveSpawner")

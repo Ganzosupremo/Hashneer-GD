@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/PulseAbility.gd" id="1_ability"]
+
+[node name="PulseAbility" type="Node2D"]
+script = ExtResource("1_ability")
+ability_name = "Pulse"
+ability_description = "A blast around you that hurts every enemy and breaks the blocks nearby."
+ability_cooldown = 14.0
+ability_kind = 1

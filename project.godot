@@ -48,6 +48,7 @@ BitcoinNetwork="*res://Scenes/BitcoinNetwork/BitcoinNetwork.tscn"
 BitcoinWallet="*res://Scenes/BitcoinNetwork/BitcoinWallet.tscn"
 FED="*res://Scenes/BitcoinNetwork/FED.tscn"
 SkillProgress="*res://Scripts/Skills/SkillProgress.gd"
+Equipment="*res://Scripts/Autoload/Equipment.gd"
 NotificationManager="*res://Scenes/Manager/NotificationManager.tscn"
 DebugLogger="*res://Scripts/Utils/DebugLogger.gd"
 FeatureTester="*res://Scenes/Debug/FeatureTester.tscn"
@@ -121,6 +122,11 @@ Move_down={
 Fire={
 "deadzone": 0.5,
 "events": [Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"button_mask":1,"position":Vector2(190, 26),"global_position":Vector2(194, 69),"factor":1.0,"button_index":1,"canceled":false,"pressed":true,"double_click":false,"script":null)
+]
+}
+Active_Ability={
+"deadzone": 0.5,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":81,"key_label":0,"unicode":113,"location":0,"echo":false,"script":null)
 ]
 }
 Weapon_Special={
