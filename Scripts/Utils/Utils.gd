@@ -144,31 +144,6 @@ static func ability_name_to_string(ability_name: int) -> String:
 	return enum_label(Constants.AbilityNames, ability_name)
 
 
-## Converts the [enum UpgradeData.StatType] enum to a string.
-## This is useful for displaying the stat type in the UI or for debugging purposes.
-## It uses the [func Utils.enum_label] function to get a user-friendly string representation of the enum value.[br]
-#### Example:
-## [codeblock]
-## var stat_type_name: String = Utils.player_stat_type_to_string(UpgradeData.StatType.HEALTH)
-## print(stat_type_name) # Output: "Health"
-## [/codeblock]
-## [param stat_type]: The [enum UpgradeData.StatType] enum value to convert.[br]
-## Return A user-friendly string representation of the stat type.[br]
-## See [method enum_label].
-## See [enum UpgradeData.StatType].
-## See [enum UpgradeData.StatType.HEALTH].
-static func player_stat_type_to_string(stat_type: UpgradeData.StatType) -> String:
-	return enum_label(UpgradeData.StatType, stat_type)
-
-static func int_to_skill_node_state(state: int) -> SkillNode.NodeState:
-	match state:
-		0: return SkillNode.NodeState.LOCKED
-		1: return SkillNode.NodeState.CAN_AFFORD
-		2: return SkillNode.NodeState.CANNOT_AFFORD
-		3: return SkillNode.NodeState.MAXED_OUT
-		_: return SkillNode.NodeState.UNKNOWN
-
-
 ## Deprecated: Use [method enum_label] instead.[br]
 ## Converts an enum value to its string name.
 static func enum_to_string(_enum: int, enum_type: Dictionary) -> String:

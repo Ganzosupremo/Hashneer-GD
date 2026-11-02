@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_halvin"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_halvin"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_halvin"]
+[ext_resource type="Texture2D" uid="uid://cy3q5wkverxur" path="res://Textures/WeaponSystem/Weapons/HalvingRocket.png" id="4_halvin"]
+[ext_resource type="Resource" path="res://Resources/Skills/Weapons/sniper.tres" id="5_halvin"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="6_halvin"]
+[ext_resource type="Resource" uid="uid://c66m5c8krk8et" path="res://Resources/Weapons/Player/HalvingRocket.tres" id="7_halvin"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_halvin")
+skill = ExtResource("5_halvin")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_halvin")
+weapon = ExtResource("7_halvin")
+
+[resource]
+script = ExtResource("1_halvin")
+id = &"halving_rocket"
+display_name = "The Halving is coming"
+description = "Unlocks the Halving Rocket.
+Explodes on impact, damaging everything around."
+icon = ExtResource("4_halvin")
+branch = "Weapons"
+requirements = Array[ExtResource("2_halvin")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_halvin")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 2500000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 50.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "HalvingRocketUnlock"

@@ -1,0 +1,40 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_shotgu"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_shotgu"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_shotgu"]
+[ext_resource type="Texture2D" uid="uid://dyjysph1bfdse" path="res://Textures/WeaponSystem/Weapons/Shotgun.png" id="4_shotgu"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/speed_1.tres" id="5_shotgu"]
+[ext_resource type="Resource" path="res://Resources/Skills/Abilities/shield.tres" id="6_shotgu"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="7_shotgu"]
+[ext_resource type="Resource" uid="uid://cda54difj00ou" path="res://Resources/Weapons/Player/Shotgun.tres" id="8_shotgu"]
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_shotgu")
+skill = ExtResource("5_shotgu")
+min_level = 7
+
+[sub_resource type="Resource" id="Resource_req2"]
+script = ExtResource("2_shotgu")
+skill = ExtResource("6_shotgu")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("7_shotgu")
+weapon = ExtResource("8_shotgu")
+
+[resource]
+script = ExtResource("1_shotgu")
+id = &"shotgun"
+display_name = "Shotgun joins the rooster"
+description = "Unlocks the shotgun, obviously :)"
+icon = ExtResource("4_shotgu")
+branch = "Weapons"
+requirements = Array[ExtResource("2_shotgu")]([SubResource("Resource_req1"), SubResource("Resource_req2")])
+effects = Array[ExtResource("3_shotgu")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 400000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 5.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "ShotgunUnlock"

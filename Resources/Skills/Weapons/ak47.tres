@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_ak47"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_ak47"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_ak47"]
+[ext_resource type="Texture2D" uid="uid://dxpf8c0eqae0a" path="res://Textures/WeaponSystem/Weapons/AK-47.png" id="4_ak47"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/damage_2.tres" id="5_ak47"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="6_ak47"]
+[ext_resource type="Resource" uid="uid://dolvblimdgg0b" path="res://Resources/Weapons/Player/AK47.tres" id="7_ak47"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("4_ak47")
+region = Rect2(0, 0, 32, 17)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("4_ak47")
+region = Rect2(0, 0, 32, 17)
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_ak47")
+skill = ExtResource("5_ak47")
+min_level = 10
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_ak47")
+weapon = ExtResource("7_ak47")
+
+[resource]
+script = ExtResource("1_ak47")
+id = &"ak47"
+display_name = "AK-47 has arrived"
+description = "The AK-47 rifle joins your arsenal"
+icon = SubResource("AtlasTexture_1")
+icon_maxed = SubResource("AtlasTexture_2")
+branch = "Weapons"
+requirements = Array[ExtResource("2_ak47")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_ak47")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 1000000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 20.0
+cost_btc_multiplier = 1.0
+legacy_save_key = "AK47Unlock"

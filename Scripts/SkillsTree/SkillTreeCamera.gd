@@ -20,6 +20,8 @@ var stop_dragging: bool = false
 func _ready():
 	settings.visibility_state_changed.connect(_on_settings_visibility_changed)
 	target_position = position
+	# Start at the zoom set in the scene instead of jumping to 1.0
+	target_zoom = zoom.x
 
 func _process(_delta):
 	if stop_dragging: return

@@ -1,0 +1,44 @@
+[gd_resource type="Resource" script_class="SkillDefinition" load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_damage"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_damage"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_damage"]
+[ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="4_damage"]
+[ext_resource type="Resource" path="res://Resources/Skills/Stats/health_1.tres" id="5_damage"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/StatSkillEffect.gd" id="6_damage"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("4_damage")
+region = Rect2(67, 2, 27, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("4_damage")
+region = Rect2(99, 2, 27, 27)
+
+[sub_resource type="Resource" id="Resource_req1"]
+script = ExtResource("2_damage")
+skill = ExtResource("5_damage")
+min_level = 13
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("6_damage")
+stat = "Damage"
+value_per_level = 0.12
+value_multiplier = 1.0
+
+[resource]
+script = ExtResource("1_damage")
+id = &"damage_1"
+display_name = "Damage Increase"
+description = "Increases damage by 0.12"
+icon = SubResource("AtlasTexture_1")
+icon_maxed = SubResource("AtlasTexture_2")
+branch = "Offense"
+requirements = Array[ExtResource("2_damage")]([SubResource("Resource_req1")])
+effects = Array[ExtResource("3_damage")]([SubResource("Resource_effect1")])
+max_level = 10
+cost_fiat_base = 8000.0
+cost_fiat_multiplier = 1.25
+cost_btc_base = 1.2
+cost_btc_multiplier = 1.08
+legacy_save_key = "PlayerDamageUpgradeFiatT1"
