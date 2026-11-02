@@ -93,9 +93,11 @@ func update_beam(origin: Vector2, launch_vector: Vector2 = _direction) -> void:
 	var results: Dictionary = space_state.intersect_ray(params)
 	_line.clear_points()
 	_line.add_point(Vector2.ZERO)
-	
-	
-	if results.is_empty(): return
+
+	# Nothing hit: draw the beam at its full length (it used to have a single point, so it vanished)
+	if results.is_empty():
+		_line.add_point(to_local(end_pos))
+		return
 	
 	var collider = results.collider
 	# Chargers and bosses carry a DamageArea on the enemy layer: the beam stopped on it and did nothing
