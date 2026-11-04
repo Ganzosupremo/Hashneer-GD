@@ -95,7 +95,7 @@ PersistentNodes="To this group belongs all the nodes that will save some variabl
 [gui]
 
 theme/custom="uid://dylriqvd0gggf"
-theme/custom_font="uid://dccffhvl0wg7a"
+theme/custom_font="res://Fonts/DotGothic16-Regular.ttf"
 
 [input]
 
