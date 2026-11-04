@@ -42,6 +42,23 @@ size_flags_horizontal = 3
 theme_override_constants/h_separation = 6
 theme_override_constants/v_separation = 6
 
+[node name="ModeFilter" type="OptionButton" parent="TopBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Fade the skills that don't work in the chosen game mode"
+focus_mode = 0
+theme_override_font_sizes/font_size = 13
+selected = 0
+item_count = 3
+popup/item_0/text = "All modes"
+popup/item_0/id = 0
+popup/item_1/text = "Mining"
+popup/item_1/id = 1
+popup/item_2/text = "Waves"
+popup/item_2/id = 2
+
 [node name="CanBuyFilter" type="Button" parent="TopBar"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 34)

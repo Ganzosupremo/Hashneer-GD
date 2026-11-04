@@ -30,46 +30,6 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/FilterRow"]
-layout_mode = 2
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 0
-theme_override_font_sizes/font_size = 13
-text = "Show"
-
-[node name="FilterAll" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "All"
-
-[node name="FilterMining" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "Mining"
-
-[node name="FilterWaves" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "Waves"
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_separator")
-
 [node name="Placeholder" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2

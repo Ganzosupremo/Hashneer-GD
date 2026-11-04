@@ -28,6 +28,7 @@ static var _last_branch: String = ""
 
 @onready var _branch_tabs: HFlowContainer = %BranchTabs
 @onready var _can_buy_filter: Button = %CanBuyFilter
+@onready var _mode_filter_button: OptionButton = %ModeFilter
 @onready var _scroll: ScrollContainer = %Scroll
 @onready var _tier_rows: VBoxContainer = %TierRows
 @onready var _empty_label: Label = %EmptyLabel
@@ -47,6 +48,7 @@ func _ready() -> void:
 	_build()
 	_style_scroll_bar()
 	_can_buy_filter.toggled.connect(_on_can_buy_toggled)
+	_mode_filter_button.item_selected.connect(_on_mode_filter_selected)
 	var start: String = _last_branch if _branch_order.has(_last_branch) else ""
 	if start.is_empty() and not _branch_order.is_empty():
 		start = _branch_order[0]
@@ -80,6 +82,14 @@ func set_mode_filter(mode: int) -> void:
 	_mode_filter = mode
 	for node in _nodes.values():
 		node.set_dimmed(not node.skill.applies_in(mode))
+
+# Item ids of the ModeFilter option button
+func _on_mode_filter_selected(index: int) -> void:
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
+	match _mode_filter_button.get_item_id(index):
+		1: set_mode_filter(Constants.GameModeFlag.MINING)
+		2: set_mode_filter(Constants.GameModeFlag.WAVES)
+		_: set_mode_filter(0)
 
 ## Selects a skill and opens its branch if another one is open.
 func select_skill(skill_id: StringName) -> void:

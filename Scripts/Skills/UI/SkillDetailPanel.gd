@@ -1,11 +1,8 @@
 class_name SkillDetailPanel extends PanelContainer
-## Side panel of the skill tree: details of the selected skill, buy buttons and the mode filter.
+## Side panel of the skill tree: details of the selected skill and buy buttons.
 ##
 ## The layout lives in [code]Scenes/SkillTreeSystem/SkillDetailPanel.tscn[/code].
 ## [method show_skill] is connected to [signal SkillTreeView.skill_selected] in the skill tree scene.
-
-## A filter button was pressed, 0 means every mode.
-signal mode_filter_changed(mode: int)
 
 const UNAFFORDABLE_COLOR: Color = Color(0.95, 0.4, 0.38, 1.0)
 const AFFORDABLE_COLOR: Color = Color(0.4, 0.95, 0.5, 1.0)
@@ -22,9 +19,6 @@ const AVOID_GAP: float = 8.0
 ## The text part never gets shorter than this, even on small screens.
 const MIN_INFO_HEIGHT: float = 40.0
 
-@onready var _filter_all: Button = %FilterAll
-@onready var _filter_mining: Button = %FilterMining
-@onready var _filter_waves: Button = %FilterWaves
 @onready var _placeholder: Label = %Placeholder
 @onready var _details: Control = %Details
 @onready var _icon: TextureRect = %Icon
@@ -47,14 +41,6 @@ var _skill: SkillDefinition
 
 
 func _ready() -> void:
-	var group := ButtonGroup.new()
-	for button in [_filter_all, _filter_mining, _filter_waves]:
-		button.toggle_mode = true
-		button.button_group = group
-	_filter_all.button_pressed = true
-	_filter_all.pressed.connect(_on_filter_pressed.bind(0))
-	_filter_mining.pressed.connect(_on_filter_pressed.bind(Constants.GameModeFlag.MINING))
-	_filter_waves.pressed.connect(_on_filter_pressed.bind(Constants.GameModeFlag.WAVES))
 	_buy_button.pressed.connect(_on_buy_pressed)
 	_buy_max_button.pressed.connect(_on_buy_max_pressed)
 
@@ -170,10 +156,6 @@ func _on_buy_pressed() -> void:
 func _on_buy_max_pressed() -> void:
 	if _skill and SkillProgress.purchase_max(_skill.id) > 0:
 		AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
-
-func _on_filter_pressed(mode: int) -> void:
-	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
-	mode_filter_changed.emit(mode)
 
 func _on_skill_changed(_skill_id: StringName, _level: int) -> void:
 	refresh()

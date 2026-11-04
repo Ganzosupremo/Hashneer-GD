@@ -142,7 +142,7 @@ offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SkillDetailPanel" parent="FrontLayer" unique_id=590537931 instance=ExtResource("62_detail_panel")]
+[node name="SkillDetailPanel" parent="FrontLayer" unique_id=590537931 node_paths=PackedStringArray("avoid_node") instance=ExtResource("62_detail_panel")]
 unique_name_in_owner = true
 anchors_preset = 2
 anchor_top = 1.0
@@ -165,7 +165,6 @@ unique_name_in_owner = true
 visible = false
 
 [connection signal="skill_selected" from="FrontLayer/SkillTreeArea/SkillTreeView" to="FrontLayer/SkillDetailPanel" method="show_skill"]
-[connection signal="mode_filter_changed" from="FrontLayer/SkillDetailPanel" to="FrontLayer/SkillTreeArea/SkillTreeView" method="set_mode_filter"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StatsButton" to="FrontLayer/StatsScreenUI" method="open"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]
