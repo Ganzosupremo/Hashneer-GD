@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_theme"]
 [ext_resource type="Script" path="res://Scripts/UI/HubNav/HubNavBar.gd" id="2_script"]
 [ext_resource type="PackedScene" path="res://Scenes/UI/HubNav/HubNavTab.tscn" id="3_tab"]
 [ext_resource type="Texture2D" path="res://Textures/Icons/HASHENEER  logo.png" id="4_logo"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/EconomicEvents/EconomicEventChip.tscn" id="5_chip"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
 bg_color = Color(0.016, 0.024, 0.06, 0.94)
@@ -58,13 +59,13 @@ layout_mode = 2
 theme_override_constants/separation = 12
 
 [node name="Logo" type="TextureRect" parent="Background/Margin/Row"]
-custom_minimum_size = Vector2(132, 44)
+custom_minimum_size = Vector2(210, 44)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 texture = ExtResource("4_logo")
 expand_mode = 1
-stretch_mode = 5
+stretch_mode = 4
 
 [node name="LeftSpacer" type="Control" parent="Background/Margin/Row"]
 layout_mode = 2
@@ -119,7 +120,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="RightBalance" type="Control" parent="Background/Margin/Row"]
-custom_minimum_size = Vector2(132, 0)
+[node name="RightBalance" type="HBoxContainer" parent="Background/Margin/Row"]
+custom_minimum_size = Vector2(210, 0)
 layout_mode = 2
 mouse_filter = 2
+alignment = 2
+
+[node name="EconomicEventChip" parent="Background/Margin/Row/RightBalance" instance=ExtResource("5_chip")]
+layout_mode = 2

@@ -192,6 +192,18 @@ theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 18
 text = "0"
 
+[node name="EventCostLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+tooltip_text = "Price before the economic event"
+theme_override_colors/default_color = Color(0.54, 0.68, 0.75, 1)
+theme_override_font_sizes/normal_font_size = 13
+bbcode_enabled = true
+text = "[center][s]$120[/s]  [color=#ff6b61]+40%[/color] Money Printer[/center]"
+fit_content = true
+scroll_active = false
+
 [node name="BuyRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
 layout_mode = 2
 theme_override_constants/separation = 8

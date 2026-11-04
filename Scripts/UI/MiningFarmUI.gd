@@ -31,12 +31,14 @@ func _ready() -> void:
 	BitcoinWallet.money_changed.connect(_on_state_changed)
 	MiningFarm.miner_bought.connect(_on_state_changed)
 	Achievements.achievement_unlocked.connect(_on_state_changed)
+	EconomicEventsManager.event_changed.connect(_on_state_changed)
 	_refresh()
 
 func _exit_tree() -> void:
 	BitcoinWallet.money_changed.disconnect(_on_state_changed)
 	MiningFarm.miner_bought.disconnect(_on_state_changed)
 	Achievements.achievement_unlocked.disconnect(_on_state_changed)
+	EconomicEventsManager.event_changed.disconnect(_on_state_changed)
 
 func _find_miner(miner_id: String) -> Dictionary:
 	for miner in MiningFarm.MINERS:

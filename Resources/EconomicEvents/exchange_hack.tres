@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"exchange_hack"
+name = "Exchange Hack"
+description = "A big exchange got hacked. Not your keys, not your coins. Prices tremble."
+event_type = 2
+duration_in_blocks = 2
+weight = 0.6
+min_blockheight = 2
+btc_price = 0.8
+skill_cost_btc = 1.15
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

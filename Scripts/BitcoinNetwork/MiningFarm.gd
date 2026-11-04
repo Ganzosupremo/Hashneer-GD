@@ -73,10 +73,11 @@ func _process(delta: float) -> void:
 
 #region Miners
 
-## Returns the fiat cost of the next miner of the given type, adjusted by inflation.
+## Returns the fiat cost of the next miner of the given type, adjusted by inflation and economic events.
 func get_miner_cost(miner_id: String) -> float:
 	var miner: Dictionary = _get_miner(miner_id)
-	return miner.base_cost * pow(MINER_COST_MULTIPLIER, owned.get(miner_id, 0)) * FED.get_total_inflation()
+	return miner.base_cost * pow(MINER_COST_MULTIPLIER, owned.get(miner_id, 0)) * FED.get_total_inflation() \
+		* EconomicEventsManager.get_multiplier(EconomicEvent.MINER_COST)
 
 ## Buys one miner of the given type with fiat. Returns [code]true[/code] on success.
 func buy_miner(miner_id: String) -> bool:
@@ -117,9 +118,13 @@ func get_network_share() -> float:
 	return hashrate / (hashrate + get_network_hashrate())
 
 ## Bitcoin earned in fees per second.
-func get_fees_per_second() -> float:
+## [param include_event]: false leaves out the active economic event (offline earnings).
+func get_fees_per_second(include_event: bool = true) -> float:
 	var pool: float = FEE_POOL_BTC_PER_HOUR * (1.0 + FEE_POOL_GROWTH_PER_HALVING * BitcoinNetwork.get_halvings_count())
-	return pool / 3600.0 * get_network_share()
+	var fees: float = pool / 3600.0 * get_network_share()
+	if include_event:
+		fees *= EconomicEventsManager.get_multiplier(EconomicEvent.MINING_FEES)
+	return fees
 
 ## How much longer the AI takes to mine a block thanks to the player's hashrate.
 func get_ai_timer_multiplier() -> float:
@@ -182,7 +187,7 @@ func load_data() -> void:
 func _pay_offline_fees(last_seen: float) -> void:
 	if last_seen <= 0.0: return
 	var seconds_away: float = clampf(Time.get_unix_time_from_system() - last_seen, 0.0, MAX_OFFLINE_HOURS * 3600.0)
-	var fees: float = get_fees_per_second() * seconds_away
+	var fees: float = get_fees_per_second(false) * seconds_away
 	if fees <= 0.0: return
 	BitcoinWallet.add_bitcoin(fees)
 	fees_earned.emit(fees)

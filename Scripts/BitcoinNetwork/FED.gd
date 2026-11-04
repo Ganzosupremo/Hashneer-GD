@@ -67,6 +67,7 @@ func get_fiat_subsidy() -> float:
 		subsidy *= GameManager.get_level_args().fiat_drop_rate_factor
 	subsidy *= pow(total_inflation, WAGE_INFLATION_EXPONENT)
 	subsidy *= MiningFarm.get_fiat_drop_multiplier()
+	subsidy *= EconomicEventsManager.get_multiplier(EconomicEvent.FIAT_DROPS)
 	# "Fiat Gain" skills of the player in this mode
 	var player: PlayerController = GameManager.get_player()
 	if is_instance_valid(player):

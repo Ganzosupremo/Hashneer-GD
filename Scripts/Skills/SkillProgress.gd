@@ -29,17 +29,14 @@ var _skills: Dictionary = {}  # StringName id -> SkillDefinition
 var _skill_list: Array[SkillDefinition] = []
 var _levels: Dictionary = {}  # String id -> int
 var _main_event_bus: MainEventBus
-## Cost multipliers of the active economic event, 1.0 when there is none.
-var _event_multiplier_fiat: float = 1.0
-var _event_multiplier_btc: float = 1.0
 
 
 func _ready() -> void:
 	add_to_group("PersistentNodes")
 	_main_event_bus = load("res://Resources/MainEventBus.tres")
 	_main_event_bus.currency_changed.connect(_on_currency_changed)
-	_main_event_bus.economy_event_picked.connect(_on_economy_event_picked)
-	_main_event_bus.economy_event_expired.connect(_on_economy_event_expired)
+	# Economic events change prices, the multiplier is read from the manager on each get_cost()
+	EconomicEventsManager.event_changed.connect(costs_changed.emit)
 	_load_catalog()
 
 #region Catalog
@@ -119,13 +116,23 @@ func is_unlocked(skill_id: StringName) -> bool:
 	return skill.requirements.any(func(req: SkillRequirement) -> bool: return req.is_met())
 
 func get_cost(skill_id: StringName, currency: Constants.CurrencyType = current_currency) -> float:
+	return get_cost_without_event(skill_id, currency) * get_event_cost_multiplier(currency)
+
+## The price before the active economic event, to show what it changed.
+func get_cost_without_event(skill_id: StringName, currency: Constants.CurrencyType = current_currency) -> float:
 	var skill: SkillDefinition = get_skill(skill_id)
 	if skill == null:
 		return INF
 	var cost: float = skill.get_base_cost(currency, get_level(skill_id))
 	if currency == Constants.CurrencyType.BITCOIN:
-		return cost * BitcoinNetwork.get_deflation_multiplier() * _event_multiplier_btc
-	return cost * FED.get_total_inflation() * _event_multiplier_fiat
+		return cost * BitcoinNetwork.get_deflation_multiplier()
+	return cost * FED.get_total_inflation()
+
+## Price multiplier of the active economic event for [param currency], 1.0 when there is none.
+func get_event_cost_multiplier(currency: Constants.CurrencyType = current_currency) -> float:
+	if currency == Constants.CurrencyType.BITCOIN:
+		return EconomicEventsManager.get_multiplier(EconomicEvent.SKILL_COST_BTC)
+	return EconomicEventsManager.get_multiplier(EconomicEvent.SKILL_COST_FIAT)
 
 func can_afford(skill_id: StringName, currency: Constants.CurrencyType = current_currency) -> bool:
 	var balance: float = BitcoinWallet.get_bitcoin_balance() if currency == Constants.CurrencyType.BITCOIN else BitcoinWallet.get_fiat_balance()
@@ -213,30 +220,6 @@ func _on_currency_changed(currency: Constants.CurrencyType) -> void:
 	current_currency = currency
 	save_data()
 	costs_changed.emit()
-
-## The event sets a multiplier per currency, applying it again (e.g. on load) doesn't stack.
-func _on_economy_event_picked(event: EconomicEvent) -> void:
-	if event == null:
-		return
-	var multiplier: float = 1.0 + event.impact if _raises_prices(event) else max(1.0 - event.impact, 0.01)
-	var currency: Constants.CurrencyType = event.currency_affected
-	# Natural disasters hit both currencies
-	if event.event_type == EconomicEvent.EventType.NATURAL_DISASTER:
-		currency = Constants.CurrencyType.BOTH
-	_event_multiplier_fiat = multiplier if currency != Constants.CurrencyType.BITCOIN else 1.0
-	_event_multiplier_btc = multiplier if currency != Constants.CurrencyType.FIAT else 1.0
-	costs_changed.emit()
-
-func _on_economy_event_expired(_event: EconomicEvent) -> void:
-	_event_multiplier_fiat = 1.0
-	_event_multiplier_btc = 1.0
-	costs_changed.emit()
-
-func _raises_prices(event: EconomicEvent) -> bool:
-	match event.event_type:
-		EconomicEvent.EventType.DEFLATION, EconomicEvent.EventType.MARKET_BOOM, EconomicEvent.EventType.TECHNOLOGY_ADVANCEMENT:
-			return false
-	return true
 
 #endregion
 

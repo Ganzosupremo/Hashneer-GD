@@ -29,6 +29,7 @@ const MISSING_REQUIREMENT_COLOR: Color = Color(0.95, 0.55, 0.4, 1.0)
 @onready var _cost_row: Control = %CostRow
 @onready var _cost_icon: TextureRect = %CostIcon
 @onready var _cost_label: Label = %CostLabel
+@onready var _event_cost_label: RichTextLabel = %EventCostLabel
 @onready var _buy_button: Button = %BuyButton
 @onready var _buy_max_button: Button = %BuyMaxButton
 
@@ -92,6 +93,7 @@ func refresh() -> void:
 		_requirements_label.add_theme_color_override("font_color", MISSING_REQUIREMENT_COLOR)
 
 	_cost_row.visible = not maxed
+	_event_cost_label.visible = false
 	_buy_button.visible = not maxed
 	_buy_max_button.visible = not maxed and _skill.max_level > 1
 	if maxed:
@@ -102,9 +104,23 @@ func refresh() -> void:
 	_cost_icon.texture = bitcoin_icon if currency == Constants.CurrencyType.BITCOIN else fiat_icon
 	_cost_label.text = Utils.format_btc(cost) if currency == Constants.CurrencyType.BITCOIN else Utils.format_currency(cost, true)
 	_cost_label.add_theme_color_override("font_color", AFFORDABLE_COLOR if SkillProgress.can_afford(id, currency) else UNAFFORDABLE_COLOR)
+	_show_event_cost(id, currency)
 	var can_buy: bool = SkillProgress.can_purchase(id, currency)
 	_buy_button.disabled = not can_buy
 	_buy_max_button.disabled = not can_buy
+
+## Old price struck through and the change, while an economic event moves this currency's prices.
+func _show_event_cost(id: StringName, currency: Constants.CurrencyType) -> void:
+	var multiplier: float = SkillProgress.get_event_cost_multiplier(currency)
+	var event: EconomicEvent = EconomicEventsManager.get_current_event()
+	if is_equal_approx(multiplier, 1.0) or event == null:
+		return
+	var old_cost: float = SkillProgress.get_cost_without_event(id, currency)
+	var old_text: String = Utils.format_btc(old_cost) if currency == Constants.CurrencyType.BITCOIN else Utils.format_currency(old_cost, true)
+	var effect: StringName = EconomicEvent.SKILL_COST_BTC if currency == Constants.CurrencyType.BITCOIN else EconomicEvent.SKILL_COST_FIAT
+	var color: Color = EconomicEvent.tone_color(EconomicEvent.get_effect_tone(effect, multiplier))
+	_event_cost_label.text = "[center][s]%s[/s]  [color=#%s]%s[/color] %s[/center]" % [old_text, color.to_html(false), EconomicEvent.format_change(multiplier), event.name]
+	_event_cost_label.visible = true
 
 ## One line per effect: what it gives now and with the next level.
 func _build_effects_text(level: int, maxed: bool) -> String:

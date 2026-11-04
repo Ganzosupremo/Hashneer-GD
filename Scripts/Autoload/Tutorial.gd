@@ -25,6 +25,7 @@ const TUTORIALS: Dictionary = {
 		"This is your base. Spend fiat or Bitcoin on upgrades, use the toggle in the top left to switch currency.",
 		"The FED prints money on every block: fiat prices keep rising. Bitcoin prices drop 25% on every halving.",
 		"Use the exchange in the top left to trade fiat for Bitcoin, with a 5% fee.",
+		"Economic events can start with any block and change prices, drops or mining fees for a few blocks. The badge in the top right of the bar shows the active one, hover it to see its effects.",
 		"The Mining Farm (top right) earns Bitcoin fees over time, even while the game is closed. More hashrate also slows the AI down.",
 		"Mine every block to start a New Epoch: you lose everything except HODL points, which boost you forever.",
 		"In the Armory, the Loadout tab picks what you take into each mode: 2 weapons, 3 passive abilities and 1 active ability (Q).",
