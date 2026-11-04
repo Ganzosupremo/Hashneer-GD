@@ -33,6 +33,7 @@ var dead_sound_effect: SoundEffectDetails
 @onready var active_weapon: ActiveWeaponComponent = %ActiveWeapon
 @onready var _health: HealthComponent = %Health
 @onready var rotation_container: Node2D = $RotationContainer
+@onready var weapon_sprite: Sprite2D = $RotationContainer/WeaponSprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var edge_polygon: Polygon2D = $EdgePolygon
 
@@ -65,8 +66,14 @@ func _ready() -> void:
 		GameManager._player = self
 		_health.zero_health.connect(on_zero_power)
 		main_event_bus.level_completed.connect(deactivate_player)
+		active_weapon.weapon_setted.connect(_on_weapon_setted)
 		set_player()
 		edge_polygon.polygon = PolygonLib.createCirclePolygon(20.0, 6)
+
+
+func _on_weapon_setted(weapon: WeaponDetails) -> void:
+	if weapon and weapon.weapon_texture:
+		weapon_sprite.texture = weapon.weapon_texture
 
 func _process(delta: float) -> void:
 		if !can_move: return

@@ -3,102 +3,49 @@ shader_type canvas_item;
 uniform float time : hint_range(0.0, 100.0) = 0.0;
 uniform float speed : hint_range(0.1, 5.0) = 1.0;
 uniform float density : hint_range(0.1, 2.0) = 1.0;
-uniform vec4 node_color : source_color = vec4(1.0, 0.6, 0.0, 0.3);
-uniform vec4 connection_color : source_color = vec4(0.2, 0.5, 1.0, 0.2);
+uniform vec4 node_color : source_color = vec4(1.0, 0.38, 0.04, 0.34);
+uniform vec4 connection_color : source_color = vec4(0.05, 0.82, 1.0, 0.24);
 
-float hash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+float hash21(vec2 p) {
+	return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
 }
 
-float noise(vec2 p) {
-    vec2 i = floor(p);
-    vec2 f = fract(p);
-    f = f * f * (3.0 - 2.0 * f);
-
-    float a = hash(i);
-    float b = hash(i + vec2(1.0, 0.0));
-    float c = hash(i + vec2(0.0, 1.0));
-    float d = hash(i + vec2(1.0, 1.0));
-
-    return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
-}
-
-// Generate hexadecimal-like pattern for hash effect
-float hexPattern(vec2 p) {
-    vec2 cell = floor(p);
-    float h = hash(cell);
-    // Create blocky pattern like hex characters
-    vec2 local = fract(p);
-    float pattern = step(0.3, h) * step(local.x, 0.8) * step(local.y, 0.8);
-    return pattern;
+float grid_line(float coordinate, float width) {
+	float cell = abs(fract(coordinate) - 0.5);
+	return smoothstep(width, 0.5, cell);
 }
 
 void fragment() {
-    vec2 uv = UV;
-    vec2 screen_uv = uv * 8.0 * density;
+	vec2 uv = UV;
+	float t = (TIME * 0.18 + time * 0.06) * speed;
+	vec2 ratio = vec2(32.0, 18.0) * density;
+	vec2 moving_grid = uv * ratio + vec2(t * 0.35, t * 0.18);
 
-    float t = time * speed * 0.1;
+	float fine = max(grid_line(moving_grid.x, 0.488), grid_line(moving_grid.y, 0.488));
+	float major = max(grid_line(moving_grid.x / 4.0, 0.47), grid_line(moving_grid.y / 4.0, 0.47));
 
-    // Network nodes with Bitcoin gold color
-    float nodes = 0.0;
-    for(int i = 0; i < 20; i++) {
-        vec2 pos = vec2(hash(vec2(float(i), 0.0)), hash(vec2(float(i), 1.0)));
-        pos += sin(t + float(i)) * 0.1;
+	vec3 colour = connection_color.rgb * fine * 0.13;
+	colour += connection_color.rgb * major * 0.2;
 
-        float dist = distance(uv, pos);
-        nodes += smoothstep(0.05, 0.0, dist) * 0.8;
-    }
+	// Short circuit traces appear in deterministic cells and move as one layer.
+	vec2 cell_id = floor(moving_grid / vec2(4.0, 3.0));
+	vec2 local = fract(moving_grid / vec2(4.0, 3.0));
+	float seed = hash21(cell_id);
+	float horizontal = step(0.88, seed) * step(0.12, local.x) * step(local.x, 0.82)
+		* (1.0 - smoothstep(0.02, 0.07, abs(local.y - 0.5)));
+	float node = step(0.94, seed) * (1.0 - smoothstep(0.025, 0.07, distance(local, vec2(0.82, 0.5))));
+	colour += node_color.rgb * horizontal * 0.36;
+	colour += node_color.rgb * node * 0.75;
 
-    // Connection lines with slight blue tint
-    float connections = 0.0;
-    float grid = noise(screen_uv + t * 0.5) * 0.5;
-    connections += smoothstep(0.7, 0.9, grid) * 0.3;
+	// Sparse square data packets reinforce the pixel-art language.
+	vec2 pixel_cell = floor(uv * vec2(120.0, 68.0));
+	float packet = step(0.996, hash21(pixel_cell + floor(t * 2.0)));
+	colour += mix(connection_color.rgb, node_color.rgb, hash21(pixel_cell + 5.0)) * packet * 0.55;
 
-    // Falling "hash" effect - multiple columns of descending blocks
-    float falling_hashes = 0.0;
-    for(int col = 0; col < 12; col++) {
-        float col_x = float(col) * 0.09 + hash(vec2(float(col), 0.0)) * 0.02;
-        float col_speed = 0.3 + hash(vec2(float(col), 1.0)) * 0.4;
-        float col_offset = hash(vec2(float(col), 2.0)) * 6.28;
+	float scanline = 0.94 + 0.06 * sin(uv.y * 900.0);
+	float vignette = 1.0 - smoothstep(0.25, 0.76, distance(uv, vec2(0.5)));
+	colour *= scanline * mix(0.45, 1.0, vignette);
 
-        // Create falling effect
-        vec2 hash_uv = vec2(uv.x, uv.y + t * col_speed + col_offset);
-        hash_uv.x = (hash_uv.x - col_x) * 15.0; // Narrow columns
-        hash_uv.y *= 20.0; // Stretched vertically
-
-        float hash_blocks = hexPattern(hash_uv);
-        // Add glow to the hash blocks
-        float hash_glow = hash_blocks * smoothstep(1.2, 0.0, abs(hash_uv.x));
-        falling_hashes += hash_glow * 0.15;
-    }
-
-    // Floating particles (smaller contribution)
-    float particles = noise(screen_uv * 2.0 + t) * noise(screen_uv * 3.0 - t * 0.7);
-    particles = smoothstep(0.6, 0.8, particles) * 0.15;
-
-    // Bitcoin-themed gold/orange glow
-    vec4 bitcoin_gold = vec4(1.0, 0.65, 0.0, 1.0);
-    vec4 chain_blue = vec4(0.2, 0.6, 1.0, 1.0);
-
-    vec4 node_contribution = node_color * nodes;
-    vec4 connection_contribution = connection_color * connections;
-    vec4 particle_contribution = bitcoin_gold * particles;
-    vec4 hash_contribution = bitcoin_gold * falling_hashes * 0.8;
-
-    // A faint technical grid keeps menus tied to the in-game mining HUD.
-    vec2 grid_uv = fract(uv * vec2(32.0, 18.0));
-    float grid_line = max(step(0.975, grid_uv.x), step(0.965, grid_uv.y));
-    vec4 grid_contribution = chain_blue * grid_line * 0.028;
-
-    COLOR = node_contribution + connection_contribution + particle_contribution + hash_contribution + grid_contribution;
-
-    // Add subtle pulsing to create "blockchain" feel
-    float pulse = sin(t * 2.0) * 0.05 + 0.95;
-    COLOR.rgb *= pulse;
-
-    // Soft scanlines and a true edge vignette keep the field readable behind UI cards.
-    float scanline = 0.94 + 0.06 * sin(uv.y * 900.0);
-    COLOR.rgb *= scanline;
-    float edge = 1.0 - smoothstep(0.28, 0.82, distance(uv, vec2(0.5)));
-    COLOR.a *= mix(0.3, 1.0, edge);
+	float alpha = clamp(fine * 0.08 + major * 0.16 + horizontal * 0.3 + node * 0.55 + packet * 0.5, 0.0, 0.72);
+	COLOR = vec4(colour, alpha);
 }

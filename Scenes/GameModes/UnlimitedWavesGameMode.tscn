@@ -30,6 +30,28 @@
 [ext_resource type="PackedScene" uid="uid://bsj51dud0foww" path="res://Scenes/QuadrantTerrain/FractureBullet.tscn" id="16_w6c12"]
 [ext_resource type="PackedScene" uid="uid://cbugj4k7fmf02" path="res://Scenes/UI/HealthUIWavesGameMode.tscn" id="16_xahjo"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="25_rg2dc"]
+[ext_resource type="Shader" path="res://Shaders/GameBackgroundUnified.gdshader" id="26_bgshader"]
+[ext_resource type="Shader" path="res://Shaders/NeonTile.gdshader" id="27_tileshader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_arcade_bg"]
+shader = ExtResource("26_bgshader")
+shader_parameter/bg_color_dark = Color(0.008, 0.012, 0.035, 1)
+shader_parameter/bg_color_light = Color(0.035, 0.055, 0.12, 1)
+shader_parameter/cyan_glow = Color(0.05, 0.82, 1, 1)
+shader_parameter/orange_glow = Color(1, 0.38, 0.04, 1)
+shader_parameter/grid_scale = 38.0
+shader_parameter/movement_speed = 0.28
+shader_parameter/brightness = 0.9
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arcade_bg"]
+bg_color = Color(0.008, 0.012, 0.035, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_neon_tiles"]
+shader = ExtResource("27_tileshader")
+shader_parameter/cyan = Color(0.05, 0.85, 1, 1)
+shader_parameter/orange = Color(1, 0.36, 0.04, 1)
+shader_parameter/dark_fill = Color(0.015, 0.025, 0.06, 1)
+shader_parameter/pulse_speed = 1.2
 
 [sub_resource type="Resource" id="Resource_rvc4p"]
 script = ExtResource("8_tscnx")
@@ -255,6 +277,19 @@ item_drops_bus = ExtResource("12_rg2dc")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("2_b5yyy")
 
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="ArcadeBackground" type="Panel" parent="BGLayer"]
+material = SubResource("ShaderMaterial_arcade_bg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_arcade_bg")
+
 [node name="AdvancedCamera" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_5761m")]
 position = Vector2(566, 321)
 zoom = Vector2(1, 1)
@@ -278,6 +313,7 @@ light_mask = 2
 visibility_layer = 2
 
 [node name="Ground" type="TileMapLayer" parent="World"]
+material = SubResource("ShaderMaterial_neon_tiles")
 modulate = Color(1.2, 1.2, 1.2, 1)
 light_mask = 2
 visibility_layer = 2

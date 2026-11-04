@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://bibwyde8i1wqr" path="res://Textures/VFX/1x1 Square.png" id="6_bo7sv"]
 [ext_resource type="Script" uid="uid://doc7qvahbxu0j" path="res://Scripts/Resources/VFXEffectProperties.gd" id="7_sja6u"]
 [ext_resource type="Texture2D" uid="uid://cwtw4gx8qcy3w" path="res://Textures/Enemies/Grass.png" id="8_5jwg1"]
-[ext_resource type="Texture2D" uid="uid://bhoj5ykjs0ahw" path="res://Textures/FracturableBodies/BlockCoreTextureNormal.png" id="9_5jwg1"]
+[ext_resource type="Texture2D" uid="uid://btshe44ts2kbd" path="res://Textures/FracturableBodies/BlockCoreTextureNormalMap.png" id="9_5jwg1"]
 [ext_resource type="Script" uid="uid://bw5mrw1knvour" path="res://addons/item_drops/drops/random_drops.gd" id="10_obdxo"]
 [ext_resource type="Script" uid="uid://daksr3jumc0af" path="res://addons/item_drops/drops/droppable.gd" id="11_imyi4"]
 [ext_resource type="Script" uid="uid://cqmxiok1cwu5s" path="res://addons/item_drops/drops/drops_table.gd" id="12_5jwg1"]

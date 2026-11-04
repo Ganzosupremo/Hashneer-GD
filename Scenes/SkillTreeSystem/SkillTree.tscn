@@ -9,7 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://cpa0t8fmwgsr5" path="res://Audio/Music/Préludes, Opus 28.mp3" id="4_g7g25"]
 [ext_resource type="AudioStream" uid="uid://cr6bfprtr6640" path="res://Audio/Music/Canon In D Interstellar Mix.mp3" id="5_r00sj"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
-[ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="9_hobie"]
+[ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="9_hobie"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="10_oevro"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="21_custom"]
@@ -36,23 +36,15 @@ playlist = SubResource("AudioStreamPlaylist_xfqgc")
 
 [sub_resource type="Environment" id="Environment_kv8h2"]
 background_mode = 1
-background_color = Color(0.05, 0.05, 0.08, 1)
+background_color = Color(0.008, 0.012, 0.035, 1)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_network"]
 shader = ExtResource("9_hobie")
-shader_parameter/polar_coordinates = true
-shader_parameter/polar_center = Vector2(0.5, 0.5)
-shader_parameter/polar_zoom = 1.0
-shader_parameter/polar_repeat = 1.0
-shader_parameter/spin_rotation = 90.0
-shader_parameter/spin_speed = 5.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0, 0.00732408, 0.139427, 1)
-shader_parameter/colour_2 = Color(0.419813, 0.419813, 0.419813, 1)
-shader_parameter/colour_3 = Color(0.147672, 0.147672, 0.147672, 1)
-shader_parameter/contrast = 2.0
-shader_parameter/spin_amount = 0.36
-shader_parameter/pixel_filter = 700.0
+shader_parameter/time = 0.0
+shader_parameter/speed = 0.75
+shader_parameter/density = 0.8
+shader_parameter/node_color = Color(1, 0.38, 0.04, 0.3)
+shader_parameter/connection_color = Color(0.05, 0.82, 1, 0.22)
 
 [node name="SkillTree" type="Control" unique_id=1026256818 groups=["SkillsTree"]]
 process_mode = 1
@@ -113,9 +105,6 @@ mouse_filter = 2
 theme = ExtResource("7_c7c56")
 script = ExtResource("60_tree_view")
 node_scene = ExtResource("61_tree_node")
-line_width = null
-line_met_color = null
-line_unmet_color = null
 
 [node name="SkillTreeTabs" parent="FrontLayer" unique_id=1964522389 instance=ExtResource("10_oevro")]
 

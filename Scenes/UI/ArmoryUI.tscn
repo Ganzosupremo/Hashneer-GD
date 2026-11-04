@@ -5,6 +5,15 @@
 [ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
 [ext_resource type="Script" uid="uid://ctjeq4gdevwd2" path="res://Scripts/Managers/ArmoryManager.gd" id="8_y8qb1"]
 [ext_resource type="Script" path="res://Scripts/UI/LoadoutPanel.gd" id="9_loadout"]
+[ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="10_ui_bg"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ui_bg"]
+shader = ExtResource("10_ui_bg")
+shader_parameter/time = 0.0
+shader_parameter/speed = 0.65
+shader_parameter/density = 0.85
+shader_parameter/node_color = Color(1, 0.38, 0.04, 0.3)
+shader_parameter/connection_color = Color(0.05, 0.82, 1, 0.22)
 
 [node name="ArmoryUI" type="Control"]
 layout_mode = 3
@@ -15,6 +24,27 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_tapuc")
 script = ExtResource("1_ocbj5")
+
+[node name="BGLayer" type="CanvasLayer" parent="."]
+layer = -100
+
+[node name="Base" type="ColorRect" parent="BGLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.008, 0.012, 0.035, 1)
+
+[node name="NetworkLayer" type="ColorRect" parent="BGLayer"]
+material = SubResource("ShaderMaterial_ui_bg")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="Overlay" type="Panel" parent="."]
 layout_mode = 1

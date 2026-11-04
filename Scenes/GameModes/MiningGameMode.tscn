@@ -110,11 +110,13 @@ normal = Vector2(1, 0)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_7kvq1"]
 shader = ExtResource("26_2lin2")
-shader_parameter/time = 0.0
-shader_parameter/bg_color_dark = Color(0.03, 0.04, 0.08, 1)
-shader_parameter/bg_color_light = Color(0.06, 0.08, 0.14, 1)
-shader_parameter/grid_scale = 50.0
-shader_parameter/movement_speed = 0.4
+shader_parameter/bg_color_dark = Color(0.008, 0.012, 0.035, 1)
+shader_parameter/bg_color_light = Color(0.035, 0.055, 0.12, 1)
+shader_parameter/cyan_glow = Color(0.05, 0.82, 1, 1)
+shader_parameter/orange_glow = Color(1, 0.38, 0.04, 1)
+shader_parameter/grid_scale = 42.0
+shader_parameter/movement_speed = 0.32
+shader_parameter/brightness = 1.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i7u0u"]
 bg_color = Color(0.02, 0.02, 0.04, 0.95)
@@ -123,6 +125,7 @@ bg_color = Color(0.02, 0.02, 0.04, 0.95)
 script = ExtResource("1_wooh0")
 
 [node name="BGParallax" type="Node2D" parent="."]
+visible = false
 
 [node name="BitcoinParallax1" type="Parallax2D" parent="BGParallax"]
 repeat_size = Vector2(2560, 1440)

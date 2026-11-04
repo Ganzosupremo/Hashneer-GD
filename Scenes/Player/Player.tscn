@@ -198,7 +198,7 @@ shape = SubResource("CircleShape2D_1sxoh")
 debug_color = Color(1, 0.00315492, 0.0714776, 0.42)
 
 [node name="Body" type="Sprite2D" parent="."]
-modulate = Color(1, 0.647059, 0, 1)
+modulate = Color(1, 1, 1, 1)
 light_mask = 16
 visibility_layer = 17
 texture = SubResource("CanvasTexture_8cj01")
@@ -206,7 +206,7 @@ texture = SubResource("CanvasTexture_8cj01")
 [node name="RotationContainer" type="Node2D" parent="."]
 
 [node name="WeaponSprite" type="Sprite2D" parent="RotationContainer" groups=["Player"]]
-modulate = Color(0.752941, 0.752941, 0.752941, 1)
+modulate = Color(1, 1, 1, 1)
 light_mask = 16
 visibility_layer = 17
 texture = SubResource("CanvasTexture_yb677")
