@@ -11,7 +11,7 @@
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="7_c7c56"]
 [ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="9_hobie"]
 [ext_resource type="PackedScene" uid="uid://bjp6n48b77qnu" path="res://Scenes/UI/CurrencyUI.tscn" id="10_b4lxo"]
-[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="10_oevro"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/HubNav/HubNavBar.tscn" id="10_oevro"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="21_custom"]
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
 [ext_resource type="Script" uid="uid://kw1klri7wheu" path="res://Scripts/BitcoinNetwork/EconomicEventExample.gd" id="41_g7g25"]
@@ -106,7 +106,7 @@ theme = ExtResource("7_c7c56")
 script = ExtResource("60_tree_view")
 node_scene = ExtResource("61_tree_node")
 
-[node name="SkillTreeTabs" parent="FrontLayer" unique_id=1964522389 instance=ExtResource("10_oevro")]
+[node name="HubNavBar" parent="FrontLayer" unique_id=1964522389 instance=ExtResource("10_oevro")]
 
 [node name="ButtonContainer" type="HBoxContainer" parent="FrontLayer" unique_id=635040872]
 anchors_preset = 12

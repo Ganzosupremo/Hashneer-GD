@@ -8,6 +8,7 @@ class_name LevelSelectorMenu extends Control
 var _current_level_index: int = 0
 
 func _ready() -> void:
+	add_to_group(HubNavBar.BLOCKER_GROUP)
 	self.hide()
 	_setup_buttons()
 

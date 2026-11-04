@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dxw6i0mxnc6nw" path="res://Scripts/UI/ArmoryUI.gd" id="1_ocbj5"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_tapuc"]
-[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="6_86iey"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/HubNav/HubNavBar.tscn" id="6_86iey"]
 [ext_resource type="Script" uid="uid://ctjeq4gdevwd2" path="res://Scripts/Managers/ArmoryManager.gd" id="8_y8qb1"]
 [ext_resource type="Script" path="res://Scripts/UI/LoadoutPanel.gd" id="9_loadout"]
 [ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="10_ui_bg"]
@@ -229,6 +229,9 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
+
+[node name="HubNavBar" parent="VBoxContainer" instance=ExtResource("6_86iey")]
+layout_mode = 2
 
 [node name="Kicker" type="Label" parent="VBoxContainer"]
 layout_mode = 2
@@ -627,14 +630,6 @@ theme_type_variation = &"NormalText"
 theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 max_lines_visible = 3
-
-[node name="Footer" type="MarginContainer" parent="VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="SkillTreeTabs" parent="VBoxContainer/Footer" instance=ExtResource("6_86iey")]
-layout_mode = 2
 
 [node name="ArmoryManager" type="Node2D" parent="."]
 script = ExtResource("8_y8qb1")

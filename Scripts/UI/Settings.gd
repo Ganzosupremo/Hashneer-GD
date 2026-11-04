@@ -19,6 +19,7 @@ signal visibility_state_changed(visible: bool)
 var _loaded: bool = false
 
 func _ready() -> void:
+	add_to_group(HubNavBar.BLOCKER_GROUP)
 	# Populate resolutions
 	var available_resolutions = [
 		Vector2(1024, 768),

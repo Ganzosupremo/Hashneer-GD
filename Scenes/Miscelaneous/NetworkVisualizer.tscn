@@ -2,8 +2,7 @@
 
 [ext_resource type="Script" uid="uid://clk0t1njrsu2f" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
-[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_button"]
-[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="4_tabs"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/HubNav/HubNavBar.tscn" id="4_tabs"]
 [ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="5_bg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
@@ -111,7 +110,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 26
-theme_override_constants/margin_top = 20
+theme_override_constants/margin_top = 76
 theme_override_constants/margin_right = 26
 theme_override_constants/margin_bottom = 12
 
@@ -317,16 +316,5 @@ theme_override_font_sizes/font_size = 13
 text = "Mine the first block to initialize the local chain."
 horizontal_alignment = 1
 
-[node name="Footer" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox"]
-layout_mode = 2
-theme_override_constants/separation = 12
-[node name="ReturnButton" parent="OuterMargin/Shell/Margin/RootVBox/Footer" instance=ExtResource("3_button")]
-custom_minimum_size = Vector2(190, 46)
-layout_mode = 2
-theme_type_variation = &"ModernQuitButton"
-text = "RETURN TO TREE"
-[node name="SkillTreeTabs" parent="OuterMargin/Shell/Margin/RootVBox/Footer" instance=ExtResource("4_tabs")]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[connection signal="pressed" from="OuterMargin/Shell/Margin/RootVBox/Footer/ReturnButton" to="." method="_on_return_button_pressed"]
+[node name="HubNavBar" parent="." instance=ExtResource("4_tabs")]
+layout_mode = 1
