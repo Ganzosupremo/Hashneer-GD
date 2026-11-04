@@ -3,15 +3,20 @@ class_name StatSkillEffect extends SkillEffect
 ##
 ## The stat names are the keys of [member PlayerStatsManager.base_stats]. A new stat needs its
 ## base value there, its name in the [code]@export_enum[/code] below and code that reads it with
-## [method PlayerLoadout.get_stat].
+## [method PlayerLoadout.get_stat].[br]
+## [b]Reductions[/b] ([constant REDUCTION_STATS]) have base 0 and use flat values: 0.04 per level
+## is 4% less cooldown or damage taken. The player caps them, see [PlayerController].
 
-@export_enum("Health", "Speed", "Damage") var stat: String = "Health"
+@export_enum("Health", "Speed", "Damage", "Fire Rate", "Ability Cooldown", "Special Cooldown", "Damage Reduction", "Fiat Gain") var stat: String = "Health"
 ## Percentages are decimals: 0.1 is +10%. They multiply the base plus the flat bonuses.
 @export var is_percentage: bool = false
 ## What the first level gives.
 @export var value_per_level: float = 10.0
 ## Each next level gives this much times the previous one. 1.0 gives the same every level.
 @export var value_multiplier: float = 1.0
+
+## Stats that lower something: the flat value reads as a percentage with a minus sign.
+const REDUCTION_STATS: Array[String] = ["Ability Cooldown", "Special Cooldown", "Damage Reduction"]
 
 
 func apply(loadout: PlayerLoadout, level: int) -> void:
@@ -26,6 +31,10 @@ func get_total_value(level: int) -> float:
 
 func describe(level: int) -> String:
 	var value: float = get_total_value(level)
+	if REDUCTION_STATS.has(stat):
+		if stat == "Damage Reduction":
+			return "Damage taken -%s%%" % _format_number(value * 100.0)
+		return "%s -%s%%" % [stat, _format_number(value * 100.0)]
 	if is_percentage:
 		return "%s +%s%%" % [stat, _format_number(value * 100.0)]
 	return "%s +%s" % [stat, _format_number(value)]

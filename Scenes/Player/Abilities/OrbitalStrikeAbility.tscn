@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/OrbitalStrikeAbility.gd" id="1_ability"]
+
+[node name="OrbitalStrikeAbility" type="Node2D"]
+script = ExtResource("1_ability")
+ability_name = "Orbital Strike"
+ability_description = "Marks the spot under your cursor; a moment later a big blast lands there."
+ability_cooldown = 18.0
+ability_kind = 1
+radius = 300.0
+damage = 260.0
+force = 35000.0

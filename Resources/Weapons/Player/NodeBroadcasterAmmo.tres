@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="3_hit"]
+
+[sub_resource type="Resource" id="Upg_0"]
+script = ExtResource("2_upg")
+upgrade_type = 4
+upgrade_name = "Bigger packets"
+upgrade_description = "+10% bullet damage"
+upgrade_levels = 10
+upgrade_power_per_level = 0.1
+base_cost = 180000.0
+cost_multiplier = 1.4
+requires_bitcoin = true
+bitcoin_base_cost = 2.5
+bitcoin_cost_multiplier = 1.25
+
+[sub_resource type="Resource" id="Upg_1"]
+script = ExtResource("2_upg")
+upgrade_type = 5
+upgrade_name = "Faster relay"
+upgrade_description = "+10% bullet speed (more range)"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 80000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Upg_2"]
+script = ExtResource("2_upg")
+upgrade_type = 10
+upgrade_name = "More peers"
+upgrade_description = "+1 bullet per ring"
+upgrade_levels = 6
+upgrade_power_per_level = 1.0
+base_cost = 200000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+colors = PackedColorArray(0.4, 0.95, 1, 1, 0.4, 0.95, 1, 0)
+
+[resource]
+script = ExtResource("1_ammo")
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Upg_0"), SubResource("Upg_1"), SubResource("Upg_2")])
+ammo_name = "Gossip Packets"
+min_lifetime = 0.7
+max_lifetime = 0.9
+bullet_damage = 26.0
+bullet_speed = 900.0
+bullet_pattern = 3
+fire_pattern_simultaneous = true
+size = 6
+bullets_per_shoot_min = 12
+bullets_per_shoot_max = 12
+trail_length = 6
+trail_width = 4.0
+fracture_force = 6000.0
+trail_gradient = SubResource("Gradient_trail")
+bullet_hit_vfx = ExtResource("3_hit")
+is_child = true
+upgrade_description = "A ring of short range packets sent to every peer around you."

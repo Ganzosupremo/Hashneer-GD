@@ -1,0 +1,70 @@
+[gd_resource type="Resource" script_class="WeaponDetails" format=3]
+
+[ext_resource type="Script" uid="uid://c3oqvnse8erag" path="res://Scripts/Resources/WeaponDetails.gd" id="1_wd"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Player/NodeBroadcasterAmmo.tres" id="3_ammo"]
+[ext_resource type="Resource" path="res://Resources/Audio/MiniUziFire.tres" id="4_sound"]
+[ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/NodeBroadcaster.png" id="5_tex"]
+[ext_resource type="Resource" uid="uid://dc2dkl7no6bnt" path="res://Resources/Weapons/Player/DefaultShootEffect.tres" id="6_fx"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Specials/NodeBroadcasterSpecial.tres" id="7_special"]
+
+[sub_resource type="Resource" id="Upg_0"]
+script = ExtResource("2_upg")
+upgrade_type = 0
+upgrade_name = "Faster hammer"
+upgrade_description = "+12% fire rate"
+upgrade_levels = 6
+upgrade_power_per_level = 0.12
+base_cost = 200000.0
+cost_multiplier = 1.5
+
+[sub_resource type="Resource" id="Upg_1"]
+script = ExtResource("2_upg")
+upgrade_type = 1
+upgrade_name = "More damage"
+upgrade_description = "+10% damage output"
+upgrade_levels = 5
+upgrade_power_per_level = 0.1
+base_cost = 320000.0
+cost_multiplier = 1.6
+requires_bitcoin = true
+bitcoin_base_cost = 4.0
+bitcoin_cost_multiplier = 1.25
+
+[sub_resource type="Resource" id="Upg_2"]
+script = ExtResource("2_upg")
+upgrade_type = 13
+upgrade_name = "Special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 100000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Upg_3"]
+script = ExtResource("2_upg")
+upgrade_type = 14
+upgrade_name = "Special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 140000.0
+cost_multiplier = 1.6
+
+[resource]
+script = ExtResource("1_wd")
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Upg_0"), SubResource("Upg_1"), SubResource("Upg_2"), SubResource("Upg_3")])
+weapon_name = "Node Broadcaster"
+weapon_texture = ExtResource("5_tex")
+fire_sound = ExtResource("4_sound")
+special = ExtResource("7_special")
+ammo_details = ExtResource("3_ammo")
+weapon_shoot_effect = ExtResource("6_fx")
+shots_per_second = 2.2
+amplitude = 2.0
+frequency = 10.0
+duration = 0.15
+recoil_strength = 0.0
+recoil_kick_strength = 1.5
+trauma_shake_amount = 0.05
+upgrade_description = "Tells every peer around you at once. Hits in all directions, short range."

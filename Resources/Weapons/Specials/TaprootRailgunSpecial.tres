@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="WeaponSpecialShot" format=3]
+
+[ext_resource type="Script" path="res://Scripts/WeaponSystem/Specials/WeaponSpecialShot.gd" id="1_spec"]
+
+[resource]
+script = ExtResource("1_spec")
+special_name = "Schnorr Barrage"
+description = "Three aggregated slugs that go through enemies and blocks."
+cooldown = 16.0
+damage_multiplier = 1.5
+volleys = 3
+volley_interval = 0.12
+extra_pierce = 10
+pierce_terrain = true
+size_multiplier = 1.5
+recoil_multiplier = 1.5

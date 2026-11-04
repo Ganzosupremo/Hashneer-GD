@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/CongestionFieldAbility.gd" id="1_ability"]
+
+[node name="CongestionFieldAbility" type="Node2D"]
+script = ExtResource("1_ability")
+ability_name = "Congestion Field"
+ability_description = "Enemies close to you move at about half speed."
+ability_cooldown = 0.25
+ability_kind = 0

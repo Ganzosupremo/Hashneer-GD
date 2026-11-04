@@ -38,6 +38,10 @@ var _laser_beam: LaserBeam
 ## Seconds the trigger has been held with the current weapon, used for spin up.
 var _trigger_held_time: float = 0.0
 var _trigger_held: bool = false
+## Player skills: multiplies the fire rate of every weapon (see StatSkillEffect "Fire Rate").
+var fire_rate_multiplier: float = 1.0
+## Player skills: multiplies the cooldown of every weapon special (see StatSkillEffect "Special Cooldown").
+var special_cooldown_multiplier: float = 1.0
 
 #region Special ability state
 ## Emitted when a weapon's special is used. [param cooldown] is the seconds until it's ready again.
@@ -250,7 +254,7 @@ func reset_cooldown_timer() -> void:
 	var held_time: float = _trigger_held_time
 	if _buff_applies() and _buff.instant_spin_up:
 		held_time = current_weapon.spin_up_time
-	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown(held_time) / _get_buff_fire_rate_multiplier()
+	fire_rate_cooldown_timer = current_weapon.get_fire_cooldown(held_time) / (_get_buff_fire_rate_multiplier() * max(fire_rate_multiplier, 0.1))
 
 # Checks if the provided pool is valid for use.
 func _is_pool_valid(pool: PoolFracture) -> bool:
@@ -304,7 +308,8 @@ func _calculate_bullet_spread(ammo: AmmoDetails, index: int, bullet_per_shot: in
 			if bullet_per_shot > 1:
 				step = deg_to_rad(arc_spread) / float(bullet_per_shot - 1)
 
-			var angle: float = - arc_spread + step * index
+			# pattern_arc_angle is in degrees: center the arc on the aim (index starts at 1)
+			var angle: float = -deg_to_rad(arc_spread) * 0.5 + step * (index - 1)
 			launch_vectors.append(initial_vector.normalized().rotated(angle))
 		AmmoDetails.BulletPattern.SPREAD:
 			var angle: float = randf_range(-_get_spread(), _get_spread())
@@ -378,7 +383,7 @@ func try_use_special(player_damage_multiplier: float, target_position: Vector2) 
 		return false
 	if !weapon.special.activate(self, weapon, player_damage_multiplier * _get_buff_damage_multiplier(), target_position):
 		return false
-	var cooldown: float = weapon.get_special_cooldown()
+	var cooldown: float = weapon.get_special_cooldown() * special_cooldown_multiplier
 	_special_cooldowns[weapon.get_upgrade_id()] = cooldown
 	special_used.emit(weapon, cooldown)
 	return true

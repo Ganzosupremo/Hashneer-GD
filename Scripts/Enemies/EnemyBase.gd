@@ -185,6 +185,10 @@ var is_player_dead: bool = false
 var desired_velocity: Vector2 = Vector2.ZERO
 ## Speed multiplier the current behaviour wants this frame (reset to 1 every physics frame).
 var move_speed_scale: float = 1.0
+## Slow from the player (Congestion Field), multiplies [member move_speed_scale] until
+## [member _external_slow_until] (msec). A timestamp, so subclasses that override _process can't break it.
+var _external_slow: float = 1.0
+var _external_slow_until: int = 0
 
 ## Minimum time between contact hits from any enemy, so a swarm can't melt the player in one frame.
 const CONTACT_HIT_GLOBAL_COOLDOWN_MSEC: int = 300
@@ -266,6 +270,7 @@ func _physics_process(delta):
 	_process_contact_damage(delta)
 	move_speed_scale = 1.0
 	var input: Vector2 = _get_movement_input(delta)
+	move_speed_scale *= get_external_slow()
 	if use_flocking and input != Vector2.ZERO:
 		input = (input + _calculate_flocking_force()).normalized()
 	_apply_steering(input, delta)
@@ -698,6 +703,18 @@ func restore() -> void:
 
 func canBeHealed() -> bool:
 	return _health_component.can_be_healed()
+
+## Slows the enemy to [param multiplier] of its speed for [param duration] seconds.
+## Overlapping slows keep the strongest one.
+func apply_slow(multiplier: float, duration: float) -> void:
+	var now: int = Time.get_ticks_msec()
+	if now >= _external_slow_until or multiplier < _external_slow:
+		_external_slow = clampf(multiplier, 0.05, 1.0)
+	_external_slow_until = max(_external_slow_until, now + int(duration * 1000.0))
+
+## Speed multiplier from [method apply_slow] right now (1.0 = not slowed).
+func get_external_slow() -> float:
+	return _external_slow if Time.get_ticks_msec() < _external_slow_until else 1.0
 
 func has_active_shield() -> bool:
 	return shield != null and is_instance_valid(shield) and shield.is_active()

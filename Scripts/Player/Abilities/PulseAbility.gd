@@ -12,8 +12,11 @@ func _on_activate() -> void:
 	var player: PlayerController = get_player()
 	if player == null:
 		return
-	var center: Vector2 = player.global_position
-	var final_damage: float = damage * player.get_attack_damage_multiplier()
+	blast(player.global_position, damage * player.get_attack_damage_multiplier(), player)
+
+## Explodes at [param center]: hurts every enemy and breaks the blocks within [member radius].
+## [param exclude] is not hit (the player).
+func blast(center: Vector2, final_damage: float, exclude: CollisionObject2D = null) -> void:
 	var quadrant_builder: QuadrantBuilder = get_tree().get_first_node_in_group("QuadrantBuilder")
 
 	if GameManager.vfx_manager:
@@ -30,7 +33,8 @@ func _on_activate() -> void:
 	params.transform = Transform2D(0.0, center)
 	params.collision_mask = collision_mask
 	params.collide_with_bodies = true
-	params.exclude = [player.get_rid()]
+	if exclude:
+		params.exclude = [exclude.get_rid()]
 	var results: Array = get_world_2d().direct_space_state.intersect_shape(params, 64)
 	# A body with several shapes comes back once per shape, hit it once
 	var bodies: Array = []

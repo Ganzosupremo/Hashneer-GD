@@ -52,6 +52,28 @@ var active_ability: BaseAbility = null
 var _damage_boost: float = 1.0
 var _damage_boost_left: float = 0.0
 
+#region Skill stats (see StatSkillEffect), set in set_player()
+## Max speed multiplier from the Speed skills (final Speed / base Speed).
+var speed_multiplier: float = 1.0
+## Ability cooldowns are multiplied by this (0.8 = 20% shorter). See [method BaseAbility.get_effective_cooldown].
+var ability_cooldown_multiplier: float = 1.0
+## Share of the damage taken that is ignored, at most [constant MAX_DAMAGE_REDUCTION].
+var damage_reduction: float = 0.0
+## Fiat drops are multiplied by this, see [method FED.get_fiat_subsidy].
+var fiat_gain_multiplier: float = 1.0
+const MAX_DAMAGE_REDUCTION: float = 0.6
+## Share of the Speed bonus that reaches the max speed, see [method _apply_skill_stats].
+const SPEED_POINTS_WEIGHT: float = 0.5
+## Cooldown reductions stop here, so nothing becomes spammable.
+const MAX_COOLDOWN_REDUCTION: float = 0.5
+#endregion
+
+# Seconds the player ignores damage (dash, Second Wind). Separate from the god mode flag on HealthComponent.
+var _invulnerable_left: float = 0.0
+# Dash: the player moves at a fixed velocity and ignores input while it lasts
+var _dash_left: float = 0.0
+var _dash_velocity: Vector2 = Vector2.ZERO
+
 # Footstep system
 var footstep_timer: float = 0.0
 var base_step_interval: float = 0.45  # ~2.2 Hz at walking speed
@@ -82,6 +104,7 @@ func _process(delta: float) -> void:
 		use_weapon_special()
 		use_active_ability()
 		_process_damage_boost(delta)
+		_process_invulnerability(delta)
 		switch_weapon()
 		rotation_container.look_at(get_global_mouse_position())
 
@@ -90,7 +113,10 @@ func _physics_process(delta) -> void:
 
 		velocity += gravity_force * delta
 		_process_slow(delta)
-		move(delta)
+		if _dash_left > 0.0:
+			_process_dash(delta)
+		else:
+			move(delta)
 		
 		gravity_force = Vector2.ZERO
 
@@ -102,6 +128,7 @@ func set_player() -> void:
 	# Skills only count in the modes they are made for, see SkillDefinition.modes
 	var mode: int = SkillProgress.get_mode_for(self)
 	var loadout: PlayerLoadout = SkillProgress.build_loadout(mode)
+	_apply_skill_stats(loadout)
 	# Only what is equipped in the Armory for this mode: 2 weapons, 3 passives and 1 active
 	_unlock_saved_abilities(Equipment.get_equipped_abilities(mode, loadout))
 	var stats: Dictionary = player_details.apply_stats(loadout)
@@ -120,6 +147,19 @@ func set_player() -> void:
 	hit_vfx = player_details.hit_vfx
 	set_weapon()
 
+## Reads the stats that don't live in [PlayerDetails] (fire rate, cooldowns, armor, fiat) from [param loadout].
+func _apply_skill_stats(loadout: PlayerLoadout) -> void:
+	var base: Dictionary = PlayerStatsManager.base_stats
+	var base_speed: float = base.get("Speed", 150.0)
+	# Speed points count half toward the max speed: Speedy maxed (+90 on 150) is +30%, both speed skills maxed +50%
+	var speed_ratio: float = loadout.get_stat("Speed", base_speed) / base_speed if base_speed > 0.0 else 1.0
+	speed_multiplier = clampf(1.0 + (speed_ratio - 1.0) * SPEED_POINTS_WEIGHT, 0.5, 2.0)
+	ability_cooldown_multiplier = 1.0 - clampf(loadout.get_stat("Ability Cooldown", base.get("Ability Cooldown", 0.0)), 0.0, MAX_COOLDOWN_REDUCTION)
+	damage_reduction = clampf(loadout.get_stat("Damage Reduction", base.get("Damage Reduction", 0.0)), 0.0, MAX_DAMAGE_REDUCTION)
+	fiat_gain_multiplier = max(loadout.get_stat("Fiat Gain", base.get("Fiat Gain", 1.0)), 0.0)
+	fire_weapon.fire_rate_multiplier = max(loadout.get_stat("Fire Rate", base.get("Fire Rate", 1.0)), 0.1)
+	fire_weapon.special_cooldown_multiplier = 1.0 - clampf(loadout.get_stat("Special Cooldown", base.get("Special Cooldown", 0.0)), 0.0, MAX_COOLDOWN_REDUCTION)
+
 func set_weapon() -> void:
 		active_weapon.set_weapon(initial_weapon)
 		
@@ -129,6 +169,7 @@ func set_weapon() -> void:
 
 func deactivate_player(_args: MainEventBus.LevelCompletedArgs = null) -> void:
 		can_move = false
+		modulate.a = 1.0
 		collision_layer = 0
 		collision_mask = 0
 		for ability in abilities:
@@ -144,6 +185,8 @@ func apply_gravity(force: Vector2) -> void:
 ## [param time_scale]: The time scale to apply during hitstop (0.0 = full freeze, 1.0 = normal, default is 0.3).
 ## If not provided, defaults to [Vector2.ZERO].
 func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time: bool = false, hitstop_duration: float = 0.08, time_scale: float = 0.3) -> void:
+	if is_invulnerable():
+		return
 	AudioManager.create_2d_audio_at_location(global_position, hit_sound_effect.sound_type, hit_sound_effect.destination_audio_bus)
 	var angle: float = 0.0
 	if hit_position != Vector2.ZERO:
@@ -157,7 +200,7 @@ func damage(_damage: float, hit_position: Vector2 = Vector2.ZERO, slow_down_time
 
 	if slow_down_time:
 		GameManager.vfx_manager.slow_time(hitstop_duration, time_scale, hitstop_duration * 0.5)
-	get_health_node().take_damage(_damage * incoming_damage_multiplier)
+	get_health_node().take_damage(_damage * incoming_damage_multiplier * (1.0 - damage_reduction))
 
 ## Applies a brief time slowdown effect (hitstop/freeze frame).[br]
 ## [param duration]: How long the hitstop lasts in seconds.[br]
@@ -214,7 +257,8 @@ func move(delta: float) -> void:
 			footstep_timer = 0.0  # Reset footstep timer when stopped
 		else:
 			# Steer-based movement for better responsiveness
-			var max_speed: float = Constants.Player_Max_Speed * _slow_multiplier
+			# speed_multiplier: the Speed skills (the Speed stat used to be read but never applied)
+			var max_speed: float = Constants.Player_Max_Speed * speed_multiplier * _slow_multiplier
 			var desired_velocity = input * max_speed
 			
 			# Apply aim-aligned strafe assist
@@ -353,6 +397,45 @@ func _process_damage_boost(delta: float) -> void:
 	if _damage_boost_left <= 0.0:
 		_damage_boost = 1.0
 		rotation_container.modulate = Color.WHITE
+
+#region Dash and invulnerability
+
+## Ignores all damage for [param duration] seconds (longest one wins).
+func grant_invulnerability(duration: float) -> void:
+	_invulnerable_left = max(_invulnerable_left, duration)
+
+func is_invulnerable() -> bool:
+	return _invulnerable_left > 0.0
+
+func _process_invulnerability(delta: float) -> void:
+	if _invulnerable_left <= 0.0:
+		return
+	_invulnerable_left -= delta
+	# Blink while it lasts
+	modulate.a = 0.55 if fmod(_invulnerable_left, 0.16) > 0.08 else 1.0
+	if _invulnerable_left <= 0.0:
+		modulate.a = 1.0
+
+## Moves the player along [param direction] at [param dash_speed] for [param duration] seconds, ignoring input.
+func start_dash(direction: Vector2, dash_speed: float, duration: float) -> void:
+	if direction == Vector2.ZERO:
+		return
+	_dash_velocity = direction.normalized() * dash_speed
+	_dash_left = duration
+	velocity = _dash_velocity
+
+func is_dashing() -> bool:
+	return _dash_left > 0.0
+
+func _process_dash(delta: float) -> void:
+	_dash_left -= delta
+	velocity = _dash_velocity
+	move_and_slide()
+	if _dash_left <= 0.0:
+		# Keep a bit of the momentum, the normal movement slows it down
+		velocity = _dash_velocity.limit_length(Constants.Player_Max_Speed * speed_multiplier)
+
+#endregion
 
 func add_weapon_to_array(weapon_to_add: WeaponDetails) -> void:
 	if !weapons_array.has(weapon_to_add):
