@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://sos620ijd2ti" path="res://Textures/UI/Slider_Hashneer_Button.png" id="6_x3w2l"]
 [ext_resource type="FontFile" uid="uid://dccffhvl0wg7a" path="res://Fonts/alagard.ttf" id="8_sb2cu"]
+[ext_resource type="FontFile" path="res://Fonts/DotGothic16-Regular.ttf" id="9_dotgothic"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_armory_ammo"]
 bg_color = Color(0.4, 0.2, 0.1, 0.9)
@@ -1199,7 +1200,7 @@ shadow_color = Color(1, 0.843, 0, 0.3)
 shadow_size = 4
 
 [resource]
-default_font = ExtResource("8_sb2cu")
+default_font = ExtResource("9_dotgothic")
 default_font_size = 20
 ArmoryAmmoPanel/base_type = &"PanelContainer"
 ArmoryAmmoPanel/styles/panel = SubResource("StyleBoxFlat_armory_ammo")
@@ -1225,7 +1226,7 @@ Button/colors/font_focus_color = Color(1, 0.729412, 0.286275, 1)
 Button/colors/font_hover_color = Color(1, 0.729412, 0.286275, 1)
 Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
-Button/colors/font_pressed_color = Color(0.027451, 0.039216, 0.066667, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/colors/icon_disabled_color = Color(1, 1, 1, 0.4)
 Button/colors/icon_focus_color = Color(1, 1, 1, 1)
 Button/colors/icon_hover_color = Color(1, 1, 1, 1)
@@ -1234,7 +1235,7 @@ Button/colors/icon_normal_color = Color(1, 1, 1, 1)
 Button/colors/icon_pressed_color = Color(1, 1, 1, 1)
 Button/constants/h_separation = 0
 Button/constants/icon_max_width = 0
-Button/constants/outline_size = 10
+Button/constants/outline_size = 4
 Button/font_sizes/font_size = 20
 Button/styles/disabled = SubResource("StyleBoxFlat_wvgii")
 Button/styles/focus = SubResource("StyleBoxFlat_k6wkq")
@@ -1276,6 +1277,7 @@ HeaderLarge/constants/outline_size = 50
 HeaderLarge/constants/shadow_offset_x = 15
 HeaderLarge/constants/shadow_offset_y = 30
 HeaderLarge/constants/shadow_outline_size = 55
+HeaderLarge/fonts/font = ExtResource("8_sb2cu")
 HeaderLarge/font_sizes/font_size = 76
 HeaderMedium/base_type = &"Label"
 HeaderMedium/colors/font_color = Color(1, 0.729412, 0.286275, 1)
@@ -1284,6 +1286,7 @@ HeaderMedium/constants/outline_size = 30
 HeaderMedium/constants/shadow_offset_x = 20
 HeaderMedium/constants/shadow_offset_y = 14
 HeaderMedium/constants/shadow_outline_size = 4
+HeaderMedium/fonts/font = ExtResource("8_sb2cu")
 HeaderMedium/font_sizes/font_size = 44
 HeaderSmall/base_type = &"Label"
 HeaderSmall/colors/font_color = Color(0.898039, 0.92549, 0.964706, 1)
@@ -1328,6 +1331,7 @@ MainButton/styles/hover = SubResource("StyleBoxTexture_jo25s")
 MainButton/styles/normal = SubResource("StyleBoxTexture_kn0ne")
 MainButton/styles/pressed = SubResource("StyleBoxTexture_hw1yg")
 MainMenuLabel/base_type = &"Label"
+MainMenuLabel/fonts/font = ExtResource("8_sb2cu")
 MainMenuLabel/font_sizes/font_size = 50
 MainMenuPanel/base_type = &"Panel"
 MainMenuPanel/styles/panel = SubResource("StyleBoxFlat_ns6t6")
