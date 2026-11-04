@@ -1,18 +1,78 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb7gevq6uy0ws"]
+[gd_scene format=3 uid="uid://bb7gevq6uy0ws"]
 
-[ext_resource type="Script" uid="uid://clk0t1njrsu2f" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_os7yb"]
+[ext_resource type="Script" uid="uid://clk0t1njrsu2f" path="res://Scripts/Miscelaneous/NetworkVisualizer.gd" id="1_script"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
-[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_4m4ak"]
-[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="4_8nbiv"]
-[ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="5_ui_bg"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_button"]
+[ext_resource type="PackedScene" uid="uid://bvxpgjo6dvqlg" path="res://Scenes/UI/SkillTreeMenuTab.tscn" id="4_tabs"]
+[ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="5_bg"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ui_bg"]
-shader = ExtResource("5_ui_bg")
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bg"]
+shader = ExtResource("5_bg")
 shader_parameter/time = 0.0
 shader_parameter/speed = 0.55
 shader_parameter/density = 0.75
 shader_parameter/node_color = Color(1, 0.38, 0.04, 0.3)
 shader_parameter/connection_color = Color(0.05, 0.82, 1, 0.22)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shell"]
+bg_color = Color(0.008, 0.015, 0.035, 0.86)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.25)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_metric_cyan"]
+bg_color = Color(0.014, 0.032, 0.07, 0.96)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.55)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_metric_orange"]
+bg_color = Color(0.055, 0.025, 0.025, 0.96)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.38, 0.04, 0.58)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_chain"]
+bg_color = Color(0.006, 0.012, 0.03, 0.95)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.29, 0.34, 0.44, 0.7)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_live"]
+bg_color = Color(0.035, 0.2, 0.16, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 1, 0.7, 0.75)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [node name="NetworkVisualizer" type="Control"]
 layout_mode = 3
@@ -22,11 +82,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
-script = ExtResource("1_os7yb")
+script = ExtResource("1_script")
 
 [node name="BGLayer" type="CanvasLayer" parent="."]
 layer = -100
-
 [node name="Base" type="ColorRect" parent="BGLayer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -35,9 +94,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0.008, 0.012, 0.035, 1)
-
 [node name="NetworkLayer" type="ColorRect" parent="BGLayer"]
-material = SubResource("ShaderMaterial_ui_bg")
+material = SubResource("ShaderMaterial_bg")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -45,206 +103,230 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="MainContainer" type="MarginContainer" parent="."]
+[node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 30
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 30
-theme_override_constants/margin_bottom = 30
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 12
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
+[node name="Shell" type="PanelContainer" parent="OuterMargin"]
 layout_mode = 2
-theme_override_constants/separation = 20
-
-[node name="HeaderSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_shell")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell"]
 layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="StatsSection" type="VBoxContainer" parent="MainContainer/VBoxContainer/HeaderSection"]
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+[node name="RootVBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="StatsTitleContainer" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection"]
+[node name="Header" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox"]
 layout_mode = 2
-theme_type_variation = &"LvlCompletedMain"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsTitleContainer"]
+[node name="TitleBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/Header"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 5
-
-[node name="StatsTitle" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsTitleContainer/MarginContainer"]
+size_flags_horizontal = 3
+theme_override_constants/separation = 1
+[node name="Kicker" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Header/TitleBox"]
 layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-theme_override_font_sizes/font_size = 36
-text = "📊 ₿ Network Statistics"
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "DISTRIBUTED LEDGER // CHAIN EXPLORER"
+[node name="Title" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Header/TitleBox"]
+layout_mode = 2
+theme_type_variation = &"TitleText"
+theme_override_font_sizes/font_size = 32
+text = "BITCOIN NETWORK"
+[node name="Status" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox/Header"]
+custom_minimum_size = Vector2(130, 34)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_live")
+[node name="Label" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Header/Status"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 1, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "●  SYNCED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="StatsGrid" type="GridContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection"]
+[node name="Metrics" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/h_separation = 30
-theme_override_constants/v_separation = 15
-columns = 2
+theme_override_constants/separation = 10
 
-[node name="CoinsLostPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLostPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="CoinsLost" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLostPanel/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "🔥 Coins Lost: 0.00 BTC"
-horizontal_alignment = 1
-
-[node name="CoinsOnPlayerPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsOnPlayerPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="CoinsOnPlayer" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsOnPlayerPanel/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "💰 Player Wallet: 0.00 BTC"
-horizontal_alignment = 1
-
-[node name="CoinsLeftPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLeftPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="CoinsLeft" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/CoinsLeftPanel/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "⛏️ Coins Left to Mine: 21,000,000.00 BTC"
-horizontal_alignment = 1
-
-[node name="BlocksLeftPanel" type="PanelContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/BlocksLeftPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 5
-
-[node name="Blocks Left" type="Label" parent="MainContainer/VBoxContainer/HeaderSection/StatsSection/StatsGrid/BlocksLeftPanel/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "🧱 Total Blocks: 0"
-horizontal_alignment = 1
-
-[node name="HSeparator" type="HSeparator" parent="MainContainer/VBoxContainer/HeaderSection"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedHSeparator"
-
-[node name="BlockchainSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 15
-
-[node name="BlockchainTitle" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection"]
-layout_mode = 2
-theme_type_variation = &"HeaderMedium"
-theme_override_font_sizes/font_size = 36
-text = "🔗 Blockchain Explorer"
-horizontal_alignment = 1
-
-[node name="BlockchainScrollContainer" type="ScrollContainer" parent="MainContainer/VBoxContainer/BlockchainSection"]
-custom_minimum_size = Vector2(1092, 160)
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="BlockContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer/BlockchainSection/BlockchainScrollContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(1092, 160)
+[node name="WalletCard" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 20
-alignment = 1
-
-[node name="EmptyStateContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/BlockchainSection"]
+theme_override_styles/panel = SubResource("StyleBoxFlat_metric_cyan")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/WalletCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/WalletCard/Margin"]
+layout_mode = 2
+[node name="Label" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/WalletCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.58, 0.72, 1)
+theme_override_font_sizes/font_size = 11
+text = "PLAYER WALLET"
+[node name="CoinsOnPlayer" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/WalletCard/Margin/VBox"]
 unique_name_in_owner = true
-visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "0 BTC"
+
+[node name="SupplyCard" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_metric_orange")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/SupplyCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/SupplyCard/Margin"]
+layout_mode = 2
+[node name="Label" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/SupplyCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.48, 0.38, 1)
+theme_override_font_sizes/font_size = 11
+text = "REMAINING SUPPLY"
+[node name="CoinsLeft" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/SupplyCard/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "0 BTC"
+
+[node name="LostCard" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_metric_orange")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/LostCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/LostCard/Margin"]
+layout_mode = 2
+[node name="Label" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/LostCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.48, 0.38, 1)
+theme_override_font_sizes/font_size = 11
+text = "LOST COINS"
+[node name="CoinsLost" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/LostCard/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 18
+text = "0 BTC"
+
+[node name="BlocksCard" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_metric_cyan")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/BlocksCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 8
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/BlocksCard/Margin"]
+layout_mode = 2
+[node name="Label" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/BlocksCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.47, 0.58, 0.72, 1)
+theme_override_font_sizes/font_size = 11
+text = "CHAIN HEIGHT"
+[node name="Blocks Left" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/Metrics/BlocksCard/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "0 BLOCKS"
+
+[node name="ChainPanel" type="PanelContainer" parent="OuterMargin/Shell/Margin/RootVBox"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 15
+theme_override_styles/panel = SubResource("StyleBoxFlat_chain")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+[node name="TitleRow" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox"]
+layout_mode = 2
+[node name="Title" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/TitleRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 18
+text = "BLOCK STREAM"
+[node name="Hint" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/TitleRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38, 0.45, 0.56, 1)
+theme_override_font_sizes/font_size = 11
+text = "NEWEST  <  SCROLL  <  GENESIS"
+
+[node name="BlockchainScrollContainer" type="ScrollContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+vertical_scroll_mode = 0
+[node name="BlockContainer" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/BlockchainScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="EmptyStateContainer" type="VBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
 alignment = 1
-
-[node name="EmptyIcon" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
+[node name="EmptyIcon" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/EmptyStateContainer"]
 layout_mode = 2
-theme_type_variation = &"HeaderLarge"
-theme_override_font_sizes/font_size = 72
-text = "🏗️"
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 0.8)
+theme_override_font_sizes/font_size = 34
+text = "[ 0 ]"
+horizontal_alignment = 1
+[node name="EmptyMessage" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/EmptyStateContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 18
+text = "NO BLOCKS VERIFIED"
+horizontal_alignment = 1
+[node name="EmptySubMessage" type="Label" parent="OuterMargin/Shell/Margin/RootVBox/ChainPanel/Margin/VBox/EmptyStateContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.45, 0.52, 0.62, 1)
+theme_override_font_sizes/font_size = 13
+text = "Mine the first block to initialize the local chain."
 horizontal_alignment = 1
 
-[node name="EmptyMessage" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
+[node name="Footer" type="HBoxContainer" parent="OuterMargin/Shell/Margin/RootVBox"]
 layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 28
-text = "No blocks mined yet"
-horizontal_alignment = 1
-
-[node name="EmptySubMessage" type="Label" parent="MainContainer/VBoxContainer/BlockchainSection/EmptyStateContainer"]
-custom_minimum_size = Vector2(0, 20)
+theme_override_constants/separation = 12
+[node name="ReturnButton" parent="OuterMargin/Shell/Margin/RootVBox/Footer" instance=ExtResource("3_button")]
+custom_minimum_size = Vector2(190, 46)
 layout_mode = 2
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 20
-text = "Start mining to see blocks appear in the blockchain!"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="FooterSection" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
+theme_type_variation = &"ModernQuitButton"
+text = "RETURN TO TREE"
+[node name="SkillTreeTabs" parent="OuterMargin/Shell/Margin/RootVBox/Footer" instance=ExtResource("4_tabs")]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 3
 
-[node name="ReturnButton" parent="MainContainer/VBoxContainer/FooterSection" instance=ExtResource("3_4m4ak")]
-visible = false
-custom_minimum_size = Vector2(220, 40)
-layout_mode = 2
-text = "Return"
-
-[node name="SkillTreeTabs" parent="MainContainer/VBoxContainer/FooterSection" instance=ExtResource("4_8nbiv")]
-layout_mode = 2
-
-[connection signal="pressed" from="MainContainer/VBoxContainer/FooterSection/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="OuterMargin/Shell/Margin/RootVBox/Footer/ReturnButton" to="." method="_on_return_button_pressed"]

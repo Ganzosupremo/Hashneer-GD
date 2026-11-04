@@ -26,11 +26,13 @@ func _refresh() -> void:
 	%BtcLostValue.text = "%s BTC" % Utils.format_btc(BitcoinNetwork.get_coins_lost())
 	%LevelsUnlockedValue.text = "%d / %d" % [GameManager._levels_unlocked, GameManager.game_levels.size()]
 	%WalletValue.text = "%s BTC  ·  $%s" % [Utils.format_btc(BitcoinWallet.get_bitcoin_balance()), Utils.format_currency(BitcoinWallet.get_fiat_balance(), true)]
+	%WalletValue.text = "%s BTC // $%s" % [Utils.format_btc(BitcoinWallet.get_bitcoin_balance()), Utils.format_currency(BitcoinWallet.get_fiat_balance(), true)]
 	%BtcPriceValue.text = "$%s" % Utils.format_currency(BitcoinWallet.get_btc_price_in_fiat(), true)
 	%InflationValue.text = "+%d%%/block (prices x%.2f)" % [roundi(FED.get_current_inflation_rate() * 100.0), FED.get_total_inflation()]
 	%HashrateValue.text = "%s TH/s (%.1f%%)" % [Utils.format_currency(MiningFarm.get_hashrate(), true), MiningFarm.get_network_share() * 100.0]
 	%FeesValue.text = "%s BTC/h" % Utils.format_btc(MiningFarm.get_fees_per_second() * 3600.0)
 	%EpochValue.text = "%d  ·  %d HODL points" % [MiningFarm.epoch, MiningFarm.hodl_points]
+	%EpochValue.text = "%d // %d HODL" % [MiningFarm.epoch, MiningFarm.hodl_points]
 	%AchievementsValue.text = "%d / %d" % [Achievements.get_unlocked_count(), Achievements.ACHIEVEMENTS.size()]
 
 	# All time

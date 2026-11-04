@@ -1,246 +1,216 @@
-[gd_scene load_steps=3 format=3 uid="uid://diha80o1usshn"]
+[gd_scene load_steps=7 format=3 uid="uid://diha80o1usshn"]
 
 [ext_resource type="Script" uid="uid://cjr5k8eikwajp" path="res://Scripts/Miscelaneous/UIBitcoinBlock.gd" id="1_wqq7b"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_2wnjp"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.025, 0.043, 0.063, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.102, 0.843, 0.788, 0.75)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+shadow_color = Color(0, 0, 0, 0.42)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.055, 0.122, 0.145, 0.92)
+border_width_bottom = 1
+border_color = Color(0.102, 0.843, 0.788, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_data"]
+bg_color = Color(0.012, 0.024, 0.039, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.151, 0.263, 0.314, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_reward"]
+bg_color = Color(0.16, 0.087, 0.027, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.545, 0.157, 0.85)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
 [node name="UIBitcoinBlock" type="Control"]
-custom_minimum_size = Vector2(450, 506)
+custom_minimum_size = Vector2(300, 352)
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -225.0
-offset_top = -250.0
-offset_right = 225.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 352.0
+size_flags_vertical = 4
+theme = ExtResource("2_2wnjp")
 script = ExtResource("1_wqq7b")
 
 [node name="BlockPanel" type="PanelContainer" parent="."]
-custom_minimum_size = Vector2(450, 200)
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -225.0
-offset_top = -253.0
-offset_right = 225.0
-offset_bottom = 253.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"LvlCompletedMain"
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="MarginContainer" type="MarginContainer" parent="BlockPanel"]
+[node name="Margin" type="MarginContainer" parent="BlockPanel"]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 20
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
-[node name="VBoxContainer" type="VBoxContainer" parent="BlockPanel/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 15
-
-[node name="HeaderSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer"]
+[node name="Content" type="VBoxContainer" parent="BlockPanel/Margin"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TitlePanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection"]
+[node name="TitlePanel" type="PanelContainer" parent="BlockPanel/Margin/Content"]
 layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
-[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection/TitlePanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 10
-
-[node name="Title" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection/TitlePanel/MarginContainer"]
+[node name="Title" type="Label" parent="BlockPanel/Margin/Content/TitlePanel"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 42)
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"HeaderSmall"
-text = "₿ Block #0"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-
-[node name="HSeparator" type="HSeparator" parent="BlockPanel/MarginContainer/VBoxContainer/HeaderSection"]
-layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"LvlCompletedHSeparator"
-
-[node name="ContentSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 200)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 12
-
-[node name="MinerSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="MinerLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection"]
-layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "⛏️ Mined By"
-horizontal_alignment = 1
-
-[node name="MinerPanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection/MinerPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
-
-[node name="Miner" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/MinerSection/MinerPanel/MarginContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 20
-text = "Player"
+theme_override_colors/font_color = Color(0.506, 1, 0.941, 1)
+theme_override_font_sizes/font_size = 21
+text = "BLOCK // #0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="DataSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
+[node name="MinerRow" type="HBoxContainer" parent="BlockPanel/Margin/Content"]
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="DataLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection"]
+[node name="Caption" type="Label" parent="BlockPanel/Margin/Content/MinerRow"]
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "📊 Block Data"
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.455, 0.573, 0.635, 1)
+theme_override_font_sizes/font_size = 12
+text = "MINER //"
 
-[node name="DataPanel" type="PanelContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection"]
-layout_mode = 2
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 8
-
-[node name="ScrollContainer" type="ScrollContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel/MarginContainer"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-
-[node name="Data" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DataSection/DataPanel/MarginContainer/ScrollContainer"]
+[node name="Miner" type="Label" parent="BlockPanel/Margin/Content/MinerRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(380, 80)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 16
-text = "Transaction data will appear here..."
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.89, 0.953, 0.976, 1)
+theme_override_font_sizes/font_size = 15
+text = "PLAYER"
+text_overrun_behavior = 3
+
+[node name="DataPanel" type="PanelContainer" parent="BlockPanel/Margin/Content"]
+custom_minimum_size = Vector2(0, 66)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_data")
+
+[node name="Margin" type="MarginContainer" parent="BlockPanel/Margin/Content/DataPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 8
+
+[node name="Data" type="Label" parent="BlockPanel/Margin/Content/DataPanel/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.667, 0.745, 0.78, 1)
+theme_override_font_sizes/font_size = 12
+text = "Transaction payload"
+vertical_alignment = 1
 autowrap_mode = 3
+text_overrun_behavior = 3
+max_lines_visible = 3
 
-[node name="DetailsSection" type="VBoxContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection"]
+[node name="DetailsGrid" type="GridContainer" parent="BlockPanel/Margin/Content"]
 layout_mode = 2
-size_flags_vertical = 4
-theme_override_constants/separation = 10
-
-[node name="DetailsLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection"]
-layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"HeaderSmall"
-theme_override_font_sizes/font_size = 24
-text = "🔗 Block Details"
-horizontal_alignment = 1
-
-[node name="DetailsGrid" type="GridContainer" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection"]
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-theme_override_constants/h_separation = 15
-theme_override_constants/v_separation = 8
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 6
 columns = 2
 
-[node name="TimestampLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="TimeCaption" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
-text = "⏰ Timestamp:"
+theme_override_colors/font_color = Color(0.455, 0.573, 0.635, 1)
+theme_override_font_sizes/font_size = 11
+text = "TIMESTAMP"
 
-[node name="Timestamp" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="Timestamp" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.8, 0.867, 0.898, 1)
+theme_override_font_sizes/font_size = 11
 text = "2025-01-01 12:00:00"
+horizontal_alignment = 2
 
-[node name="HashLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="HashCaption" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
-text = "🔐 Hash:"
+theme_override_colors/font_color = Color(0.455, 0.573, 0.635, 1)
+theme_override_font_sizes/font_size = 11
+text = "HASH"
 
-[node name="Hash" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="Hash" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 16
-text = "000abc123..."
-autowrap_mode = 3
+theme_override_colors/font_color = Color(0.506, 1, 0.941, 1)
+theme_override_font_sizes/font_size = 11
+text = "000abc12...00112233"
+horizontal_alignment = 2
 
-[node name="PrevHashLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="PreviousCaption" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
-text = "🔗 Previous:"
+theme_override_colors/font_color = Color(0.455, 0.573, 0.635, 1)
+theme_override_font_sizes/font_size = 11
+text = "PREV HASH"
 
-[node name="PreviousHash" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="PreviousHash" type="Label" parent="BlockPanel/Margin/Content/DetailsGrid"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 size_flags_horizontal = 3
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 16
-text = "000def456..."
-autowrap_mode = 3
+theme_override_colors/font_color = Color(0.506, 1, 0.941, 1)
+theme_override_font_sizes/font_size = 11
+text = "000def45...44556677"
+horizontal_alignment = 2
 
-[node name="SubsidyLabel" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="Spacer" type="Control" parent="BlockPanel/Margin/Content"]
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
-text = "💰 Reward:"
+size_flags_vertical = 3
 
-[node name="Subsidy" type="Label" parent="BlockPanel/MarginContainer/VBoxContainer/ContentSection/DetailsSection/DetailsGrid"]
+[node name="RewardPanel" type="PanelContainer" parent="BlockPanel/Margin/Content"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_reward")
+
+[node name="RewardRow" type="HBoxContainer" parent="BlockPanel/Margin/Content/RewardPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="Caption" type="Label" parent="BlockPanel/Margin/Content/RewardPanel/RewardRow"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.663, 0.31, 1)
+theme_override_font_sizes/font_size = 12
+text = "SUBSIDY //"
+
+[node name="Subsidy" type="Label" parent="BlockPanel/Margin/Content/RewardPanel/RewardRow"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
-theme = ExtResource("2_2wnjp")
-theme_type_variation = &"NormalText"
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 0.851, 0.522, 1)
+theme_override_font_sizes/font_size = 17
 text = "6.25 BTC"
+vertical_alignment = 1

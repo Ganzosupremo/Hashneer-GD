@@ -26,6 +26,7 @@ var _loadout: PlayerLoadout
 
 
 func _ready() -> void:
+	_style_mode_popup()
 	_mode_option.clear()
 	_mode_option.add_item("Mining", Constants.GameModeFlag.MINING)
 	_mode_option.add_item("Waves", Constants.GameModeFlag.WAVES)
@@ -189,7 +190,39 @@ func _make_button(text: String, icon: Texture2D, min_size: Vector2) -> Button:
 	button.clip_text = true
 	button.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	button.tooltip_text = text
+	button.add_theme_color_override("font_color", Color("d9edf2"))
+	button.add_theme_color_override("font_hover_color", Color("e8ffff"))
+	button.add_theme_color_override("font_pressed_color", Color("ffffff"))
+	button.add_theme_color_override("font_hover_pressed_color", Color("ffffff"))
+	button.add_theme_color_override("font_focus_color", Color("ffffff"))
+	button.add_theme_color_override("font_disabled_color", Color("71808a"))
+	button.add_theme_stylebox_override("normal", _button_style(Color("07101f"), Color("29495c"), 1))
+	button.add_theme_stylebox_override("hover", _button_style(Color("0b2835"), Color("20d6c8"), 2))
+	button.add_theme_stylebox_override("pressed", _button_style(Color("b64d09"), Color("ff9a32"), 3))
+	button.add_theme_stylebox_override("focus", _button_style(Color("12394a"), Color("72fff1"), 2))
+	button.add_theme_stylebox_override("disabled", _button_style(Color("080d16"), Color("26333c"), 1))
 	return button
+
+
+func _button_style(background: Color, border: Color, border_width: int) -> StyleBoxFlat:
+	var style := StyleBoxFlat.new()
+	style.bg_color = background
+	style.border_color = border
+	style.set_border_width_all(border_width)
+	style.set_corner_radius_all(7)
+	style.content_margin_left = 10.0
+	style.content_margin_right = 10.0
+	style.content_margin_top = 7.0
+	style.content_margin_bottom = 7.0
+	return style
+
+
+func _style_mode_popup() -> void:
+	var popup := _mode_option.get_popup()
+	popup.add_theme_color_override("font_color", Color("d9edf2"))
+	popup.add_theme_color_override("font_hover_color", Color("ffffff"))
+	popup.add_theme_stylebox_override("panel", _button_style(Color("07101f"), Color("20d6c8"), 1))
+	popup.add_theme_stylebox_override("hover", _button_style(Color("12394a"), Color("20d6c8"), 1))
 
 func _clear(container: Node) -> void:
 	for child in container.get_children():

@@ -2,332 +2,528 @@
 
 [ext_resource type="Script" uid="uid://c8atpbyav2037" path="res://Scripts/UI/StatsScreenUI.gd" id="1_stats"]
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="3_button"]
 
-[node name="StatsScreenUI" type="PanelContainer" unique_id=1543377554]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_root"]
+bg_color = Color(0.0118, 0.0196, 0.0431, 0.98)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.72)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.05, 0.82, 1, 0.18)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.025, 0.045, 0.09, 0.96)
+border_width_bottom = 2
+border_color = Color(1, 0.38, 0.04, 0.8)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_cyan"]
+bg_color = Color(0.018, 0.03, 0.065, 0.96)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.42)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card_orange"]
+bg_color = Color(0.04, 0.025, 0.035, 0.96)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.38, 0.04, 0.46)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_live"]
+bg_color = Color(0.04, 0.22, 0.18, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 1, 0.68, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="StatsScreenUI" type="PanelContainer"]
+custom_minimum_size = Vector2(920, 570)
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -203.0
-offset_top = -217.0
-offset_right = 203.0
-offset_bottom = 217.0
+offset_left = -460.0
+offset_top = -285.0
+offset_right = 460.0
+offset_bottom = 285.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("2_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_root")
 script = ExtResource("1_stats")
 
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=70705945]
+[node name="OuterMargin" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 14
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = 14
-theme_override_constants/margin_bottom = 14
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1846988621]
+[node name="RootVBox" type="VBoxContainer" parent="OuterMargin"]
 layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="HeaderPanel" type="PanelContainer" parent="OuterMargin/RootVBox"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
+
+[node name="HeaderMargin" type="MarginContainer" parent="OuterMargin/RootVBox/HeaderPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 12
+
+[node name="HeaderRow" type="HBoxContainer" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin"]
+layout_mode = 2
+
+[node name="TitleBox" type="VBoxContainer" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Kicker" type="Label" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin/HeaderRow/TitleBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "SYSTEM MONITOR // REAL-TIME DATA"
+
+[node name="Title" type="Label" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin/HeaderRow/TitleBox"]
+layout_mode = 2
+theme_type_variation = &"TitleText"
+theme_override_font_sizes/font_size = 30
+text = "NETWORK TELEMETRY"
+
+[node name="LivePanel" type="PanelContainer" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin/HeaderRow"]
+custom_minimum_size = Vector2(110, 34)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_live")
+
+[node name="LiveLabel" type="Label" parent="OuterMargin/RootVBox/HeaderPanel/HeaderMargin/HeaderRow/LivePanel"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 1, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "●  LIVE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Content" type="HBoxContainer" parent="OuterMargin/RootVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 14
+
+[node name="CurrentColumn" type="VBoxContainer" parent="OuterMargin/RootVBox/Content"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1243612088]
+[node name="TimechainCard" type="PanelContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
-text = "Stats"
-horizontal_alignment = 1
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_cyan")
 
-[node name="Columns" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=215959956]
+[node name="Margin" type="MarginContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard"]
 layout_mode = 2
-theme_override_constants/separation = 40
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
 
-[node name="CurrentEpoch" type="GridContainer" parent="MarginContainer/VBoxContainer/Columns" unique_id=809699788]
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+
+[node name="Header" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 17
+text = "01 // TIMECHAIN"
+
+[node name="Grid" type="GridContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 5
 columns = 2
 
-[node name="TimechainHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=33584553]
-modulate = Color(1, 0.75, 0.2, 1)
+[node name="BlocksMinedName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Timechain"
-
-[node name="TimechainHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1313428749]
-layout_mode = 2
-
-[node name="BlocksMinedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=36732314]
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
 text = "Blocks mined"
-
-[node name="BlocksMinedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1253438187]
+[node name="BlocksMinedValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
-
-[node name="BlockSubsidyName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1761749457]
+horizontal_alignment = 2
+[node name="BlockSubsidyName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
 text = "Block subsidy"
-
-[node name="BlockSubsidyValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1649721650]
+[node name="BlockSubsidyValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
-
-[node name="HalvingsName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=396462350]
+horizontal_alignment = 2
+[node name="HalvingsName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
 text = "Halvings"
-
-[node name="HalvingsValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=489243136]
+[node name="HalvingsValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
-
-[node name="BtcMinedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=2063161106]
+horizontal_alignment = 2
+[node name="BtcMinedName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
 text = "BTC mined"
-
-[node name="BtcMinedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=248614434]
+[node name="BtcMinedValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
-
-[node name="BtcLostName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1372479195]
+horizontal_alignment = 2
+[node name="BtcLostName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "BTC lost to the AI"
-
-[node name="BtcLostValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1480732244]
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
+text = "BTC lost to AI"
+[node name="BtcLostValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
-
-[node name="LevelsUnlockedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1691367810]
+horizontal_alignment = 2
+[node name="LevelsUnlockedName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 14
 text = "Levels unlocked"
-
-[node name="LevelsUnlockedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=249517890]
+[node name="LevelsUnlockedValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/TimechainCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 14
 text = "-"
+horizontal_alignment = 2
 
-[node name="EconomyHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=398352577]
-modulate = Color(1, 0.75, 0.2, 1)
+[node name="BottomCards" type="HBoxContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn"]
 layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="EconomyCard" type="PanelContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_orange")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+[node name="Header" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.48, 0.12, 1)
 theme_override_font_sizes/font_size = 16
-text = "Economy"
-
-[node name="EconomyHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1663619792]
+text = "02 // ECONOMY"
+[node name="Grid" type="GridContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox"]
 layout_mode = 2
-
-[node name="WalletName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=915282650]
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 6
+columns = 2
+[node name="WalletName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
 text = "Wallet"
-
-[node name="WalletValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1075016676]
+[node name="WalletValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.72, 0.32, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="BtcPriceName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1659805965]
+horizontal_alignment = 2
+[node name="BtcPriceName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
 text = "BTC price"
-
-[node name="BtcPriceValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=862398947]
+[node name="BtcPriceValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="InflationName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=763785107]
+horizontal_alignment = 2
+[node name="InflationName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
 text = "Inflation"
-
-[node name="InflationValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1267542198]
+[node name="InflationValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/EconomyCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.48, 0.3, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
+horizontal_alignment = 2
 
-[node name="MiningFarmHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1868906929]
-modulate = Color(1, 0.75, 0.2, 1)
+[node name="FarmCard" type="PanelContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_cyan")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 10
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 7
+[node name="Header" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
 theme_override_font_sizes/font_size = 16
-text = "Mining Farm"
-
-[node name="MiningFarmHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1541648202]
+text = "03 // MINING FARM"
+[node name="Grid" type="GridContainer" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox"]
 layout_mode = 2
-
-[node name="HashrateName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=755355014]
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 6
+columns = 2
+[node name="HashrateName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 13
 text = "Hashrate"
-
-[node name="HashrateValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=29641853]
+[node name="HashrateValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="FeesName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=2126688294]
+horizontal_alignment = 2
+[node name="FeesName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Fees"
-
-[node name="FeesValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=195745014]
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 13
+text = "Fee yield"
+[node name="FeesValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="EpochName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=1353941207]
+horizontal_alignment = 2
+[node name="EpochName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Epoch"
-
-[node name="EpochValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=16746926]
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 13
+text = "Epoch / HODL"
+[node name="EpochValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="AchievementsName" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=43855648]
+horizontal_alignment = 2
+[node name="AchievementsName" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.63, 0.74, 1)
+theme_override_font_sizes/font_size = 13
 text = "Achievements"
-
-[node name="AchievementsValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/CurrentEpoch" unique_id=316534745]
+[node name="AchievementsValue" type="Label" parent="OuterMargin/RootVBox/Content/CurrentColumn/BottomCards/FarmCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
+horizontal_alignment = 2
 
-[node name="AllTime" type="GridContainer" parent="MarginContainer/VBoxContainer/Columns" unique_id=1449060396]
+[node name="LifetimeCard" type="PanelContainer" parent="OuterMargin/RootVBox/Content"]
+custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
-theme_override_constants/h_separation = 16
+theme_override_styles/panel = SubResource("StyleBoxFlat_card_orange")
+[node name="Margin" type="MarginContainer" parent="OuterMargin/RootVBox/Content/LifetimeCard"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+[node name="VBox" type="VBoxContainer" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Kicker" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.38, 0.04, 1)
+theme_override_font_sizes/font_size = 12
+text = "PERSISTENT LEDGER"
+[node name="Header" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.72, 0.32, 1)
+theme_override_font_sizes/font_size = 22
+text = "ALL-TIME STATS"
+[node name="Separator" type="HSeparator" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox"]
+layout_mode = 2
+[node name="Grid" type="GridContainer" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
 columns = 2
 
-[node name="AlltimeHeader" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1193502568]
-modulate = Color(1, 0.75, 0.2, 1)
+[node name="BlocksMinedByYouName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "All time"
-
-[node name="AlltimeHeaderSpacer" type="Control" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=448801926]
-layout_mode = 2
-
-[node name="BlocksMinedByYouName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1676059673]
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Blocks mined by you"
-
-[node name="BlocksMinedByYouValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1218950744]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Blocks won"
+[node name="BlocksMinedByYouValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="BlocksLostToAiName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=201917499]
+horizontal_alignment = 2
+[node name="BlocksLostToAiName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Blocks lost to the AI"
-
-[node name="BlocksLostToAiValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1534813429]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Blocks lost"
+[node name="BlocksLostToAiValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.38, 0.42, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="BtcFromBlocksName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1045823056]
+horizontal_alignment = 2
+[node name="BtcFromBlocksName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "BTC from blocks"
-
-[node name="BtcFromBlocksValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1099811885]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Block rewards"
+[node name="BtcFromBlocksValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="BtcFromFeesName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=300257527]
+horizontal_alignment = 2
+[node name="BtcFromFeesName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "BTC from fees"
-
-[node name="BtcFromFeesValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1961273590]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Fee rewards"
+[node name="BtcFromFeesValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(1, 0.65, 0.2, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="FiatReceivedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=182965678]
+horizontal_alignment = 2
+[node name="FiatReceivedName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Fiat received"
-
-[node name="FiatReceivedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=722227908]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Fiat collected"
+[node name="FiatReceivedValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.45, 1, 0.68, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="HalvingsSurvivedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=285388603]
+horizontal_alignment = 2
+[node name="HalvingsSurvivedName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Halvings survived"
-
-[node name="HalvingsSurvivedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1119110587]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Halvings"
+[node name="HalvingsSurvivedValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="LevelsPlayedName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=1920355010]
+horizontal_alignment = 2
+[node name="LevelsPlayedName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Levels played"
-
-[node name="LevelsPlayedValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=2081476661]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Runs / deaths"
+[node name="LevelsPlayedValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.88, 0.91, 0.96, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
-
-[node name="PlayTimeName" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=297531176]
+horizontal_alignment = 2
+[node name="PlayTimeName" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Play time"
-
-[node name="PlayTimeValue" type="Label" parent="MarginContainer/VBoxContainer/Columns/AllTime" unique_id=211606979]
+theme_override_colors/font_color = Color(0.63, 0.66, 0.72, 1)
+theme_override_font_sizes/font_size = 13
+text = "Uptime"
+[node name="PlayTimeValue" type="Label" parent="OuterMargin/RootVBox/Content/LifetimeCard/Margin/VBox/Grid"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_colors/font_color = Color(0.55, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 13
 text = "-"
+horizontal_alignment = 2
 
-[node name="Buttons" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2053418346]
+[node name="Footer" type="HBoxContainer" parent="OuterMargin/RootVBox"]
 layout_mode = 2
-theme_override_constants/separation = 16
-alignment = 1
-
-[node name="ReplayTutorialButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons" unique_id=939595976]
+theme_override_constants/separation = 12
+alignment = 2
+[node name="ReplayTutorialButton" parent="OuterMargin/RootVBox/Footer" instance=ExtResource("3_button")]
+custom_minimum_size = Vector2(190, 48)
 layout_mode = 2
-text = "Replay tutorial"
-
-[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/Buttons" unique_id=1847647261]
+text = "REPLAY TUTORIAL"
+[node name="CloseButton" parent="OuterMargin/RootVBox/Footer" instance=ExtResource("3_button")]
+custom_minimum_size = Vector2(150, 48)
 layout_mode = 2
-text = "Close"
+theme_type_variation = &"ModernQuitButton"
+text = "CLOSE"
 
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/ReplayTutorialButton" to="." method="_on_replay_tutorial_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/Buttons/CloseButton" to="." method="close"]
+[connection signal="pressed" from="OuterMargin/RootVBox/Footer/ReplayTutorialButton" to="." method="_on_replay_tutorial_pressed"]
+[connection signal="pressed" from="OuterMargin/RootVBox/Footer/CloseButton" to="." method="close"]

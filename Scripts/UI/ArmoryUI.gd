@@ -37,9 +37,21 @@ var _current_weapon: WeaponDetails = null
 
 
 func _ready() -> void:
+	$VBoxContainer/Header.text = "BITCOIN ARMORY"
+	$VBoxContainer/Body/Tabs/Upgrades/LeftBar/WeaponsTitle.text = "WEAPON INVENTORY"
+	$VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/StatsTitle.text = "WEAPON TELEMETRY"
+	$VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/WeaponSection/Title.text = "WEAPON UPGRADES"
+	$VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/AmmoSection/Title.text = "AMMUNITION"
+	$VBoxContainer/Body/Tabs/Upgrades/RightBar/Margin/Scroll/Sections/SpecialSection/Title.text = "SPECIAL SYSTEM"
+	$VBoxContainer/Body/Tabs/Loadout/TopRow/ModeLabel.text = "GAME MODE //"
+	$VBoxContainer/Body/Tabs/Loadout/SlotsRow/WeaponsBox/Title.text = "WEAPON SLOTS"
+	$VBoxContainer/Body/Tabs/Loadout/SlotsRow/PassivesBox/Title.text = "PASSIVE MODULES"
+	$VBoxContainer/Body/Tabs/Loadout/SlotsRow/ActiveBox/Title.text = "ACTIVE MODULE [Q]"
+	$VBoxContainer/Body/Tabs/Loadout/PickerPanel/Margin/VBox/PickerTitle.text = "SELECT A MODULE"
 	_weapons_list.item_selected.connect(_on_weapon_selected)
 	_populate_weapon_list()
 	_update_balance_display()
+	_normalize_balance_labels()
 
 #region Weapon list
 
@@ -125,6 +137,7 @@ func _update_stats_display(preview: Array = []) -> void:
 		value_label.text = old_value
 		if old_value != row[1]:
 			value_label.text = "%s → %s" % [old_value, row[1]]
+			value_label.text = "%s  ->  %s" % [old_value, row[1]]
 			value_label.modulate = PREVIEW_COLOR
 		_stats_grid.add_child(name_label)
 		_stats_grid.add_child(value_label)
@@ -164,10 +177,16 @@ func _get_stat_rows(weapon: WeaponDetails) -> Array:
 	return rows
 
 func _update_balance_display() -> void:
+	call_deferred("_normalize_balance_labels")
 	_fiat_balance_label.text = "Fiat: $%s" % Utils.format_currency(BitcoinWallet.get_fiat_balance(), true)
 	_bitcoin_balance_label.text = "Bitcoin: ₿%s" % Utils.format_btc(BitcoinWallet.get_bitcoin_balance())
 
 #endregion
+
+
+func _normalize_balance_labels() -> void:
+	_fiat_balance_label.text = "FIAT // $%s" % Utils.format_currency(BitcoinWallet.get_fiat_balance(), true)
+	_bitcoin_balance_label.text = "BTC // %s" % Utils.format_btc(BitcoinWallet.get_bitcoin_balance())
 
 #region Upgrades
 

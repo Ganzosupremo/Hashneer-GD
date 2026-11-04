@@ -6,6 +6,15 @@
 [ext_resource type="Resource" uid="uid://dxgjejnnjd8a6" path="res://Resources/Weapons/Enemy/EnemyPistol.tres" id="3_hxamy"]
 [ext_resource type="Script" uid="uid://b48ahap712nen" path="res://Scripts/Components/FireWeapon.gd" id="8_i5djr"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="10_vfbhq"]
+[ext_resource type="Texture2D" path="res://Textures/Enemies/EnemyShooter.png" id="11_surface"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shooter"]
+atlas = ExtResource("11_surface")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_shooter"]
+diffuse_texture = SubResource("AtlasTexture_shooter")
+texture_repeat = 2
 
 [node name="ShooterEnemy" unique_id=1463225960 instance=ExtResource("1_k4fs6")]
 script = ExtResource("2_hxamy")
@@ -19,18 +28,17 @@ invincible_time = 0.0
 shape_area_percent = 0.4
 fractures = 20
 max_speed = 125.0
-polygon_shape = 4
+polygon_shape = 3
 s_p_number = 12
-s_a = 125.0
-s_b = 160.0
-min_m = 13.05
-m = 22.0
-min_n1 = 0.3
-n1 = 0.3
-min_n2 = 0.3
-n2 = 0.3
-min_n3 = 0.3
-n3 = 0.3
+s_a = 100.0
+s_b = 100.0
+e_n = 2.2
+
+[node name="Polygon2D" parent="Shape3D" index="0"]
+texture = SubResource("CanvasTexture_shooter")
+
+[node name="Line2D" parent="Shape3D" index="1"]
+default_color = Color(0.95, 0.25, 0.72, 1)
 
 [node name="ShotingMechanics" type="Node2D" parent="." index="0" unique_id=1258746056]
 

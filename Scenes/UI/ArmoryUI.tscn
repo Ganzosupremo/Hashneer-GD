@@ -15,6 +15,172 @@ shader_parameter/density = 0.85
 shader_parameter/node_color = Color(1, 0.38, 0.04, 0.3)
 shader_parameter/connection_color = Color(0.05, 0.82, 1, 0.22)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.003, 0.006, 0.018, 0.56)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sidebar"]
+bg_color = Color(0.012, 0.025, 0.055, 0.96)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.48)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 7
+corner_radius_bottom_left = 7
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_detail"]
+bg_color = Color(0.018, 0.03, 0.065, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.58)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0.05, 0.82, 1, 0.12)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrades"]
+bg_color = Color(0.035, 0.022, 0.035, 0.97)
+border_width_left = 1
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.38, 0.04, 0.55)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(1, 0.38, 0.04, 0.1)
+shadow_size = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wallet"]
+bg_color = Color(0.045, 0.04, 0.025, 0.96)
+border_width_left = 2
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.65, 0.2, 0.62)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_special"]
+bg_color = Color(0.08, 0.035, 0.025, 0.9)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.38, 0.04, 0.75)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_selected"]
+bg_color = Color(0.075, 0.18, 0.22, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 3
+border_color = Color(0.05, 0.82, 1, 0.9)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 22.0
+content_margin_right = 22.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_unselected"]
+bg_color = Color(0.012, 0.025, 0.055, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.18, 0.3, 0.4, 0.72)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 22.0
+content_margin_right = 22.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_hovered"]
+bg_color = Color(0.035, 0.105, 0.14, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.65)
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+content_margin_left = 22.0
+content_margin_right = 22.0
+content_margin_top = 9.0
+content_margin_bottom = 9.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tab_panel"]
+bg_color = Color(0.004, 0.01, 0.025, 0.18)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_option_normal"]
+bg_color = Color(0.018, 0.04, 0.075, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.55)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 14.0
+content_margin_right = 30.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_option_hover"]
+bg_color = Color(0.035, 0.11, 0.145, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 14.0
+content_margin_right = 30.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_option_pressed"]
+bg_color = Color(0.12, 0.065, 0.02, 0.98)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(1, 0.48, 0.08, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 14.0
+content_margin_right = 30.0
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+
 [node name="ArmoryUI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -53,7 +219,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_type_variation = &"LevelSelectorOverlay"
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -64,10 +230,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 10
 
+[node name="Kicker" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "HASHENEER SYSTEMS // LOADOUT & UPGRADE CONSOLE"
+horizontal_alignment = 1
+
 [node name="Header" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-theme_type_variation = &"HeaderLarge"
-theme_override_font_sizes/font_size = 40
+theme_type_variation = &"TitleText"
+theme_override_font_sizes/font_size = 34
 text = "🔫 Bitcoin Armory"
 horizontal_alignment = 1
 
@@ -75,12 +248,22 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 8
 
 [node name="Tabs" type="TabContainer" parent="VBoxContainer/Body"]
 unique_name_in_owner = true
 layout_mode = 2
 current_tab = 0
+theme_override_colors/font_selected_color = Color(0.82, 1, 0.98, 1)
+theme_override_colors/font_unselected_color = Color(0.54, 0.68, 0.75, 1)
+theme_override_colors/font_hovered_color = Color(0.82, 1, 0.98, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/panel = SubResource("StyleBoxFlat_tab_panel")
+theme_override_styles/tab_hovered = SubResource("StyleBoxFlat_tab_hovered")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_tab_selected")
+theme_override_styles/tab_unselected = SubResource("StyleBoxFlat_tab_unselected")
 
 [node name="Upgrades" type="HBoxContainer" parent="VBoxContainer/Body/Tabs"]
 metadata/_tab_index = 0
@@ -88,7 +271,7 @@ layout_mode = 2
 theme_override_constants/separation = 16
 
 [node name="LeftBar" type="VBoxContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
-custom_minimum_size = Vector2(230, 0)
+custom_minimum_size = Vector2(250, 0)
 layout_mode = 2
 theme_override_constants/separation = 10
 
@@ -102,7 +285,7 @@ horizontal_alignment = 1
 [node name="ListPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"LevelSelectorBackground"
+theme_override_styles/panel = SubResource("StyleBoxFlat_sidebar")
 
 [node name="IUpgradeableList" type="ItemList" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/ListPanel"]
 unique_name_in_owner = true
@@ -113,7 +296,7 @@ fixed_icon_size = Vector2i(48, 28)
 
 [node name="WalletPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar"]
 layout_mode = 2
-theme_type_variation = &"ArmoryPricePanel"
+theme_override_styles/panel = SubResource("StyleBoxFlat_wallet")
 
 [node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/LeftBar/WalletPanel"]
 layout_mode = 2
@@ -142,10 +325,10 @@ text = "Bitcoin: ₿0"
 horizontal_alignment = 1
 
 [node name="CentralBar" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
-custom_minimum_size = Vector2(380, 0)
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 2
 size_flags_horizontal = 3
-theme_type_variation = &"SettingsBackground"
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
 
 [node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar"]
 layout_mode = 2
@@ -214,7 +397,7 @@ columns = 2
 
 [node name="SpecialPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox"]
 layout_mode = 2
-theme_type_variation = &"ArmoryUpgradePanel"
+theme_override_styles/panel = SubResource("StyleBoxFlat_special")
 
 [node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/CentralBar/Margin/Scroll/VBox/SpecialPanel"]
 layout_mode = 2
@@ -241,9 +424,9 @@ theme_override_font_sizes/font_size = 14
 autowrap_mode = 3
 
 [node name="RightBar" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Upgrades"]
-custom_minimum_size = Vector2(360, 0)
+custom_minimum_size = Vector2(370, 0)
 layout_mode = 2
-theme_type_variation = &"LevelSelectorBackground"
+theme_override_styles/panel = SubResource("StyleBoxFlat_upgrades")
 
 [node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Upgrades/RightBar"]
 layout_mode = 2
@@ -329,8 +512,16 @@ text = "Mode:"
 
 [node name="ModeOption" type="OptionButton" parent="VBoxContainer/Body/Tabs/Loadout/TopRow"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 0)
+custom_minimum_size = Vector2(170, 44)
 layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.95, 0.98, 1)
+theme_override_colors/font_hover_color = Color(0.82, 1, 0.98, 1)
+theme_override_colors/font_pressed_color = Color(1, 0.87, 0.62, 1)
+theme_override_colors/font_focus_color = Color(0.82, 1, 0.98, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_option_normal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_option_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_option_pressed")
+theme_override_styles/focus = SubResource("StyleBoxFlat_option_hover")
 
 [node name="HintLabel" type="Label" parent="VBoxContainer/Body/Tabs/Loadout/TopRow"]
 layout_mode = 2
@@ -395,7 +586,7 @@ alignment = 1
 [node name="PickerPanel" type="PanelContainer" parent="VBoxContainer/Body/Tabs/Loadout"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_type_variation = &"LevelSelectorBackground"
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
 
 [node name="Margin" type="MarginContainer" parent="VBoxContainer/Body/Tabs/Loadout/PickerPanel"]
 layout_mode = 2
