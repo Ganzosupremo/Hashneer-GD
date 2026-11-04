@@ -1,0 +1,10 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scripts/Player/Abilities/SecondWindAbility.gd" id="1_ability"]
+
+[node name="SecondWindAbility" type="Node2D"]
+script = ExtResource("1_ability")
+ability_name = "Second Wind"
+ability_description = "When your health drops below 25% you heal 35% of it and ignore damage for 1.5 s. Recharges in 90 s."
+ability_cooldown = 90.0
+ability_kind = 0

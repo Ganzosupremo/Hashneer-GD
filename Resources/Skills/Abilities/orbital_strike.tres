@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockAbilitySkillEffect.gd" id="4_s"]
+[ext_resource type="Texture2D" uid="uid://cd1ywqvo2siw0" path="res://Textures/UI/HashneerPixelArtAtlas.png" id="5_s"]
+[ext_resource type="Resource" path="res://Resources/Skills/Abilities/pulse.tres" id="r0_s"]
+[ext_resource type="PackedScene" path="res://Scenes/Player/Abilities/OrbitalStrikeAbility.tscn" id="7_s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1"]
+atlas = ExtResource("5_s")
+region = Rect2(67, 2, 27, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2"]
+atlas = ExtResource("5_s")
+region = Rect2(96, 0, 33, 32)
+
+[sub_resource type="Resource" id="Resource_req0"]
+script = ExtResource("2_s")
+skill = ExtResource("r0_s")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("4_s")
+ability_scene = ExtResource("7_s")
+ability_name = "Orbital Strike"
+
+[resource]
+script = ExtResource("1_s")
+id = &"orbital_strike"
+display_name = "Orbital Strike"
+description = "Active ability (Q): marks the spot under your cursor and a moment later a huge blast lands there."
+icon = SubResource("AtlasTexture_1")
+icon_maxed = SubResource("AtlasTexture_2")
+branch = "Offense"
+requirements = Array[ExtResource("2_s")]([SubResource("Resource_req0")])
+effects = Array[ExtResource("3_s")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 2000000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 25.0
+cost_btc_multiplier = 1.0

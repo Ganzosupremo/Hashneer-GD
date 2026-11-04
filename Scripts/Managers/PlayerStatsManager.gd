@@ -8,7 +8,17 @@ extends Node2D
 var base_stats: Dictionary = {
 	"Speed": 150.0,
 	"Health": 300.0,
-	"Damage": 1.0
+	"Damage": 1.0,
+	## Multiplies the fire rate of every weapon.
+	"Fire Rate": 1.0,
+	## Share taken off the cooldown of abilities (0.2 = 20% shorter).
+	"Ability Cooldown": 0.0,
+	## Share taken off the cooldown of weapon specials.
+	"Special Cooldown": 0.0,
+	## Share of the damage taken that is ignored.
+	"Damage Reduction": 0.0,
+	## Multiplies the fiat dropped.
+	"Fiat Gain": 1.0,
 }
 
 ## Armory upgrade levels bought, by item id (weapon or ammo) and upgrade type.

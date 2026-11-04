@@ -22,8 +22,23 @@ Como nada se guarda dos veces, si cambiás un valor en un `.tres` (por ejemplo, 
 3. En **Tree**, elegí la `branch` (columna). `tier` ordena la skill dentro de su columna: con -1 va después de su requisito más profundo.
 4. En **Game Modes**, marcá Mining, Waves o los dos.
 5. En **Requirements**, agregá un `SkillRequirement` y arrastrá el `.tres` de la skill que tiene que comprarse antes, con su `min_level`. Si no ponés requisitos, la skill está disponible desde el inicio. `requires_all` decide si basta con uno de los requisitos o hacen falta todos.
-6. En **Effects**, agregá un `StatSkillEffect`: `stat` (Health, Speed, Damage), `is_percentage` (0.1 = +10%), `value_per_level` y `value_multiplier` (1.0 da lo mismo en cada nivel).
+6. En **Effects**, agregá un `StatSkillEffect`: `stat` (ver la tabla de abajo), `is_percentage` (0.1 = +10%), `value_per_level` y `value_multiplier` (1.0 da lo mismo en cada nivel).
 7. En **Cost**, completá `max_level` y los precios base y multiplicadores en fiat y BTC.
+
+### Stats disponibles
+
+| Stat | Base | Cómo se usa | Quién lo lee |
+|---|---|---|---|
+| Health | 300 | flat o % | `PlayerDetails.apply_stats` |
+| Speed | 150 | flat o %. Cuenta la mitad para la velocidad máxima (`Player.SPEED_POINTS_WEIGHT`): +150 puntos = +50% | `Player._apply_skill_stats` |
+| Damage | 1.0 | flat o % | `PlayerDetails.apply_stats` |
+| Fire Rate | 1.0 | % (0.04 = +4%), multiplica el fire rate de todas las armas | `FireWeaponComponent.fire_rate_multiplier` |
+| Ability Cooldown | 0 | flat (0.04 = -4%), máximo -50% | `BaseAbility.get_effective_cooldown` |
+| Special Cooldown | 0 | flat (0.04 = -4%), máximo -50% | `FireWeaponComponent.special_cooldown_multiplier` |
+| Damage Reduction | 0 | flat (0.03 = -3% de daño recibido), máximo -60% | `Player.damage` |
+| Fiat Gain | 1.0 | % (0.05 = +5%) | `FED.get_fiat_subsidy` |
+
+Para un stat nuevo: agregalo a `PlayerStatsManager.base_stats`, al `@export_enum` de `StatSkillEffect.stat` y leelo en `Player._apply_skill_stats`. Si es una reducción, sumalo también a `StatSkillEffect.REDUCTION_STATS` para que el árbol lo muestre con signo menos.
 
 ## Agregar un arma
 
@@ -41,8 +56,12 @@ Con eso el arma aparece en el árbol y en la Armería al comprarla, y también e
 
 En la escena, `BaseAbility.ability_kind` dice de qué tipo es:
 
-- **Passive**: soporte (Magnet, Regen, Shield, Block Core Finder). Corre sola cada `ability_cooldown` segundos. El jugador equipa hasta 3.
-- **Active**: suma daño (Fury, Pulse, Drones). Se usa con **Q** (acción `Active_Ability`) y después recarga `ability_cooldown`. El jugador equipa 1.
+- **Passive**: soporte (Magnet, Regen, Shield, Block Core Finder, Second Wind, Congestion Field). Corre sola cada `ability_cooldown` segundos. El jugador equipa hasta 3. Second Wind sobrescribe `activate()` para revisar la vida cada frame y solo recargar cuando se dispara.
+- **Active**: se usa con **Q** (acción `Active_Ability`) y después recarga `ability_cooldown` (Fury, Pulse, Drones, Lightning Dash, Orbital Strike). El jugador equipa 1.
+
+El cooldown real es `get_effective_cooldown()`: `ability_cooldown` por el stat *Ability Cooldown* del jugador.
+
+Ayudas del jugador para habilidades nuevas: `Player.grant_invulnerability(segundos)`, `Player.start_dash(dirección, velocidad, segundos)`, `PulseAbility.blast(centro, daño)` (explosión en cualquier punto) y `BaseEnemy.apply_slow(multiplicador, segundos)`.
 
 ## Equipamiento (Armería → Loadout)
 

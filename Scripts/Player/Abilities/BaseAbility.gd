@@ -72,7 +72,14 @@ func _on_activate() -> void:
 	pass
 
 func _reset_cooldown_timer() -> void:
-	current_cooldown = ability_cooldown
+	current_cooldown = get_effective_cooldown()
+
+## [member ability_cooldown] after the player's "Ability Cooldown" skills.
+func get_effective_cooldown() -> float:
+	var player: PlayerController = get_player()
+	if player:
+		return ability_cooldown * player.ability_cooldown_multiplier
+	return ability_cooldown
 
 func get_active_state() -> bool:
 	return active

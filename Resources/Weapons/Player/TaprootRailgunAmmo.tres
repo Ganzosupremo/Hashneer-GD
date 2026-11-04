@@ -1,0 +1,54 @@
+[gd_resource type="Resource" script_class="AmmoDetails" format=3]
+
+[ext_resource type="Script" uid="uid://dkw4e6pdtdy1p" path="res://Scripts/Resources/AmmoDetails.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://crn0k51u6kiwt" path="res://Scripts/Resources/ArmoryUpgradeData.gd" id="2_upg"]
+[ext_resource type="Resource" uid="uid://s1urxs0syyaf" path="res://Resources/Weapons/Player/DefaultBulletHitEffect.tres" id="3_hit"]
+
+[sub_resource type="Resource" id="Upg_0"]
+script = ExtResource("2_upg")
+upgrade_type = 4
+upgrade_name = "Denser slugs"
+upgrade_description = "+10% bullet damage"
+upgrade_levels = 10
+upgrade_power_per_level = 0.1
+base_cost = 400000.0
+cost_multiplier = 1.4
+requires_bitcoin = true
+bitcoin_base_cost = 6.0
+bitcoin_cost_multiplier = 1.25
+
+[sub_resource type="Resource" id="Upg_1"]
+script = ExtResource("2_upg")
+upgrade_type = 8
+upgrade_name = "Key path"
+upgrade_description = "+1 enemy pierced"
+upgrade_levels = 4
+upgrade_power_per_level = 1.0
+base_cost = 500000.0
+cost_multiplier = 1.8
+requires_bitcoin = true
+bitcoin_base_cost = 8.0
+bitcoin_cost_multiplier = 1.25
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+colors = PackedColorArray(0.3, 0.9, 1, 1, 1, 1, 1, 0)
+
+[resource]
+script = ExtResource("1_ammo")
+available_upgrades = Array[ExtResource("2_upg")]([SubResource("Upg_0"), SubResource("Upg_1")])
+ammo_name = "Taproot Slugs"
+min_lifetime = 1.2
+max_lifetime = 1.6
+bullet_damage = 220.0
+bullet_speed = 2600.0
+bullet_type = 3
+max_pierce_count = 4
+size = 7
+trail_length = 22
+trail_width = 10.0
+fracture_force = 30000.0
+enemy_cut_multiplier = 0.5
+trail_gradient = SubResource("Gradient_trail")
+bullet_hit_vfx = ExtResource("3_hit")
+is_child = true
+upgrade_description = "Very fast slugs that go through several enemies."

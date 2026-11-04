@@ -1,0 +1,34 @@
+[gd_resource type="Resource" script_class="SkillDefinition" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Skills/SkillDefinition.gd" id="1_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/SkillRequirement.gd" id="2_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/SkillEffect.gd" id="3_s"]
+[ext_resource type="Script" path="res://Scripts/Skills/Effects/UnlockWeaponSkillEffect.gd" id="4_s"]
+[ext_resource type="Texture2D" path="res://Textures/WeaponSystem/Weapons/TaprootRailgun.png" id="6_s"]
+[ext_resource type="Resource" path="res://Resources/Skills/Weapons/halving_rocket.tres" id="r0_s"]
+[ext_resource type="Resource" path="res://Resources/Weapons/Player/TaprootRailgun.tres" id="7_s"]
+
+[sub_resource type="Resource" id="Resource_req0"]
+script = ExtResource("2_s")
+skill = ExtResource("r0_s")
+min_level = 1
+
+[sub_resource type="Resource" id="Resource_effect1"]
+script = ExtResource("4_s")
+weapon = ExtResource("7_s")
+
+[resource]
+script = ExtResource("1_s")
+id = &"taproot_railgun"
+display_name = "Taproot Railgun"
+description = "Unlocks the Taproot Railgun.
+Slow, but each shot goes through several enemies."
+icon = ExtResource("6_s")
+branch = "Weapons"
+requirements = Array[ExtResource("2_s")]([SubResource("Resource_req0")])
+effects = Array[ExtResource("3_s")]([SubResource("Resource_effect1")])
+max_level = 1
+cost_fiat_base = 5000000.0
+cost_fiat_multiplier = 1.0
+cost_btc_base = 90.0
+cost_btc_multiplier = 1.0
