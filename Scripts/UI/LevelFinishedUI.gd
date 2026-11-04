@@ -16,7 +16,9 @@ var _opened: bool = false
 var _blocks_mined_this_run: Dictionary = {}
 
 func _ready() -> void:
-	GameManager.get_player().get_health_node().zero_health.connect(_on_zero_health)
+	var player := GameManager.get_player()
+	if player != null:
+		player.get_health_node().zero_health.connect(_on_zero_health)
 	main_event_bus.level_completed.connect(_on_level_completed)
 	item_drop_bus.item_picked.connect(_on_item_picked)
 	BitcoinNetwork.block_found.connect(_on_block_found)

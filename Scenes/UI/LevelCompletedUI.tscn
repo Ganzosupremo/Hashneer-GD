@@ -1,185 +1,376 @@
-[gd_scene load_steps=11 format=3 uid="uid://dmek3vskirk8m"]
+[gd_scene format=3 uid="uid://dmek3vskirk8m"]
 
 [ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_0si0w"]
 [ext_resource type="Script" uid="uid://c4yonen0o5du7" path="res://Scripts/UI/LevelFinishedUI.gd" id="1_dcscb"]
 [ext_resource type="Resource" uid="uid://cqiq36am0bvm5" path="res://Resources/Item Drops/MainItemDropsEventBus.tres" id="2_67u4f"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="3_fkdm4"]
-[ext_resource type="Shader" uid="uid://cs2wfah7vqy0g" path="res://Shaders/DiscretSunset.gdshader" id="3_m870y"]
-[ext_resource type="Texture2D" uid="uid://26e06r7bs10" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="4_ny3yf"]
+[ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="3_network"]
+[ext_resource type="Texture2D" uid="uid://c4el0osrh3qta" path="res://Textures/UI/CurrencyUI/Bitcoin_logo.png" id="4_ny3yf"]
 [ext_resource type="PackedScene" uid="uid://gfx6r6lnobro" path="res://Scenes/UIComponents/AnimatedLabel.tscn" id="6_dq483"]
-[ext_resource type="Texture2D" uid="uid://dtmnmdes7kt6v" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="6_exueb"]
+[ext_resource type="Texture2D" uid="uid://qkcfmbxhalcw" path="res://Textures/UI/CurrencyUI/DollarSign.png" id="6_exueb"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="8_custom"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_bitcoin_celebration"]
-shader = ExtResource("3_m870y")
-shader_parameter/polar_coordinates = true
-shader_parameter/polar_center = Vector2(0.5, 0.5)
-shader_parameter/polar_zoom = 1.2
-shader_parameter/polar_repeat = 8.0
-shader_parameter/spin_rotation = 0.0
-shader_parameter/spin_speed = 15.0
-shader_parameter/offset = Vector2(0, 0)
-shader_parameter/colour_1 = Color(0.05, 0.05, 0.08, 1)
-shader_parameter/colour_2 = Color(1, 0.576471, 0.101961, 0.4)
-shader_parameter/colour_3 = Color(0.011765, 0.019608, 0.035294, 1)
-shader_parameter/contrast = 1.5
-shader_parameter/spin_amount = 0.2
-shader_parameter/pixel_filter = 500.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_network"]
+shader = ExtResource("3_network")
+shader_parameter/time = 0.0
+shader_parameter/speed = 0.48
+shader_parameter/density = 0.78
+shader_parameter/node_color = Color(1, 0.38, 0.04, 0.32)
+shader_parameter/connection_color = Color(0.05, 0.82, 1, 0.25)
 
-[node name="LevelCompletedUI" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
+bg_color = Color(0.002, 0.006, 0.018, 0.7)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shell"]
+bg_color = Color(0.012, 0.025, 0.052, 0.975)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.66)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.65)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_header"]
+bg_color = Color(0.02, 0.065, 0.09, 0.92)
+border_width_bottom = 2
+border_color = Color(0.05, 0.82, 1, 0.58)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_status"]
+bg_color = Color(0.02, 0.12, 0.11, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 1, 0.78, 0.75)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_separator"]
+color = Color(0.05, 0.82, 1, 0.4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btc"]
+bg_color = Color(0.15, 0.07, 0.018, 0.94)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.48, 0.08, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(1, 0.38, 0.04, 0.12)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fiat"]
+bg_color = Color(0.015, 0.105, 0.115, 0.94)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.82, 1, 0.82)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0.05, 0.82, 1, 0.11)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_footer"]
+bg_color = Color(0.006, 0.014, 0.03, 0.78)
+border_width_top = 1
+border_color = Color(0.18, 0.32, 0.4, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="LevelCompletedUI" type="Control" unique_id=551108871]
 process_mode = 3
-layout_direction = 2
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+layout_direction = 2
+theme = ExtResource("1_0si0w")
 script = ExtResource("1_dcscb")
 item_drop_bus = ExtResource("2_67u4f")
 main_event_bus = ExtResource("3_fkdm4")
 
-[node name="OverlayBG" type="Panel" parent="."]
+[node name="BGLayer" type="CanvasLayer" parent="." unique_id=1495527872]
+layer = -100
+
+[node name="Base" type="ColorRect" parent="BGLayer" unique_id=452231669]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.003, 0.008, 0.025, 1)
+
+[node name="NetworkLayer" type="ColorRect" parent="BGLayer" unique_id=1164273845]
+material = SubResource("ShaderMaterial_network")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="OverlayBG" type="Panel" parent="." unique_id=1792047683]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedOverlay"
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_overlay")
 
-[node name="MainContainer" type="PanelContainer" parent="."]
-material = SubResource("ShaderMaterial_bitcoin_celebration")
-layout_mode = 0
+[node name="MainContainer" type="PanelContainer" parent="." unique_id=1864043669]
+custom_minimum_size = Vector2(900, 590)
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -450.0
-offset_top = -300.0
+offset_top = -295.0
 offset_right = 450.0
-offset_bottom = 300.0
+offset_bottom = 295.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedMain"
+theme_override_styles/panel = SubResource("StyleBoxFlat_shell")
 
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer"]
+[node name="OuterMargin" type="MarginContainer" parent="MainContainer" unique_id=1643108602]
 layout_mode = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_left = 28
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 28
+theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer"]
+[node name="RootVBox" type="VBoxContainer" parent="MainContainer/OuterMargin" unique_id=303746296]
 layout_mode = 2
-theme_override_constants/separation = 30
-alignment = 1
+theme_override_constants/separation = 16
 
-[node name="TitleSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+[node name="Kicker" type="Label" parent="MainContainer/OuterMargin/RootVBox" unique_id=681844876]
 layout_mode = 2
-theme_override_constants/separation = 20
-alignment = 1
+theme_override_colors/font_color = Color(0.05, 0.82, 1, 1)
+theme_override_font_sizes/font_size = 12
+text = "RUN SETTLEMENT PROTOCOL"
+horizontal_alignment = 1
 
-[node name="HSeparator1" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection"]
+[node name="TitlePanel" type="PanelContainer" parent="MainContainer/OuterMargin/RootVBox" unique_id=636111059]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedHSeparator"
+theme_override_styles/panel = SubResource("StyleBoxFlat_header")
 
-[node name="Title" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection" instance=ExtResource("6_dq483")]
+[node name="TitleMargin" type="MarginContainer" parent="MainContainer/OuterMargin/RootVBox/TitlePanel" unique_id=72805334]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 10
+
+[node name="Title" parent="MainContainer/OuterMargin/RootVBox/TitlePanel/TitleMargin" unique_id=1543688053 instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(790, 30)
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
 theme_type_variation = &"TitleText"
-text = "MISSION COMPLETED!"
+theme_override_colors/font_color = Color(1, 0.62, 0.2, 1)
+theme_override_font_sizes/font_size = 35
+text = "MISSION COMPLETED"
 autowrap_mode = 3
 
-[node name="HSeparator2" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/TitleSection"]
+[node name="StatusRow" type="HBoxContainer" parent="MainContainer/OuterMargin/RootVBox" unique_id=262861817]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedHSeparator"
+theme_override_constants/separation = 12
+alignment = 1
 
-[node name="RewardsSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+[node name="StatusBadge" type="PanelContainer" parent="MainContainer/OuterMargin/RootVBox/StatusRow" unique_id=941737547]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_status")
+
+[node name="StatusText" type="Label" parent="MainContainer/OuterMargin/RootVBox/StatusRow/StatusBadge" unique_id=863468508]
+custom_minimum_size = Vector2(190, 34)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 1, 0.82, 1)
+theme_override_font_sizes/font_size = 13
+text = "NETWORK // FINALIZED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator" type="HSeparator" parent="MainContainer/OuterMargin/RootVBox" unique_id=1244850692]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_separator")
+
+[node name="RewardsHeading" type="VBoxContainer" parent="MainContainer/OuterMargin/RootVBox" unique_id=1848419584]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsHeading" unique_id=1075241467]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.87, 0.94, 0.97, 1)
+theme_override_font_sizes/font_size = 22
+text = "RUN PAYOUT"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsHeading" unique_id=304797413]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.42, 0.57, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "VERIFIED REWARDS ADDED TO YOUR WALLET"
+horizontal_alignment = 1
+
+[node name="RewardsRow" type="HBoxContainer" parent="MainContainer/OuterMargin/RootVBox" unique_id=832367443]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_constants/separation = 20
+theme_override_constants/separation = 16
+
+[node name="BTCCard" type="PanelContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow" unique_id=1645128630]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_btc")
+
+[node name="Margin" type="MarginContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard" unique_id=984798492]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="Content" type="VBoxContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin" unique_id=1946044346]
+layout_mode = 2
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="RewardsLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection" instance=ExtResource("6_dq483")]
+[node name="Header" type="HBoxContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin/Content" unique_id=50594098]
 layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "REWARDS EARNED"
-
-[node name="CurrencyPanel" type="PanelContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection"]
-layout_mode = 2
-size_flags_horizontal = 4
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedCurrencyPanelBG"
-
-[node name="MarginContainer" type="MarginContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel"]
-layout_mode = 2
-theme_override_constants/margin_left = 40
-theme_override_constants/margin_top = 30
-theme_override_constants/margin_right = 40
-theme_override_constants/margin_bottom = 30
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer"]
-layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 alignment = 1
 
-[node name="BTCContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 15
-alignment = 1
-
-[node name="BTCIcon" type="TextureRect" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/BTCContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="BTCIcon" type="TextureRect" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin/Content/Header" unique_id=992861755]
+custom_minimum_size = Vector2(38, 38)
 layout_mode = 2
 texture = ExtResource("4_ny3yf")
+expand_mode = 1
 stretch_mode = 5
 
-[node name="BTCGainedLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/BTCContainer" instance=ExtResource("6_dq483")]
+[node name="Label" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin/Content/Header" unique_id=1757599655]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.63, 0.24, 1)
+theme_override_font_sizes/font_size = 14
+text = "BITCOIN MINED"
+vertical_alignment = 1
+
+[node name="BTCGainedLabel" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin/Content" unique_id=1513385886 instance=ExtResource("6_dq483")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
-theme_type_variation = &"HeaderSmall"
-text = "0.00000000 BTC"
+theme_override_colors/font_color = Color(1, 0.84, 0.53, 1)
+theme_override_font_sizes/font_size = 28
+text = "0.00000000"
 
-[node name="HSeparator" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
+[node name="Unit" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/BTCCard/Margin/Content" unique_id=190407073]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedHSeparator"
+theme_override_colors/font_color = Color(0.68, 0.48, 0.26, 1)
+theme_override_font_sizes/font_size = 11
+text = "BTC // BLOCK SUBSIDY"
+horizontal_alignment = 1
 
-[node name="FiatContainer" type="HBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer"]
+[node name="FiatCard" type="PanelContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow" unique_id=841217025]
 layout_mode = 2
-theme_override_constants/separation = 15
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_fiat")
+
+[node name="Margin" type="MarginContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard" unique_id=1636786651]
+layout_mode = 2
+theme_override_constants/margin_left = 18
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 18
+theme_override_constants/margin_bottom = 16
+
+[node name="Content" type="VBoxContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin" unique_id=912097325]
+layout_mode = 2
+theme_override_constants/separation = 8
 alignment = 1
 
-[node name="FiatIcon" type="TextureRect" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/FiatContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="Header" type="HBoxContainer" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin/Content" unique_id=973164441]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="FiatIcon" type="TextureRect" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin/Content/Header" unique_id=2133637451]
+custom_minimum_size = Vector2(38, 38)
 layout_mode = 2
 texture = ExtResource("6_exueb")
+expand_mode = 1
 stretch_mode = 5
 
-[node name="FiatGainedLabel" parent="MainContainer/MarginContainer/VBoxContainer/RewardsSection/CurrencyPanel/MarginContainer/VBoxContainer/FiatContainer" instance=ExtResource("6_dq483")]
-unique_name_in_owner = true
+[node name="Label" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin/Content/Header" unique_id=1139928853]
 layout_mode = 2
-theme_type_variation = &"HeaderSmall"
+theme_override_colors/font_color = Color(0.36, 0.94, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "FIAT RECOVERED"
+vertical_alignment = 1
+
+[node name="FiatGainedLabel" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin/Content" unique_id=515902812 instance=ExtResource("6_dq483")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 1, 0.95, 1)
+theme_override_font_sizes/font_size = 28
 text = "$0.00"
 
-[node name="ActionSection" type="VBoxContainer" parent="MainContainer/MarginContainer/VBoxContainer"]
+[node name="Unit" type="Label" parent="MainContainer/OuterMargin/RootVBox/RewardsRow/FiatCard/Margin/Content" unique_id=2141513572]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_colors/font_color = Color(0.34, 0.62, 0.67, 1)
+theme_override_font_sizes/font_size = 11
+text = "USD // FED SETTLEMENT"
+horizontal_alignment = 1
+
+[node name="FooterPanel" type="PanelContainer" parent="MainContainer/OuterMargin/RootVBox" unique_id=1091918987]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_footer")
+
+[node name="FooterMargin" type="MarginContainer" parent="MainContainer/OuterMargin/RootVBox/FooterPanel" unique_id=1211156058]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="FooterRow" type="HBoxContainer" parent="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin" unique_id=143048975]
+layout_mode = 2
+theme_override_constants/separation = 18
 alignment = 1
 
-[node name="HSeparator3" type="HSeparator" parent="MainContainer/MarginContainer/VBoxContainer/ActionSection"]
+[node name="ArchiveLabel" type="Label" parent="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin/FooterRow" unique_id=332184826]
 layout_mode = 2
-theme = ExtResource("1_0si0w")
-theme_type_variation = &"LvlCompletedHSeparator"
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.42, 0.57, 0.65, 1)
+theme_override_font_sizes/font_size = 12
+text = "RUN DATA ARCHIVED // WALLET SYNCHRONIZED"
+vertical_alignment = 1
 
-[node name="MenuButton" parent="MainContainer/MarginContainer/VBoxContainer/ActionSection" instance=ExtResource("8_custom")]
+[node name="MenuButton" parent="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin/FooterRow" unique_id=26299833 instance=ExtResource("8_custom")]
+custom_minimum_size = Vector2(290, 54)
 layout_mode = 2
-text = "RETURN TO MAIN MENU"
+text = "CONTINUE TO SKILL TREE"
 
-[connection signal="pressed" from="MainContainer/MarginContainer/VBoxContainer/ActionSection/MenuButton" to="." method="_on_menu_button_pressed"]
+[connection signal="pressed" from="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin/FooterRow/MenuButton" to="." method="_on_menu_button_pressed"]
