@@ -92,10 +92,18 @@ func update_beam(origin: Vector2, launch_vector: Vector2 = _direction) -> void:
 	params.collision_mask = _ammo_details.laser_collision_mask
 	params.collide_with_bodies = true
 	params.collide_with_areas = true
-	params.exclude = [self]
 
 	var space_state: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
 	var results: Dictionary = space_state.intersect_ray(params)
+	# A broken shield keeps its Area2D: the ray stopped on it, absorb_damage ignored the hit and the
+	# enemy behind it never took damage. Skip shields that are no longer active and cast again.
+	var tries: int = 0
+	while !results.is_empty() and results.collider is ShieldComponent and !results.collider.is_active() and tries < 4:
+		var excluded: Array[RID] = params.exclude
+		excluded.append(results.rid)
+		params.exclude = excluded
+		results = space_state.intersect_ray(params)
+		tries += 1
 	_line.clear_points()
 	_line.add_point(Vector2.ZERO)
 
@@ -124,7 +132,7 @@ func _apply_damage(body: Node2D, hit_pos: Vector2) -> void:
 	
 	var damage_to_deal = _ammo_details.damage_final
 	
-	if body is ShieldComponent:
+	if body is ShieldComponent and body.is_active():
 		body.absorb_damage(damage_to_deal, hit_pos)
 	elif body is BaseEnemy and body.has_active_shield():
 		body.shield.absorb_damage(damage_to_deal, hit_pos)
