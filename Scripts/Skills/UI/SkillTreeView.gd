@@ -103,7 +103,9 @@ func show_branch(branch: String) -> void:
 		return
 	_current_branch = branch
 	_last_branch = branch
-	_tabs[branch].set_pressed_no_signal(true)
+	# button_pressed (not set_pressed_no_signal) so the ButtonGroup releases the other tabs.
+	# It only emits toggled, the tabs listen to pressed, so this doesn't call show_branch again.
+	_tabs[branch].button_pressed = true
 	for child in _tier_rows.get_children():
 		for node in _get_row_nodes(child):
 			node.get_parent().remove_child(node)
