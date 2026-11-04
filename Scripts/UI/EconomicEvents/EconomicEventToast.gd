@@ -97,7 +97,7 @@ func _fill(event: EconomicEvent, ended: bool) -> void:
 
 	if ended:
 		_type_tag.text = "EVENT OVER"
-		_title_label.text = event.name
+		_title_label.text = event.name.to_upper()
 		_blocks_label.text = ""
 		_description_label.text = "Markets are calm again, prices are back to normal."
 		_effects_label.hide()
@@ -105,7 +105,7 @@ func _fill(event: EconomicEvent, ended: bool) -> void:
 		return
 
 	_type_tag.text = event.get_type_label()
-	_title_label.text = event.name
+	_title_label.text = event.name.to_upper()
 	var blocks: int = EconomicEventsManager.get_remaining_blocks()
 	if blocks <= 0:
 		blocks = event.duration_in_blocks
