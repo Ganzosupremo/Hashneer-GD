@@ -325,12 +325,18 @@ func _on_health_changed(new_value: float) -> void:
 func _on_shield_depleted() -> void:
 	shield_depleted.emit()
 	destroyed = true
+	# Stop blocking hits: the Area2D stayed in the world invisible, so the laser ray kept stopping on it
+	_set_collision_enabled(false)
 	
 	# Make shield invisible
 	if _polygon2d:
 		_polygon2d.visible = false
 	if _line2d:
 		_line2d.visible = false
+
+func _set_collision_enabled(enabled: bool) -> void:
+	if _collision_polygon:
+		_collision_polygon.set_deferred("disabled", !enabled)
 
 #region Public API
 func is_active() -> bool:
@@ -345,6 +351,7 @@ func get_max_shield() -> float:
 func reset_shield() -> void:
 	current_shield = max_shield
 	destroyed = false
+	_set_collision_enabled(true)
 	regen_timer = 0.0
 	regeneration_active = false
 	_hit_effect_timer = 0.0
