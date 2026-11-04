@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=2 format=3 uid="uid://xf2gjogea0a6"]
 
-[ext_resource type="FontFile" uid="uid://bjxhktv3vfu54" path="res://Fonts/WerdnasReturn.ttf" id="1_vit7j"]
+[ext_resource type="FontFile" path="res://Fonts/DotGothic16-Regular.ttf" id="1_vit7j"]
 
 [resource]
 default_font = ExtResource("1_vit7j")
