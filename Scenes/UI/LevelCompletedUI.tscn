@@ -361,6 +361,7 @@ theme_override_constants/separation = 18
 alignment = 1
 
 [node name="ArchiveLabel" type="Label" parent="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin/FooterRow" unique_id=332184826]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/font_color = Color(0.42, 0.57, 0.65, 1)
@@ -369,7 +370,7 @@ text = "RUN DATA ARCHIVED // WALLET SYNCHRONIZED"
 vertical_alignment = 1
 
 [node name="MenuButton" parent="MainContainer/OuterMargin/RootVBox/FooterPanel/FooterMargin/FooterRow" unique_id=26299833 instance=ExtResource("8_custom")]
-custom_minimum_size = Vector2(290, 54)
+custom_minimum_size = Vector2(300, 54)
 layout_mode = 2
 text = "CONTINUE TO SKILL TREE"
 
