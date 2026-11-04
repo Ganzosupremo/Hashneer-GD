@@ -85,16 +85,6 @@ theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 14
 text = "Level 0/1"
 
-[node name="ModesLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/Header/Titles"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 0
-theme_override_font_sizes/font_size = 12
-text = "Defense  ·  Mining + Waves"
-
 [node name="InfoScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Details"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -128,7 +118,7 @@ theme_override_font_sizes/font_size = 14
 text = "Health +91  ->  +182"
 autowrap_mode = 3
 
-[node name="RequirementsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
+[node name="RequirementsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 4

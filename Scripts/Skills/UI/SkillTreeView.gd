@@ -28,7 +28,7 @@ static var _last_branch: String = ""
 
 @onready var _branch_tabs: HFlowContainer = %BranchTabs
 @onready var _can_buy_filter: Button = %CanBuyFilter
-@onready var _mode_filter_button: OptionButton = %ModeFilter
+@onready var _mode_filter_button: Button = %ModeFilter
 @onready var _scroll: ScrollContainer = %Scroll
 @onready var _tier_rows: VBoxContainer = %TierRows
 @onready var _empty_label: Label = %EmptyLabel
@@ -48,7 +48,7 @@ func _ready() -> void:
 	_build()
 	_style_scroll_bar()
 	_can_buy_filter.toggled.connect(_on_can_buy_toggled)
-	_mode_filter_button.item_selected.connect(_on_mode_filter_selected)
+	_mode_filter_button.pressed.connect(_on_mode_filter_pressed)
 	var start: String = _last_branch if _branch_order.has(_last_branch) else ""
 	if start.is_empty() and not _branch_order.is_empty():
 		start = _branch_order[0]
@@ -83,13 +83,17 @@ func set_mode_filter(mode: int) -> void:
 	for node in _nodes.values():
 		node.set_dimmed(not node.skill.applies_in(mode))
 
-# Item ids of the ModeFilter option button
-func _on_mode_filter_selected(index: int) -> void:
+## Mode filter button cycles through these: All, Mining, Waves.
+const MODE_FILTER_CYCLE: Array = [[0, "Mode: All"], [Constants.GameModeFlag.MINING, "Mode: Mining"], [Constants.GameModeFlag.WAVES, "Mode: Waves"]]
+
+func _on_mode_filter_pressed() -> void:
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
-	match _mode_filter_button.get_item_id(index):
-		1: set_mode_filter(Constants.GameModeFlag.MINING)
-		2: set_mode_filter(Constants.GameModeFlag.WAVES)
-		_: set_mode_filter(0)
+	var index: int = 0
+	for i in MODE_FILTER_CYCLE.size():
+		if MODE_FILTER_CYCLE[i][0] == _mode_filter:
+			index = (i + 1) % MODE_FILTER_CYCLE.size()
+	set_mode_filter(MODE_FILTER_CYCLE[index][0])
+	_mode_filter_button.text = MODE_FILTER_CYCLE[index][1]
 
 ## Selects a skill and opens its branch if another one is open.
 func select_skill(skill_id: StringName) -> void:

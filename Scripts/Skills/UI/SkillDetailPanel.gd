@@ -24,7 +24,6 @@ const MIN_INFO_HEIGHT: float = 40.0
 @onready var _icon: TextureRect = %Icon
 @onready var _name_label: Label = %NameLabel
 @onready var _level_label: Label = %LevelLabel
-@onready var _modes_label: Label = %ModesLabel
 @onready var _description_label: Label = %DescriptionLabel
 @onready var _effects_label: Label = %EffectsLabel
 @onready var _requirements_label: Label = %RequirementsLabel
@@ -74,8 +73,8 @@ func refresh() -> void:
 
 	_icon.texture = _skill.get_icon(maxed)
 	_name_label.text = _skill.display_name
-	_level_label.text = "Maxed" if maxed else "Level %d/%d" % [level, _skill.max_level]
-	_modes_label.text = "%s  ·  %s" % [_skill.branch, " + ".join(_skill.get_mode_names())]
+	# The branch is the open tab, only the modes are worth the space here
+	_level_label.text = "%s  ·  %s" % ["Maxed" if maxed else "Level %d/%d" % [level, _skill.max_level], " + ".join(_skill.get_mode_names())]
 	_description_label.text = _skill.description
 	_description_label.visible = _skill.description != ""
 	_effects_label.text = _build_effects_text(level, maxed)
