@@ -1,5 +1,5 @@
 class_name EconomicEventToast extends PanelContainer
-## Card that slides in under the top bar when an economic event starts or ends.
+## Card that slides in under the event badge of the top bar when an economic event starts or ends.
 ##
 ## It closes by itself after a few seconds, the countdown pauses while the mouse is over it
 ## and a click closes it. Cards are queued, so several events never overlap.
@@ -11,7 +11,9 @@ const START_DURATION: float = 7.0
 ## Seconds an ended event stays on screen.
 const END_DURATION: float = 4.0
 ## Distance from the top of the screen, below the top bar.
-const TOP_MARGIN: float = 76.0
+const TOP_MARGIN: float = 72.0
+## Distance from the right edge, lines up with the badge in the top bar.
+const RIGHT_MARGIN: float = 18.0
 
 @onready var _type_tag: Label = %TypeTag
 @onready var _title_label: Label = %TitleLabel
@@ -76,7 +78,7 @@ func _show_next() -> void:
 	reset_size()
 	# Wait a frame so the container has its final height before sliding
 	await get_tree().process_frame
-	_center_horizontally()
+	_align_right()
 	position.y = -size.y - 8.0
 	modulate.a = 0.0
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.NOTIFICATION_SOUND, AudioManager.DestinationAudioBus.SFX)
@@ -142,6 +144,5 @@ func _play_tween(target_y: float, target_alpha: float, ease_type: Tween.EaseType
 	_tween.tween_property(self, "position:y", target_y, SLIDE_TIME)
 	_tween.tween_property(self, "modulate:a", target_alpha, SLIDE_TIME)
 
-func _center_horizontally() -> void:
-	var parent_width: float = get_parent_area_size().x
-	position.x = (parent_width - size.x) * 0.5
+func _align_right() -> void:
+	position.x = get_parent_area_size().x - size.x - RIGHT_MARGIN

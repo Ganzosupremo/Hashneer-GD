@@ -13,6 +13,14 @@ const MISSING_REQUIREMENT_COLOR: Color = Color(0.95, 0.55, 0.4, 1.0)
 
 @export var bitcoin_icon: Texture2D
 @export var fiat_icon: Texture2D
+## The panel never grows above the bottom of this node (the exchange, CurrencyUI).
+## Long descriptions scroll instead.
+@export var avoid_node: Control
+## Screen height the panel never grows above when [member avoid_node] is not set.
+@export var top_limit: float = 232.0
+const AVOID_GAP: float = 8.0
+## The text part never gets shorter than this, even on small screens.
+const MIN_INFO_HEIGHT: float = 60.0
 
 @onready var _filter_all: Button = %FilterAll
 @onready var _filter_mining: Button = %FilterMining
@@ -29,7 +37,9 @@ const MISSING_REQUIREMENT_COLOR: Color = Color(0.95, 0.55, 0.4, 1.0)
 @onready var _cost_row: Control = %CostRow
 @onready var _cost_icon: TextureRect = %CostIcon
 @onready var _cost_label: Label = %CostLabel
-@onready var _event_cost_label: RichTextLabel = %EventCostLabel
+@onready var _event_cost_label: Label = %EventCostLabel
+@onready var _info_scroll: ScrollContainer = %InfoScroll
+@onready var _info_box: VBoxContainer = %InfoBox
 @onready var _buy_button: Button = %BuyButton
 @onready var _buy_max_button: Button = %BuyMaxButton
 
@@ -69,6 +79,7 @@ func refresh() -> void:
 	_details.visible = _skill != null
 	if _skill == null:
 		return
+	_fit_info_height.call_deferred()
 
 	var id: StringName = _skill.id
 	var level: int = SkillProgress.get_level(id)
@@ -118,9 +129,23 @@ func _show_event_cost(id: StringName, currency: Constants.CurrencyType) -> void:
 	var old_cost: float = SkillProgress.get_cost_without_event(id, currency)
 	var old_text: String = Utils.format_btc(old_cost) if currency == Constants.CurrencyType.BITCOIN else Utils.format_currency(old_cost, true)
 	var effect: StringName = EconomicEvent.SKILL_COST_BTC if currency == Constants.CurrencyType.BITCOIN else EconomicEvent.SKILL_COST_FIAT
-	var color: Color = EconomicEvent.tone_color(EconomicEvent.get_effect_tone(effect, multiplier))
-	_event_cost_label.text = "[center][s]%s[/s]  [color=#%s]%s[/color] %s[/center]" % [old_text, color.to_html(false), EconomicEvent.format_change(multiplier), event.name]
+	_event_cost_label.add_theme_color_override("font_color", EconomicEvent.tone_color(EconomicEvent.get_effect_tone(effect, multiplier)))
+	_event_cost_label.text = "(was %s, %s)" % [old_text, EconomicEvent.format_change(multiplier)]
+	_event_cost_label.tooltip_text = "%s changes this price for %d more blocks" % [event.name, EconomicEventsManager.get_remaining_blocks()]
 	_event_cost_label.visible = true
+
+## The panel grows upward from the bottom of the screen. Caps the text part so the top
+## stays below [member avoid_node], the rest scrolls.
+func _fit_info_height() -> void:
+	if not is_inside_tree() or not _details.visible:
+		return
+	var content: float = _info_box.get_combined_minimum_size().y
+	var others: float = get_combined_minimum_size().y - _info_scroll.get_combined_minimum_size().y
+	var limit: float = top_limit
+	if is_instance_valid(avoid_node) and avoid_node.is_visible_in_tree():
+		limit = avoid_node.get_global_rect().end.y + AVOID_GAP
+	var allowed: float = get_global_rect().end.y - limit - others
+	_info_scroll.custom_minimum_size.y = minf(content, maxf(allowed, MIN_INFO_HEIGHT))
 
 ## One line per effect: what it gives now and with the next level.
 func _build_effects_text(level: int, maxed: bool) -> String:

@@ -135,7 +135,18 @@ theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 12
 text = "Defense  ·  Mining + Waves"
 
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+[node name="InfoScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Details"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="InfoBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Details/InfoScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.85, 0.88, 1)
@@ -146,7 +157,7 @@ theme_override_font_sizes/font_size = 13
 text = "Description"
 autowrap_mode = 3
 
-[node name="EffectsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+[node name="EffectsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.85, 1, 1)
@@ -157,7 +168,7 @@ theme_override_font_sizes/font_size = 14
 text = "Health +91  ->  +182"
 autowrap_mode = 3
 
-[node name="RequirementsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+[node name="RequirementsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/outline_size = 4
@@ -192,17 +203,15 @@ theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 18
 text = "0"
 
-[node name="EventCostLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer/Details"]
+[node name="EventCostLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/CostRow"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-tooltip_text = "Price before the economic event"
-theme_override_colors/default_color = Color(0.54, 0.68, 0.75, 1)
-theme_override_font_sizes/normal_font_size = 13
-bbcode_enabled = true
-text = "[center][s]$120[/s]  [color=#ff6b61]+40%[/color] Money Printer[/center]"
-fit_content = true
-scroll_active = false
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 0.42, 0.38, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "(was 200K, +40%)"
 
 [node name="BuyRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
 layout_mode = 2

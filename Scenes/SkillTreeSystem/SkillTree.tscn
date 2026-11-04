@@ -150,6 +150,7 @@ anchor_bottom = 1.0
 offset_top = -88.0
 offset_bottom = -88.0
 grow_vertical = 0
+avoid_node = NodePath("../CurrencyUI/MainContainer")
 
 [node name="MiningFarmUI" parent="FrontLayer" unique_id=601998099 instance=ExtResource("56_farm_ui")]
 
