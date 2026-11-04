@@ -8,7 +8,6 @@ class_name NetworkVisualizer extends Control
 @onready var _empty_state_container: VBoxContainer = %EmptyStateContainer
 
 @onready var _displayer_scene: PackedScene = preload("res://Scenes/Miscelaneous/UIBitcoinBlock.tscn")
-@onready var skill_tree_scene: PackedScene = load("res://Scenes/SkillTreeSystem/SkillTree.tscn")
 
 var _chain: Array = []
 var _block_visualizers: Array[Control] = []
@@ -93,6 +92,3 @@ func get_network_statistics() -> Dictionary:
 func _exit_tree() -> void:
 	_clear_block_visualizers()
 
-
-func _on_return_button_pressed() -> void:
-	SceneManager.switch_scene_with_packed(skill_tree_scene)

@@ -6,6 +6,9 @@ class_name StatsScreenUI extends PanelContainer
 ## Every value label has a unique name ([code]%BlocksMinedValue[/code], ...) and is filled in [method _refresh].
 
 
+func _ready() -> void:
+	add_to_group(HubNavBar.BLOCKER_GROUP)
+
 func open() -> void:
 	_refresh()
 	show()
