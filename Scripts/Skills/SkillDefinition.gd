@@ -3,7 +3,7 @@ class_name SkillDefinition extends Resource
 ##
 ## Every [code].tres[/code] with this script inside [constant SkillProgress.SKILLS_DIR] (subfolders
 ## included) is loaded on startup and shows up in the tree, nothing else has to be registered.
-## Its place in the tree comes from [member branch] (column) and the depth of its [member requirements] (row).
+## Its place in the tree comes from [member branch] (tab) and the depth of its [member requirements] (row).
 ## Only the level of each skill is saved, by [member id], see [SkillProgress].
 
 @export_category("Identity")
@@ -16,7 +16,7 @@ class_name SkillDefinition extends Resource
 @export var icon_maxed: Texture2D
 
 @export_category("Tree")
-## Column of the tree. A new branch only needs a new name here and in [constant SkillTreeView.BRANCH_ORDER].
+## Tab of the tree. A new branch only needs a new name here, and in [constant SkillTreeView.BRANCH_ORDER] to fix its position.
 @export_enum("Defense", "Offense", "Utility", "Weapons") var branch: String = "Defense"
 ## Order inside its branch, -1 puts it after its deepest requirement.
 @export var tier: int = -1

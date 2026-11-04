@@ -1,46 +1,56 @@
-class_name SkillTreeView extends Control
-## Builds the skill tree from [SkillProgress]: one column per [member SkillDefinition.branch],
-## each laid out as a grid in tier order.
+class_name SkillTreeView extends VBoxContainer
+## Builds the skill tree from [SkillProgress]: one tab per [member SkillDefinition.branch], and inside
+## the tab one row per tier.
 ##
-## Nothing is placed by hand: a new [SkillDefinition] file shows up in its branch on the next run.
-## The view lives in the UI layer and picks the grid shape that fills its parent best, so it never
-## moves or zooms. Locked skills show it on the node, their requirements are in the details panel.
+## Nothing is placed by hand: a new [SkillDefinition] file shows up in its branch on the next run, and
+## a new branch name becomes a new tab. Nodes keep their size no matter how many skills there are,
+## when a branch doesn't fit the area it scrolls vertically.
+## The static layout lives in [code]Scenes/SkillTreeSystem/SkillTreeView.tscn[/code].
 
 ## Emitted when a node is pressed.
 signal skill_selected(skill: SkillDefinition)
 
-## Column order, branches not listed here go after these in alphabetical order.
+## Tab order, branches not listed here go after these in alphabetical order.
 const BRANCH_ORDER: PackedStringArray = ["Defense", "Offense", "Utility", "Weapons"]
+const HEADER_COLOR: Color = Color(1.0, 0.843, 0.0, 1.0)
+const CAN_BUY_COLOR: Color = Color(0.3, 0.9, 0.45, 1.0)
 
 @export var node_scene: PackedScene
 @export var node_size: Vector2 = Vector2(76, 76)
-## Width of one node slot, a column is as wide as its busiest row.
-@export var slot_width: float = 100.0
-@export var row_height: float = 92.0
-@export var column_gap: float = 14.0
-@export var header_height: float = 38.0
+@export var node_gap: int = 12
+## Width of the tier label on the left of each row.
+@export var tier_label_width: float = 44.0
 ## Shows the skill name under each node. The name is always in the tooltip and the details panel.
 @export var show_node_names: bool = false
-## The tree is scaled to fill its parent, never above this.
-@export var max_scale: float = 2.0
-@export var column_color: Color = Color(0.04, 0.04, 0.07, 0.55)
-@export var column_border_color: Color = Color(1.0, 0.843, 0.0, 0.2)
+
+## Tab that was open last time, so coming back from a run opens the same branch.
+static var _last_branch: String = ""
+
+@onready var _branch_tabs: HFlowContainer = %BranchTabs
+@onready var _can_buy_filter: Button = %CanBuyFilter
+@onready var _scroll: ScrollContainer = %Scroll
+@onready var _tier_rows: VBoxContainer = %TierRows
+@onready var _empty_label: Label = %EmptyLabel
 
 var _nodes: Dictionary = {}  # StringName id -> SkillTreeNode
-var _columns: Array[Dictionary] = []  # {branch, rect}
 var _branch_order: Array = []
-var _branch_skills: Dictionary = {}  # branch -> Array of skills, in tier order
-var _headers: Dictionary = {}  # branch -> Label
+var _branch_tiers: Dictionary = {}  # branch -> Array of {tier: int, skills: Array}
+var _tabs: Dictionary = {}  # branch -> Button
+var _tab_dots: Dictionary = {}  # branch -> Control
+var _rows: Array[Dictionary] = []  # rows of the open branch: {row: Control, nodes: Array}
+var _current_branch: String = ""
 var _selected_id: StringName = &""
 var _mode_filter: int = 0
 
 
 func _ready() -> void:
 	_build()
-	var parent_control: Control = get_parent() as Control
-	if parent_control:
-		parent_control.resized.connect(_fit_to_parent)
-	_fit_to_parent.call_deferred()
+	_can_buy_filter.toggled.connect(_on_can_buy_toggled)
+	var start: String = _last_branch if _branch_order.has(_last_branch) else ""
+	if start.is_empty() and not _branch_order.is_empty():
+		start = _branch_order[0]
+	if not start.is_empty():
+		show_branch(start)
 	SkillProgress.skill_changed.connect(_on_skill_changed)
 	SkillProgress.progress_reset.connect(refresh)
 	SkillProgress.costs_changed.connect(refresh)
@@ -51,13 +61,18 @@ func _exit_tree() -> void:
 	SkillProgress.progress_reset.disconnect(refresh)
 	SkillProgress.costs_changed.disconnect(refresh)
 	BitcoinWallet.money_changed.disconnect(_on_money_changed)
+	# Nodes of the closed tabs are not in the tree, free them with the view
+	for node in _nodes.values():
+		if is_instance_valid(node) and not node.is_inside_tree():
+			node.queue_free()
 
 #region Public API
 
 func refresh() -> void:
 	for node in _nodes.values():
 		node.refresh()
-	queue_redraw()
+	_update_tab_dots()
+	_apply_filters()
 
 ## Fades the skills that don't work in [param mode], 0 shows every skill normally.
 func set_mode_filter(mode: int) -> void:
@@ -65,20 +80,43 @@ func set_mode_filter(mode: int) -> void:
 	for node in _nodes.values():
 		node.set_dimmed(not node.skill.applies_in(mode))
 
+## Selects a skill and opens its branch if another one is open.
 func select_skill(skill_id: StringName) -> void:
 	if _nodes.has(_selected_id):
 		_nodes[_selected_id].set_selected(false)
 	_selected_id = skill_id
 	if _nodes.has(skill_id):
-		_nodes[skill_id].set_selected(true)
-		skill_selected.emit(_nodes[skill_id].skill)
+		var node: SkillTreeNode = _nodes[skill_id]
+		if node.skill.branch != _current_branch:
+			show_branch(node.skill.branch)
+		node.set_selected(true)
+		_scroll.ensure_control_visible.call_deferred(node)
+		skill_selected.emit(node.skill)
 
 func get_node_for(skill_id: StringName) -> SkillTreeNode:
 	return _nodes.get(skill_id, null)
 
+## Opens the tab of [param branch].
+func show_branch(branch: String) -> void:
+	if not _branch_tiers.has(branch):
+		return
+	_current_branch = branch
+	_last_branch = branch
+	_tabs[branch].set_pressed_no_signal(true)
+	for child in _tier_rows.get_children():
+		for node in _get_row_nodes(child):
+			node.get_parent().remove_child(node)
+		_tier_rows.remove_child(child)
+		child.queue_free()
+	_rows.clear()
+	for tier_entry in _branch_tiers[branch]:
+		_add_tier_row(tier_entry.tier, tier_entry.skills)
+	_scroll.scroll_vertical = 0
+	_apply_filters()
+
 #endregion
 
-#region Layout
+#region Build
 
 func _build() -> void:
 	var skills: Array[SkillDefinition] = SkillProgress.get_all_skills()
@@ -86,95 +124,101 @@ func _build() -> void:
 	for skill in skills:
 		_get_tier(skill, tiers, [])
 
-	# Inside a branch the skills go in tier order, so the cheap ones come first
-	var branches: Dictionary = {}  # branch -> Array of skills
+	var branches: Dictionary = {}  # branch -> {tier -> Array of skills}
 	for skill in skills:
-		branches.get_or_add(skill.branch, []).append(skill)
+		var by_tier: Dictionary = branches.get_or_add(skill.branch, {})
+		by_tier.get_or_add(tiers[skill.id], []).append(skill)
+		_add_node(skill)
+
 	_branch_order = _sorted_branches(branches.keys())
+	var group := ButtonGroup.new()
 	for branch in _branch_order:
-		var list: Array = branches[branch]
-		list.sort_custom(func(a: SkillDefinition, b: SkillDefinition) -> bool:
-			if tiers[a.id] != tiers[b.id]:
-				return tiers[a.id] < tiers[b.id]
-			return String(a.id) < String(b.id))
-		_branch_skills[branch] = list
-		for skill in list:
-			_add_node(skill)
-		_headers[branch] = _add_header(branch)
+		var tier_list: Array = []
+		var tier_numbers: Array = branches[branch].keys()
+		tier_numbers.sort()
+		for tier in tier_numbers:
+			var list: Array = branches[branch][tier]
+			list.sort_custom(func(a: SkillDefinition, b: SkillDefinition) -> bool: return String(a.id) < String(b.id))
+			tier_list.append({"tier": tier, "skills": list})
+		_branch_tiers[branch] = tier_list
+		_add_tab(branch, group)
+	_update_tab_dots()
 
-## Places every branch as a grid of [param rows] rows (wider when it has more skills)
-## and returns the size of the whole tree.
-func _layout(rows: int) -> Vector2:
-	_columns.clear()
-	var x: float = 0.0
-	for branch in _branch_order:
-		var list: Array = _branch_skills[branch]
-		var cols: int = maxi(ceili(float(list.size()) / rows), 1)
-		var width: float = cols * slot_width
-		for i in list.size():
-			var center := Vector2(x + slot_width * (i % cols + 0.5), header_height + row_height * (floori(float(i) / cols) + 0.5))
-			var node: SkillTreeNode = _nodes[list[i].id]
-			node.position = center - node_size * 0.5
-		var header: Label = _headers[branch]
-		header.position = Vector2(x, 0.0)
-		header.size = Vector2(width, header_height)
-		_columns.append({"branch": branch, "rect": Rect2(x, 0.0, width, header_height + row_height * rows)})
-		x += width + column_gap
-	return Vector2(maxf(x - column_gap, 0.0), header_height + row_height * rows)
-
-## Most skills in one branch, the most rows a layout can need.
-func _get_max_branch_size() -> int:
-	var most: int = 1
-	for branch in _branch_order:
-		most = maxi(most, _branch_skills[branch].size())
-	return most
-
+## Nodes are created once and moved in and out of the rows when the tab changes.
 func _add_node(skill: SkillDefinition) -> void:
 	var node: SkillTreeNode = node_scene.instantiate()
 	node.setup(skill)
-	add_child(node)
-	node.size = node_size
-	node.set_name_visible(show_node_names)
+	node.custom_minimum_size = node_size
 	node.pressed.connect(_on_node_pressed.bind(skill.id))
 	_nodes[skill.id] = node
+	# Runs _ready so refresh() works while the node is in no tab
+	add_child(node)
+	node.set_name_visible(show_node_names)
+	remove_child(node)
 
-func _add_header(branch: String) -> Label:
+func _add_tab(branch: String, group: ButtonGroup) -> void:
+	var tab := Button.new()
+	tab.text = branch.to_upper()
+	tab.toggle_mode = true
+	tab.button_group = group
+	tab.focus_mode = Control.FOCUS_NONE
+	tab.custom_minimum_size = Vector2(0, 34)
+	tab.add_theme_font_size_override("font_size", 14)
+	tab.pressed.connect(_on_tab_pressed.bind(branch))
+	_branch_tabs.add_child(tab)
+	_tabs[branch] = tab
+
+	# Green dot in the corner when something in the branch can be bought
+	var dot := Panel.new()
+	var box := StyleBoxFlat.new()
+	box.bg_color = CAN_BUY_COLOR
+	box.set_corner_radius_all(5)
+	dot.add_theme_stylebox_override("panel", box)
+	dot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	dot.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	dot.offset_left = -12.0
+	dot.offset_top = 3.0
+	dot.offset_right = -3.0
+	dot.offset_bottom = 12.0
+	tab.add_child(dot)
+	_tab_dots[branch] = dot
+
+func _add_tier_row(tier: int, skills: Array) -> void:
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 8)
+
 	var label := Label.new()
-	label.text = branch.to_upper()
+	label.text = "T%d" % (tier + 1)
+	label.tooltip_text = "Tier %d" % (tier + 1)
+	label.custom_minimum_size = Vector2(tier_label_width, node_size.y)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.add_theme_font_size_override("font_size", 18)
-	label.add_theme_color_override("font_color", Color(1.0, 0.843, 0.0, 1.0))
-	add_child(label)
-	return label
+	label.mouse_filter = Control.MOUSE_FILTER_PASS
+	label.add_theme_font_size_override("font_size", 16)
+	label.add_theme_color_override("font_color", HEADER_COLOR)
+	row.add_child(label)
 
-## Picks the number of rows that lets the tree be the biggest in the parent, then scales it to fit
-## and centers it. Runs again when the parent is resized.
-func _fit_to_parent() -> void:
-	var parent_control: Control = get_parent() as Control
-	if parent_control == null or _branch_order.is_empty():
-		return
-	var area: Vector2 = parent_control.size
-	if area.x <= 0.0 or area.y <= 0.0:
-		return
-	var best_rows: int = 1
-	var best_fit: float = 0.0
-	for rows in range(1, _get_max_branch_size() + 1):
-		var content: Vector2 = _layout(rows)
-		var fit: float = minf(area.x / content.x, area.y / content.y)
-		if fit > best_fit + 0.001:
-			best_fit = fit
-			best_rows = rows
-	var tree_size: Vector2 = _layout(best_rows)
-	var fit: float = minf(best_fit, max_scale)
-	custom_minimum_size = tree_size
-	size = tree_size
-	scale = Vector2(fit, fit)
-	position = Vector2((area.x - tree_size.x * fit) * 0.5, (area.y - tree_size.y * fit) * 0.5)
-	queue_redraw()
+	var flow := HFlowContainer.new()
+	flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	flow.add_theme_constant_override("h_separation", node_gap)
+	flow.add_theme_constant_override("v_separation", node_gap)
+	row.add_child(flow)
 
-## Row of a skill: [member SkillDefinition.tier] if set, otherwise one below its deepest requirement.
+	var row_nodes: Array = []
+	for skill in skills:
+		var node: SkillTreeNode = _nodes[skill.id]
+		flow.add_child(node)
+		row_nodes.append(node)
+	_tier_rows.add_child(row)
+	_rows.append({"row": row, "nodes": row_nodes})
+
+func _get_row_nodes(row: Node) -> Array:
+	for entry in _rows:
+		if entry.row == row:
+			return entry.nodes
+	return []
+
+## Tier of a skill: [member SkillDefinition.tier] if set, otherwise one below its deepest requirement.
 func _get_tier(skill: SkillDefinition, cache: Dictionary, visiting: Array) -> int:
 	if cache.has(skill.id):
 		return cache[skill.id]
@@ -204,21 +248,41 @@ func _sorted_branches(names: Array) -> Array:
 
 #endregion
 
-#region Drawing
+#region Filters
 
-func _draw() -> void:
-	var column_box := StyleBoxFlat.new()
-	column_box.bg_color = column_color
-	column_box.border_color = column_border_color
-	column_box.set_border_width_all(2)
-	column_box.set_corner_radius_all(18)
-	for column in _columns:
-		draw_style_box(column_box, column.rect.grow(10.0))
+## Hides what the "Can buy" filter leaves out, and the rows left empty.
+func _apply_filters() -> void:
+	var only_can_buy: bool = _can_buy_filter.button_pressed
+	var any_visible: bool = false
+	for entry in _rows:
+		var row_visible: bool = false
+		for node in entry.nodes:
+			node.visible = not only_can_buy or node.state == SkillTreeNode.State.CAN_AFFORD
+			row_visible = row_visible or node.visible
+		entry.row.visible = row_visible
+		any_visible = any_visible or row_visible
+	_empty_label.visible = not any_visible
+	_scroll.visible = any_visible
 
+func _update_tab_dots() -> void:
+	var can_buy: Dictionary = {}
+	for node in _nodes.values():
+		if node.state == SkillTreeNode.State.CAN_AFFORD:
+			can_buy[node.skill.branch] = true
+	for branch in _tab_dots:
+		_tab_dots[branch].visible = can_buy.has(branch)
 
 #endregion
 
 #region Signals
+
+func _on_tab_pressed(branch: String) -> void:
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
+	show_branch(branch)
+
+func _on_can_buy_toggled(_pressed: bool) -> void:
+	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
+	_apply_filters()
 
 func _on_node_pressed(skill_id: StringName) -> void:
 	AudioManager.create_audio(SoundEffectDetails.SoundEffectType.UI_BUTTON_CLICK, AudioManager.DestinationAudioBus.SFX)
