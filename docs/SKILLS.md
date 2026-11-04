@@ -19,7 +19,7 @@ Como nada se guarda dos veces, si cambiás un valor en un `.tres` (por ejemplo, 
 
 1. En el FileSystem del editor: clic derecho sobre `Resources/Skills/Stats/` → **New Resource…** → `SkillDefinition`.
 2. Completá **Identity**: `id` (único, en snake_case, y no lo cambies después porque es la clave del guardado), `display_name`, `description` e `icon`.
-3. En **Tree**, elegí la `branch` (pestaña). `tier` es la fila dentro de la pestaña: con -1 va una fila debajo de su requisito más profundo (aunque ese requisito esté en otra rama, así T3 significa lo mismo en todas las pestañas).
+3. En **Tree**, elegí la `branch` (pestaña). `tier` es la fila dentro de la pestaña: con -1 va una fila debajo de su requisito más profundo (aunque ese requisito esté en otra rama, así la profundidad se respeta en todas las pestañas). Cada pestaña numera sus filas desde T1.
 4. En **Game Modes**, marcá Mining, Waves o los dos.
 5. En **Requirements**, agregá un `SkillRequirement` y arrastrá el `.tres` de la skill que tiene que comprarse antes, con su `min_level`. Si no ponés requisitos, la skill está disponible desde el inicio. `requires_all` decide si basta con uno de los requisitos o hacen falta todos.
 6. En **Effects**, agregá un `StatSkillEffect`: `stat` (ver la tabla de abajo), `is_percentage` (0.1 = +10%), `value_per_level` y `value_multiplier` (1.0 da lo mismo en cada nivel).

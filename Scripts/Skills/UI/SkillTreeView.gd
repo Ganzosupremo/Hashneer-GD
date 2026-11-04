@@ -45,6 +45,7 @@ var _mode_filter: int = 0
 
 func _ready() -> void:
 	_build()
+	_style_scroll_bar()
 	_can_buy_filter.toggled.connect(_on_can_buy_toggled)
 	var start: String = _last_branch if _branch_order.has(_last_branch) else ""
 	if start.is_empty() and not _branch_order.is_empty():
@@ -109,14 +110,34 @@ func show_branch(branch: String) -> void:
 		_tier_rows.remove_child(child)
 		child.queue_free()
 	_rows.clear()
-	for tier_entry in _branch_tiers[branch]:
-		_add_tier_row(tier_entry.tier, tier_entry.skills)
+	var tier_list: Array = _branch_tiers[branch]
+	for i in tier_list.size():
+		_add_tier_row(i, tier_list[i].skills)
 	_scroll.scroll_vertical = 0
 	_apply_filters()
 
 #endregion
 
 #region Build
+
+## Wider, gold scroll bar so it is clear the branch has more rows below.
+func _style_scroll_bar() -> void:
+	var bar: VScrollBar = _scroll.get_v_scroll_bar()
+	bar.custom_minimum_size.x = 10.0
+	var track := StyleBoxFlat.new()
+	track.bg_color = Color(1.0, 1.0, 1.0, 0.08)
+	track.set_corner_radius_all(5)
+	var grabber := StyleBoxFlat.new()
+	grabber.bg_color = Color(HEADER_COLOR, 0.6)
+	grabber.set_corner_radius_all(5)
+	var grabber_hover := StyleBoxFlat.new()
+	grabber_hover.bg_color = HEADER_COLOR
+	grabber_hover.set_corner_radius_all(5)
+	bar.add_theme_stylebox_override("scroll", track)
+	bar.add_theme_stylebox_override("scroll_focus", track)
+	bar.add_theme_stylebox_override("grabber", grabber)
+	bar.add_theme_stylebox_override("grabber_highlight", grabber_hover)
+	bar.add_theme_stylebox_override("grabber_pressed", grabber_hover)
 
 func _build() -> void:
 	var skills: Array[SkillDefinition] = SkillProgress.get_all_skills()
@@ -149,6 +170,8 @@ func _add_node(skill: SkillDefinition) -> void:
 	var node: SkillTreeNode = node_scene.instantiate()
 	node.setup(skill)
 	node.custom_minimum_size = node_size
+	# PASS lets the mouse wheel reach the ScrollContainer while the cursor is over a node
+	node.mouse_filter = Control.MOUSE_FILTER_PASS
 	node.pressed.connect(_on_node_pressed.bind(skill.id))
 	_nodes[skill.id] = node
 	# Runs _ready so refresh() works while the node is in no tab
@@ -183,13 +206,14 @@ func _add_tab(branch: String, group: ButtonGroup) -> void:
 	tab.add_child(dot)
 	_tab_dots[branch] = dot
 
-func _add_tier_row(tier: int, skills: Array) -> void:
+## [param index] counts from the first row of the branch, so every tab starts at T1.
+func _add_tier_row(index: int, skills: Array) -> void:
 	var row := HBoxContainer.new()
 	row.add_theme_constant_override("separation", 8)
 
 	var label := Label.new()
-	label.text = "T%d" % (tier + 1)
-	label.tooltip_text = "Tier %d" % (tier + 1)
+	label.text = "T%d" % (index + 1)
+	label.tooltip_text = "Tier %d" % (index + 1)
 	label.custom_minimum_size = Vector2(tier_label_width, node_size.y)
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
