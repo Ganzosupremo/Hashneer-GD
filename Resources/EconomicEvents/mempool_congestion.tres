@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"mempool_congestion"
+name = "Mempool Congestion"
+description = "Everyone wants a spot in the next block. Fees go through the roof."
+event_type = 7
+duration_in_blocks = 2
+weight = 0.8
+min_blockheight = 2
+mining_fees = 2.0
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

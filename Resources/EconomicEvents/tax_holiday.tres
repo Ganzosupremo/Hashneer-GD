@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"tax_holiday"
+name = "Tax Holiday"
+description = "For a short while the tax man looks away. Enjoy it while it lasts."
+event_type = 4
+duration_in_blocks = 2
+weight = 0.6
+min_blockheight = 0
+skill_cost_fiat = 0.85
+fiat_drops = 1.1
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

@@ -71,8 +71,10 @@ func spend_bitcoin(amount_to_spend: float) -> bool:
 
 ## In-game price of 1 BTC in fiat. It rises with fiat inflation and with every halving,
 ## mirroring how Bitcoin prices in the skill tree drop (see [method Timechain.get_deflation_multiplier]).
+## Economic events like a bull run or a crash move it for a few blocks.
 func get_btc_price_in_fiat() -> float:
-	return BASE_BTC_PRICE_IN_FIAT * FED.get_total_inflation() / BitcoinNetwork.get_deflation_multiplier()
+	return BASE_BTC_PRICE_IN_FIAT * FED.get_total_inflation() / BitcoinNetwork.get_deflation_multiplier() \
+		* EconomicEventsManager.get_multiplier(EconomicEvent.BTC_PRICE)
 
 ## Returns how many BTC the given fiat buys on the exchange, after the fee.
 func fiat_to_bitcoin(fiat_amount: float) -> float:

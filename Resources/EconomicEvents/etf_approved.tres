@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"etf_approved"
+name = "Bitcoin ETF Approved"
+description = "Wall Street wants in. Demand for block space and for coins shoots up."
+event_type = 3
+duration_in_blocks = 3
+weight = 0.5
+min_blockheight = 4
+btc_price = 1.3
+mining_fees = 1.25
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

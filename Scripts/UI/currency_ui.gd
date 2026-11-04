@@ -22,6 +22,8 @@ func _ready() -> void:
 	skill_tree = get_tree().get_first_node_in_group("SkillsTree")
 	BitcoinWallet.money_changed.connect(_on_money_changed)
 	FED.inflation_applied.connect(_on_inflation_applied)
+	EconomicEventsManager.event_changed.connect(_update_market_labels)
+	_btc_price_label.mouse_filter = Control.MOUSE_FILTER_PASS
 	_buy_button.tooltip_text = "Spend %d%% of your fiat on Bitcoin (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
 	_sell_button.tooltip_text = "Sell %d%% of your Bitcoin for fiat (%d%% fee)" % [EXCHANGE_TRADE_SHARE * 100, BitcoinWallet.EXCHANGE_FEE * 100]
 	# The currency picked is saved by SkillProgress, keep the toggle in sync with it
@@ -30,9 +32,17 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	FED.inflation_applied.disconnect(_on_inflation_applied)
+	EconomicEventsManager.event_changed.disconnect(_update_market_labels)
 
 func _update_market_labels() -> void:
 	_btc_price_label.text = "1 ₿ = $%s" % Utils.format_currency(BitcoinWallet.get_btc_price_in_fiat(), true)
+	# Show when an economic event moves the price, e.g. "(+50% event)"
+	var event_multiplier: float = EconomicEventsManager.get_multiplier(EconomicEvent.BTC_PRICE)
+	if not is_equal_approx(event_multiplier, 1.0):
+		_btc_price_label.text += " (%s)" % EconomicEvent.format_change(event_multiplier)
+		_btc_price_label.tooltip_text = "%s moves the Bitcoin price for %d more blocks" % [EconomicEventsManager.get_current_event().name, EconomicEventsManager.get_remaining_blocks()]
+	else:
+		_btc_price_label.tooltip_text = ""
 	_inflation_label.text = "Inflation: +%d%%/block (x%.2f)" % [roundi(FED.get_current_inflation_rate() * 100.0), FED.get_total_inflation()]
 	_halving_label.text = "Next halving in %d blocks" % BitcoinNetwork.get_blocks_until_next_halving()
 

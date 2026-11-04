@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"supply_shock"
+name = "Supply Chain Shock"
+description = "A storm closes the ports. Shelves are empty and prices go up in every currency."
+event_type = 6
+duration_in_blocks = 2
+weight = 0.6
+min_blockheight = 0
+skill_cost_fiat = 1.2
+skill_cost_btc = 1.2
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

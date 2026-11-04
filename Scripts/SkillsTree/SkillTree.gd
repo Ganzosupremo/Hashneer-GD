@@ -8,7 +8,6 @@ class_name SkillTreeManager extends Control
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_READY:
 		PersistenceDataManager.load_game()
-		EconomicEventsManager.pick_random_event()
 
 func _ready() -> void:
 	AudioManager.change_music_clip(music_details)
@@ -21,8 +20,8 @@ func _ready() -> void:
 func start_new_epoch() -> void:
 	if !MiningFarm.can_start_new_epoch(): return
 
-	# Expire the active economic event first so upgrade costs go back to their base values
-	EconomicEventsManager.force_expire_event()
+	# Clear the active economic event first so upgrade costs go back to their base values
+	EconomicEventsManager.reset_for_new_epoch()
 	var points: int = MiningFarm.start_new_epoch()
 
 	SkillProgress.reset_all()

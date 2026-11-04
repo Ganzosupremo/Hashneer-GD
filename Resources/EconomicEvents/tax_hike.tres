@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"tax_hike"
+name = "The IRS Strikes Again"
+description = "New taxes on everything. Your fiat earnings shrink and shops raise their prices."
+event_type = 4
+duration_in_blocks = 3
+weight = 0.8
+min_blockheight = 0
+skill_cost_fiat = 1.15
+fiat_drops = 0.8
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

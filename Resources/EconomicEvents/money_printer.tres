@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="EconomicEvent" load_steps=2 format=3]
+
+[ext_resource type="Script" uid="uid://3wyb8kqsc0n5" path="res://Scripts/BitcoinNetwork/EconomicEvent.gd" id="1_event"]
+
+[resource]
+script = ExtResource("1_event")
+id = &"money_printer"
+name = "Money Printer Go Brrr"
+description = "The central bank fires up the printer. There is more fiat everywhere, and everything costs more fiat."
+event_type = 0
+duration_in_blocks = 3
+weight = 1.0
+min_blockheight = 0
+skill_cost_fiat = 1.4
+fiat_drops = 1.25
+btc_price = 1.2
+metadata/_custom_type_script = "uid://3wyb8kqsc0n5"

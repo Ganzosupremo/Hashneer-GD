@@ -145,9 +145,8 @@ func log_economic_event_picked(event: EconomicEvent) -> void:
 	
 	var event_data = {
 		"name": event.name,
-		"type": str(event.event_type),
-		"impact": event.impact,
-		"currency": str(event.currency_affected),
+		"type": event.get_type_label(),
+		"effects": event.get_effects_text().replace("\n", ", "),
 		"duration": event.duration_in_blocks
 	}
 	log_event("EconomicEventPicked", event_data)
@@ -161,7 +160,7 @@ func log_economic_event_expired(event: EconomicEvent) -> void:
 	
 	var event_data = {
 		"name": event.name,
-		"type": str(event.event_type)
+		"type": event.get_type_label()
 	}
 	log_event("EconomicEventExpired", event_data)
 

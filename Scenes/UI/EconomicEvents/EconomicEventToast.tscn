@@ -1,0 +1,144 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="1_theme"]
+[ext_resource type="Script" path="res://Scripts/UI/EconomicEvents/EconomicEventToast.gd" id="2_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+content_margin_left = 16.0
+content_margin_top = 12.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.008, 0.02, 0.044, 1)
+border_width_left = 4
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.78, 0.3, 0.85)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0, 0, 0, 0.72)
+shadow_size = 12
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tag"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(1, 0.78, 0.3, 0.16)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.78, 0.3, 0.7)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_sep"]
+color = Color(0.05, 0.82, 1, 0.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_bg"]
+bg_color = Color(1, 1, 1, 0.06)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar_fill"]
+bg_color = Color(1, 0.78, 0.3, 0.8)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="EconomicEventToast" type="PanelContainer"]
+custom_minimum_size = Vector2(440, 0)
+offset_right = 440.0
+offset_bottom = 160.0
+theme = ExtResource("1_theme")
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+script = ExtResource("2_script")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="TypeTag" type="Label" parent="VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(1, 0.78, 0.3, 1)
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_tag")
+text = "INFLATION"
+
+[node name="TitleLabel" type="Label" parent="VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "Money Printer Go Brrr"
+text_overrun_behavior = 3
+
+[node name="BlocksLabel" type="Label" parent="VBox/Header"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Blocks left. Blocks are mined by you and by the AI."
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.54, 0.68, 0.75, 1)
+theme_override_font_sizes/font_size = 14
+text = "3 blocks"
+
+[node name="DescriptionLabel" type="Label" parent="VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(408, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 1)
+theme_override_font_sizes/font_size = 14
+text = "The central bank fires up the printer."
+autowrap_mode = 3
+
+[node name="Separator" type="HSeparator" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_sep")
+
+[node name="EffectsLabel" type="RichTextLabel" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/line_separation = 4
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[color=#ff6b61]▲ Fiat skill prices +40%[/color]"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="TimeBar" type="ProgressBar" parent="VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_bar_fill")
+max_value = 1.0
+step = 0.0
+value = 1.0
+show_percentage = false

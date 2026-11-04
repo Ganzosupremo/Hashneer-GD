@@ -30,46 +30,6 @@ theme_override_constants/margin_bottom = 10
 layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="FilterRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="FilterLabel" type="Label" parent="MarginContainer/VBoxContainer/FilterRow"]
-layout_mode = 2
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 0
-theme_override_font_sizes/font_size = 13
-text = "Show"
-
-[node name="FilterAll" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "All"
-
-[node name="FilterMining" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "Mining"
-
-[node name="FilterWaves" type="Button" parent="MarginContainer/VBoxContainer/FilterRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-focus_mode = 0
-theme_override_font_sizes/font_size = 13
-text = "Waves"
-
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_separator")
-
 [node name="Placeholder" type="Label" parent="MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
@@ -95,7 +55,7 @@ theme_override_constants/separation = 10
 [node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Details/Header"]
 unique_name_in_owner = true
 texture_filter = 1
-custom_minimum_size = Vector2(52, 52)
+custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
@@ -125,17 +85,18 @@ theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 14
 text = "Level 0/1"
 
-[node name="ModesLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/Header/Titles"]
+[node name="InfoScroll" type="ScrollContainer" parent="MarginContainer/VBoxContainer/Details"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_colors/font_color = Color(0.7, 0.7, 0.75, 1)
-theme_override_constants/outline_size = 4
-theme_override_constants/shadow_offset_x = 0
-theme_override_constants/shadow_offset_y = 0
-theme_override_font_sizes/font_size = 12
-text = "Defense  ·  Mining + Waves"
+horizontal_scroll_mode = 0
 
-[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+[node name="InfoBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Details/InfoScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="DescriptionLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.85, 0.85, 0.88, 1)
@@ -146,7 +107,7 @@ theme_override_font_sizes/font_size = 13
 text = "Description"
 autowrap_mode = 3
 
-[node name="EffectsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details"]
+[node name="EffectsLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/InfoScroll/InfoBox"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.85, 1, 1)
@@ -191,6 +152,16 @@ theme_override_constants/shadow_offset_x = 0
 theme_override_constants/shadow_offset_y = 0
 theme_override_font_sizes/font_size = 18
 text = "0"
+
+[node name="EventCostLabel" type="Label" parent="MarginContainer/VBoxContainer/Details/CostRow"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(1, 0.42, 0.38, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 14
+text = "(was 200K, +40%)"
 
 [node name="BuyRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Details"]
 layout_mode = 2

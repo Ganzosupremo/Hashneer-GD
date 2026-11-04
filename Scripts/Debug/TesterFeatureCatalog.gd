@@ -22,6 +22,7 @@ static func register_defaults(tester: Node) -> void:
 	_register_abilities(tester)
 	_register_skills(tester)
 	_register_currency(tester)
+	_register_economy(tester)
 	_register_mining(tester)
 	_register_enemies(tester)
 	_register_bosses(tester)
@@ -100,6 +101,31 @@ static func _register_currency(tester: Node) -> void:
 	tester.add_action("Currency (saved)", "+%d BTC" % BITCOIN_STEP, ALL, func() -> void:
 		BitcoinWallet.add_bitcoin(BITCOIN_STEP * tester.get_quantity()),
 		"Multiplied by Quantity. It is saved like normal earnings")
+
+static func _register_economy(tester: Node) -> void:
+	const SECTION: String = "Economic Events (saved)"
+	tester.add_action(SECTION, "Random Event", ALL, func() -> void:
+		if not EconomicEventsManager.force_start_event():
+			tester.report("No event can start right now"),
+		"Starts a random event, replacing the active one")
+	tester.add_action(SECTION, "End Event", ALL, func() -> void:
+		if not EconomicEventsManager.is_event_active():
+			tester.report("There is no active event")
+		EconomicEventsManager.force_end_event(),
+		"Ends the active event as if its last block was mined")
+	tester.add_action(SECTION, "Count One Block", ALL, func() -> void:
+		EconomicEventsManager.advance_block()
+		tester.report(EconomicEventsManager.get_debug_info()),
+		"Ticks the event down or rolls for a new one, without mining a block")
+	tester.add_toggle(SECTION, "Event Every Block", ALL,
+		func() -> bool: return EconomicEventsManager.chance_per_block >= 1.0,
+		func(on: bool) -> void: EconomicEventsManager.chance_per_block = 1.0 if on else EconomicEventsManager.DEFAULT_CHANCE_PER_BLOCK,
+		"100% chance of a new event on each block while none is active")
+	for event in EconomicEventsManager.get_all_events():
+		var event_id: StringName = event.id
+		tester.add_action(SECTION, event.name, ALL, func() -> void:
+			EconomicEventsManager.force_start_event(event_id),
+			event.get_effects_text())
 
 static func _register_mining(tester: Node) -> void:
 	tester.add_action("Block", "Mine Block Now", MINING, func() -> void:

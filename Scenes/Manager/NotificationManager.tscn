@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b2ye8lsut3qyn" path="res://Scripts/Utils/NotificationManager.gd" id="1_vfw7s"]
 [ext_resource type="PackedScene" uid="uid://cefimi5wlr8gl" path="res://Scenes/UI/NotificationPanel.tscn" id="2_4jp1i"]
 [ext_resource type="Resource" uid="uid://uwm4msfw6u3w" path="res://Resources/MainEventBus.tres" id="2_k72qu"]
-[ext_resource type="PackedScene" uid="uid://i2e61eq5k5l0" path="res://Scenes/UI/NotificationPopupPanel.tscn" id="3_d3b5c"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/EconomicEvents/EconomicEventToast.tscn" id="3_toast"]
 
 [node name="NotificationManager" type="Control"]
 layout_mode = 3
@@ -27,11 +27,10 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="NotificationPopupPanel" parent="CanvasLayer/Control" instance=ExtResource("3_d3b5c")]
+[node name="EconomicEventToast" parent="CanvasLayer/Control" instance=ExtResource("3_toast")]
 unique_name_in_owner = true
-layout_mode = 1
-offset_right = 300.0
-offset_bottom = 256.0
+visible = false
+layout_mode = 0
 
 [node name="NotificationPanel" parent="CanvasLayer/Control" instance=ExtResource("2_4jp1i")]
 unique_name_in_owner = true

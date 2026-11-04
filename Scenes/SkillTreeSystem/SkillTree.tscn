@@ -14,7 +14,6 @@
 [ext_resource type="PackedScene" path="res://Scenes/UI/HubNav/HubNavBar.tscn" id="10_oevro"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="21_custom"]
 [ext_resource type="PackedScene" uid="uid://c2hb4iulgyrsa" path="res://Scenes/UI/Settings.tscn" id="22_u5dcr"]
-[ext_resource type="Script" uid="uid://kw1klri7wheu" path="res://Scripts/BitcoinNetwork/EconomicEventExample.gd" id="41_g7g25"]
 [ext_resource type="PackedScene" uid="uid://bl0l4bqvn5hgr" path="res://Scenes/UI/MiningFarmUI.tscn" id="56_farm_ui"]
 [ext_resource type="PackedScene" uid="uid://wp6p7rv0v6i0" path="res://Scenes/UI/StatsScreenUI.tscn" id="57_stats_ui"]
 [ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillTreeView.tscn" id="60_tree_view"]
@@ -143,7 +142,7 @@ offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SkillDetailPanel" parent="FrontLayer" unique_id=590537931 instance=ExtResource("62_detail_panel")]
+[node name="SkillDetailPanel" parent="FrontLayer" unique_id=590537931 node_paths=PackedStringArray("avoid_node") instance=ExtResource("62_detail_panel")]
 unique_name_in_owner = true
 anchors_preset = 2
 anchor_top = 1.0
@@ -151,6 +150,7 @@ anchor_bottom = 1.0
 offset_top = -88.0
 offset_bottom = -88.0
 grow_vertical = 0
+avoid_node = NodePath("../CurrencyUI/MainContainer")
 
 [node name="MiningFarmUI" parent="FrontLayer" unique_id=601998099 instance=ExtResource("56_farm_ui")]
 
@@ -164,11 +164,7 @@ visible = false
 unique_name_in_owner = true
 visible = false
 
-[node name="EconomicEventTester" type="Node2D" parent="." unique_id=865283114]
-script = ExtResource("41_g7g25")
-
 [connection signal="skill_selected" from="FrontLayer/SkillTreeArea/SkillTreeView" to="FrontLayer/SkillDetailPanel" method="show_skill"]
-[connection signal="mode_filter_changed" from="FrontLayer/SkillDetailPanel" to="FrontLayer/SkillTreeArea/SkillTreeView" method="set_mode_filter"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StatsButton" to="FrontLayer/StatsScreenUI" method="open"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]
