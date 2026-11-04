@@ -5,6 +5,7 @@ extends Control
 @onready var slot_button_1: Button = %SlotButton1
 @onready var slot_button_2: Button = %SlotButton2
 @onready var slot_button_3: Button = %SlotButton3
+@onready var back_button: Button = %BackButton
 
 const save_text1: String = "SaveOne.sav"
 const save_text2: String = "SaveTwo.sav"
@@ -13,6 +14,7 @@ const save_text3: String = "SaveThree.sav"
 var time_passed: float = 0.0
 
 func _ready() -> void:
+	back_button.text = "RETURN TO MAIN MENU"
 	# Add fade-in animation
 	modulate = Color(1, 1, 1, 0)
 	var tween = create_tween()
@@ -25,15 +27,15 @@ func _ready() -> void:
 	slot_button_1.grab_focus()
 
 func _update_slot_texts() -> void:
-	slot_button_1.text = "Slot 1\n" + (_get_save_status(save_text1))
-	slot_button_2.text = "Slot 2\n" + (_get_save_status(save_text2))
-	slot_button_3.text = "Slot 3\n" + (_get_save_status(save_text3))
+	slot_button_1.text = "SLOT 01\n" + (_get_save_status(save_text1))
+	slot_button_2.text = "SLOT 02\n" + (_get_save_status(save_text2))
+	slot_button_3.text = "SLOT 03\n" + (_get_save_status(save_text3))
 
 func _get_save_status(file_name: String) -> String:
 	if SaveSystem.has_save_file(file_name):
-		return "[Continue]"
+		return "SAVE FOUND // CONTINUE"
 	else:
-		return "[New Game]"
+		return "EMPTY // NEW RUN"
 
 func _on_animation_timer_timeout() -> void:
 	time_passed += 0.016

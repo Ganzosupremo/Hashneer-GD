@@ -6,12 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="4_custom"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_settings_content"]
-bg_color = Color(0.03, 0.03, 0.06, 0.85)
+bg_color = Color(0.027451, 0.039216, 0.066667, 0.9)
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(1, 0.843, 0, 0.3)
+border_color = Color(1, 0.576471, 0.101961, 0.35)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8

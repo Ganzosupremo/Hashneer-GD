@@ -31,6 +31,35 @@ bitcoin_base_cost = 3.0
 bitcoin_cost_multiplier = 1.3
 metadata/_custom_type_script = "uid://crn0k51u6kiwt"
 
+[sub_resource type="Resource" id="Resource_special_cooldown"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 13
+upgrade_name = "special cooldown"
+upgrade_description = "-8% special cooldown per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_special_power"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 14
+upgrade_name = "special power"
+upgrade_description = "+12% special damage or duration per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.12
+base_cost = 60000.0
+cost_multiplier = 1.6
+
+[sub_resource type="Resource" id="Resource_armory_0"]
+script = ExtResource("4_1c5fr")
+upgrade_type = 2
+upgrade_name = "Choke"
+upgrade_description = "-0.08 spread per level"
+upgrade_levels = 5
+upgrade_power_per_level = 0.08
+base_cost = 40000.0
+
 [sub_resource type="Resource" id="Resource_83u4u"]
 metadata/__load_path__ = "res://Textures/VFX/1x1 Square.png"
 
@@ -78,36 +107,6 @@ one_shot = true
 explosiveness = 1.0
 particle_texture = SubResource("Resource_83u4u")
 process_material = SubResource("ParticleProcessMaterial_rf6gg")
-
-[sub_resource type="Resource" id="Resource_special_cooldown"]
-script = ExtResource("4_1c5fr")
-upgrade_type = 13
-upgrade_name = "special cooldown"
-upgrade_description = "-8% special cooldown per level"
-upgrade_levels = 5
-upgrade_power_per_level = 0.08
-base_cost = 40000.0
-cost_multiplier = 1.6
-
-[sub_resource type="Resource" id="Resource_special_power"]
-script = ExtResource("4_1c5fr")
-upgrade_type = 14
-upgrade_name = "special power"
-upgrade_description = "+12% special damage or duration per level"
-upgrade_levels = 5
-upgrade_power_per_level = 0.12
-base_cost = 60000.0
-cost_multiplier = 1.6
-
-[sub_resource type="Resource" id="Resource_armory_0"]
-script = ExtResource("4_1c5fr")
-upgrade_type = 2
-upgrade_name = "Choke"
-upgrade_description = "-0.08 spread per level"
-upgrade_levels = 5
-upgrade_power_per_level = 0.08
-base_cost = 40000.0
-cost_multiplier = 1.5
 
 [resource]
 script = ExtResource("4_6sosy")

@@ -58,7 +58,6 @@ upgrade_description = "-0.02 spread per level"
 upgrade_levels = 5
 upgrade_power_per_level = 0.02
 base_cost = 60000.0
-cost_multiplier = 1.5
 
 [resource]
 script = ExtResource("1_wd")

@@ -87,7 +87,7 @@ vertical_alignment = 1
 
 [node name="LevelProgress" type="ProgressBar" parent="."]
 unique_name_in_owner = true
-modulate = Color(1, 0.843, 0, 1)
+modulate = Color(1, 0.576471, 0.101961, 1)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

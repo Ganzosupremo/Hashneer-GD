@@ -4,6 +4,7 @@
 [ext_resource type="Resource" uid="uid://b756jcbypcr0h" path="res://Resources/Audio/Music/MainMenuMusic.tres" id="2_mjmdf"]
 [ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="3_72sra"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="4_k8um8"]
+[ext_resource type="Texture2D" path="res://Textures/Icons/Hashneneer Logo.png" id="5_logo"]
 
 [sub_resource type="Environment" id="Environment_kv8h2"]
 background_mode = 1
@@ -13,7 +14,7 @@ glow_blend_mode = 0
 [sub_resource type="Gradient" id="Gradient_bitcoin"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
-colors = PackedColorArray(0.02, 0.02, 0.08, 1, 0.06, 0.04, 0.12, 1, 0.08, 0.06, 0.14, 1, 0.15, 0.08, 0.05, 1)
+colors = PackedColorArray(0.011765, 0.019608, 0.035294, 1, 0.019608, 0.031373, 0.058824, 1, 0.035294, 0.047059, 0.082353, 1, 0.086275, 0.047059, 0.023529, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
 gradient = SubResource("Gradient_bitcoin")
@@ -28,6 +29,20 @@ shader_parameter/speed = 1.5
 shader_parameter/density = 1.0
 shader_parameter/node_color = Color(1, 0.6, 0, 0.15)
 shader_parameter/connection_color = Color(0.2, 0.5, 1, 0.1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_command_panel"]
+bg_color = Color(0.019608, 0.031373, 0.054902, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.247059, 0.286275, 0.356863, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.55)
+shadow_size = 12
 
 [node name="MainMenu" type="Control" unique_id=1437353591]
 layout_mode = 3
@@ -84,10 +99,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 120
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 120
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 40
 metadata/_edit_lock_ = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1898977419]
@@ -95,41 +110,85 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/separation = 60
-alignment = 1
-metadata/_edit_lock_ = true
-
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1532299305]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
-theme_override_font_sizes/font_size = 72
-text = "HASHENEER"
-horizontal_alignment = 1
-
-[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1772515228]
-layout_mode = 2
-size_flags_horizontal = 4
-mouse_filter = 2
 theme_override_constants/separation = 20
 alignment = 1
 metadata/_edit_lock_ = true
 
-[node name="StartGame" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=173358335 instance=ExtResource("4_k8um8")]
+[node name="Logo" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(104, 104)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("5_logo")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Kicker" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.345098, 0.780392, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "DECENTRALIZED MINING PROTOCOL // NODE ONLINE"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1532299305]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"TitleText"
+theme_override_font_sizes/font_size = 82
+text = "HASHENEER"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.623529, 0.670588, 0.741176, 1)
+theme_override_font_sizes/font_size = 17
+text = "MINE THE CHAIN. DEFEND THE NETWORK. HODL THE FUTURE."
+horizontal_alignment = 1
+
+[node name="CommandPanel" type="PanelContainer" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_command_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/CommandPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="ButtonContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/CommandPanel/MarginContainer" unique_id=1772515228]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 14
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="StartGame" parent="MarginContainer/VBoxContainer/CommandPanel/MarginContainer/ButtonContainer" unique_id=173358335 instance=ExtResource("4_k8um8")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 64)
 layout_mode = 2
 focus_next = NodePath("../QuitGame")
-text = "Start Game"
+text = "ENTER NETWORK"
 
-[node name="QuitGame" parent="MarginContainer/VBoxContainer/ButtonContainer" unique_id=607715148 instance=ExtResource("4_k8um8")]
+[node name="QuitGame" parent="MarginContainer/VBoxContainer/CommandPanel/MarginContainer/ButtonContainer" unique_id=607715148 instance=ExtResource("4_k8um8")]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(350, 56)
 layout_mode = 2
 focus_neighbor_top = NodePath("../StartGame")
 focus_neighbor_bottom = NodePath("../StartGame")
 focus_previous = NodePath("../StartGame")
 theme_type_variation = &"ModernQuitButton"
-text = "Quit Game"
+text = "SHUT DOWN"
+
+[node name="Footer" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.313725, 0.352941, 0.419608, 1)
+theme_override_font_sizes/font_size = 13
+text = "PROOF OF WORK // VERIFY, DON'T TRUST"
+horizontal_alignment = 1
 
 [connection signal="timeout" from="Background/AnimationTimer" to="." method="_on_animation_timer_timeout"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/StartGame" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonContainer/QuitGame" to="." method="_on_quit_game_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CommandPanel/MarginContainer/ButtonContainer/StartGame" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/CommandPanel/MarginContainer/ButtonContainer/QuitGame" to="." method="_on_quit_game_button_pressed"]

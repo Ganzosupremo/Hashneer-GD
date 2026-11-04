@@ -11,7 +11,7 @@ background_color = Color(0.05, 0.05, 0.08, 1)
 [sub_resource type="Gradient" id="Gradient_bitcoin"]
 interpolation_mode = 2
 offsets = PackedFloat32Array(0, 0.3, 0.7, 1)
-colors = PackedColorArray(0.02, 0.02, 0.08, 1, 0.06, 0.04, 0.12, 1, 0.08, 0.06, 0.14, 1, 0.15, 0.08, 0.05, 1)
+colors = PackedColorArray(0.011765, 0.019608, 0.035294, 1, 0.019608, 0.031373, 0.058824, 1, 0.035294, 0.047059, 0.082353, 1, 0.086275, 0.047059, 0.023529, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
 gradient = SubResource("Gradient_bitcoin")
@@ -81,64 +81,82 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/margin_left = 80
-theme_override_constants/margin_top = 80
-theme_override_constants/margin_right = 80
-theme_override_constants/margin_bottom = 80
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 56
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 48
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
-theme_override_constants/separation = 40
+theme_override_constants/separation = 22
 alignment = 1
+
+[node name="Kicker" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.345098, 0.780392, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "PERSISTENCE LAYER // LOCAL LEDGER"
+horizontal_alignment = 1
 
 [node name="Title" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_type_variation = &"TitleText"
 theme_override_font_sizes/font_size = 48
-text = "Select Save Slot"
+text = "SELECT A LEDGER"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.623529, 0.670588, 0.741176, 1)
+theme_override_font_sizes/font_size = 17
+text = "Choose where this node should store its progress."
 horizontal_alignment = 1
 
 [node name="SlotsContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 18
 alignment = 1
 
 [node name="SlotButton1" parent="MarginContainer/VBoxContainer/SlotsContainer" instance=ExtResource("4_1sc53")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 160)
+custom_minimum_size = Vector2(260, 166)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Slot 1
-[New Game]"
+text = "SLOT 01
+EMPTY // NEW RUN"
 
 [node name="SlotButton2" parent="MarginContainer/VBoxContainer/SlotsContainer" instance=ExtResource("4_1sc53")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 160)
+custom_minimum_size = Vector2(260, 166)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Slot 2"
+text = "SLOT 02
+EMPTY // NEW RUN"
 
 [node name="SlotButton3" parent="MarginContainer/VBoxContainer/SlotsContainer" instance=ExtResource("4_1sc53")]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 160)
+custom_minimum_size = Vector2(260, 166)
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
-text = "Slot 3"
+text = "SLOT 03
+EMPTY // NEW RUN"
 
 [node name="BackButton" parent="MarginContainer/VBoxContainer" instance=ExtResource("4_1sc53")]
-custom_minimum_size = Vector2(200, 50)
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 52)
 layout_mode = 2
-theme_override_colors/font_hover_color = Color(1, 0.9, 0.9, 1)
-theme_override_colors/font_color = Color(0.8, 0.8, 0.85, 1)
-theme_override_colors/font_pressed_color = Color(0.9, 0.8, 0.8, 1)
+theme_type_variation = &"ModernQuitButton"
+theme_override_colors/font_hover_color = Color(1, 0.439216, 0.494118, 1)
+theme_override_colors/font_color = Color(0.827451, 0.858824, 0.905882, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
-text = "← Back to Menu"
+text = "RETURN TO MAIN MENU"
 
 [connection signal="timeout" from="Background/AnimationTimer" to="." method="_on_animation_timer_timeout"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/SlotsContainer/SlotButton1" to="." method="_on_slot_button_pressed"]

@@ -85,12 +85,20 @@ void fragment() {
     vec4 particle_contribution = bitcoin_gold * particles;
     vec4 hash_contribution = bitcoin_gold * falling_hashes * 0.8;
 
-    COLOR = node_contribution + connection_contribution + particle_contribution + hash_contribution;
+    // A faint technical grid keeps menus tied to the in-game mining HUD.
+    vec2 grid_uv = fract(uv * vec2(32.0, 18.0));
+    float grid_line = max(step(0.975, grid_uv.x), step(0.965, grid_uv.y));
+    vec4 grid_contribution = chain_blue * grid_line * 0.028;
+
+    COLOR = node_contribution + connection_contribution + particle_contribution + hash_contribution + grid_contribution;
 
     // Add subtle pulsing to create "blockchain" feel
     float pulse = sin(t * 2.0) * 0.05 + 0.95;
     COLOR.rgb *= pulse;
 
-    // Vignette effect
-    COLOR.a *= smoothstep(0.0, 0.2, distance(uv, vec2(0.5))) * 0.8 + 0.2;
+    // Soft scanlines and a true edge vignette keep the field readable behind UI cards.
+    float scanline = 0.94 + 0.06 * sin(uv.y * 900.0);
+    COLOR.rgb *= scanline;
+    float edge = 1.0 - smoothstep(0.28, 0.82, distance(uv, vec2(0.5)));
+    COLOR.a *= mix(0.3, 1.0, edge);
 }

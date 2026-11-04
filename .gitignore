@@ -35,3 +35,4 @@ venv/
 *.dll
 *.tmp
 .vscode/
+Tools/

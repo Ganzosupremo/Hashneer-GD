@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://kw1klri7wheu" path="res://Scripts/BitcoinNetwork/EconomicEventExample.gd" id="41_g7g25"]
 [ext_resource type="PackedScene" uid="uid://bl0l4bqvn5hgr" path="res://Scenes/UI/MiningFarmUI.tscn" id="56_farm_ui"]
 [ext_resource type="PackedScene" uid="uid://wp6p7rv0v6i0" path="res://Scenes/UI/StatsScreenUI.tscn" id="57_stats_ui"]
-[ext_resource type="Script" path="res://Scripts/Skills/UI/SkillTreeView.gd" id="60_tree_view"]
+[ext_resource type="Script" uid="uid://46io2wpcg143" path="res://Scripts/Skills/UI/SkillTreeView.gd" id="60_tree_view"]
 [ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillTreeNode.tscn" id="61_tree_node"]
 [ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillDetailPanel.tscn" id="62_detail_panel"]
 
@@ -93,7 +93,7 @@ mouse_filter = 2
 
 [node name="FrontLayer" type="CanvasLayer" parent="." unique_id=218148692]
 
-[node name="SkillTreeArea" type="Control" parent="FrontLayer"]
+[node name="SkillTreeArea" type="Control" parent="FrontLayer" unique_id=1005922215]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -106,13 +106,16 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 
-[node name="SkillTreeView" type="Control" parent="FrontLayer/SkillTreeArea"]
+[node name="SkillTreeView" type="Control" parent="FrontLayer/SkillTreeArea" unique_id=926423823]
 unique_name_in_owner = true
-layout_mode = 0
+anchors_preset = 0
 mouse_filter = 2
 theme = ExtResource("7_c7c56")
 script = ExtResource("60_tree_view")
 node_scene = ExtResource("61_tree_node")
+line_width = null
+line_met_color = null
+line_unmet_color = null
 
 [node name="SkillTreeTabs" parent="FrontLayer" unique_id=1964522389 instance=ExtResource("10_oevro")]
 
@@ -156,7 +159,7 @@ offset_bottom = 223.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="SkillDetailPanel" parent="FrontLayer" instance=ExtResource("62_detail_panel")]
+[node name="SkillDetailPanel" parent="FrontLayer" unique_id=590537931 instance=ExtResource("62_detail_panel")]
 unique_name_in_owner = true
 anchors_preset = 2
 anchor_top = 1.0
@@ -180,10 +183,8 @@ visible = false
 [node name="EconomicEventTester" type="Node2D" parent="." unique_id=865283114]
 script = ExtResource("41_g7g25")
 
+[connection signal="skill_selected" from="FrontLayer/SkillTreeArea/SkillTreeView" to="FrontLayer/SkillDetailPanel" method="show_skill"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/QuitGame" to="." method="_on_quit_game_pressed"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StatsButton" to="FrontLayer/StatsScreenUI" method="open"]
 [connection signal="pressed" from="FrontLayer/ButtonContainer/StartGame" to="." method="_on_start_game_pressed"]
 [connection signal="new_epoch_requested" from="FrontLayer/MiningFarmUI" to="." method="start_new_epoch"]
-
-[connection signal="skill_selected" from="FrontLayer/SkillTreeArea/SkillTreeView" to="FrontLayer/SkillDetailPanel" method="show_skill"]
-[connection signal="mode_filter_changed" from="FrontLayer/SkillDetailPanel" to="FrontLayer/SkillTreeArea/SkillTreeView" method="set_mode_filter"]
