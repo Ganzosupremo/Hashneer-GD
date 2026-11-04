@@ -1,0 +1,81 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" uid="uid://46io2wpcg143" path="res://Scripts/Skills/UI/SkillTreeView.gd" id="1_view"]
+[ext_resource type="Theme" uid="uid://dylriqvd0gggf" path="res://game_main_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" path="res://Scenes/SkillTreeSystem/SkillTreeNode.tscn" id="3_node"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_body"]
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 6.0
+content_margin_bottom = 10.0
+bg_color = Color(0.04, 0.04, 0.07, 0.55)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.843, 0, 0.2)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[node name="SkillTreeView" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+theme_override_constants/separation = 8
+script = ExtResource("1_view")
+node_scene = ExtResource("3_node")
+
+[node name="TopBar" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BranchTabs" type="HFlowContainer" parent="TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+
+[node name="CanBuyFilter" type="Button" parent="TopBar"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 34)
+layout_mode = 2
+size_flags_vertical = 0
+tooltip_text = "Show only the skills you can buy right now"
+focus_mode = 0
+toggle_mode = true
+theme_override_font_sizes/font_size = 13
+text = "Can buy"
+
+[node name="Body" type="PanelContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_body")
+
+[node name="Scroll" type="ScrollContainer" parent="Body"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="TierRows" type="VBoxContainer" parent="Body/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="EmptyLabel" type="Label" parent="Body"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
+text = "Nothing to buy in this branch right now."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
