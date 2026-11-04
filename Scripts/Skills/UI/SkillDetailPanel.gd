@@ -20,7 +20,7 @@ const MISSING_REQUIREMENT_COLOR: Color = Color(0.95, 0.55, 0.4, 1.0)
 @export var top_limit: float = 232.0
 const AVOID_GAP: float = 8.0
 ## The text part never gets shorter than this, even on small screens.
-const MIN_INFO_HEIGHT: float = 60.0
+const MIN_INFO_HEIGHT: float = 40.0
 
 @onready var _filter_all: Button = %FilterAll
 @onready var _filter_mining: Button = %FilterMining

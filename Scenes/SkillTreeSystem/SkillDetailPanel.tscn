@@ -95,7 +95,7 @@ theme_override_constants/separation = 10
 [node name="Icon" type="TextureRect" parent="MarginContainer/VBoxContainer/Details/Header"]
 unique_name_in_owner = true
 texture_filter = 1
-custom_minimum_size = Vector2(52, 52)
+custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
