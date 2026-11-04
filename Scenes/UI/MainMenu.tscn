@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://b756jcbypcr0h" path="res://Resources/Audio/Music/MainMenuMusic.tres" id="2_mjmdf"]
 [ext_resource type="Shader" uid="uid://c3jvwedxdm2k2" path="res://Shaders/UIBackgroundShader.gdshader" id="3_72sra"]
 [ext_resource type="PackedScene" uid="uid://dajhetili8wxi" path="res://Scenes/UI/CustomButtonNew.tscn" id="4_k8um8"]
-[ext_resource type="Texture2D" path="res://Textures/Icons/Hashneneer Logo.png" id="5_logo"]
+[ext_resource type="Texture2D" path="res://Textures/Icons/HASHENEER  logo.png" id="5_logo"]
 
 [sub_resource type="Environment" id="Environment_kv8h2"]
 background_mode = 1
@@ -115,7 +115,7 @@ alignment = 1
 metadata/_edit_lock_ = true
 
 [node name="Logo" type="TextureRect" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(104, 104)
+custom_minimum_size = Vector2(600, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 texture = ExtResource("5_logo")
@@ -127,14 +127,6 @@ layout_mode = 2
 theme_override_colors/font_color = Color(0.345098, 0.780392, 1, 1)
 theme_override_font_sizes/font_size = 15
 text = "DECENTRALIZED MINING PROTOCOL // NODE ONLINE"
-horizontal_alignment = 1
-
-[node name="Title" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1532299305]
-layout_mode = 2
-size_flags_horizontal = 4
-theme_type_variation = &"TitleText"
-theme_override_font_sizes/font_size = 82
-text = "HASHENEER"
 horizontal_alignment = 1
 
 [node name="Subtitle" type="Label" parent="MarginContainer/VBoxContainer"]
